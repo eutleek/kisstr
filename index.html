@@ -4509,9 +4509,11 @@ function doRenderLinks(filterText, category) {
 }
 
 let currentCategory = linksData[0].name;
+let lastSelectedCategory = linksData[0].name;
 
 function filterByCategory(category) {
   currentCategory = category;
+  lastSelectedCategory = category;
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.category === category);
   });
@@ -4911,14 +4913,28 @@ if (searchInline && searchInputEl) {
   });
 
   searchInputEl.addEventListener('input', (e) => {
-    renderLinks(e.target.value, currentCategory);
+    const searchValue = e.target.value;
+    if (searchValue) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      renderLinks(searchValue, 'all');
+    } else {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === lastSelectedCategory);
+      });
+      renderLinks('', lastSelectedCategory);
+    }
   });
 
   searchInputEl.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       searchInputEl.value = '';
       searchInline.classList.remove('expanded');
-      renderLinks('', currentCategory);
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === lastSelectedCategory);
+      });
+      renderLinks('', lastSelectedCategory);
     }
   });
 
