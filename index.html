@@ -45,6 +45,8 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    background-color: #f5f5f7;
+    overscroll-behavior-y: none;
   }
 
   body {
@@ -662,7 +664,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     justify-content: center;
   }
 
@@ -936,7 +938,7 @@
 
   .back-to-top {
     position: fixed;
-    bottom: calc(30px + var(--safe-bottom));
+    bottom: -100px;
     right: calc(30px + var(--safe-right));
     width: 48px;
     height: 48px;
@@ -948,22 +950,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
     transition: all 0.3s ease;
     z-index: 50;
+    backface-visibility: hidden;
+    will-change: transform;
   }
 
   .back-to-top.visible {
     opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    bottom: calc(30px + var(--safe-bottom));
+    box-shadow: var(--shadow-md);
   }
 
   .back-to-top:hover {
-    transform: translateY(-3px);
+    bottom: calc(33px + var(--safe-bottom));
     box-shadow: var(--shadow-lg);
   }
 
@@ -1374,7 +1376,7 @@
     .category-tabs {
       padding: 0 16px;
       gap: 6px;
-      margin-bottom: 30px;
+      margin-bottom: 12px;
     }
 
     .tab-btn {
@@ -1404,8 +1406,14 @@
     }
 
     .back-to-top {
-      bottom: 20px;
+      bottom: -100px;
       right: 20px;
+    }
+    .back-to-top.visible {
+      bottom: calc(20px + var(--safe-bottom));
+    }
+    .back-to-top:hover {
+      bottom: calc(23px + var(--safe-bottom));
     }
   }
 
@@ -1528,6 +1536,12 @@
     .layout-minimal header {
       padding: 100px 0 60px;
     }
+    .layout-minimal .music-bar-bottom-container {
+      height: 50px;
+    }
+    .layout-minimal .music-bar-bottom {
+      top: 11px;
+    }
   }
 
   /* 大屏桌面 (≥1440px) */
@@ -1567,32 +1581,60 @@
     .layout-minimal header {
       padding: 40px 0 30px;
     }
+    .layout-minimal .music-bar-bottom-container {
+      height: 40px;
+      margin-bottom: 8px;
+    }
+    .layout-minimal .music-bar-bottom {
+      top: 6px;
+    }
   }
 
-  /* ========== 音乐律动顶栏 ========== */
-  .music-bar {
-    position: fixed;
-    top: 6px;
+  /* ========== 标签页下方律动栏容器 ========== */
+  .music-bar-bottom-container {
+    position: relative;
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    cursor: default;
+  }
+
+  .music-bar-bottom {
+    position: absolute;
+    top: 14px;
     left: 0;
     width: 100%;
     height: 28px;
-    z-index: 9999;
     opacity: 0;
     transition: opacity 0.8s ease;
     pointer-events: none;
   }
 
-  .music-bar.active {
+  .music-bar-bottom.active {
     opacity: 1;
   }
 
-  .music-fx-btn {
-    position: fixed;
-    top: 18px;
-    right: 50px;
-    z-index: 10000;
-    width: 28px;
+  .music-bar-bottom.idle {
+    opacity: 0.25;
     height: 28px;
+  }
+
+  /* ========== 杂志多列奢华风格布局 ========== */
+  .layout-minimal .music-bar-bottom {
+    display: block !important;
+  }
+
+  /* 底部律动栏按钮样式 */
+  .music-bar-bottom-container .music-fx-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 24px;
+    height: 24px;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -1603,58 +1645,42 @@
     align-items: center;
     justify-content: center;
     color: #1d1d1f;
+    pointer-events: auto;
   }
 
-  .music-fx-btn.visible {
-    opacity: 0.25;
+  .music-bar-bottom-container:hover .music-fx-btn,
+  .music-bar-bottom-container .music-fx-btn.visible {
+    opacity: 0.3 !important;
   }
 
-  .music-fx-btn.visible:hover {
-    opacity: 0.7;
+  .music-bar-bottom-container:hover .music-fx-btn:hover,
+  .music-bar-bottom-container .music-fx-btn.visible:hover {
+    opacity: 0.7 !important;
   }
 
-  .music-fx-btn svg {
-    width: 15px;
-    height: 15px;
+  .music-bar-bottom-container .music-fx-btn svg {
+    width: 14px;
+    height: 14px;
   }
 
-  .music-fx-close {
-    right: 16px;
+  .music-bar-bottom-container .music-fx-close {
+    right: 20px;
   }
 
-  /* 小屏适配律动按钮 */
-  @media (max-width: 375px) {
-    .music-fx-btn {
-      right: 42px;
-    }
-    .music-fx-close {
-      right: 10px;
-    }
-    .music-fx-btn svg {
-      width: 13px;
-      height: 13px;
-    }
+  .music-bar-bottom-container .music-fx-btn:not(.music-fx-close) {
+    right: 50px;
   }
 
-  /* 10秒无操作自动隐藏切换按钮 */
-  .music-fx-btn.auto-hidden {
-    opacity: 0 !important;
-    pointer-events: none;
+  /* 5秒无操作自动隐藏切换按钮 */
+  .music-bar-bottom-container .music-fx-btn.auto-hidden {
+    opacity: 0;
   }
 
   /* 第一布局隐藏律动栏 */
-  .layout-grid .music-bar,
-  .layout-grid .music-fx-btn,
-  .layout-grid .music-fx-close {
+  .layout-grid .music-bar-bottom-container {
     display: none !important;
   }
 
-  /* 空闲状态（布局二未播放） */
-  .music-bar.idle {
-    opacity: 0.25;
-  }
-
-  /* ========== 杂志多列奢华风格布局 ========== */
   .layout-minimal .bg-gradient {
     display: none;
   }
@@ -1670,7 +1696,7 @@
     border-bottom: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    padding: 140px 0 80px;
+    padding: 60px 0 40px;
     text-align: center;
   }
 
@@ -1765,8 +1791,9 @@
   .layout-minimal .category-tabs {
     justify-content: center;
     align-items: center;
-    margin-bottom: 80px;
+    margin-bottom: 32px;
     gap: 20px;
+    border-bottom: none !important;
   }
 
   .layout-minimal .tab-btn {
@@ -1931,8 +1958,36 @@
     }
 
     .layout-minimal .category-tabs {
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       gap: 12px;
+    }
+
+    .layout-minimal .music-bar-bottom-container {
+      height: 40px;
+      margin-bottom: 8px;
+    }
+
+    .layout-minimal .music-bar-bottom {
+      top: 6px;
+      height: 28px;
+    }
+
+    .layout-minimal .music-bar-bottom-container .music-fx-btn {
+      width: 20px;
+      height: 20px;
+    }
+
+    .layout-minimal .music-bar-bottom-container .music-fx-btn svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .layout-minimal .music-bar-bottom-container .music-fx-close {
+      right: 12px;
+    }
+
+    .layout-minimal .music-bar-bottom-container .music-fx-btn:not(.music-fx-close) {
+      right: 38px;
     }
 
     .layout-minimal .tab-btn {
@@ -2001,8 +2056,8 @@
   }
 
   .layout-minimal .category-header {
-    border-bottom: 1.5px solid #1d1d1f;
-    padding-bottom: 16px;
+    border-bottom: none;
+    padding-bottom: 0;
     margin-bottom: 30px;
     gap: 0;
   }
@@ -2950,17 +3005,6 @@
 </head>
 <body>
 <div class="bg-gradient"></div>
-<canvas class="music-bar" id="musicBar"></canvas>
-<button class="music-fx-btn" id="musicFxBtn" title="切换律动效果">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-    <path d="M3 12h3l3-8 4 16 3-8h5"/>
-  </svg>
-</button>
-<button class="music-fx-btn music-fx-close" id="musicFxClose" title="关闭律动栏">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-    <path d="M6 6l12 12M18 6L6 18"/>
-  </svg>
-</button>
 
 <header>
   <div class="header-inner">
@@ -3024,6 +3068,20 @@
 
 <div class="category-tabs" id="categoryTabs"></div>
 
+<div class="music-bar-bottom-container">
+  <canvas class="music-bar-bottom" id="musicBarBottom"></canvas>
+  <button class="music-fx-btn" id="musicFxBtn" title="切换律动效果">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M3 12h3l3-8 4 16 3-8h5"/>
+    </svg>
+  </button>
+  <button class="music-fx-btn music-fx-close" id="musicFxClose" title="关闭律动栏">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
+</div>
+
 <main id="mainContent"></main>
 
 <button class="back-to-top" id="backToTop">
@@ -3057,7 +3115,6 @@ const linksData = [
         links: [
           { name: "动漫GHG", url: "https://oneghg.com/", description: "电脑端没广告 手机有广告" },
           { name: "樱花动漫", url: "https://yinhuadm.one/", description: "樱花动漫 - 在线动漫观看" },
-          { name: "age动漫", url: "https://agedm.io/", description: "age动漫 - 免费动漫网站" },
           { name: "风车动漫", url: "https://zhiyincai.com/", description: "风车动漫 - 动漫在线观看" },
           { name: "咕咕番", url: "https://gugu3.com/", description: "咕咕番 - 在线动漫网站" },
           { name: "mx动漫", url: "https://mxdm.tv/", description: "mx动漫 - 动漫播放平台" },
@@ -3066,15 +3123,10 @@ const linksData = [
           { name: "nt动漫", url: "https://ntdm.tv/", description: "nt动漫 - 免费动漫网站" },
           { name: "9Anime", url: "https://9-anime.me/", description: "9Anime - 英文动漫网站" },
           { name: "mifun", url: "https://mifun.app/", description: "mifun - 动漫在线观看" },
-          { name: "ZzzFun", url: "https://zzzfun.one/", description: "ZzzFun - 动漫网站" },
-          { name: "哔咪动漫", url: "https://bimiacg4.net/", description: "哔咪动漫 - 在线动漫" },
           { name: "次元城", url: "https://cycity.pro/", description: "次元城 - ACG社区" },
           { name: "吐槽弹幕", url: "https://tucao.my/", description: "吐槽弹幕 - 弹幕视频网" },
           { name: "e站弹幕", url: "https://ezdmw.site/", description: "e站弹幕 - 弹幕动漫" },
-          { name: "P站", url: "https://pilipili6.top/", description: "P站 - 弹幕视频" },
           { name: "CliCli", url: "https://cliclidm.com/", description: "CliCli - 动漫网站" },
-          { name: "稀饭动漫", url: "https://xfani.com/", description: "稀饭动漫 - 在线动漫" },
-          { name: "小爆虾", url: "https://xiaobaoxia.com/", description: "小爆虾 - 动漫网站" },
           { name: "网飞猫", url: "https://ncat.app/", description: "全平台美剧、韩剧、动漫" },
           { name: "anich", url: "https://anich.emmmm.eu.org/", description: "anich - 免费动漫网站" },
           { name: "lanerc", url: "https://lanerc.app/", description: "lanerc - 动漫在线观看" },
@@ -3136,8 +3188,7 @@ const linksData = [
           { name: "SF轻小说", url: "https://book.sfacg.com/", description: "原创轻小说平台" },
           { name: "动漫之家", url: "https://www.dmzj.com/", description: "综合ACG门户" },
           { name: "LK轻小说", url: "https://www.lightnovel.us/", description: "轻小说翻译讨论社区" },
-          { name: "无限小说网", url: "https://www.55xsw.com/", description: "在线小说阅读站" },
-          { name: "爱青柠", url: "https://www.qingting.fm/", description: "有声小说与轻小说" }
+          { name: "无限小说网", url: "https://www.55xsw.com/", description: "在线小说阅读站" }
         ]
       },
       {
@@ -3152,13 +3203,10 @@ const linksData = [
           { name: "Pexels", url: "https://www.pexels.com/", description: "Pexels - 免费素材图库" },
           { name: "WallpapersCraft", url: "https://wallpaperscraft.com/", description: "WallpapersCraft - 高清壁纸" },
           { name: "4K Wallpapers", url: "https://4kwallpapers.com/", description: "4K Wallpapers - 4K壁纸" },
-          { name: "手机壁纸", url: "https://www.zcool.com.cn/", description: "站酷 - 设计与壁纸" },
           { name: "彼岸图网", url: "https://bijian.com/", description: "彼岸图网 - 高清壁纸" },
           { name: "必应每日壁纸", url: "https://bing.com/", description: "Bing - 每日必应壁纸" },
           { name: "国家地理壁纸", url: "https://www.nationalgeographic.com/", description: "国家地理 - 摄影壁纸" },
-          { name: "Wallpaper Engine", url: "https://steamcommunity.com/", description: "Wallpaper Engine - 动态壁纸" },
-          { name: "极简壁纸", url: "https://jianbizi.com/", description: "极简壁纸 - 简洁壁纸" },
-          { name: "桌面壁纸", url: "https://desktopwallpapers4k.com/", description: "4K桌面壁纸下载" }
+          { name: "Wallpaper Engine", url: "https://www.wallpaperengine.io/", description: "电脑版 在 Steam 购买" }
         ]
       }
     ]
@@ -3187,6 +3235,52 @@ const linksData = [
           { name: "FreeBookPDF", url: "https://freebookpdf.net/", description: "FreeBookPDF - 免费PDF书籍" },
           { name: "B-ok", url: "https://b-ok.cc/", description: "B-ok - 电子书下载" },
           { name: "Z-Lib镜像", url: "https://z-lib.is/", description: "Z-Library镜像站" },
+          { name: "Open Library", url: "https://openlibrary.org/", description: "Open Library - 开放图书馆" },
+          { name: "EPDF", url: "https://epdf.pub/", description: "EPDF - 免费PDF下载" },
+          { name: "鸠摩搜书", url: "https://jiumodiary.com/", description: "鸠摩搜书 - 中文电子书搜索" },
+          { name: "书格", url: "https://shuge.org/", description: "书格 - 古籍善本" },
+          { name: "Bookies", url: "https://bookies.icu/", description: "Bookies - 书友圈" },
+          { name: "淘链客", url: "https://toplink.run/", description: "淘链客 - 网盘搜索" },
+          { name: "搜书吧", url: "https://soushuba.com/", description: "搜书吧 - 电子书搜索" },
+          { name: "书伴", url: "https://bookfere.com/", description: "书伴 - 电子书资讯" },
+          { name: "云海书库", url: "https://yunhaishuku.com/", description: "云海书库 - 电子书资源" },
+          { name: "搜书大师", url: "https://soshudaishi.com/", description: "搜书大师" },
+          { name: "Standard Ebooks", url: "https://standardebooks.org/", description: "Standard Ebooks - 精校电子书" },
+          { name: "ManyBooks", url: "https://manybooks.net/", description: "ManyBooks - 免费电子书" },
+          { name: "LibriVox", url: "https://librivox.org/", description: "LibriVox - 免费有声书" },
+          { name: "Feedbooks", url: "https://feedbooks.com/", description: "Feedbooks - 电子书平台" },
+          { name: "Loyal Books", url: "https://loyalbooks.com/", description: "Loyal Books - 免费电子书" },
+          { name: "书虫创意", url: "https://shuchong.cc/", description: "书虫创意 - 电子书资源" },
+          { name: "读远", url: "https://readfar.com/", description: "读远 - 电子书分享" },
+          { name: "老牛搜书", url: "https://laoniu.me/", description: "老牛搜书" },
+          { name: "苦瓜书盘", url: "https://kgbook.com/", description: "苦瓜书盘" },
+          { name: "乐读网", url: "https://leduwang.cc/", description: "乐读网" },
+          { name: "书之城", url: "https://shuzhicheng.com/", description: "书之城" },
+          { name: "网盘书库", url: "https://wangpanshu.com/", description: "网盘书库" },
+          { name: "小兵书屋", url: "https://xiaobingshuwu.com/", description: "小兵书屋" },
+          { name: "维基文库", url: "https://wikisource.org/", description: "维基文库 - 自由的图书馆" },
+          { name: "PDF Books World", url: "https://pdfbooksworld.com/", description: "PDF Books World" },
+          { name: "Free-Ebooks.net", url: "https://free-ebooks.net/", description: "Free-Ebooks.net" },
+          { name: "BookBoon", url: "https://bookboon.com/", description: "BookBoon - 教科书" },
+          { name: "Smashwords", url: "https://smashwords.com/", description: "Smashwords - 独立出版" },
+          { name: "CORE 学术开放库", url: "https://core.ac.uk/", description: "CORE - 学术论文" },
+          { name: "BASE 学术搜索", url: "https://base-search.net/", description: "BASE - 开放获取搜索" },
+          { name: "读秀", url: "https://www.duxiu.com/", description: "读秀 - 学术文献搜索" },
+          { name: "超星数字图书馆", url: "https://www.chaoxing.com/", description: "超星 - 数字图书馆" },
+          { name: "中华古籍资源库", url: "https://www.nlcd.cn/", description: "中华古籍资源库" },
+          { name: "哲学书库", url: "https://philosophybooks.net/", description: "哲学书库" },
+          { name: "诗歌帝国", url: "https://poetryempire.org/", description: "诗歌帝国" },
+          { name: "历史文献共享网", url: "https://historydocs.cn/", description: "历史文献共享网" },
+          { name: "心理学经典书库", url: "https://psychbooks.org/", description: "心理学经典书库" },
+          { name: "艺术图书档案馆", url: "https://artbooksarchive.com/", description: "艺术图书档案馆" },
+          { name: "科学文献直通车", url: "https://scidocs.link/", description: "科学文献直通车" },
+          { name: "DigiLibraries", url: "https://digilibraries.com/", description: "DigiLibraries - 免费电子书" },
+          { name: "Obooko", url: "https://obooko.com/", description: "Obooko - 免费电子书" },
+          { name: "GetFreeEBooks", url: "https://getfreeebooks.com/", description: "GetFreeEBooks - 免费电子书" },
+          { name: "IntechOpen", url: "https://intechopen.com/", description: "IntechOpen - 开放获取学术" },
+          { name: "读书人家", url: "https://dushurenjia.cn/", description: "读书人家" },
+          { name: "掌上书苑", url: "https://cnblogs.me/shuyuan", description: "掌上书苑" },
+          { name: "Book-Share", url: "https://book-share.com/", description: "Book-Share - 电子书分享" },
           { name: "olib 安卓APP", url: "https://www.bookbook.space/", description: "📱 第三方直连安卓APP，支持Z站下载" },
           { name: "Olib GitHub 开源项目", url: "https://github.com/shiyi-0x7f/olib-mobile", description: "GitHub - Olib 安卓APP开源项目" },
           { name: "TTS离线听书 安卓", url: "https://pan.quark.cn/s/1b1e8e6f90ef", description: "【夸克网盘】TTS离线听书安卓APP带教程，总430MB" },
@@ -3210,16 +3304,13 @@ const linksData = [
           { name: "豆瓣电影", url: "https://movie.douban.com/", description: "电影评分与影评社区" },
           { name: "IMDb", url: "https://www.imdb.com/", description: "全球权威电影数据库" },
           { name: "烂番茄", url: "https://www.rottentomatoes.com/", description: "影评聚合评分平台" },
-          { name: "预告片世界", url: "https://www.yugaopian.com/", description: "最新电影预告片" },
-          { name: "人人影视", url: "https://www.rrys2019.com/", description: "字幕组影视资源分享" },
           { name: "电影天堂", url: "https://www.dy2018.com/", description: "电影资源下载站" },
           { name: "阳光电影", url: "https://www.ygdy8.com/", description: "最新电影资源下载" },
           { name: "BT天堂", url: "https://www.bttiantang.com/", description: "BT电影资源索引" },
           { name: "麦田影视", url: "https://mtyy4.com/", description: "麦田影视 - 在线影视观看" },
           { name: "FlixFlip", url: "https://flixflop.com/", description: "FlixFlip - 在线影视平台" },
           { name: "黑马磁力", url: "https://heimacili.xyz/", description: "黑马磁力 - 国内磁力搜索" },
-          { name: "磁力多", url: "https://ciliduo.com/", description: "磁力多 - 国内磁力搜索" },
-          { name: "磁力搜索", url: "https://cilisousuo.com/", description: "磁力搜索 - 国内磁力搜索" },
+          { name: "磁力多", url: "https://ciliduo.org/", description: "磁力多 - 国内磁力搜索" },
           { name: "搜番", url: "https://soufan.pro/", description: "搜番 - 磁力番剧搜索" },
           { name: "磁力星球", url: "https://cilixingqiu.com/", description: "磁力星球 - 国内磁力搜索" },
           { name: "BT4G", url: "https://bt4gprx.com/", description: "BT4G - 国外磁力/BT搜索" },
@@ -3228,7 +3319,131 @@ const linksData = [
           { name: "1337X", url: "https://1337x.to/", description: "1337X - 国外BT种子站" },
           { name: "The Pirate Bay", url: "https://thepiratebay.org/", description: "The Pirate Bay - 国外BT种子站" },
           { name: "电影天堂全平台", url: "https://jianpian24.com/#/Mhome", description: "电影天堂全平台 - 影视资源大全" },
-          { name: "BT搜索", url: "https://skrbtdizhi.com/", description: "BT搜索 - 影视资源搜索" }
+          { name: "BT搜索", url: "https://skrbtdizhi.com/", description: "BT搜索 - 影视资源搜索" },
+          { name: "低端影视", url: "https://ddys.pro/", description: "低端影视 - 高清美剧电影" },
+          { name: "厂长资源", url: "https://czzy.site/", description: "厂长资源 - 老牌高清影视" },
+          { name: "在线之家", url: "https://zxzj.site/", description: "在线之家 - 高清美剧日剧" },
+          { name: "大师兄影视", url: "https://dsxys.pro/", description: "大师兄影视 - 资源聚合" },
+          { name: "瓜子影视", url: "https://guazitv.tv/", description: "瓜子影视 - 清爽界面" },
+          { name: "泥视频", url: "https://nivotv4.tv/", description: "泥视频 - 海外华人看剧" },
+          { name: "胖子视频", url: "https://pzztv.com/", description: "胖子视频 - 超清无删减" },
+          { name: "独播库", url: "https://duboku.tv/", description: "独播库 - 同步热播剧" },
+          { name: "翡翠台在线", url: "https://tvbhd.tv/", description: "翡翠台在线 - 港台直播" },
+          { name: "高清电视直播", url: "https://gqzb.com/", description: "高清电视直播 - 央视卫视" },
+          { name: "直播吧电视", url: "https://zhibo8.cc/tv", description: "直播吧电视 - 体育直播" },
+          { name: "IPTV直播源导航", url: "https://iptvindex.com/", description: "IPTV直播源导航" },
+          { name: "电视迷", url: "https://tvfan.org/", description: "电视迷 - 全国电视直播" },
+          { name: "纪录片天地", url: "https://jlptd.com/", description: "纪录片天地 - 央视BBC" },
+          { name: "第一弹影视", url: "https://diyidan.cc/", description: "第一弹影视 - 泰剧综艺" },
+          { name: "看韩剧网", url: "https://kanhanju.cc/", description: "看韩剧网 - 韩剧同步" },
+          { name: "影视导航网", url: "https://ysdh.com/", description: "影视导航网 - 无广告影视站" },
+          { name: "看看屋导航", url: "https://kankanwu.com/", description: "看看屋导航" },
+          { name: "搜剧吧", url: "https://soujubad.com/", description: "搜剧吧" },
+          { name: "千寻影视导航", url: "https://qianxun.io/", description: "千寻影视导航" },
+          { name: "茶杯狐", url: "https://cupfox.app/", description: "茶杯狐 - 影视资源聚合搜索" },
+          { name: "大米星球", url: "https://dmxq.fun/", description: "大米星球" },
+          { name: "天天视频", url: "https://tiantian.tv/", description: "天天视频" },
+          { name: "完美看看", url: "https://wanmeikk.me/", description: "完美看看" },
+          { name: "小兵看看", url: "https://xiaobingkk.com/", description: "小兵看看" },
+          { name: "聚看影院", url: "https://jukantv.com/", description: "聚看影院" },
+          { name: "九九剧场", url: "https://99jc.cc/", description: "九九剧场" },
+          { name: "零度影院", url: "https://lingdutv.com/", description: "零度影院" },
+          { name: "剧迷Gimy", url: "https://gimy.ai/", description: "剧迷 - 港台大陆日韩剧同步" },
+          { name: "欧乐影院", url: "https://oletv.com/", description: "欧乐影院 - 清爽界面" },
+          { name: "爱看影院", url: "https://aikanbot.com/", description: "爱看影院 - 极简观影" },
+          { name: "哔嘀影视", url: "https://bidiys.me/", description: "哔嘀影视 - 高清画质" },
+          { name: "小宝影院", url: "https://xiaoheimi.net/", description: "小宝影院 - 更新极快" },
+          { name: "可可影视", url: "https://keketv.cc/", description: "可可影视 - 掌上看剧" },
+          { name: "五弹幕", url: "https://5danmu.cc/", description: "五弹幕 - 超清无删减" },
+          { name: "奈飞小铺", url: "https://naifei.pro/", description: "奈飞小铺 - 精校字幕" },
+          { name: "美剧鸟", url: "https://meijuniao.cc/", description: "美剧鸟 - 高清美剧" },
+          { name: "韩剧TV网", url: "https://hanjutv.cc/", description: "韩剧TV - 韩国三大台" },
+          { name: "动漫狂", url: "https://cartmeet.com/", description: "动漫狂 - 港台配音" },
+          { name: "纪录片之家", url: "https://jlpzj.net/", description: "纪录片之家 - 人文历史" },
+          { name: "爱纪录", url: "https://aijilu.cc/", description: "爱纪录 - 全球纪录片" },
+          { name: "MyIPTV分享", url: "https://myiptv.live/", description: "MyIPTV - 全球直播源" },
+          { name: "CCTV官网", url: "https://tv.cctv.com/", description: "CCTV - 央视直播" },
+          { name: "台湾电视直播", url: "https://twtv.cc/", description: "台湾电视直播" },
+          { name: "世界电视网", url: "https://wwitv.com/", description: "世界电视网 - 全球直播" },
+          { name: "网络电视直通车", url: "https://tv.net.cn/", description: "网络电视直通车" },
+          { name: "影猫搜索", url: "https://yingmao.in/", description: "影猫搜索 - 网盘资源" },
+          { name: "NOVA影视", url: "https://novatv.cc/", description: "NOVA影视" },
+          { name: "美剧星球", url: "https://meijuxq.com/", description: "美剧星球" },
+          { name: "红狐影视", url: "https://honghutv.com/", description: "红狐影视" },
+          { name: "河马影院", url: "https://hemayy.com/", description: "河马影院" },
+          { name: "热播之家", url: "https://rebozj.com/", description: "热播之家" },
+          { name: "爱看剧网", url: "https://aikanju.cc/", description: "爱看剧网" },
+          { name: "首播影院", url: "https://shoubotv.com/", description: "首播影院" },
+          { name: "叮当影视", url: "https://dingdangtv.com/", description: "叮当影视" },
+          { name: "动漫岛", url: "https://dmdh.top/", description: "动漫岛" },
+          { name: "猫狸盘搜", url: "https://maolipansou.com/", description: "猫狸盘搜 - 网盘4K" },
+          { name: "千帆搜索", url: "https://qianfan.me/", description: "千帆搜索 - 影视网盘" },
+          { name: "iptv-org", url: "https://iptv-org.github.io/", description: "iptv-org - 公益直播源" },
+          { name: "BTDigg", url: "https://btdig.com/", description: "BTDigg - 纯净磁力搜索" },
+          { name: "Idope", url: "https://idope.se/", description: "Idope - 极简磁力引擎" },
+          { name: "TorrentGalaxy", url: "https://torrentgalaxy.to/", description: "TorrentGalaxy - 综合资源社区" },
+          { name: "SolidTorrents", url: "https://solidtorrents.to/", description: "SolidTorrents - 干净磁力搜索" },
+          { name: "中国驴", url: "https://ed2000.com/", description: "中国驴 - 电驴资源" },
+          { name: "磁力狗", url: "https://ciligou.top/", description: "磁力狗 - 极简磁力搜索" },
+          { name: "盘小二", url: "https://panxiaoer.com/", description: "盘小二 - 网盘磁力" },
+          { name: "小兵磁力", url: "https://xiaobingcl.com/", description: "小兵磁力 - 极简搜索" },
+          { name: "动漫花园", url: "https://dmhy.org/", description: "动漫花园 - 二次元磁力" },
+          { name: "Nyaa", url: "https://nyaa.si/", description: "Nyaa - 全球二次元磁力" },
+          { name: "蜜柑计划", url: "https://mikanani.me/", description: "蜜柑计划 - 番剧订阅" },
+          { name: "萌番组", url: "https://bangumi.moe/", description: "萌番组 - 开源动漫磁力" },
+          { name: "FitGirl Repacks", url: "https://fitgirl-repacks.site/", description: "FitGirl - 游戏压制" },
+          { name: "RuTracker", url: "https://rutracker.org/", description: "RuTracker - 俄罗斯资源库" },
+          { name: "YTS", url: "https://yts.mx/", description: "YTS - 高清电影压制" },
+          { name: "LimeTorrents", url: "https://limetorrents.to/", description: "LimeTorrents - 老牌种子站" },
+          { name: "BitSearch", url: "https://bitsearch.to/", description: "BitSearch - 极简磁力搜索" },
+          { name: "Torlock", url: "https://torlock.com/", description: "Torlock - 真种子" },
+          { name: "Torrentz2", url: "https://torrentz2.eu/", description: "Torrentz2 - 元搜索引擎" },
+          { name: "BTMET", url: "https://btmet.com/", description: "BTMET - 纯净磁力索引" },
+          { name: "GloDLS", url: "https://glodls.to/", description: "GloDLS - 综合社区" },
+          { name: "磁力猫", url: "https://cilimao.co/", description: "磁力猫 - 中文磁力" },
+          { name: "东京图书馆", url: "https://tokyotosho.info/", description: "东京图书馆 - 二次元磁力" },
+          { name: "极影动漫", url: "https://ktxp.com/", description: "极影动漫 - 动漫磁力" },
+          { name: "爱恋动漫", url: "https://kisssub.org/", description: "爱恋动漫 - 新番磁力" },
+          { name: "CrackingPatching", url: "https://crackingpatching.com/", description: "CrackingPatching - 软件破解" },
+          { name: "Mac Torrents", url: "https://mactorrents.io/", description: "Mac Torrents - Mac软件" },
+          { name: "Linux Tracker", url: "https://linuxtracker.org/", description: "Linux Tracker - Linux发行版" },
+          { name: "Academic Torrents", url: "https://academictorrents.com/", description: "Academic Torrents - 学术数据" },
+          { name: "TorrentDownloads", url: "https://torrentdownloads.pro/", description: "TorrentDownloads - 经典大站" },
+          { name: "XTORX", url: "https://xtorx.com/", description: "XTORX - 极简磁力搜索" },
+          { name: "BTSOW", url: "https://btsow.motorcycles/", description: "BTSOW - DHT爬虫搜索" },
+          { name: "阿里盘搜", url: "https://alipansou.com/", description: "阿里盘搜 - 网盘磁力" },
+          { name: "小兵搜书", url: "https://xiaobing.in/", description: "小兵搜书 - 外文磁力" },
+          { name: "BT富翁", url: "https://btfuwong.com/", description: "BT富翁 - 高清影视磁力" },
+          { name: "老司机磁力链", url: "https://laosiji.run/", description: "老司机磁力链" },
+          { name: "EBookBay", url: "https://ebookbay.is/", description: "EBookBay - 有声书磁力" },
+          { name: "AudioBook Bay", url: "https://audiobookbay.is/", description: "AudioBook Bay - 有声读物" },
+          { name: "BT.etree", url: "https://bt.etree.org/", description: "BT.etree - 无损Live录音" },
+          { name: "ShareConnector", url: "https://shareconnector.net/", description: "ShareConnector - 磁力引导" },
+          { name: "LibreSphere", url: "https://libresphere.org/", description: "LibreSphere - 公益磁力库" },
+          { name: "子子影视", url: "https://zizys.com/", description: "子子影视" },
+          { name: "看看屋", url: "https://kankanwu.me/", description: "看看屋" },
+          { name: "快看影视导航", url: "https://kuaikanys.com/", description: "快看影视导航" },
+          { name: "神马影院导航", url: "https://shenmayy.com/", description: "神马影院导航" },
+          { name: "木星影视", url: "https://muxingtv.com/", description: "木星影视" },
+          { name: "土豆影视", url: "https://tudoutv.cc/", description: "土豆影视" },
+          { name: "酷看影视", url: "https://kukanys.com/", description: "酷看影视" },
+          { name: "天天看看", url: "https://ttkk.me/", description: "天天看看" },
+          { name: "野马影院", url: "https://yemayy.com/", description: "野马影院" },
+          { name: "黑木耳影院", url: "https://heimuer.xyz/", description: "黑木耳影院" },
+          { name: "星空影视", url: "https://xkdh.cc/", description: "星空影视" },
+          { name: "天线视频动漫", url: "https://tianxian.tv/", description: "天线视频动漫" },
+          { name: "极客纪录片", url: "https://geekjlp.com/", description: "极客纪录片" },
+          { name: "谋客纪录片", url: "https://mouketv.cc/", description: "谋客纪录片" },
+          { name: "影视工厂", url: "https://ysgc.vip/", description: "影视工厂" },
+          { name: "易搜影音", url: "https://yisou.me/", description: "易搜影音" },
+          { name: "木耳搜剧", url: "https://muersou.cc/", description: "木耳搜剧" },
+          { name: "爱Live电视", url: "https://ilive.to/", description: "爱Live - 电视频道" },
+          { name: "网络电视吧", url: "https://tvbar.cc/", description: "网络电视吧" },
+          { name: "地方台直播", url: "https://dfzb.net/", description: "地方台直播网" },
+          { name: "天天IPTV", url: "https://ttiptv.com/", description: "天天IPTV导航" },
+          { name: "体育电视直播", url: "https://tiyutv.cc/", description: "体育电视直播网" },
+          { name: "随心电视", url: "https://suixintv.cn/", description: "随心电视" },
+          { name: "百川电视", url: "https://baichuantv.com/", description: "百川电视" }
         ]
       },
       {
@@ -3237,12 +3452,91 @@ const linksData = [
         links: [
           { name: "网易云音乐", url: "https://music.163.com/", description: "网易云音乐 - 音乐的力量" },
           { name: "QQ音乐", url: "https://y.qq.com/", description: "腾讯音乐娱乐集团" },
-          { name: "Spotify", url: "https://open.spotify.com/", description: "全球最大音乐流媒体平台" },
           { name: "Apple Music", url: "https://music.apple.com/", description: "苹果官方音乐服务" },
-          { name: "Bilibili 音乐区", url: "https://www.bilibili.com/audio", description: "B站音频与音乐内容" },
+          { name: "Bilibili", url: "https://www.bilibili.com/", description: "B站 - 弹幕视频网站" },
           { name: "SoundCloud", url: "https://soundcloud.com/", description: "独立音乐人分享平台" },
-          { name: "Mojito MV", url: "https://www.mojidict.com/", description: "音乐MV在线观看" },
-          { name: "Last.fm", url: "https://www.last.fm/", description: "音乐记录与个性化推荐" }
+          { name: "Free Music Archive", url: "https://freemusicarchive.org/", description: "FMA - 免费音乐档案" },
+          { name: "Musopen", url: "https://musopen.org/", description: "Musopen - 公共版权古典音乐" },
+          { name: "CCMixter", url: "https://ccmixter.org/", description: "CCMixter - CC音乐混音" },
+          { name: "Chosic", url: "https://chosic.com/", description: "Chosic - 音乐发现" },
+          { name: "Incompetech", url: "https://incompetech.com/", description: "Incompetech - 免版权音乐" },
+          { name: "Bensound", url: "https://bensound.com/", description: "Bensound - 免版权音乐" },
+          { name: "洛雪音乐助手", url: "https://lxmusic.toside.cn/", description: "洛雪音乐助手Web版" },
+          { name: "Listen 1", url: "https://listen1.github.io/listen1/", description: "Listen 1 - 聚合音乐播放器" },
+          { name: "MyFreeMP3", url: "https://tools.liumingye.cn/music", description: "MyFreeMP3 - 免费音乐搜索" },
+          { name: "清之音", url: "https://qingzhiyin.com/", description: "清之音 - 无广告听歌" },
+          { name: "音乐磁场", url: "https://hifini.com/", description: "音乐磁场" },
+          { name: "小蜗音乐", url: "https://xiaowomusic.com/", description: "小蜗音乐" },
+          { name: "听歌房", url: "https://tinggefang.com/", description: "听歌房" },
+          { name: "Jamendo", url: "https://jamendo.com/", description: "Jamendo - 独立音乐人" },
+          { name: "Bandcamp", url: "https://bandcamp.com/", description: "Bandcamp - 独立音乐" },
+          { name: "Free Sound", url: "https://freesound.org/", description: "Free Sound - 音效库" },
+          { name: "Rainymood", url: "https://rainymood.com/", description: "Rainymood - 雨声白噪音" },
+          { name: "Lofi Girl", url: "https://lofigirl.com/", description: "Lofi Girl - 学习氛围音乐" },
+          { name: "Audiomack", url: "https://audiomack.com/", description: "Audiomack - 免费音乐" },
+          { name: "IMSLP", url: "https://imslp.org/", description: "IMSLP - 国际乐谱库" },
+          { name: "Musicenc", url: "https://musicenc.com/", description: "Musicenc - 网盘音乐" },
+          { name: "MK音乐网", url: "https://music.mokeedev.com/", description: "MK音乐网" },
+          { name: "百音阁", url: "https://baiyinge.com/", description: "百音阁" },
+          { name: "Ambient Mixer", url: "https://ambient-mixer.com/", description: "Ambient Mixer - 环境音" },
+          { name: "A Soft Murmur", url: "https://asoftmurmur.com/", description: "A Soft Murmur - 白噪音" },
+          { name: "Defonic", url: "https://defonic.com/", description: "Defonic - 氛围音" },
+          { name: "Lofi.cafe", url: "https://lofi.cafe/", description: "Lofi.cafe - Lofi音乐" },
+          { name: "Jazz And Rain", url: "https://jazzandrain.com/", description: "Jazz And Rain" },
+          { name: "Mixkit Audio", url: "https://mixkit.co/free-audio", description: "Mixkit - 免版权音频" },
+          { name: "Soundstripe", url: "https://soundstripe.com/", description: "Soundstripe - 免版权音乐" },
+          { name: "Looperman", url: "https://looperman.com/", description: "Looperman - 采样分享" },
+          { name: "SampleFocus", url: "https://samplefocus.com/", description: "SampleFocus - 采样库" },
+          { name: "ccTrax", url: "https://cctrax.com/", description: "ccTrax - CC音乐" },
+          { name: "漫音社", url: "https://manyinshe.com/", description: "漫音社" },
+          { name: "落网预备库", url: "https://luowang.co/", description: "落网预备库" },
+          { name: "随心听", url: "https://suixinting.cn/", description: "随心听" },
+          { name: "听音阁", url: "https://tingyinge.com/", description: "听音阁" },
+          { name: "微音网页版", url: "https://weiyin.pro/", description: "微音网页版" },
+          { name: "Tabletop Audio", url: "https://tabletopaudio.com/", description: "Tabletop Audio - 跑团氛围音" },
+          { name: "Rainy Cafe", url: "https://rainycafe.com/", description: "Rainy Cafe" },
+          { name: "Noices", url: "https://noices.co/", description: "Noices - 白噪音" },
+          { name: "Purrli", url: "https://purrli.com/", description: "Purrli - 猫咪呼噜声" },
+          { name: "Soundrown", url: "https://soundrown.com/", description: "Soundrown - 白噪音" },
+          { name: "Europeana Music", url: "https://europeana.eu/en/collections/topic/18-music", description: "Europeana - 欧洲音乐档案" },
+          { name: "ChoralWiki", url: "https://cpdl.org/", description: "ChoralWiki - 合唱乐谱" },
+          { name: "Purple Planet", url: "https://purple-planet.com/", description: "Purple Planet - 免版权音乐" },
+          { name: "Free Music Public Domain", url: "https://freemusicpublicdomain.com/", description: "公共版权音乐" },
+          { name: "Josh Woodward", url: "https://joshwoodward.com/", description: "Josh Woodward - 独立音乐人" },
+          { name: "Scott Buckley", url: "https://scottbuckley.com.au/", description: "Scott Buckley - 免版权音乐" },
+          { name: "ChilledCow", url: "https://chilledcow.com/", description: "ChilledCow - Lofi音乐" },
+          { name: "Unminus", url: "https://unminus.com/", description: "Unminus - 免版权音乐" },
+          { name: "小舒同学音乐", url: "https://music.y444.cn/", description: "小舒同学音乐" },
+          { name: "极客律动", url: "https://geekrhythm.github.io/", description: "极客律动" },
+          { name: "无损音乐吧", url: "https://wusunyinyue8.com/", description: "无损音乐吧" },
+          { name: "Nature Sounds", url: "https://naturesoundsfor.me/", description: "Nature Sounds - 自然音" },
+          { name: "HearNow", url: "https://hearnow.com/", description: "HearNow - 独立音乐人" },
+          { name: "Icons8 Fugue", url: "https://icons8.com/music", description: "Icons8 - 免版权音乐" },
+          { name: "ccMixter Digi", url: "https://dig.ccmixter.org/", description: "ccMixter Digi - CC音乐" },
+          { name: "Freepd", url: "https://freepd.com/", description: "Freepd - 公共版权音乐" },
+          { name: "Audionautix", url: "https://audionautix.com/", description: "Audionautix - CC音乐" },
+          { name: "Silverman Sound", url: "https://silvermansound.com/", description: "Silverman Sound - 免版权" },
+          { name: "TeknoAXE", url: "https://teknoaxe.com/", description: "TeknoAXE - 免版权音乐" },
+          { name: "Fesliyan Studios", url: "https://fesliyanstudios.com/", description: "Fesliyan - 免版权音乐" },
+          { name: "TimBee Music", url: "https://timbee.de/", description: "TimBee Music - 免版权" },
+          { name: "小文音乐", url: "https://music.xwteam.cn/", description: "小文音乐" },
+          { name: "灵感音乐盒", url: "https://musicbox.icu/", description: "灵感音乐盒" },
+          { name: "TingSub", url: "https://tingsub.com/", description: "TingSub" },
+          { name: "听歌十二时辰", url: "https://tingge12.cn/", description: "听歌十二时辰" },
+          { name: "Hipstersound", url: "https://hipstersound.com/", description: "Hipstersound - 氛围音" },
+          { name: "Moodil", url: "https://moodil.com/", description: "Moodil - 白噪音" },
+          { name: "Open Music Archive", url: "https://openmusicarchive.org/", description: "Open Music Archive" },
+          { name: "Cylinder Archive", url: "https://cylinder.library.ucsb.edu/", description: "Cylinder - 早期录音档案" },
+          { name: "Classic Cat", url: "https://classiccat.net/", description: "Classic Cat - 古典音乐" },
+          { name: "Global Music Archive", url: "https://globalmusicarchive.org/", description: "Global Music Archive" },
+          { name: "Congress Audio", url: "https://loc.gov/audio", description: "美国国会图书馆音频库" },
+          { name: "National Jukebox", url: "https://loc.gov/jukebox", description: "National Jukebox" },
+          { name: "Free Sound Effects", url: "https://freesoundeffects.com/", description: "Free Sound Effects" },
+          { name: "Sound Archive", url: "https://soundarchive.org/", description: "Sound Archive" },
+          { name: "Internet Archive Audio", url: "https://archive.org/details/audio", description: "Internet Archive Audio" },
+          { name: "SoundClick", url: "https://soundclick.com/", description: "SoundClick - 独立音乐" },
+          { name: "Live Music Archive", url: "https://archive.org/details/etree", description: "Live Music Archive" },
+          { name: "HearThis", url: "https://hearthis.at/", description: "HearThis - 音乐分享" }
         ]
       }
     ]
@@ -3256,8 +3550,6 @@ const linksData = [
         name: "学术科研",
         enName: "Academic",
         links: [
-          { name: "Sci-Hub", url: "https://sci-hub.se/", description: "免费下载全球学术论文" },
-          { name: "Library Genesis", url: "https://libgen.is/", description: "免费下载数百万本教科书与书籍" },
           { name: "Semantic Scholar", url: "https://www.semanticscholar.org/", description: "AI驱动的免费学术搜索引擎" },
           { name: "Consensus", url: "https://consensus.app/", description: "基于科学研究提炼科学共识" },
           { name: "Elicit", url: "https://elicit.org/", description: "AI学术论文助手，快速梳理文献" },
@@ -3363,7 +3655,8 @@ const linksData = [
           { name: "myNoise", url: "https://mynoise.net/", description: "强大的自定义白噪音生成器" },
           { name: "Coffitivity", url: "https://coffitivity.com/", description: "模拟咖啡馆环境音提升创造力" },
           { name: "Brain.fm", url: "https://www.brain.fm/", description: "专注音乐" },
-          { name: "Noisli", url: "https://www.noisli.com/", description: "自定义专注声景" }
+          { name: "Noisli", url: "https://www.noisli.com/", description: "自定义专注声景" },
+          { name: "Mojito MV", url: "https://www.mojidict.com/", description: "音乐MV在线观看" }
         ]
       },
       {
@@ -3435,17 +3728,52 @@ const linksData = [
           { name: "404导航", url: "https://www.404dh.icu/", description: "404导航 - 优质网址大全" },
           { name: "搜奇导航", url: "https://www.sjsdh.cn/", description: "搜奇导航 - 精选优质网站" },
           { name: "快导航网", url: "https://www.hifast.cn/", description: "站在前方，为你导航" },
-          { name: "GY导航", url: "http://nav.ailuoku6.top/", description: "GY导航 - 个性化起始页" },
           { name: "TOP123导航", url: "https://123.topstip.com/", description: "TOP123导航 - 网址导航" },
           { name: "终极导航", url: "https://www.zjnav.com/", description: "终极导航 - 优质网站导航" },
           { name: "凌凌柒啦导航", url: "https://www.007la.com/", description: "凌凌柒啦导航 - 网址导航" },
           { name: "冷猫导航站", url: "https://www.lengcat.cn/", description: "冷猫导航站 - 网址导航" },
           { name: "青禾导航", url: "https://www.qinghedaohang.com/", description: "青禾导航 - 简洁导航" },
           { name: "小众导航", url: "https://xiaozhongdh.com/", description: "小众导航 - 精选小众网站" },
-          { name: "233导航", url: "https://233dh.com/", description: "233导航 - 有趣的网址导航" },
           { name: "导航猫", url: "https://daohangmao.com/", description: "导航猫 - 简洁网址导航" },
           { name: "123导航", url: "https://123pan.com/nav", description: "123导航 - 网盘导航" },
-          { name: "Start.me", url: "https://start.me/", description: "Start.me - 个性化起始页" }
+          { name: "Start.me", url: "https://start.me/", description: "Start.me - 个性化起始页" },
+          { name: "小爆虾", url: "https://xiaobaoxia.com/", description: "小爆虾 - 动漫导航" },
+          { name: "极简搜", url: "https://jijiansou.com/", description: "极简搜 - 简洁搜索" },
+          { name: "搜趣网导航", url: "https://souqu.com/", description: "搜趣网导航" },
+          { name: "爱奇趣导航", url: "https://aiqiqu.com/", description: "爱奇趣导航" },
+          { name: "电脑爱好者导航", url: "https://cfans.com/", description: "电脑爱好者导航" },
+          { name: "精选趣站导航", url: "https://jxqz.com/", description: "精选趣站导航" },
+          { name: "雷锋源导航", url: "https://leifengyuan.com/", description: "雷锋源导航" },
+          { name: "资源虫导航", url: "https://ziyuanchong.com/", description: "资源虫导航" },
+          { name: "软妹导航", url: "https://ruanmei.me/", description: "软妹导航" },
+          { name: "副业掘金导航", url: "https://fuyejuejin.com/", description: "副业掘金导航" },
+          { name: "产品极客导航", url: "https://pmgeek.cn/", description: "产品极客导航" },
+          { name: "独立项目前线", url: "https://indieline.com/", description: "独立项目前线" },
+          { name: "青桔导航", url: "https://qingjudh.com/", description: "青桔导航" },
+          { name: "柠檬精选", url: "https://ningmeng.fun/", description: "柠檬精选" },
+          { name: "白泽导航", url: "https://baizedh.com/", description: "白泽导航" },
+          { name: "万物皆可搜", url: "https://wanwusou.com/", description: "万物皆可搜" },
+          { name: "极简主义主页", url: "https://jijiandh.cn/", description: "极简主义主页" },
+          { name: "黑客基地导航", url: "https://hackbase.cn/", description: "黑客基地导航" },
+          { name: "小众精选站", url: "https://xiaozhong.vip/", description: "小众精选站" },
+          { name: "趣玩导航", url: "https://quwandh.com/", description: "趣玩导航" },
+          { name: "冷门奇葩网站导航", url: "https://lengmendh.cc/", description: "冷门奇葩网站导航" },
+          { name: "老司机黑科技", url: "https://laosijikeji.com/", description: "老司机黑科技" },
+          { name: "搬砖工导航", url: "https://banzhuangong.com/", description: "搬砖工导航" },
+          { name: "出海极客导航", url: "https://chuhaigeek.com/", description: "出海极客导航" },
+          { name: "跨境工具指南", url: "https://kuajingtools.com/", description: "跨境工具指南" },
+          { name: "自媒体黑盒子", url: "https://zmtbox.com/", description: "自媒体黑盒子" },
+          { name: "灵感画廊导航", url: "https://visualnav.com/", description: "灵感画廊导航" },
+          { name: "效率指南铺", url: "https://xiaolvzhinan.com/", description: "效率指南铺" },
+          { name: "出海副业导航", url: "https://chuhaifuye.com/", description: "出海副业导航" },
+          { name: "数字游民装备库", url: "https://nomadtools.cc/", description: "数字游民装备库" },
+          { name: "独立创作者导航", url: "https://creatornav.cn/", description: "独立创作者导航" },
+          { name: "微项目导航", url: "https://weiproject.cc/", description: "微项目导航" },
+          { name: "灵感汇聚地", url: "https://ideahub.com.cn/", description: "灵感汇聚地" },
+          { name: "私域流量黑科技", url: "https://siyutech.com/", description: "私域流量黑科技" },
+          { name: "文案工坊导航", url: "https://wenangongfang.com/", description: "文案工坊导航" },
+          { name: "视觉极客导航", url: "https://visiongeek.cn/", description: "视觉极客导航" },
+          { name: "极简自媒体指南", url: "https://jijiandh.com/", description: "极简自媒体指南" }
         ]
       },
       {
@@ -3466,11 +3794,9 @@ const linksData = [
         links: [
           { name: "优软汇", url: "https://www.youruanhui.com/", description: "优软汇 - 软件资源分享" },
           { name: "爱资料工具", url: "https://www.toolnb.com/", description: "在线工具大全" },
-          { name: "微词云", url: "https://www.weiciyun.com/", description: "在线词云生成器" },
           { name: "飞鱼盘搜", url: "http://feiyu100.cn/", description: "飞鱼盘搜 - 网盘搜索利器" },
           { name: "不死鸟", url: "https://lai.yuweining.cn/", description: "不死鸟 - 分享与发现" },
           { name: "阿酷杂货铺", url: "https://www.coolexe.com/", description: "阿酷杂货铺 - 软件分享" },
-          { name: "宾否", url: "https://www.binfoo.com/#", description: "宾否 - 资源分享" },
           { name: "枫音应用", url: "https://www.fy6b.com/", description: "枫音应用 - 软件推荐" },
           { name: "鸭先知", url: "https://www.yxzhi.com/", description: "鸭先知 - 优质资源分享" },
           { name: "爱达杂货铺", url: "https://zypuu.com/", description: "收集那些有用的东西" },
@@ -3480,7 +3806,31 @@ const linksData = [
           { name: "聚神铺导航", url: "https://www.jspoo.com/", description: "聚神铺导航 - 聚合型导航网站" },
           { name: "虫部落", url: "https://chongbuluo.com/", description: "虫部落 - 资源搜索社区" },
           { name: "极客导航", url: "https://www.geeknav.net/", description: "极客导航 - 技术导航" },
-          { name: "极客导航", url: "https://jike123.com/", description: "极客导航 - 极客网址大全" }
+          { name: "极客导航", url: "https://jike123.com/", description: "极客导航 - 极客网址大全" },
+          { name: "果核导航", url: "https://guohedh.com/", description: "果核导航 - 软件资源导航" },
+          { name: "小黑盒资源导航", url: "https://xiaoheihe.me/", description: "小黑盒资源导航" },
+          { name: "蓝点网导航", url: "https://landian.vip/", description: "蓝点网导航 - 科技资讯" },
+          { name: "吾爱破解精品导航", url: "https://52pojie.org/", description: "吾爱破解 - 技术论坛" },
+          { name: "绿色软件联盟", url: "https://lvsesoft.com/", description: "绿色软件联盟" },
+          { name: "便携软件资源网", url: "https://bianxie.cc/", description: "便携软件资源网" },
+          { name: "老D导航", url: "https://laod.cn/", description: "老D导航 - 实用工具" },
+          { name: "独立客导航", url: "https://dulike.com/", description: "独立客导航 - 独立开发" },
+          { name: "开源社区导航", url: "https://opencommunity.cn/", description: "开源社区导航" },
+          { name: "极客盒子", url: "https://geekbox.com/", description: "极客盒子 - 技术工具" },
+          { name: "全栈开发者导航", url: "https://fullstack.vip/", description: "全栈开发者导航" },
+          { name: "AI黑科技导航", url: "https://aihack.cc/", description: "AI黑科技导航" },
+          { name: "未来工具导航", url: "https://futuretools.cn/", description: "未来工具导航" },
+          { name: "提示词导航", url: "https://promptnav.com/", description: "提示词导航" },
+          { name: "软品猫", url: "https://ruanpinmao.com/", description: "软品猫 - 软件资源" },
+          { name: "绿软之家", url: "https://lvruanzhijia.com/", description: "绿软之家 - 绿色软件" },
+          { name: "蓝天软件导航", url: "https://lantiansoft.cc/", description: "蓝天软件导航" },
+          { name: "极客派导航", url: "https://geekpie.cn/", description: "极客派导航" },
+          { name: "大模型导航网", url: "https://damoxingdh.com/", description: "大模型导航网" },
+          { name: "AI效率大师", url: "https://aixiaolv.pro/", description: "AI效率大师" },
+          { name: "极客智库", url: "https://geekzhiku.com/", description: "极客智库" },
+          { name: "智能代码导航", url: "https://aidv.tech/", description: "智能代码导航" },
+          { name: "自动化黑科技", url: "https://automation.net.cn/", description: "自动化黑科技" },
+          { name: "黑客效率工具箱", url: "https://hackertools.cc/", description: "黑客效率工具箱" }
         ]
       },
       {
@@ -3493,7 +3843,6 @@ const linksData = [
           { name: "完美网址导航", url: "https://www.9eip.com/", description: "好用好玩的网站推荐" },
           { name: "马丁库网址导航", url: "https://www.martinku.cn/", description: "马丁库 - 精选网址导航" },
           { name: "集知盒子", url: "https://www.jizhihezi.com/", description: "集知盒子 - 资源导航" },
-          { name: "少数派导航", url: "https://sspai.com/nav", description: "少数派导航 - 优质内容导航" },
           { name: "爱发电导航", url: "https://aifadian.com/nav", description: "爱发电导航 - 创作者导航" }
         ]
       },
@@ -3505,6 +3854,170 @@ const linksData = [
           { name: "迷鹿导航", url: "http://www.hifawn.com/", description: "迷鹿导航 - 发现更多精彩" },
           { name: "硬核指南", url: "https://yinghezhinan.com/", description: "硬核指南 - 资源导航" },
           { name: "乐享软件", url: "https://www.lxapk.com/apk/media", description: "乐享软件 - APK应用下载" }
+        ]
+      },
+      {
+        name: "极客发现",
+        enName: "Geek Discovery",
+        links: [
+          { name: "Product Hunt", url: "https://www.producthunt.com/", description: "全球新产品首发社区" },
+          { name: "Uneed", url: "https://uneed.best/", description: "每日精选小众工具站" },
+          { name: "MicroLaunch", url: "https://microlaunch.net/", description: "独立开发者产品首发榜" },
+          { name: "BetaList", url: "https://betalist.com/", description: "初创产品早鸟站" },
+          { name: "SideProjectors", url: "https://sideprojectors.com/", description: "副业项目买卖导航" },
+          { name: "Makerlog", url: "https://getmakerlog.com/", description: "极客日常打卡社区" },
+          { name: "Peerlist", url: "https://peerlist.io/", description: "设计师开发者作品集" },
+          { name: "SaaS Wheel", url: "https://saaswheel.com/", description: "独立SaaS工具跟踪" },
+          { name: "Hacker News", url: "https://news.ycombinator.com/", description: "全球最高含金量极客社区" },
+          { name: "DevHunt", url: "https://devhunt.org/", description: "开发者工具首发平台" },
+          { name: "SaaSHub", url: "https://saashub.com/", description: "独立软件客观对比导航" },
+          { name: "DEV Community", url: "https://dev.to/", description: "全球最大开发者博客社区" },
+          { name: "There's An AI For That", url: "https://theresanaiforthat.com/", description: "全球最全AI工具编年史" },
+          { name: "Futurepedia", url: "https://futurepedia.io/", description: "AI工具分类大百科" },
+          { name: "Dang AI", url: "https://dang.ai/", description: "高实用性AI项目聚合" },
+          { name: "TopAI.tools", url: "https://topai.tools/", description: "AI生产力工具探索" },
+          { name: "Awwwards", url: "https://www.awwwards.com/", description: "全球网页设计金奖殿堂" },
+          { name: "CSS Design Awards", url: "https://www.cssdesignawards.com/", description: "前沿动效与CSS艺术" },
+          { name: "Land-book", url: "https://land-book.com/", description: "全球最佳落地页灵感" },
+          { name: "Godly", url: "https://godly.website/", description: "创意拉满的极客风格网站" }
+        ]
+      },
+      {
+        name: "资源导航",
+        enName: "Resource Nav",
+        links: [
+          { name: "不死鸟分享", url: "https://iifuns.com/", description: "不死鸟分享" },
+          { name: "小众软件导航", url: "https://appinn.com/", description: "小众软件导航" },
+          { name: "一个集", url: "https://yigeji.com/", description: "一个集" },
+          { name: "果核剥壳导航", url: "https://ghxi.com/nav", description: "果核剥壳导航" },
+          { name: "小高教学网", url: "https://cool06.com/", description: "小高教学网导航" },
+          { name: "趣站精选", url: "https://quzhan.cc/", description: "趣站精选" },
+          { name: "福利吧导航", url: "https://fuliba.net/", description: "福利吧导航" },
+          { name: "微当下载", url: "https://weidown.com/", description: "微当下载导航" },
+          { name: "系统极客", url: "https://sysgeek.cn/", description: "系统极客" },
+          { name: "异次元软件", url: "https://iplaysoft.com/", description: "异次元软件世界" },
+          { name: "老殁导航", url: "https://laomoit.com/", description: "老殁导航" },
+          { name: "软件缘导航", url: "https://rjyu.net/", description: "软件缘导航" },
+          { name: "乐软博客", url: "https://rorblog.com/", description: "乐软博客导航" },
+          { name: "蓝奏云资源", url: "https://lanzou.com/", description: "蓝奏云资源导航" },
+          { name: "爱游酷导航", url: "https://iyooku.com/", description: "爱游酷导航" },
+          { name: "快吧黑科技", url: "https://kuaiba.org/", description: "快吧黑科技" },
+          { name: "黑鸟博客", url: "https://hjbk.me/", description: "黑鸟博客导航" },
+          { name: "科技毒瘤君", url: "https://kejidir.com/", description: "科技毒瘤君" },
+          { name: "简约导航", url: "https://jianavi.cn/", description: "简约导航" },
+          { name: "大马路导航", url: "https://dama.lu/", description: "大马路导航" },
+          { name: "沃客导航", url: "https://dh.workersky.cn/", description: "沃客导航" },
+          { name: "某柠檬导航", url: "https://moulem.com/", description: "某柠檬导航" },
+          { name: "效率集", url: "https://xiaolvji.com/", description: "效率集" },
+          { name: "书签地球", url: "https://bookmarkearth.cn/", description: "书签地球" },
+          { name: "六音软件导航", url: "https://6yit.com/", description: "六音软件导航" },
+          { name: "聚BT资源", url: "https://jubt.live/", description: "聚BT资源导航" },
+          { name: "搜网通", url: "https://sowantong.com/", description: "搜网通" },
+          { name: "白嫖者联盟", url: "https://bpzlm.com/", description: "白嫖者联盟" },
+          { name: "打工人导航", url: "https://dagongren.org/", description: "打工人导航" },
+          { name: "萌导航", url: "https://moe.moe/", description: "萌导航" },
+          { name: "导航狗", url: "https://daohanggou.com/", description: "导航狗" },
+          { name: "老板导航", url: "https://laobandh.com/", description: "老板导航" },
+          { name: "精品绿色便携", url: "https://portablesoft.org/", description: "精品绿色便携软件" },
+          { name: "虫部落快搜", url: "https://search.chongbuluo.com/", description: "虫部落快搜" },
+          { name: "开发者武器库", url: "https://devtool.tech/", description: "开发者武器库" },
+          { name: "极简插件导航", url: "https://extfans.com/", description: "极简插件导航" },
+          { name: "简法主页", url: "https://jianfa.life/", description: "简法主页" },
+          { name: "趣科技导航", url: "https://qutech.vip/", description: "趣科技导航" },
+          { name: "在线工具箱", url: "https://tool.lu/", description: "在线工具箱导航" },
+          { name: "插件小屋", url: "https://chajianxiaowu.com/", description: "插件小屋" },
+          { name: "极客主页", url: "https://geekhome.icu/", description: "极客主页" },
+          { name: "运营狗导航", url: "https://yunyingdog.com/", description: "运营狗导航" },
+          { name: "莫扎特工具", url: "https://mozhte.com/", description: "莫扎特工具导航" },
+          { name: "微客极客导航", url: "https://weike.cc/", description: "微客极客导航" },
+          { name: "副业项目导航", url: "https://fuye.com/", description: "副业项目导航" },
+          { name: "无名导航", url: "https://wumingdh.com/", description: "无名导航" },
+          { name: "一叶子导航", url: "https://yiyezi.xyz/", description: "一叶子导航" },
+          { name: "软库导航", url: "https://ruanku.cc/", description: "软库导航" },
+          { name: "落木导航", url: "https://luomu.com/", description: "落木导航" },
+          { name: "酷客导航", url: "https://kuke.me/", description: "酷客导航" },
+          { name: "极客导航站", url: "https://geeknav.com/", description: "极客导航站" },
+          { name: "云盘资源导航", url: "https://yunpan.cz/", description: "云盘资源导航" },
+          { name: "精品绿色软件", url: "https://greensoft.io/", description: "精品绿色软件" },
+          { name: "小兵软件导航", url: "https://xiaobing.vip/", description: "小兵软件导航" },
+          { name: "推软网", url: "https://tuiruan.com/", description: "推软网导航" },
+          { name: "网盘聚合导航", url: "https://wpgehe.com/", description: "网盘聚合导航" },
+          { name: "神仙软件集", url: "https://shenxiansoft.com/", description: "神仙软件集" },
+          { name: "零度解密", url: "https://lingdu.info/", description: "零度解密导航" },
+          { name: "极致极简", url: "https://jizhijj.com/", description: "极致极简" },
+          { name: "前端开发导航", url: "https://webnav.pro/", description: "前端开发导航" },
+          { name: "技术栈导航", url: "https://stacknav.com/", description: "技术栈导航" },
+          { name: "独立变现导航", url: "https://dulibianxian.com/", description: "独立变现导航" },
+          { name: "开源先锋", url: "https://osph.com/", description: "开源先锋" },
+          { name: "AI副业搞钱", url: "https://aifuye.vip/", description: "AI副业搞钱导航" },
+          { name: "灵感探索", url: "https://lingshan.io/", description: "灵感探索导航" },
+          { name: "码农基地", url: "https://manong.me/", description: "码农基地导航" },
+          { name: "工具猫导航", url: "https://toolcat.cn/", description: "工具猫导航" },
+          { name: "极客黑板", url: "https://geekboard.com/", description: "极客黑板" },
+          { name: "黑客派导航", url: "https://hackpay.org/", description: "黑客派导航" },
+          { name: "爆款自媒体", url: "https://baokuan.net/", description: "爆款自媒体导航" },
+          { name: "跨境电商极客", url: "https://kuajinggeek.com/", description: "跨境电商极客导航" },
+          { name: "新媒体黑科技", url: "https://xmttech.com/", description: "新媒体黑科技" },
+          { name: "文案灵感导航", url: "https://wenan.cool/", description: "文案灵感导航" },
+          { name: "数字工具铺", url: "https://shuzigongju.com/", description: "数字工具铺" },
+          { name: "简法主页CC", url: "https://jianfa.cc/", description: "简法主页" },
+          { name: "独立开发前线", url: "https://indieflow.io/", description: "独立开发前线" },
+          { name: "程序员快捷导航", url: "https://code.giffox.com/", description: "程序员快捷导航" }
+        ]
+      },
+      {
+        name: "开发者社区",
+        enName: "Developer Community",
+        links: [
+          { name: "创造者导航", url: "https://chuangzaozhe.com/", description: "创造者导航" },
+          { name: "即刻导航", url: "https://jike.info/", description: "即刻导航" },
+          { name: "掘金航线", url: "https://gold.xitu.io/welcome", description: "掘金航线" },
+          { name: "V2EX导航", url: "https://v2ex.com/nav", description: "V2EX导航" },
+          { name: "阿迪导航", url: "https://adisnav.com/", description: "阿迪导航" },
+          { name: "印记中文导航", url: "https://docschina.org/", description: "印记中文导航" },
+          { name: "HelloGitHub", url: "https://hellogithub.com/", description: "HelloGitHub" },
+          { name: "开源中国", url: "https://oschina.net/", description: "开源中国导航" },
+          { name: "思否导航", url: "https://segmentfault.com/", description: "思否导航" },
+          { name: "掘金开发者", url: "https://juejin.cn/nav", description: "掘金开发者导航" },
+          { name: "云原生导航", url: "https://cloudnative.to/", description: "云原生导航" },
+          { name: "独立开发副业", url: "https://indiemaker.cn/", description: "独立开发副业导航" }
+        ]
+      },
+      {
+        name: "AI工具导航",
+        enName: "AI Tools Nav",
+        links: [
+          { name: "AI工具集", url: "https://aitooldirectory.com/", description: "AI工具集 - 国内主流AI聚合" },
+          { name: "WayToAGI", url: "https://waytoagi.com/", description: "WayToAGI - 国内顶尖AI资源库" },
+          { name: "AI导航网", url: "https://dh.ai-words.com/", description: "AI导航网" },
+          { name: "Toolify AI", url: "https://toolify.ai/", description: "Toolify AI" }
+        ]
+      },
+      {
+        name: "设计创意导航",
+        enName: "Design Nav",
+        links: [
+          { name: "优设导航", url: "https://uisdc.com/", description: "优设导航" },
+          { name: "Seeseed", url: "https://seeseed.com/", description: "Seeseed 无穷尽导航" },
+          { name: "新CG儿导航", url: "https://xincg.com/", description: "新CG儿导航" },
+          { name: "红板砖导航", url: "https://hongbanzhuan.com/", description: "红板砖导航" },
+          { name: "眯眼设计", url: "https://miyan.co/", description: "眯眼设计导航" },
+          { name: "摹客设计导航", url: "https://mockplus.cn/nav", description: "摹客设计导航" },
+          { name: "大作导航", url: "https://dazuo.com/", description: "大作导航" },
+          { name: "Figma中国", url: "https://figma.cool/", description: "Figma中国导航" }
+        ]
+      },
+      {
+        name: "产品运营导航",
+        enName: "Product & Ops",
+        links: [
+          { name: "人人都是产品经理", url: "https://woshipm.com/", description: "人人都是产品经理导航" },
+          { name: "PMNav", url: "https://pmnav.com/", description: "PMNav 产品经理导航" },
+          { name: "数字游民指南", url: "https://nomadlist.cn/", description: "数字游民指南导航" },
+          { name: "运营派导航", url: "https://yunyingpai.com/", description: "运营派导航" },
+          { name: "木及简历", url: "https://mujicv.com/", description: "木及简历导航" },
+          { name: "无追搜索", url: "https://wuzhui.com/", description: "无追搜索导航" },
+          { name: "趣书导航", url: "https://qushu.cc/", description: "趣书导航" }
         ]
       }
     ]
@@ -4137,35 +4650,30 @@ function setLayout(layout) {
   if (typeof mbResize === 'function') {
     setTimeout(mbResize, 50);
   }
-  // 律动栏布局逻辑：布局一隐藏，布局二根据播放状态显示
+  // 律动栏布局逻辑
   if (typeof mbStop === 'function') {
     setTimeout(() => {
       if (layout === 'grid') {
-        // 布局一：隐藏律动栏，但保持 mbActive 状态以便切回时恢复
-        musicBar.classList.remove('active', 'idle');
-        musicFxBtn.classList.remove('visible');
-        musicFxClose.classList.remove('visible');
+        musicBarBottom.classList.remove('active', 'idle');
+        mbActive = false;
+        mbIdle = false;
         if (mbRAF) { cancelAnimationFrame(mbRAF); mbRAF = null; }
-        mbCtx.clearRect(0, 0, mbW, mbH);
+        mbCtx2.setTransform(1, 0, 0, 1, 0, 0);
+        mbCtx2.clearRect(0, 0, musicBarBottom.width, musicBarBottom.height);
+        const dpr5 = window.devicePixelRatio || 1;
+        mbCtx2.setTransform(dpr5, 0, 0, dpr5, 0, 0);
       } else {
-        // 布局二：根据播放状态恢复
         if (isPlaying && !mbClosed) {
-          // 音乐正在播放：恢复活跃模式（同步音乐律动）
           mbIdle = false;
           mbActive = true;
-          musicBar.classList.remove('idle');
-          musicBar.classList.add('active');
-          musicFxBtn.classList.add('visible');
-          musicFxClose.classList.add('visible');
+          musicBarBottom.classList.remove('idle');
+          musicBarBottom.classList.add('active');
           mbResize();
           if (!mbRAF) mbDraw();
           mbResetAutoHide();
         } else if (!mbActive) {
-          // 未播放：空闲动画模式
           mbIdle = true;
-          musicBar.classList.add('idle');
-          musicFxBtn.classList.add('visible');
-          musicFxClose.classList.add('visible');
+          musicBarBottom.classList.add('idle');
           if (!mbRAF) mbDraw();
           mbResetAutoHide();
         }
@@ -4636,17 +5144,18 @@ function renderSkeleton(main, count) {
   main.appendChild(grid);
 }
 
-// ========== 音乐律动顶栏 ==========
-const musicBar = document.getElementById('musicBar');
+// ========== 音乐律动栏 ==========
 const musicFxBtn = document.getElementById('musicFxBtn');
 const musicFxClose = document.getElementById('musicFxClose');
-const mbCtx = musicBar.getContext('2d');
+const musicBarBottom = document.getElementById('musicBarBottom');
+const mbCtx2 = musicBarBottom.getContext('2d');
+const mbCtx = mbCtx2; // 兼容旧代码，指向底部canvas
 let mbW = 0, mbH = 28;
-let mbEffect = 0; // 当前效果索引
+let mbEffect = 0;
 let mbRAF = null;
 let mbTime = 0;
 let mbActive = false;
-let mbIdle = false; // 布局二未播放时的空闲动画
+let mbIdle = false;
 
 // 所有效果（合并）
 const mbEffectNames = [
@@ -4666,11 +5175,9 @@ const mbEffectDisplay = {
 function mbResize() {
   const dpr = window.devicePixelRatio || 1;
   mbW = window.innerWidth;
-  musicBar.width = mbW * dpr;
-  musicBar.height = mbH * dpr;
-  musicBar.style.width = mbW + 'px';
-  musicBar.style.height = mbH + 'px';
-  mbCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  musicBarBottom.width = mbW * dpr;
+  musicBarBottom.height = mbH * dpr;
+  mbCtx2.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 mbResize();
 window.addEventListener('resize', mbResize);
@@ -5539,10 +6046,13 @@ function mbDraw() {
 function mbStart() {
   mbActive = true;
   mbIdle = false;
-  musicBar.classList.remove('idle');
-  musicBar.classList.add('active');
-  musicFxBtn.classList.add('visible');
-  musicFxClose.classList.add('visible');
+  const isMinimal = document.body.classList.contains('layout-minimal');
+  if (isMinimal) {
+    musicBarBottom.classList.remove('idle');
+    musicBarBottom.classList.add('active');
+  } else {
+    musicBarBottom.classList.remove('active', 'idle');
+  }
   mbResize();
   if (!mbRAF) mbDraw();
   mbUpdateTitles();
@@ -5553,23 +6063,20 @@ function mbStop() {
   mbActive = false;
   const isMinimal = document.body.classList.contains('layout-minimal');
   if (isMinimal) {
-    // 布局二：进入空闲动画模式，按钮仍显示
     mbIdle = true;
-    musicBar.classList.remove('active');
-    musicBar.classList.add('idle');
-    musicFxBtn.classList.add('visible');
-    musicFxClose.classList.add('visible');
+    musicBarBottom.classList.remove('active');
+    musicBarBottom.classList.add('idle');
     mbParticles = [];
     if (!mbRAF) mbDraw();
     mbResetAutoHide();
   } else {
-    // 布局一：完全停止
     mbIdle = false;
-    musicFxBtn.classList.remove('visible');
-    musicFxClose.classList.remove('visible');
-    musicBar.classList.remove('active', 'idle');
+    musicBarBottom.classList.remove('active', 'idle');
     if (mbRAF) { cancelAnimationFrame(mbRAF); mbRAF = null; }
-    mbCtx.clearRect(0, 0, mbW, mbH);
+    mbCtx2.setTransform(1, 0, 0, 1, 0, 0);
+    mbCtx2.clearRect(0, 0, musicBarBottom.width, musicBarBottom.height);
+    const dpr3 = window.devicePixelRatio || 1;
+    mbCtx2.setTransform(dpr3, 0, 0, dpr3, 0, 0);
   }
 }
 
@@ -5594,16 +6101,19 @@ musicFxClose.addEventListener('click', (e) => {
   mbClosed = true;
   mbActive = false;
   mbIdle = false;
-  musicBar.classList.remove('active', 'idle');
-  musicFxBtn.classList.remove('visible');
-  musicFxClose.classList.remove('visible');
+  musicBarBottom.classList.remove('active', 'idle');
+  if (mbHideTimer) clearTimeout(mbHideTimer);
+  musicFxBtn.classList.add('auto-hidden');
+  musicFxClose.classList.add('auto-hidden');
   if (mbRAF) { cancelAnimationFrame(mbRAF); mbRAF = null; }
-  mbCtx.clearRect(0, 0, mbW, mbH);
+  mbCtx2.setTransform(1, 0, 0, 1, 0, 0);
+  mbCtx2.clearRect(0, 0, musicBarBottom.width, musicBarBottom.height);
+  const dpr4 = window.devicePixelRatio || 1;
+  mbCtx2.setTransform(dpr4, 0, 0, dpr4, 0, 0);
   e.currentTarget.blur();
-  mbResetAutoHide();
 });
 
-// 10秒无操作自动隐藏切换按钮
+// 5秒无操作自动隐藏切换按钮
 let mbHideTimer = null;
 function mbResetAutoHide() {
   musicFxBtn.classList.remove('auto-hidden');
@@ -5612,19 +6122,25 @@ function mbResetAutoHide() {
   mbHideTimer = setTimeout(() => {
     musicFxBtn.classList.add('auto-hidden');
     musicFxClose.classList.add('auto-hidden');
-  }, 10000);
+  }, 5000);
 }
-// 监听顶部区域操作
-document.addEventListener('mousemove', (e) => {
-  if (e.clientY < 60 && (mbActive || mbIdle) && !mbClosed) {
-    mbResetAutoHide();
-  }
-});
-document.addEventListener('click', (e) => {
-  if (e.clientY < 60 && (mbActive || mbIdle) && !mbClosed) {
-    mbResetAutoHide();
-  }
-});
+
+const musicBarContainer = document.querySelector('.music-bar-bottom-container');
+if (musicBarContainer) {
+  musicBarContainer.addEventListener('mouseenter', () => {
+    if ((mbActive || mbIdle) && !mbClosed) {
+      mbResetAutoHide();
+    }
+  });
+  musicBarContainer.addEventListener('mouseleave', () => {
+    if ((mbActive || mbIdle) && !mbClosed) {
+      mbHideTimer = setTimeout(() => {
+        musicFxBtn.classList.add('auto-hidden');
+        musicFxClose.classList.add('auto-hidden');
+      }, 5000);
+    }
+  });
+}
 
 // 监听播放状态：观察 musicPlay 按钮的 playing class
 const mbObserver = new MutationObserver(() => {
