@@ -697,7 +697,7 @@
   main {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px 80px;
+    padding: 0 24px calc(80px + var(--safe-bottom));
   }
 
   .category-section {
@@ -1385,7 +1385,7 @@
     }
 
     main {
-      padding: 0 16px 60px;
+      padding: 0 16px calc(60px + var(--safe-bottom));
     }
 
     .category-section {
@@ -1514,7 +1514,7 @@
       gap: 6px;
     }
     main {
-      padding: 0 20px 60px;
+      padding: 0 20px calc(60px + var(--safe-bottom));
     }
     .links-grid {
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -1527,14 +1527,14 @@
       font-size: 15px;
     }
     .layout-minimal main {
-      padding: 0 40px 80px;
+      padding: 0 40px calc(80px + var(--safe-bottom));
     }
     .layout-minimal .links-grid {
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 20px 24px;
     }
     .layout-minimal header {
-      padding: 100px 0 60px;
+      padding: 60px 0 40px;
     }
     .layout-minimal .music-bar-bottom-container {
       height: 50px;
@@ -1559,7 +1559,7 @@
       max-width: 1320px;
     }
     .layout-minimal main {
-      padding: 0 80px 100px;
+      padding: 0 80px calc(100px + var(--safe-bottom));
     }
     .layout-minimal .links-grid {
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -1580,6 +1580,9 @@
     }
     .layout-minimal header {
       padding: 40px 0 30px;
+    }
+    .layout-minimal main {
+      padding: 0 60px calc(60px + var(--safe-bottom));
     }
     .layout-minimal .music-bar-bottom-container {
       height: 40px;
@@ -1882,7 +1885,7 @@
   /* 移动端适配 */
   @media (max-width: 768px) {
     .layout-minimal header {
-      padding: 80px 0 50px;
+      padding: 40px 0 30px;
     }
 
     .layout-minimal .header-inner {
@@ -1997,7 +2000,7 @@
     }
 
     .layout-minimal main {
-      padding: 0 24px 60px;
+      padding: 0 24px calc(60px + var(--safe-bottom));
     }
 
     .layout-minimal .links-grid {
