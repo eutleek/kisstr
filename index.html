@@ -53,13 +53,14 @@
     -webkit-overflow-scrolling: touch;
     background-color: #f5f5f7;
     background-image: var(--bg-primary);
-    background-size: cover;
-    background-attachment: fixed;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
     color: #1d1d1f;
     color: var(--text-primary);
     line-height: 1.5;
     min-height: 100vh;
+    min-height: 100dvh;
   }
 
   [data-theme="white"] {
@@ -335,6 +336,7 @@
     left: 0;
     width: 100%;
     min-height: 100vh;
+    min-height: 100dvh;
     z-index: -1;
     overflow: hidden;
   }
@@ -1559,6 +1561,12 @@
     .layout-minimal .links-grid {
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 28px 40px;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    body {
+      background-attachment: fixed;
     }
   }
 
