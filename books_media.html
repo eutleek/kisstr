@@ -7,8 +7,8 @@
 <meta name="theme-color" content="#0071e3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="书影音 - 您通往知识和文化的门户">
-<title>Kisstr - Books, Movies & Music</title>
+<meta name="description" content="书籍、影视、音乐与文化资源导航">
+<title>书影音 - Kisstr</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
@@ -3715,110 +3715,13 @@
     <span class="badge">✨ 无弹窗</span>
     <span class="badge">✨ 无盈利</span>
   </div>
-  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
+  <a href="disclaimer.html" class="disclaimer-btn">免责声明</a>
   <p class="footer-copy">书影音 · 优质网站收藏</p>
   <p class="footer-version">版本号：V 1.30 · 共 7813 个链接</p>
 </footer>
 
 <script>
-// 为主页面标签页命名，便于子页面通过 window.open 跳转回来
-window.name = 'kisstr_home';
-
 const linksData = [
-  {
-    name: "ACGN",
-    icon: "🌟",
-    color: "linear-gradient(135deg, #ff6b6b, #ee5a6f)",
-    subcategories: [
-      {
-        name: "动漫",
-        enName: "Anime",
-        links: [
-          { name: "动漫GHG", url: "https://oneghg.com/", description: "电脑端没广告 手机有广告" },
-          { name: "Anich", url: "https://anich.emmmm.eu.org", description: "Anich - 免费动漫网站" },
-          { name: "咕咕番", url: "https://gugu3.com/", description: "咕咕番 - 在线动漫网站" },
-          { name: "网飞猫", url: "https://ncat.app/", description: "全平台美剧、韩剧、动漫" },
-          { name: "anich 下载页", url: "https://anich.emmmm.eu.org/", description: "anich - 下载页" },
-          { name: "lanerc", url: "https://lanerc.app/", description: "lanerc - 动漫在线观看" },
-          { name: "animeko", url: "https://animeko.org/", description: "animeko - 在线动漫网站" },
-          { name: "AniBaka", url: "https://app.anibaka.com/", description: "AniBaka - 动漫播放应用" },
-          { name: "kazumi", url: "https://kazumi.app/", description: "kazumi - 动漫在线观看" },
-          { name: "Cat Maven", url: "https://jason-wam.github.io/Cat-Maven-2023/web/", description: "Cat Maven - 动漫在线播放器" },
-          { name: "漫猫动漫", url: "https://www.comicat.org/", description: "🎬 高清资源，迅雷链接下载" },
-          { name: "番剧评分", url: "https://anilist.co/", description: "AniList - 番剧评分与追踪" },
-          { name: "识别番剧", url: "https://trace.moe/", description: "以图搜番" },
-          { name: "樱之空", url: "https://skr.cc/", description: "樱之空 - 萌系动漫平台" },
-          { name: "9Anime", url: "https://9-anime.me/", description: "9Anime - 英文动漫网站" },
-          { name: "mifun", url: "https://mifun.app/", description: "mifun - 动漫在线观看" },
-          { name: "次元城", url: "https://cycity.pro/", description: "次元城 - ACG社区" }
-        ]
-      },
-      {
-        name: "漫画",
-        enName: "Manga",
-        links: [
-          { name: "栗子漫画", url: "https://lizimh.com/", description: "仅支持APP使用" },
-          { name: "拷贝漫画", url: "https://www.copymanga.fun/", description: "拷贝漫画 - 海量漫画免费看" },
-          { name: "拷贝漫画 镜像", url: "https://copy3000.com/", description: "拷贝漫画镜像站，备用访问" },
-          { name: "拷贝漫画下载器", url: "https://github.com/lanyeeee/copymanga-downloader", description: "⚠️ 需把设置里的API改成\napi.copy3000.com，不改连不了网" },
-          { name: "Kotatsu", url: "https://kotatsuapp.com/", description: "Kotatsu - 开源漫画阅读器" },
-          { name: "包子漫画", url: "https://bzmgcn.com/", description: "包子漫画 - 在线漫画阅读平台" },
-          { name: "Mihon", url: "https://mihon.app/", description: "Mihon - 开源漫画阅读APP" },
-          { name: "Venera", url: "https://github.com/venera-app/venera", description: "GitHub - Venera 漫画阅读APP" },
-          { name: "koz漫画", url: "https://koz.moe/", description: "" }
-        ]
-      },
-      {
-        name: "游戏",
-        enName: "Games",
-        links: [
-          { name: "Steam 官网", url: "https://store.steampowered.com/", description: "全球最大数字游戏平台" },
-          { name: "Epic Games", url: "https://www.epicgames.com/", description: "Epic游戏商城，每周免费领游戏" },
-          { name: "GOG 游戏", url: "https://www.gog.com/", description: "DRM-free 正版游戏平台" },
-          { name: "itch.io", url: "https://itch.io/", description: "独立游戏创作者平台" },
-          { name: "游民星空", url: "https://www.gamersky.com/", description: "综合游戏资讯门户" },
-          { name: "3DM Game", url: "https://www.3dmgame.com/", description: "游戏资讯与下载站" },
-          { name: "A9VG 电玩部落", url: "https://www.a9vg.com/", description: "主机游戏玩家社区" },
-          { name: "奶牛关", url: "https://cowlevel.net/", description: "核心玩家的游戏社区" },
-          { name: "Switch520", url: "https://gamer520.com/", description: "Switch520 - Switch游戏资源" },
-          { name: "Switch618", url: "https://switch618.com/", description: "Switch618 - Switch游戏下载" },
-          { name: "NxBrew", url: "https://nxbrew.me/", description: "NxBrew - Switch游戏资源站" },
-          { name: "精英模拟网", url: "https://emu.jy6d.com/", description: "精英模拟网 - 模拟器游戏" },
-          { name: "3K游戏", url: "https://3kmin.com/", description: "3K游戏 - 游戏资源站" },
-          { name: "资源避难所", url: "https://flysheep6.com/", description: "资源避难所 - 游戏资源" },
-          { name: "Byrut", url: "https://s1.byrutorg.com/", description: "Byrut - 游戏资源站" },
-          { name: "免费游戏", url: "https://gdgame.org/", description: "gdgame - 免费游戏下载" },
-          { name: "红警在线版", url: "https://www.ra2web.com/", description: "红警2网页版 - 在线玩" },
-          { name: "80joy在线玩游戏", url: "https://www.80joy.com/", description: "80joy - 在线小游戏" },
-          { name: "ps3模拟器", url: "https://www.3h3.com/patch/133379.html", description: "PS3模拟器下载" }
-        ]
-      },
-      {
-        name: "轻小说",
-        enName: "Light Novels",
-        links: [
-          { name: "哔哩轻小说", url: "https://www.bilinovel.com/", description: "在线轻小说阅读平台" },
-          { name: "轻小说文库", url: "https://www.wenku8.net/", description: "中文轻小说在线阅读" },
-          { name: "SF轻小说", url: "https://book.sfacg.com/", description: "原创轻小说平台" },
-          { name: "在漫画（原动漫之家）", url: "http://www.zaimanhua.com/", description: "综合ACG门户" }
-        ]
-      },
-      {
-        name: "壁纸",
-        enName: "Wallpapers",
-        links: [
-          { name: "Alpha Coders", url: "https://alphacoders.com/", description: "Alpha Coders - 壁纸与艺术" },
-          { name: "Unsplash", url: "https://unsplash.com/", description: "Unsplash - 免费高清图片" },
-          { name: "Pixabay", url: "https://pixabay.com/", description: "Pixabay - 免费图片视频" },
-          { name: "Pexels", url: "https://www.pexels.com/", description: "Pexels - 免费素材图库" },
-          { name: "4K Wallpapers", url: "https://4kwallpapers.com/", description: "4K Wallpapers - 4K壁纸" },
-          { name: "彼岸图网", url: "https://www.netbian.com/", description: "彼岸图网 - 高清壁纸" },
-          { name: "国家地理壁纸", url: "https://www.nationalgeographic.com/", description: "国家地理 - 摄影壁纸" },
-          { name: "Wallpaper Engine", url: "https://www.wallpaperengine.io/", description: "电脑版 在 Steam 购买" }
-        ]
-      }
-    ]
-  },
   {
     name: "书影音",
     icon: "📚",
@@ -4486,6 +4389,27 @@ function renderCategories() {
   const tabsContainer = document.getElementById('categoryTabs');
   tabsContainer.innerHTML = '';
 
+  // 返回主页按钮（作为第一个标签）
+  const backBtn = document.createElement('a');
+  backBtn.href = 'index.html';
+  backBtn.target = 'kisstr_home';
+  backBtn.className = 'tab-btn back-home-tab';
+  backBtn.innerHTML = '← 返回主页';
+  backBtn.style.cssText = 'background:var(--card-bg);border:1px solid var(--card-border);color:var(--text-secondary);text-decoration:none;flex-shrink:0;';
+  backBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.open('index.html', 'kisstr_home');
+  });
+  backBtn.addEventListener('mouseenter', function() {
+    this.style.borderColor = 'var(--accent)';
+    this.style.color = 'var(--accent)';
+  });
+  backBtn.addEventListener('mouseleave', function() {
+    this.style.borderColor = 'var(--card-border)';
+    this.style.color = 'var(--text-secondary)';
+  });
+  tabsContainer.appendChild(backBtn);
+
   linksData.forEach((cat, index) => {
     const btn = document.createElement('button');
     btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
@@ -4519,7 +4443,6 @@ function createLinkCard(link, catIndex, linkIndex) {
   const card = document.createElement('a');
   card.className = 'link-card';
   card.href = link.url;
-  // 所有卡片均在新标签页打开，避免刷新主页面
   card.target = '_blank';
   card.rel = 'noopener noreferrer';
   card.style.animationDelay = (catIndex * 0.1 + linkIndex * 0.02) + 's';
