@@ -14,7 +14,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <script>
 (function initColors() {
-  const savedLayout = localStorage.getItem('layout') || 'grid';
+  const layoutDefaultVersion = 'v130-magazine-default';
+  if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
+    localStorage.setItem('layout', 'minimal');
+    localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
+  }
+  const savedLayout = localStorage.getItem('layout') || 'minimal';
   const savedTheme = localStorage.getItem('theme_' + savedLayout) || 'white';
   
   const themeColors = {
@@ -382,8 +387,15 @@
   }
 
   /* 复古滚动条 */
+  html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.28) transparent;
+  }
+
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
     height: 6px;
   }
 
@@ -392,21 +404,25 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 999px;
     border: none;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.36);
   }
 
   @media (prefers-color-scheme: dark) {
+    html {
+      scrollbar-color: rgba(255, 255, 255, 0.24) transparent;
+    }
+
     ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.2);
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.32);
     }
   }
 
@@ -966,6 +982,16 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
+  }
+
+  /* 卡片立即渲染，避免部分浏览器等到鼠标悬停才绘制 */
+  .category-section,
+  .link-card,
+  .ai-link-card,
+  .subcategory-title-card {
+    opacity: 1;
+    visibility: visible;
+    content-visibility: visible;
   }
 
   .link-card,
@@ -3559,6 +3585,97 @@
   }
 
 
+  
+
+  /* 控制按钮统一尺寸 + 杂志默认布局适配 */
+  .header-actions {
+    gap: 8px;
+  }
+
+  .theme-toggle,
+  .hide-toggle,
+  .layout-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    margin-left: 0 !important;
+    border-radius: 9px !important;
+    flex: 0 0 36px !important;
+  }
+
+  .layout-toggle {
+    padding: 0 !important;
+    gap: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .layout-btn {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 9px !important;
+  }
+
+  .theme-toggle svg,
+  .layout-btn svg,
+  .hide-icon-eye {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  @media (max-width: 768px) {
+    .header-actions {
+      gap: 6px !important;
+    }
+
+    .theme-toggle,
+    .hide-toggle,
+    .layout-toggle {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      min-height: 32px !important;
+      flex-basis: 32px !important;
+      border-radius: 8px !important;
+    }
+
+    .layout-btn {
+      border-radius: 8px !important;
+    }
+
+    .theme-toggle svg,
+    .layout-btn svg,
+    .hide-icon-eye {
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
+
+  @media (max-width: 375px) {
+    .header-actions {
+      gap: 5px !important;
+    }
+
+    .theme-toggle,
+    .hide-toggle,
+    .layout-toggle {
+      width: 30px !important;
+      height: 30px !important;
+      min-width: 30px !important;
+      min-height: 30px !important;
+      flex-basis: 30px !important;
+      border-radius: 7px !important;
+    }
+
+    .theme-toggle svg,
+    .layout-btn svg,
+    .hide-icon-eye {
+      width: 15px !important;
+      height: 15px !important;
+    }
+  }
+
   /* 全平台适配增强 */
   html {
     -webkit-text-size-adjust: 100%;
@@ -3615,6 +3732,628 @@
       font-size: 12px;
       line-height: 1.6;
       padding: 0 12px;
+    }
+  }
+
+
+
+  /* 最终按钮尺寸覆盖：主题 / 布局 / 隐藏 */
+  .theme-toggle,
+  .hide-toggle,
+  .layout-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    flex: 0 0 36px !important;
+    margin-left: 0 !important;
+  }
+
+  .layout-btn {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+
+  @media (max-width: 768px) {
+    .theme-toggle,
+    .hide-toggle,
+    .layout-toggle {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      min-height: 32px !important;
+      flex-basis: 32px !important;
+    }
+
+    .layout-btn {
+      min-width: 0 !important;
+      min-height: 0 !important;
+    }
+  }
+
+  @media (max-width: 375px) {
+    .theme-toggle,
+    .hide-toggle,
+    .layout-toggle {
+      width: 30px !important;
+      height: 30px !important;
+      min-width: 30px !important;
+      min-height: 30px !important;
+      flex-basis: 30px !important;
+    }
+  }
+
+
+
+  /* 第二布局按钮方块化 */
+  body.layout-minimal .theme-toggle,
+  body.layout-minimal .hide-toggle,
+  body.layout-minimal .layout-toggle,
+  body.layout-minimal .layout-btn {
+    border-radius: 0 !important;
+  }
+
+  /* ========== 背景、主题与全平台适配 ========== */
+  /* ===== 背景选择器 ===== */
+  body.bg-transitioning {
+    transition: background-image 0.35s ease, background-color 0.35s ease;
+  }
+
+  .theme-fade-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    pointer-events: none;
+    opacity: 0;
+    background: rgba(255, 255, 255, 0.54);
+    transition: opacity 0.18s ease;
+  }
+
+  .theme-fade-overlay.active {
+    opacity: 1;
+  }
+
+  [data-theme="midnight"] .theme-fade-overlay,
+  [data-theme="starry"] .theme-fade-overlay,
+  [data-theme="sunset"] .theme-fade-overlay,
+  [data-theme="aurora"] .theme-fade-overlay,
+  [data-theme="dream"] .theme-fade-overlay,
+  [data-theme="forest"] .theme-fade-overlay,
+  [data-theme="deepsea"] .theme-fade-overlay,
+  [data-theme="clay"] .theme-fade-overlay,
+  [data-theme="anime"] .theme-fade-overlay,
+  body.background-image-mode .theme-fade-overlay {
+    background: rgba(8, 9, 18, 0.46);
+  }
+
+  .background-picker-trigger {
+    position: fixed;
+    left: 18px;
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    z-index: 9998;
+    height: 42px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    background: rgba(20, 22, 36, 0.52);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .background-picker-trigger:hover {
+    transform: translateY(-2px);
+    background: rgba(20, 22, 36, 0.68);
+  }
+
+  .background-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    background: transparent;
+  }
+
+  .background-modal.open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .background-modal-panel {
+    width: min(920px, calc(100vw - 24px));
+    margin-top: var(--bg-picker-top, 72px);
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  }
+
+  body.background-image-mode .background-modal-panel {
+    background: rgba(30, 30, 50, 0.28);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .background-modal-header {
+    display: none;
+  }
+
+  .background-modal-content {
+    padding: 16px 12px 12px;
+    overflow: hidden;
+    max-height: none;
+  }
+
+  .background-section-title {
+    margin: 4px 0 12px;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .background-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 2px 8px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .background-strip.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+  }
+
+  .background-strip::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .background-strip::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .background-strip::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  .background-strip::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .background-strip.gray-scrollbar {
+    scrollbar-color: rgba(120, 120, 120, 0.62) transparent;
+  }
+
+  .background-strip.gray-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(120, 120, 120, 0.56);
+  }
+
+  .background-strip.gray-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(90, 90, 90, 0.72);
+  }
+
+  .background-card {
+    position: relative;
+    flex: 0 0 168px;
+    scroll-snap-align: start;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    padding: 0;
+    min-height: 108px;
+    color: #111827;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .background-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .background-card.active {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3), 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .background-card-preview {
+    width: 100%;
+    height: 108px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .background-card img {
+    display: block;
+    width: 100%;
+    height: 108px;
+    object-fit: cover;
+    background: rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+  }
+
+  .background-card-label {
+    display: none;
+  }
+
+  .background-card-badge {
+    display: none;
+  }
+
+  .background-loading {
+    position: fixed;
+    left: 50%;
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    z-index: 10001;
+    transform: translateX(-50%);
+    display: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.82);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .background-loading.show {
+    display: block;
+  }
+
+  /* 图片背景模式：恢复之前调过的可读性增强，独立于主题切换 */
+  body.background-image-mode.layout-minimal {
+    color: #ffffff !important;
+  }
+
+  body.background-image-mode.layout-minimal .logo,
+  body.background-image-mode.layout-minimal .tab-btn,
+  body.background-image-mode.layout-minimal .theme-toggle,
+  body.background-image-mode.layout-minimal .layout-btn,
+  body.background-image-mode.layout-minimal .hide-toggle,
+  body.background-image-mode.layout-minimal .search-inline input,
+  body.background-image-mode.layout-minimal .footer-badges .badge,
+  body.background-image-mode.layout-minimal .disclaimer-btn {
+    color: rgba(255, 255, 255, 0.94) !important;
+    text-shadow: 0 1px 9px rgba(0, 0, 0, 0.72) !important;
+  }
+
+  body.background-image-mode.layout-minimal .tab-btn:hover,
+  body.background-image-mode.layout-minimal .theme-toggle:hover,
+  body.background-image-mode.layout-minimal .layout-btn:hover,
+  body.background-image-mode.layout-minimal .hide-toggle:hover,
+  body.background-image-mode.layout-minimal .search-inline:hover,
+  body.background-image-mode.layout-minimal .search-inline.expanded {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.8) !important;
+    background: rgba(0, 0, 0, 0.16) !important;
+  }
+
+  body.background-image-mode.layout-minimal .tab-btn.active,
+  body.background-image-mode.layout-minimal .layout-btn.active,
+  body.background-image-mode.layout-minimal .hide-toggle.active {
+    color: #1a1a2e !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: none !important;
+  }
+
+  body.background-image-mode.layout-minimal .search-inline .search-icon,
+  body.background-image-mode.layout-minimal .theme-toggle svg,
+  body.background-image-mode.layout-minimal .layout-btn svg,
+  body.background-image-mode.layout-minimal .hide-toggle svg {
+    fill: rgba(255, 255, 255, 0.94) !important;
+  }
+
+  body.background-image-mode.layout-minimal .link-card,
+  body.background-image-mode.layout-minimal .ai-link-card,
+  body.background-image-mode.layout-minimal .subcategory-title-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(2px) saturate(1.05) !important;
+    -webkit-backdrop-filter: blur(2px) saturate(1.05) !important;
+  }
+
+  body.background-image-mode.layout-minimal .link-card:hover,
+  body.background-image-mode.layout-minimal .ai-link-card:hover,
+  body.background-image-mode.layout-minimal .subcategory-title-card:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+  }
+
+  body.background-image-mode.layout-minimal .link-name,
+  body.background-image-mode.layout-minimal .subcategory-title-card .link-name,
+  body.background-image-mode.layout-minimal.hide-mode .link-name {
+    color: #ffffff !important;
+    font-weight: 650 !important;
+    text-shadow: 0 1px 9px rgba(0, 0, 0, 0.82) !important;
+  }
+
+  body.background-image-mode.layout-minimal .link-url,
+  body.background-image-mode.layout-minimal .hidden-link-url,
+  body.background-image-mode.layout-minimal .link-desc,
+  body.background-image-mode.layout-minimal.hide-mode .link-desc {
+    color: rgba(255, 255, 255, 0.82) !important;
+    text-shadow: 0 1px 7px rgba(0, 0, 0, 0.78) !important;
+  }
+
+  body.background-image-mode.layout-minimal .link-card:hover .link-name {
+    color: #f8e9ff !important;
+  }
+
+  body.background-image-mode.layout-minimal footer {
+    border-top-color: rgba(255, 255, 255, 0.18) !important;
+  }
+
+  /* 图片背景兜底：不依赖 data-theme，主题切换或布局切换后也保持可读 */
+  body.background-image-mode {
+    color: #ffffff !important;
+  }
+
+  body.background-image-mode .category-title,
+  body.background-image-mode .category-count,
+  body.background-image-mode .logo,
+  body.background-image-mode .tab-btn,
+  body.background-image-mode .theme-toggle,
+  body.background-image-mode .layout-btn,
+  body.background-image-mode .hide-toggle,
+  body.background-image-mode .search-inline input,
+  body.background-image-mode .footer-badges .badge,
+  body.background-image-mode .disclaimer-btn,
+  body.background-image-mode .background-picker-trigger {
+    color: rgba(255, 255, 255, 0.96) !important;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.95),
+      0 0 10px rgba(0, 0, 0, 0.72) !important;
+  }
+
+  body.background-image-mode .link-card,
+  body.background-image-mode .ai-link-card,
+  body.background-image-mode .subcategory-title-card {
+    background: rgba(255, 255, 255, 0.035) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(2px) saturate(1.04) !important;
+    -webkit-backdrop-filter: blur(2px) saturate(1.04) !important;
+  }
+
+  body.background-image-mode .link-card:hover,
+  body.background-image-mode .ai-link-card:hover,
+  body.background-image-mode .subcategory-title-card:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+  }
+
+  body.background-image-mode .link-name,
+  body.background-image-mode .ai-card-name,
+  body.background-image-mode .subcategory-title-card .link-name,
+  body.background-image-mode.hide-mode .link-name {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.98),
+      0 0 11px rgba(0, 0, 0, 0.78) !important;
+  }
+
+  body.background-image-mode .link-url,
+  body.background-image-mode .hidden-link-url,
+  body.background-image-mode .link-desc,
+  body.background-image-mode .ai-card-desc,
+  body.background-image-mode .ai-card-company,
+  body.background-image-mode .ai-card-close-reason,
+  body.background-image-mode.hide-mode .link-desc {
+    color: rgba(255, 255, 255, 0.86) !important;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.96),
+      0 0 9px rgba(0, 0, 0, 0.72) !important;
+  }
+
+  body.background-image-mode .link-icon,
+  body.background-image-mode .link-arrow,
+  body.background-image-mode .theme-toggle svg,
+  body.background-image-mode .layout-btn svg,
+  body.background-image-mode .hide-toggle svg,
+  body.background-image-mode .search-inline .search-icon {
+    color: rgba(255, 255, 255, 0.94) !important;
+    fill: rgba(255, 255, 255, 0.94) !important;
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.75));
+  }
+
+  body.layout-grid.background-image-mode .link-icon {
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
+  body.layout-grid .theme-toggle,
+  body.layout-grid .layout-toggle,
+  body.layout-grid .layout-btn,
+  body.layout-grid .hide-toggle {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  body.layout-grid .theme-toggle svg,
+  body.layout-grid .layout-btn svg,
+  body.layout-grid .hide-toggle svg {
+    filter: none !important;
+    text-shadow: none !important;
+  }
+
+  body.layout-grid .theme-toggle svg {
+    color: #f59e0b !important;
+    fill: #f59e0b !important;
+  }
+
+  body.layout-grid .layout-btn svg {
+    color: #3b82f6 !important;
+    fill: #3b82f6 !important;
+  }
+
+  body.layout-grid .hide-toggle svg {
+    color: #10b981 !important;
+    fill: #10b981 !important;
+  }
+
+  body.layout-grid.hide-mode .hide-toggle svg {
+    color: #ef4444 !important;
+    fill: #ef4444 !important;
+  }
+
+  body.background-image-mode .music-bar-bottom-container .music-fx-btn {
+    color: rgba(255, 255, 255, 0.94) !important;
+    filter: none !important;
+    text-shadow: none !important;
+  }
+
+  body.background-image-mode .music-bar-bottom-container .music-fx-btn svg {
+    fill: currentColor;
+  }
+
+  /* 全平台适配兜底 */
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100svh;
+  }
+
+  .link-card,
+  .ai-link-card {
+    -webkit-user-drag: none;
+    overflow-wrap: anywhere;
+  }
+
+  @media (pointer: coarse) {
+    .link-card,
+    .ai-link-card,
+    .tab-btn,
+    .theme-toggle,
+    .layout-btn,
+    .hide-toggle,
+    .music-btn,
+    .music-fx-btn {
+      touch-action: manipulation;
+    }
+  }
+/* ========== 背景、主题与全平台适配结束 ========== */
+
+
+
+  /* ========== 全平台适配补强 ========== */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: calc(72px + var(--safe-top));
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+
+  @supports not (overflow: clip) {
+    body {
+      overflow-x: hidden;
+    }
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  a,
+  button,
+  .tab-btn,
+  .theme-btn,
+  .layout-btn,
+  .hide-toggle,
+  .back-to-top,
+  .link-card,
+  .ai-link-card {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .links-grid,
+  .ai-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  }
+
+  @media (max-width: 480px) {
+    .category-tabs {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .category-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      white-space: nowrap;
+      min-height: 40px;
+    }
+
+    .link-card,
+    .ai-link-card,
+    .subcategory-title-card {
+      padding: 16px;
+      border-radius: 16px;
+    }
+
+    .music-bar-bottom-container {
+      height: 48px;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .link-card:hover,
+    .ai-link-card:hover,
+    .subcategory-title-card:hover {
+      transform: none;
     }
   }
 
@@ -3717,7 +4456,7 @@
   </div>
   <a href="disclaimer.html" class="disclaimer-btn">免责声明</a>
   <p class="footer-copy">声学艺术 · 优质网站收藏</p>
-  <p class="footer-version">版本号：V 1.30 · 共 7813 个链接</p>
+  <p class="footer-version">版本号：V 1.30 · 共 7809 个链接</p>
 </footer>
 
 <script>
@@ -3728,7 +4467,7 @@ const linksData = [
     "color": "linear-gradient(135deg, #55efc4, #74b9ff)",
     "subcategories": [
       {
-        "name": "独立音乐评测、唱片厂牌与前卫声音艺术 (001-040)",
+        "name": "音乐厂牌 (001-040)",
         "enName": "Collection",
         "links": [
           {
@@ -3934,7 +4673,7 @@ const linksData = [
         ]
       },
       {
-        "name": "环境音效、自然野外录音与白噪音 (041-080)",
+        "name": "环境白噪 (041-080)",
         "enName": "Collection",
         "links": [
           {
@@ -4140,7 +4879,7 @@ const linksData = [
         ]
       },
       {
-        "name": "Hi-Fi 音响、发烧硬件与听音室声学 (081-120)",
+        "name": "Hi-Fi声学 (081-120)",
         "enName": "Collection",
         "links": [
           {
@@ -4346,7 +5085,7 @@ const linksData = [
         ]
       },
       {
-        "name": "居家听音空间、音乐生活方式与唱片架美学 (121-160)",
+        "name": "听音空间 (121-160)",
         "enName": "Collection",
         "links": [
           {
@@ -4552,7 +5291,7 @@ const linksData = [
         ]
       },
       {
-        "name": "交互音效、3D环绕声与声音交互装置 (161-200)",
+        "name": "交互音效 (161-200)",
         "enName": "Collection",
         "links": [
           {
@@ -4993,6 +5732,11 @@ const linksData = [
           "name": "漫画网站",
           "url": "manga_sites.html",
           "description": "漫画阅读、正版平台、漫画工具与图源社区导航"
+        },
+        {
+          "name": "软件工具",
+          "url": "software_tools.html",
+          "description": "本地播放器、电子书阅读器与漫画阅读器导航"
         }
       ]
     }
@@ -5245,6 +5989,47 @@ function renderCategories() {
   tabsContainer.appendChild(searchWrapper);
 }
 
+function openUrlInNewTab(url) {
+  if (!url || url === '#') return;
+  const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+  if (newWindow) newWindow.opener = null;
+}
+
+function prepareStealthLinkCard(card, url) {
+  if (!card) return card;
+  card.removeAttribute('href');
+  card.removeAttribute('target');
+  card.removeAttribute('rel');
+  card.dataset.url = url || '';
+  card.setAttribute('role', url ? 'link' : 'button');
+  card.setAttribute('tabindex', '0');
+
+  if (!url || url === '#') {
+    card.setAttribute('aria-disabled', 'true');
+    return card;
+  }
+
+  card.addEventListener('click', function(e) {
+    e.preventDefault();
+    openUrlInNewTab(card.dataset.url);
+    if (e.currentTarget && e.currentTarget.blur) e.currentTarget.blur();
+  });
+
+  card.addEventListener('auxclick', function(e) {
+    if (e.button !== 1) return;
+    e.preventDefault();
+    openUrlInNewTab(card.dataset.url);
+  });
+
+  card.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    openUrlInNewTab(card.dataset.url);
+  });
+
+  return card;
+}
+
 function createLinkCard(link, catIndex, linkIndex) {
   const cat = linksData[catIndex];
 
@@ -5255,10 +6040,6 @@ function createLinkCard(link, catIndex, linkIndex) {
 
   const card = document.createElement('a');
   card.className = 'link-card';
-  card.href = link.url;
-  card.target = '_blank';
-  card.rel = 'noopener noreferrer';
-  card.style.animationDelay = (catIndex * 0.1 + linkIndex * 0.02) + 's';
 
   // 为音乐分类卡片添加标记，用于黑胶旋转
   if (cat && cat.subcategories) {
@@ -5279,9 +6060,10 @@ function createLinkCard(link, catIndex, linkIndex) {
   const hiddenUrl = isMinimalLayout && secretData.brand.url ? secretData.brand.url : link.url;
 
   if (isHiddenMode) {
-    card.href = hiddenUrl;
     card.classList.add('hidden-mode-card');
   }
+
+  prepareStealthLinkCard(card, isHiddenMode ? hiddenUrl : link.url);
 
   const linkIcon = document.createElement('div');
   linkIcon.className = 'link-icon';
@@ -5354,15 +6136,11 @@ function createAiCard(link, linkIndex) {
   const isClosed = !!link._aiCloseDate;
   const card = document.createElement('a');
   card.className = 'ai-link-card';
-  card.style.animationDelay = (linkIndex * 0.02) + 's';
 
   if (isClosed || !link.url) {
-    card.href = '#';
-    card.onclick = function(e) { e.preventDefault(); return false; };
+    prepareStealthLinkCard(card, '');
   } else {
-    card.href = link.url;
-    card.target = '_blank';
-    card.rel = 'noopener noreferrer';
+    prepareStealthLinkCard(card, link.url);
   }
 
   // 内容包裹层（用于3D translateZ）
@@ -5479,14 +6257,8 @@ function renderLinks(filterText = '', category = 'all') {
     return;
   }
 
-  // 首次加载显示骨架屏
   if (isFirstRender) {
     isFirstRender = false;
-    renderSkeleton(main, 8);
-    setTimeout(() => {
-      doRenderLinks(filterText, category);
-    }, 500);
-    return;
   }
 
   doRenderLinks(filterText, category);
@@ -5505,7 +6277,6 @@ function doRenderLinks(filterText, category) {
     const section = document.createElement('section');
     section.className = 'category-section';
     section.id = 'category-' + catIndex;
-    section.style.animationDelay = (catIndex * 0.1) + 's';
 
     const header = document.createElement('div');
     header.className = 'category-header';
@@ -5553,9 +6324,19 @@ function doRenderLinks(filterText, category) {
 
             if (subcat.easterEggUrl) {
               titleCard.style.cursor = 'pointer';
-              titleCard.title = '小彩蛋';
+              titleCard.dataset.eggClicks = '0';
               titleCard.addEventListener('click', () => {
-                window.open(subcat.easterEggUrl, '_blank', 'noopener');
+                const clicks = Number(titleCard.dataset.eggClicks || '0') + 1;
+                titleCard.dataset.eggClicks = String(clicks);
+                clearTimeout(titleCard._eggTimer);
+                if (clicks >= 3) {
+                  titleCard.dataset.eggClicks = '0';
+                  window.open(subcat.easterEggUrl, '_blank', 'noopener');
+                } else {
+                  titleCard._eggTimer = setTimeout(() => {
+                    titleCard.dataset.eggClicks = '0';
+                  }, 900);
+                }
               });
             }
 
@@ -5579,9 +6360,19 @@ function doRenderLinks(filterText, category) {
           `;
           if (subcat.easterEggUrl) {
             titleCard.style.cursor = 'pointer';
-            titleCard.title = '小彩蛋';
+            titleCard.dataset.eggClicks = '0';
             titleCard.addEventListener('click', () => {
-              window.open(subcat.easterEggUrl, '_blank', 'noopener');
+              const clicks = Number(titleCard.dataset.eggClicks || '0') + 1;
+              titleCard.dataset.eggClicks = String(clicks);
+              clearTimeout(titleCard._eggTimer);
+              if (clicks >= 3) {
+                titleCard.dataset.eggClicks = '0';
+                window.open(subcat.easterEggUrl, '_blank', 'noopener');
+              } else {
+                titleCard._eggTimer = setTimeout(() => {
+                  titleCard.dataset.eggClicks = '0';
+                }, 900);
+              }
             });
           }
           grid.appendChild(titleCard);
@@ -5822,12 +6613,13 @@ function setLayout(layout) {
   renderLinks(searchValue, currentCategory);
 }
 
-const savedLayout = localStorage.getItem('layout');
-if (savedLayout) {
-  setLayout(savedLayout);
-} else {
-  setLayout('grid');
+const layoutDefaultVersion = 'v130-magazine-default';
+if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
+  localStorage.setItem('layout', 'minimal');
+  localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
 }
+const savedLayout = localStorage.getItem('layout') || 'minimal';
+setLayout(savedLayout);
 
 layoutBtn.addEventListener('click', (e) => {
   const currentLayout = document.body.classList.contains('layout-grid') ? 'grid' : 'minimal';
@@ -6331,9 +7123,10 @@ function mbDraw() {
 
   // 颜色随主题
   const curTheme = document.documentElement.getAttribute('data-theme') || '';
-  const isDark = curTheme === 'midnight' || curTheme === 'dream' || curTheme === 'starry' || curTheme === 'sunset' || curTheme === 'aurora' || curTheme === 'forest' || curTheme === 'deepsea' || curTheme === 'clay';
+  const isImageBackground = document.body.classList.contains('background-image-mode');
+  const isDark = isImageBackground || curTheme === 'midnight' || curTheme === 'dream' || curTheme === 'starry' || curTheme === 'sunset' || curTheme === 'aurora' || curTheme === 'forest' || curTheme === 'deepsea' || curTheme === 'clay';
   const baseColor = isDark ? '255,255,255' : '29,29,31';
-  // 暗色主题亮度增益，让白色律动更明显
+  // 暗色主题和图片背景亮度增益，让白色律动更明显
   if (isDark) r = Math.min(1, r * 1.8);
 
   // 辅助：画一条曲线
@@ -6707,6 +7500,456 @@ const mbObserver = new MutationObserver(() => {
   }
 });
 mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
+
+
+// ========== 背景选择器 ==========
+// === 背景选择器：纯色/渐变 + WebP 壁纸，按需创建预览 ===
+(function() {
+  const storageKey = 'kisstr_background_picker_selection_v1';
+  const pureBackgrounds = [
+    { id: 'theme-white', type: 'theme', theme: 'white', name: '经典白', preview: '#f5f5f7' },
+    { id: 'theme-dawn', type: 'theme', theme: 'dawn', name: '晨曦粉', preview: 'linear-gradient(135deg, #fff5f5, #ffe8e8)' },
+    { id: 'theme-mint', type: 'theme', theme: 'mint', name: '薄荷青', preview: 'linear-gradient(135deg, #f0fff5, #dff7ec)' },
+    { id: 'theme-ocean', type: 'theme', theme: 'ocean', name: '海洋蓝', preview: 'linear-gradient(135deg, #f0f8ff, #d7ecff)' },
+    { id: 'theme-twilight', type: 'theme', theme: 'twilight', name: '晨曦紫', preview: 'linear-gradient(135deg, #f5f0ff, #e9dcff)' },
+    { id: 'theme-midnight', type: 'theme', theme: 'midnight', name: '深夜黑', preview: 'linear-gradient(135deg, #000212, #0c0c1d)' },
+    { id: 'theme-starry', type: 'theme', theme: 'starry', name: '星空蓝', preview: 'linear-gradient(135deg, #0c0c1d, #1b2b5f)' },
+    { id: 'theme-sunset', type: 'theme', theme: 'sunset', name: '暮光橙', preview: 'linear-gradient(135deg, #2d1b0e, #7a3b1e)' },
+    { id: 'theme-aurora', type: 'theme', theme: 'aurora', name: '极光青', preview: 'linear-gradient(135deg, #1a2a3a, #3db8a8)' },
+    { id: 'theme-dream', type: 'theme', theme: 'dream', name: '梦幻粉', preview: 'linear-gradient(135deg, #667eea, #764ba2)' },
+    { id: 'theme-forest', type: 'theme', theme: 'forest', name: '森林绿', preview: 'linear-gradient(135deg, #2d5f4e, #4cb88a)' },
+    { id: 'theme-deepsea', type: 'theme', theme: 'deepsea', name: '深海蓝', preview: 'linear-gradient(135deg, #1a4a6e, #5099d4)' },
+    { id: 'theme-clay', type: 'theme', theme: 'clay', name: '暖陶土', preview: 'linear-gradient(135deg, #4a3326, #8a6a4f)' }
+  ];
+  const imageBackgrounds = [
+    { id: '樱野', name: '樱野', url: 'wallpapers_webp/樱野.webp', thumb: 'wallpapers_webp/thumbs/樱野.webp' },
+    { id: '星夜', name: '星夜', url: 'wallpapers_webp/星夜.webp', thumb: 'wallpapers_webp/thumbs/星夜.webp' },
+    { id: '秋林', name: '秋林', url: 'wallpapers_webp/秋林.webp', thumb: 'wallpapers_webp/thumbs/秋林.webp' },
+    { id: '樱河', name: '樱河', url: 'wallpapers_webp/樱河.webp', thumb: 'wallpapers_webp/thumbs/樱河.webp' },
+    { id: '海站', name: '海站', url: 'wallpapers_webp/海站.webp', thumb: 'wallpapers_webp/thumbs/海站.webp' },
+    { id: '雨读', name: '雨读', url: 'wallpapers_webp/雨读.webp', thumb: 'wallpapers_webp/thumbs/雨读.webp' },
+    { id: '薰月', name: '薰月', url: 'wallpapers_webp/薰月.webp', thumb: 'wallpapers_webp/thumbs/薰月.webp' },
+    { id: '屋园', name: '屋园', url: 'wallpapers_webp/屋园.webp', thumb: 'wallpapers_webp/thumbs/屋园.webp' },
+    { id: '云海', name: '云海', url: 'wallpapers_webp/云海.webp', thumb: 'wallpapers_webp/thumbs/云海.webp' },
+    { id: '花街', name: '花街', url: 'wallpapers_webp/花街.webp', thumb: 'wallpapers_webp/thumbs/花街.webp' },
+    { id: '雪村', name: '雪村', url: 'wallpapers_webp/雪村.webp', thumb: 'wallpapers_webp/thumbs/雪村.webp' },
+    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/灯塔.webp', thumb: 'wallpapers_webp/thumbs/灯塔.webp' },
+    { id: '林茶', name: '林茶', url: 'wallpapers_webp/林茶.webp', thumb: 'wallpapers_webp/thumbs/林茶.webp' },
+    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/稻霞.webp', thumb: 'wallpapers_webp/thumbs/稻霞.webp' },
+    { id: '温室', name: '温室', url: 'wallpapers_webp/温室.webp', thumb: 'wallpapers_webp/thumbs/温室.webp' },
+    { id: '游园', name: '游园', url: 'wallpapers_webp/游园.webp', thumb: 'wallpapers_webp/thumbs/游园.webp' },
+    { id: '学园', name: '学园', url: 'wallpapers_webp/学园.webp', thumb: 'wallpapers_webp/thumbs/学园.webp' },
+    { id: '水族', name: '水族', url: 'wallpapers_webp/水族.webp', thumb: 'wallpapers_webp/thumbs/水族.webp' },
+    { id: '阁星', name: '阁星', url: 'wallpapers_webp/阁星.webp', thumb: 'wallpapers_webp/thumbs/阁星.webp' },
+    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/竹晨.webp', thumb: 'wallpapers_webp/thumbs/竹晨.webp' },
+    { id: '夜市', name: '夜市', url: 'wallpapers_webp/夜市.webp', thumb: 'wallpapers_webp/thumbs/夜市.webp' },
+    { id: '星象', name: '星象', url: 'wallpapers_webp/星象.webp', thumb: 'wallpapers_webp/thumbs/星象.webp' },
+    { id: '风车', name: '风车', url: 'wallpapers_webp/风车.webp', thumb: 'wallpapers_webp/thumbs/风车.webp' },
+    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/猫窗.webp', thumb: 'wallpapers_webp/thumbs/猫窗.webp' },
+    { id: '兔野', name: '兔野', url: 'wallpapers_webp/兔野.webp', thumb: 'wallpapers_webp/thumbs/兔野.webp' },
+    { id: '书童', name: '书童', url: 'wallpapers_webp/书童.webp', thumb: 'wallpapers_webp/thumbs/书童.webp' },
+    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/紫阳.webp', thumb: 'wallpapers_webp/thumbs/紫阳.webp' },
+    { id: '月秋', name: '月秋', url: 'wallpapers_webp/月秋.webp', thumb: 'wallpapers_webp/thumbs/月秋.webp' },
+    { id: '庭院', name: '庭院', url: 'wallpapers_webp/庭院.webp', thumb: 'wallpapers_webp/thumbs/庭院.webp' },
+    { id: '水母', name: '水母', url: 'wallpapers_webp/水母.webp', thumb: 'wallpapers_webp/thumbs/水母.webp' },
+    { id: '草莓', name: '草莓', url: 'wallpapers_webp/草莓.webp', thumb: 'wallpapers_webp/thumbs/草莓.webp' },
+    { id: '魔书', name: '魔书', url: 'wallpapers_webp/魔书.webp', thumb: 'wallpapers_webp/thumbs/魔书.webp' },
+    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/冬暖.webp', thumb: 'wallpapers_webp/thumbs/冬暖.webp' },
+    { id: '画室', name: '画室', url: 'wallpapers_webp/画室.webp', thumb: 'wallpapers_webp/thumbs/画室.webp' },
+    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/犬伴.webp', thumb: 'wallpapers_webp/thumbs/犬伴.webp' },
+    { id: '野餐', name: '野餐', url: 'wallpapers_webp/野餐.webp', thumb: 'wallpapers_webp/thumbs/野餐.webp' },
+    { id: '狐社', name: '狐社', url: 'wallpapers_webp/狐社.webp', thumb: 'wallpapers_webp/thumbs/狐社.webp' },
+    { id: '阅台', name: '阅台', url: 'wallpapers_webp/阅台.webp', thumb: 'wallpapers_webp/thumbs/阅台.webp' },
+    { id: '虹池', name: '虹池', url: 'wallpapers_webp/虹池.webp', thumb: 'wallpapers_webp/thumbs/虹池.webp' },
+    { id: '绿意', name: '绿意', url: 'wallpapers_webp/绿意.webp', thumb: 'wallpapers_webp/thumbs/绿意.webp' },
+    { id: '茶花', name: '茶花', url: 'wallpapers_webp/茶花.webp', thumb: 'wallpapers_webp/thumbs/茶花.webp' },
+    { id: '海骑', name: '海骑', url: 'wallpapers_webp/海骑.webp', thumb: 'wallpapers_webp/thumbs/海骑.webp' },
+    { id: '萤光', name: '萤光', url: 'wallpapers_webp/萤光.webp', thumb: 'wallpapers_webp/thumbs/萤光.webp' }
+  ].map(item => ({ ...item, type: 'image' }));
+
+  /* reorder: 精选背景 → 风景 → 人物 */
+  (function() {
+    var featuredIds = ['樱野', '星夜', '秋林'];
+    var sceneryIds = ['樱河','海站','雨读','薰月','屋园','云海','花街','雪村','灯塔','林茶','稻霞','温室','游园','学园','水族','阁星','竹晨','夜市','星象','风车'];
+    var featured = [], scenery = [], characters = [];
+    imageBackgrounds.forEach(function(o) {
+      if (featuredIds.indexOf(o.id) >= 0) featured.push(o);
+      else if (sceneryIds.indexOf(o.id) >= 0) scenery.push(o);
+      else characters.push(o);
+    });
+    imageBackgrounds.splice(0, imageBackgrounds.length);
+    featured.forEach(function(o) { imageBackgrounds.push(o); });
+    scenery.forEach(function(o) { imageBackgrounds.push(o); });
+    characters.forEach(function(o) { imageBackgrounds.push(o); });
+  })();
+
+  let modalBuilt = false;
+  let selectedId = null;
+  let fadeTimer = null;
+
+  function ensureThemeFadeOverlay() {
+    let overlay = document.getElementById('themeFadeOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'themeFadeOverlay';
+      overlay.className = 'theme-fade-overlay';
+      document.body.appendChild(overlay);
+    }
+    return overlay;
+  }
+
+  function runThemeFade(changeFn, enabled = true) {
+    if (!enabled) {
+      changeFn();
+      return;
+    }
+    const overlay = ensureThemeFadeOverlay();
+    if (fadeTimer) {
+      clearTimeout(fadeTimer);
+      fadeTimer = null;
+    }
+    overlay.classList.add('active');
+    fadeTimer = setTimeout(() => {
+      changeFn();
+      requestAnimationFrame(() => {
+        overlay.classList.remove('active');
+      });
+      fadeTimer = setTimeout(() => {
+        fadeTimer = null;
+      }, 240);
+    }, 170);
+  }
+
+  function getImageOverlay() {
+    const isGrid = document.body.classList.contains('layout-grid');
+    return isGrid
+      ? ['rgba(18, 18, 36, 0.34)', 'rgba(18, 18, 36, 0.43)']
+      : ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
+  }
+
+  function syncImageBackgroundChrome() {
+    document.documentElement.style.backgroundColor = '#121224';
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) metaThemeColor.setAttribute('content', '#121224');
+    if (themeToggle) themeToggle.title = '图片背景';
+  }
+
+  function paintImageBackground(url) {
+    if (!url) return;
+    url = url.replace('anime_wallpapers/', 'wallpapers_webp/');
+    url = url.replace('.jpg', '.webp');
+    const overlay = getImageOverlay();
+    syncImageBackgroundChrome();
+    document.body.classList.add('background-image-mode');
+    document.body.style.backgroundImage = `linear-gradient(to bottom, ${overlay[0]}, ${overlay[1]}), url('${url}')`;
+    document.body.style.backgroundAttachment = 'fixed';
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundRepeat = 'no-repeat';
+  }
+
+  function markActive(id) {
+    selectedId = id;
+    document.querySelectorAll('.background-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.bgId === id);
+    });
+    const strip = document.getElementById('backgroundStrip');
+    if (strip) {
+      const grayScrollbarIds = ['theme-white', 'theme-dawn', 'theme-mint', 'theme-ocean', 'theme-twilight'];
+      strip.classList.toggle('gray-scrollbar', grayScrollbarIds.indexOf(id) >= 0);
+    }
+  }
+
+  function scrollCardToCenter(card) {
+    if (!card) return;
+    var strip = document.getElementById('backgroundStrip');
+    if (!strip) return;
+    var stripRect = strip.getBoundingClientRect();
+    var cardRect = card.getBoundingClientRect();
+    var target = strip.scrollLeft + (cardRect.left - stripRect.left) - (stripRect.width / 2) + (cardRect.width / 2);
+    strip.scrollTo({ left: target, behavior: 'smooth' });
+  }
+
+  function normalizeBackgroundOption(option) {
+    if (!option) return option;
+    const normalized = { ...option };
+    if (normalized.url) {
+      normalized.url = normalized.url.replace('anime_wallpapers/', 'wallpapers_webp/').replace('.jpg', '.webp');
+    }
+    if (normalized.thumb) {
+      normalized.thumb = normalized.thumb.replace('anime_wallpapers/', 'wallpapers_webp/').replace('.jpg', '.webp');
+    }
+    return normalized;
+  }
+
+  function saveSelection(option) {
+    option = normalizeBackgroundOption(option);
+    localStorage.setItem(storageKey, JSON.stringify(option));
+  }
+
+  function setThemeBackground(option, shouldSave = true) {
+    runThemeFade(() => {
+      document.body.classList.add('bg-transitioning');
+      document.body.classList.remove('background-image-mode');
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundAttachment = '';
+      document.body.style.backgroundSize = '';
+      document.body.style.backgroundPosition = '';
+      document.body.style.backgroundRepeat = '';
+      if (typeof setTheme === 'function') {
+        setTheme(option.theme);
+      } else {
+        document.documentElement.setAttribute('data-theme', option.theme);
+      }
+      if (shouldSave) saveSelection(option);
+      markActive(option.id);
+      setTimeout(() => document.body.classList.remove('bg-transitioning'), 380);
+    }, shouldSave);
+  }
+
+  function setImageBackground(option, shouldSave = true, preload = true) {
+    option = normalizeBackgroundOption(option);
+    const loading = document.getElementById('backgroundLoading');
+    const apply = (url) => {
+      if (url) option.url = url;
+      runThemeFade(() => {
+        document.body.classList.add('bg-transitioning');
+        document.body.classList.add('background-image-mode');
+        paintImageBackground(option.url);
+        if (shouldSave) saveSelection(option);
+        markActive(option.id);
+        if (loading) loading.classList.remove('show');
+        setTimeout(() => document.body.classList.remove('bg-transitioning'), 380);
+      }, shouldSave);
+    };
+
+    if (!preload) {
+      apply(option.url);
+      return;
+    }
+
+    if (loading) loading.classList.add('show');
+    const candidates = [];
+    [option.url, encodeURI(option.url || ''), option.thumb, encodeURI(option.thumb || '')].forEach(url => {
+      if (url && candidates.indexOf(url) < 0) candidates.push(url);
+    });
+    let index = 0;
+    const tryLoad = () => {
+      const url = candidates[index];
+      if (!url) {
+        if (loading) loading.classList.remove('show');
+        console.warn('背景预加载失败，已直接应用原路径：', option.url);
+        apply(option.url);
+        return;
+      }
+      const img = new Image();
+      img.onload = () => apply(url);
+      img.onerror = () => {
+        index += 1;
+        tryLoad();
+      };
+      img.src = url;
+    };
+    tryLoad();
+  }
+
+  function applySelection(option, shouldSave = true, preload = true) {
+    if (!option) return;
+    if (option.type === 'theme') setThemeBackground(option, shouldSave);
+    if (option.type === 'image') setImageBackground(option, shouldSave, preload);
+  }
+
+  function createThemeCard(option) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'background-card';
+    btn.dataset.bgId = option.id;
+    btn.title = option.name;
+    btn.setAttribute('aria-label', option.name);
+    btn.innerHTML = `
+      <div class="background-card-preview" style="background:${option.preview}"></div>
+    `;
+    btn.addEventListener('click', () => {
+      applySelection(option, true, true);
+      scrollCardToCenter(btn);
+    });
+    return btn;
+  }
+
+  function createImageCard(option) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'background-card';
+    btn.dataset.bgId = option.id;
+    btn.title = option.name;
+    btn.setAttribute('aria-label', option.name);
+    btn.innerHTML = `
+      <img src="${option.thumb}" alt="" loading="lazy" decoding="async">
+    `;
+    btn.addEventListener('click', () => {
+      applySelection(option, true, true);
+      scrollCardToCenter(btn);
+    });
+    return btn;
+  }
+
+  function buildModal() {
+    if (modalBuilt) return;
+    modalBuilt = true;
+
+    const modal = document.createElement('div');
+    modal.id = 'backgroundModal';
+    modal.className = 'background-modal';
+    modal.innerHTML = `
+      <div class="background-modal-panel" role="dialog" aria-modal="true" aria-label="背景选择器">
+        <div class="background-modal-content">
+          <div class="background-strip" id="backgroundStrip"></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const strip = modal.querySelector('#backgroundStrip');
+    pureBackgrounds.forEach(option => strip.appendChild(createThemeCard(option)));
+    imageBackgrounds.forEach(option => strip.appendChild(createImageCard(option)));
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    /* mouse drag scrolling on the strip */
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let dragMoved = false;
+
+    strip.addEventListener('mousedown', (e) => {
+      isDown = true;
+      dragMoved = false;
+      strip.classList.add('dragging');
+      startX = e.pageX - strip.offsetLeft;
+      scrollLeft = strip.scrollLeft;
+    });
+
+    strip.addEventListener('mouseleave', () => {
+      isDown = false;
+      strip.classList.remove('dragging');
+    });
+
+    strip.addEventListener('mouseup', () => {
+      isDown = false;
+      strip.classList.remove('dragging');
+    });
+
+    strip.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - strip.offsetLeft;
+      const walk = x - startX;
+      if (Math.abs(walk) > 4) dragMoved = true;
+      strip.scrollLeft = scrollLeft - walk;
+    });
+
+    /* prevent click after drag */
+    strip.addEventListener('click', (e) => {
+      if (dragMoved) {
+        e.preventDefault();
+        e.stopPropagation();
+        dragMoved = false;
+      }
+    }, true);
+
+    markActive(selectedId);
+  }
+
+  function openModal() {
+    buildModal();
+    positionBackgroundPicker();
+    document.getElementById('backgroundModal').classList.toggle('open');
+    /* scroll active card to center */
+    var activeCard = document.querySelector('.background-card.active');
+    if (activeCard) {
+      setTimeout(function() { scrollCardToCenter(activeCard); }, 80);
+    }
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('backgroundModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function positionBackgroundPicker() {
+    const modal = document.getElementById('backgroundModal');
+    if (!modal || !themeToggle) return;
+    const rect = themeToggle.getBoundingClientRect();
+    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0, 360);
+    const width = Math.max(336, Math.min(920, viewportWidth - 24));
+    const panel = modal.querySelector('.background-modal-panel');
+    if (panel) panel.style.width = `${width}px`;
+    const layoutOffset = document.body.classList.contains('layout-grid') ? 14 : 0;
+    modal.style.setProperty('--bg-picker-top', `${rect.bottom + 18 + layoutOffset}px`);
+  }
+
+  function createTrigger() {
+    const oldTrigger = document.getElementById('backgroundPickerTrigger');
+    if (oldTrigger) oldTrigger.remove();
+
+    const loading = document.createElement('div');
+    loading.id = 'backgroundLoading';
+    loading.className = 'background-loading';
+    loading.textContent = '背景加载中…';
+    document.body.appendChild(loading);
+  }
+
+  function restoreSelection() {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        const option = JSON.parse(saved);
+        var normalized = normalizeBackgroundOption(option);
+        /* 验证保存的背景是否仍存在于当前列表中 */
+        var found = imageBackgrounds.find(function(o) { return o.id === normalized.id || o.url === normalized.url; });
+        if (!found) {
+          found = pureBackgrounds.find(function(o) { return o.id === normalized.id || o.theme === normalized.theme; });
+        }
+        if (found) {
+          applySelection(found, false, false);
+          return;
+        }
+        /* 旧引用不存在，清除并使用随机默认 */
+        localStorage.removeItem(storageKey);
+      } catch (err) {
+        localStorage.removeItem(storageKey);
+      }
+    }
+    /* 没有用户选择时，随机使用白 / 粉 / 青三种默认主题 */
+    var defaultThemeIds = ['theme-white', 'theme-dawn', 'theme-mint'];
+    var defaultThemes = pureBackgrounds.filter(function(o) { return defaultThemeIds.indexOf(o.id) >= 0; });
+    if (defaultThemes.length > 0) {
+      var randomIdx = Math.floor(Math.random() * defaultThemes.length);
+      applySelection(defaultThemes[randomIdx], false, false);
+    } else {
+      applySelection(pureBackgrounds[0], false, false);
+    }
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeModal();
+  });
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openModal();
+      event.currentTarget.blur();
+    }, true);
+  }
+
+  createTrigger();
+  restoreSelection();
+})();
+// ========== 背景选择器结束 ==========
 
 </script>
 </body>
