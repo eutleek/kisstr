@@ -87,7 +87,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     background-color: #f5f5f7;
-    overscroll-behavior-y: auto;
+    overscroll-behavior-y: none;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
   }
@@ -7810,6 +7810,13 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     modal.addEventListener('click', (event) => {
       if (event.target === modal) closeModal();
     });
+
+    modal.addEventListener('touchstart', (event) => {
+      if (event.target === modal) {
+        closeModal();
+        event.preventDefault();
+      }
+    }, { passive: false });
 
     /* mouse drag scrolling on the strip */
     let isDown = false;
