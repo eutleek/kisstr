@@ -87,9 +87,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     background-color: #f5f5f7;
-    min-height: 100vh;
-    min-height: 100dvh;
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: auto;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
   }
@@ -2903,6 +2901,7 @@
   [data-theme="dream"] body.layout-minimal {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     color: #ffffff;
+    background-attachment: fixed;
   }
 
   [data-theme="dream"] body.layout-minimal .logo {
@@ -3079,16 +3078,19 @@
   [data-theme="forest"] body.layout-minimal {
     background: linear-gradient(135deg, #1a3c34 0%, #2d5f4e 50%, #3a7d5e 100%);
     color: #ffffff;
+    background-attachment: fixed;
   }
 
   [data-theme="deepsea"] body.layout-minimal {
     background: linear-gradient(135deg, #0c2d48 0%, #1a4a6e 50%, #2e6a8e 100%);
     color: #ffffff;
+    background-attachment: fixed;
   }
 
   [data-theme="clay"] body.layout-minimal {
     background: linear-gradient(135deg, #4a3326 0%, #6b4a35 50%, #8a6a4f 100%);
     color: #ffffff;
+    background-attachment: fixed;
   }
 
   [data-theme="forest"] body.layout-minimal .logo,
@@ -3745,7 +3747,6 @@
     min-height: 36px !important;
     flex: 0 0 36px !important;
     margin-left: 0 !important;
-    padding: 0 !important;
   }
 
   .layout-btn {
@@ -4023,32 +4024,6 @@
 
   .background-loading.show {
     display: block;
-  }
-
-  /* 图片背景独立层：替代伪元素，避免移动端 z-index 反转 */
-  body.background-image-mode {
-    background-image: none !important;
-    background-color: transparent !important;
-  }
-
-  .bg-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1;
-    pointer-events: none;
-    display: none;
-    will-change: transform;
-  }
-
-  body.background-image-mode .bg-layer {
-    display: block;
-    background-image: var(--bg-image, none);
   }
 
   /* 图片背景模式：恢复之前调过的可读性增强，独立于主题切换 */
@@ -7685,16 +7660,12 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     url = url.replace('.jpg', '.webp');
     const overlay = getImageOverlay();
     syncImageBackgroundChrome();
-    // 创建或复用独立背景层 div（替代伪元素，避免移动端 z-index 反转）
-    var bgLayer = document.getElementById('bgLayer');
-    if (!bgLayer) {
-      bgLayer = document.createElement('div');
-      bgLayer.id = 'bgLayer';
-      bgLayer.className = 'bg-layer';
-      document.body.insertBefore(bgLayer, document.body.firstChild);
-    }
     document.body.classList.add('background-image-mode');
-    document.body.style.setProperty('--bg-image', `linear-gradient(to bottom, ${overlay[0]}, ${overlay[1]}), url('${url}')`);
+    document.body.style.backgroundImage = `linear-gradient(to bottom, ${overlay[0]}, ${overlay[1]}), url('${url}')`;
+    document.body.style.backgroundAttachment = 'fixed';
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundRepeat = 'no-repeat';
   }
 
   function markActive(id) {
@@ -7745,7 +7716,6 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
       document.body.style.backgroundSize = '';
       document.body.style.backgroundPosition = '';
       document.body.style.backgroundRepeat = '';
-      document.body.style.removeProperty('--bg-image');
       if (typeof setTheme === 'function') {
         setTheme(option.theme);
       } else {
@@ -7866,13 +7836,6 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     modal.addEventListener('click', (event) => {
       if (event.target === modal) closeModal();
     });
-
-    modal.addEventListener('touchstart', (event) => {
-      if (event.target === modal) {
-        closeModal();
-        event.preventDefault();
-      }
-    }, { passive: false });
 
     /* mouse drag scrolling on the strip */
     let isDown = false;
