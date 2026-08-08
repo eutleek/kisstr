@@ -4,7 +4,7 @@
 <script defer src="https://cloud.umami.is/script.js" data-website-id="2e77a380-3ab4-4cc2-ab63-aac249ee26ef"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-<meta name="theme-color" content="#0071e3">
+<meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="漫画阅读、正版平台、漫画工具与图源社区导航">
@@ -4698,7 +4698,7 @@
     }
 
     .search-inline.expanded .search-icon {
-      left: 7px !important;
+      left: 8px !important;
       transform: translateY(-50%) !important;
     }
 
@@ -5466,20 +5466,24 @@
   [data-theme="starry"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
   [data-theme="sunset"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
   [data-theme="aurora"] body:not(.background-image-mode):not(.layout-minimal) .search-inline {
-    background: rgba(255, 255, 255, 0.94) !important;
-    border-color: rgba(255, 255, 255, 0.88) !important;
-    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18) !important;
+    background: var(--card-bg) !important;
+    border-color: var(--card-border) !important;
+    box-shadow: none !important;
   }
-  /* Classic layout search border fix in image background mode */
+  /* Classic layout search border matches classic tabs */
   body.background-image-mode:not(.layout-minimal) .search-inline {
-    border: 1px solid rgba(255, 255, 255, 0.72) !important;
+    border: 1px solid var(--card-border) !important;
     background: var(--card-bg) !important;
     box-shadow: none !important;
   }
 
-  body.background-image-mode:not(.layout-minimal) .search-inline:hover,
+  body.background-image-mode:not(.layout-minimal) .search-inline:hover {
+    border-color: var(--accent) !important;
+    background: var(--card-bg) !important;
+  }
+
   body.background-image-mode:not(.layout-minimal) .search-inline.expanded {
-    border-color: rgba(255, 255, 255, 0.86) !important;
+    border-color: var(--card-border) !important;
     background: var(--card-bg) !important;
   }
   /* ========== Minimal layout search box reference (magazine only, classic unchanged) ========== */
@@ -5535,7 +5539,7 @@
   body.layout-minimal .search-inline.expanded .search-icon {
     position: absolute !important;
     fill: #1d1d1f;
-    left: 9px !important;
+    left: 10px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
     width: 16px !important;
@@ -5579,7 +5583,7 @@
     body.layout-minimal .search-inline .search-icon,
     body.layout-minimal .search-inline:not(.expanded) .search-icon,
     body.layout-minimal .search-inline.expanded .search-icon {
-      left: 7px !important;
+      left: 8px !important;
       width: 16px !important;
       height: 16px !important;
       transform: translateY(-50%) !important;
@@ -5592,6 +5596,160 @@
     }
   }
   /* ========== Minimal layout search box reference end ========== */
+
+  /* ========== No-fill controls and classic icons: requested final override ========== */
+  .theme-toggle,
+  .layout-toggle,
+  .layout-btn,
+  .hide-toggle,
+  .search-inline,
+  .theme-toggle:hover,
+  .layout-btn:hover,
+  .layout-btn.active,
+  .hide-toggle:hover,
+  .hide-toggle.active,
+  .search-inline:hover,
+  .search-inline.expanded,
+  body.layout-minimal .theme-toggle,
+  body.layout-minimal .layout-toggle,
+  body.layout-minimal .layout-btn,
+  body.layout-minimal .hide-toggle,
+  body.layout-minimal .search-inline,
+  body.layout-minimal .theme-toggle:hover,
+  body.layout-minimal .layout-btn:hover,
+  body.layout-minimal .layout-btn.active,
+  body.layout-minimal .hide-toggle:hover,
+  body.layout-minimal .hide-toggle.active,
+  body.layout-minimal .search-inline:hover,
+  body.layout-minimal .search-inline.expanded,
+  body.background-image-mode .theme-toggle,
+  body.background-image-mode .layout-toggle,
+  body.background-image-mode .layout-btn,
+  body.background-image-mode .hide-toggle,
+  body.background-image-mode .search-inline,
+  body.background-image-mode .theme-toggle:hover,
+  body.background-image-mode .layout-btn:hover,
+  body.background-image-mode .layout-btn.active,
+  body.background-image-mode .hide-toggle:hover,
+  body.background-image-mode .hide-toggle.active,
+  body.background-image-mode .search-inline:hover,
+  body.background-image-mode .search-inline.expanded,
+  body.background-image-mode.layout-minimal .theme-toggle,
+  body.background-image-mode.layout-minimal .layout-toggle,
+  body.background-image-mode.layout-minimal .layout-btn,
+  body.background-image-mode.layout-minimal .hide-toggle,
+  body.background-image-mode.layout-minimal .search-inline,
+  body.background-image-mode.layout-minimal .theme-toggle:hover,
+  body.background-image-mode.layout-minimal .layout-btn:hover,
+  body.background-image-mode.layout-minimal .layout-btn.active,
+  body.background-image-mode.layout-minimal .hide-toggle:hover,
+  body.background-image-mode.layout-minimal .hide-toggle.active,
+  body.background-image-mode.layout-minimal .search-inline:hover,
+  body.background-image-mode.layout-minimal .search-inline.expanded {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+
+  body.layout-grid .link-icon,
+  body:not(.layout-minimal) .link-icon,
+  body.layout-grid.background-image-mode .link-icon,
+  body.background-image-mode:not(.layout-minimal) .link-icon {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    color: var(--text-primary) !important;
+  }
+
+  /* ========== Capture unlock and mobile bottom seam fix ========== */
+  html,
+  body,
+  body * {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  select,
+  .tab-btn,
+  .theme-toggle,
+  .layout-btn,
+  .hide-toggle,
+  .search-inline,
+  .link-card,
+  .ai-link-card {
+    -webkit-touch-callout: default !important;
+    touch-action: auto !important;
+  }
+
+  @media (max-width: 768px) {
+    .bg-gradient {
+      height: calc(100lvh + var(--safe-bottom) + 32px) !important;
+    }
+
+    .bg-layer,
+    .bg-layer-fade {
+      bottom: calc(-1 * (var(--safe-bottom) + 220px)) !important;
+      min-height: calc(100lvh + var(--safe-bottom) + 244px) !important;
+    }
+
+    footer {
+      margin-bottom: -2px !important;
+      padding-bottom: calc(46px + var(--safe-bottom)) !important;
+      background-clip: border-box !important;
+    }
+
+    body::after {
+      content: '' !important;
+      position: fixed !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: -2px !important;
+      height: calc(var(--safe-bottom) + 10px) !important;
+      z-index: 98 !important;
+      pointer-events: none !important;
+      background: #f5f5f7 !important;
+      transform: translateZ(0);
+    }
+
+    body.layout-minimal::after {
+      background: #ffffff !important;
+    }
+
+    body.background-image-mode::after {
+      background: transparent !important;
+    }
+  }
+
+  /* ========== Search expanded icon spacing tweak ========== */
+  body:not(.layout-minimal) .search-inline.expanded .search-icon,
+  body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
+    left: 10px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  body.layout-minimal .search-inline.expanded .search-icon,
+  body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
+    left: 8px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  @media (max-width: 768px) {
+    body:not(.layout-minimal) .search-inline.expanded .search-icon,
+    body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
+      left: 10px !important;
+    }
+
+    body.layout-minimal .search-inline.expanded .search-icon,
+    body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
+      left: 6px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -5646,7 +5804,7 @@
           <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
         </svg>
         <svg class="hide-icon-eye hide-icon-hide" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46A11.804 11.804 0 0 0 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+          <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46A11.804 11.804 0 0 0 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.54-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.54.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
         </svg>
       </button>
     </div>
@@ -5692,7 +5850,7 @@
   </div>
   <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
   <p class="footer-copy">漫画网站 · 优质网站收藏</p>
-  <p class="footer-version">版本号：1.53 · 共 7809 个链接</p>
+  <p class="footer-version">版本号：1.54 · 共 7809 个链接</p>
 </footer>
 
 <script>
@@ -7704,33 +7862,32 @@ function setTheme(theme) {
   const themeNames = getThemeNames();
   const themeIndex = themes.indexOf(theme);
 
-  // 动态更新浏览器主题色 (Brave/Chrome/Safari 地址栏颜色)
   const themeColors = {
-    'white': '#f5f5f7',
-    'dawn': '#fff5f5',
-    'mint': '#f0fff5',
-    'ocean': '#f0f8ff',
-    'twilight': '#f5f0ff',
-    'midnight': '#000212',
-    'starry': '#0c0c1d',
-    'sunset': '#2d1b0e',
-    'aurora': '#1a2a3a',
-    'dream': '#667eea'
+    "white": "#f5f5f7",
+    "dawn": "#fff5f5",
+    "mint": "#f0fff5",
+    "ocean": "#f0f8ff",
+    "twilight": "#f5f0ff",
+    "midnight": "#000212",
+    "starry": "#0c0c1d",
+    "sunset": "#2d1b0e",
+    "aurora": "#1a2a3a",
+    "dream": "#667eea",
+    "forest": "#2d5f4e",
+    "deepsea": "#1a4a6e",
+    "clay": "#6b4a35"
   };
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-  if (metaThemeColor && themeColors[theme]) {
-    metaThemeColor.setAttribute('content', themeColors[theme]);
-  }
 
-  // 同步更新 html 背景色，防止快速滚动时出现白边
   const currentLayout = getCurrentLayout();
-  if (currentLayout === 'minimal') {
-    document.documentElement.style.backgroundColor = '#ffffff';
+  if (currentLayout === "minimal") {
+    document.documentElement.style.backgroundColor = "#ffffff";
+    if (metaThemeColor) metaThemeColor.setAttribute("content", "#ffffff");
   } else if (themeColors[theme]) {
     document.documentElement.style.backgroundColor = themeColors[theme];
+    if (metaThemeColor) metaThemeColor.setAttribute("content", themeColors[theme]);
   }
 
-  // 暗色主题显示太阳图标，亮色主题显示月亮图标
   if (darkThemes.includes(theme)) {
     sunIcon.style.display = 'block';
     moonIcon.style.display = 'none';
