@@ -5770,6 +5770,31 @@
     color: #ffffff !important;
     fill: #ffffff !important;
   }
+
+  /* classic wallpaper card border first-paint stabilization */
+  body.layout-grid.background-image-mode .link-card,
+  body.layout-grid.background-image-mode .ai-link-card,
+  body.layout-grid.background-image-mode .skeleton-card {
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background-clip: padding-box !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    transition-property: transform, background-color, color, opacity !important;
+  }
+
+  body.layout-grid.background-image-mode .link-card::before,
+  body.layout-grid.background-image-mode .ai-link-card::before,
+  body.layout-grid.background-image-mode .link-card::after,
+  body.layout-grid.background-image-mode .ai-link-card::after,
+  body.layout-grid.background-image-mode .skeleton-card::after {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
   /* ========== Capture unlock and mobile bottom seam fix ========== */
   html,
   body,
@@ -6182,7 +6207,7 @@
   </div>
   <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
   <p class="footer-copy">新闻 · 优质网站收藏</p>
-  <p class="footer-version">版本号：1.58 · 共 1829 个链接</p>
+  <p class="footer-version">版本号：1.58 · 共 1828 个链接</p>
 </footer>
 
 <script>
