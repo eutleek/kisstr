@@ -321,6 +321,53 @@
     outline: 0 !important;
     box-shadow: none !important;
   }
+
+  /* early html wallpaper mode card border stabilization */
+  html.background-image-mode body.layout-grid .link-card,
+  html.background-image-mode body.layout-grid .ai-link-card,
+  html.background-image-mode body.layout-grid .skeleton-card {
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background-clip: padding-box !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    transition-property: transform, background-color, color, opacity !important;
+  }
+
+  html.background-image-mode body.layout-grid .link-card::before,
+  html.background-image-mode body.layout-grid .ai-link-card::before,
+  html.background-image-mode body.layout-grid .link-card::after,
+  html.background-image-mode body.layout-grid .ai-link-card::after,
+  html.background-image-mode body.layout-grid .skeleton-card::after {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* first-second card border rasterization guard */
+  html.cards-stabilizing body.layout-grid .link-card,
+  html.cards-stabilizing body.layout-grid .ai-link-card,
+  html.cards-stabilizing body.layout-grid .skeleton-card {
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    transition: none !important;
+  }
+
+  html.cards-stabilizing body.layout-grid .link-card::before,
+  html.cards-stabilizing body.layout-grid .ai-link-card::before,
+  html.cards-stabilizing body.layout-grid .link-card::after,
+  html.cards-stabilizing body.layout-grid .ai-link-card::after,
+  html.cards-stabilizing body.layout-grid .skeleton-card::after {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
   /* ========== Capture unlock and mobile bottom seam fix ========== */
   html,
   body,
@@ -383,6 +430,49 @@
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
       left: 6px !important;
     }
+  }
+
+  /* final override: wallpaper classic cards use transparent borders */
+  html.background-image-mode body.layout-grid .link-card,
+  html.background-image-mode body.layout-grid .ai-link-card,
+  html.background-image-mode body.layout-grid .skeleton-card,
+  body.layout-grid.background-image-mode .link-card,
+  body.layout-grid.background-image-mode .ai-link-card,
+  body.layout-grid.background-image-mode .skeleton-card,
+  html.cards-stabilizing body.layout-grid .link-card,
+  html.cards-stabilizing body.layout-grid .ai-link-card,
+  html.cards-stabilizing body.layout-grid .skeleton-card {
+    border: 1px solid transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  html.background-image-mode body.layout-grid .link-card::before,
+  html.background-image-mode body.layout-grid .ai-link-card::before,
+  html.background-image-mode body.layout-grid .link-card::after,
+  html.background-image-mode body.layout-grid .ai-link-card::after,
+  body.layout-grid.background-image-mode .link-card::before,
+  body.layout-grid.background-image-mode .ai-link-card::before,
+  body.layout-grid.background-image-mode .link-card::after,
+  body.layout-grid.background-image-mode .ai-link-card::after,
+  html.cards-stabilizing body.layout-grid .link-card::before,
+  html.cards-stabilizing body.layout-grid .ai-link-card::before,
+  html.cards-stabilizing body.layout-grid .link-card::after,
+  html.cards-stabilizing body.layout-grid .ai-link-card::after {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  body.background-image-mode .subcategory-title,
+  body.background-image-mode .subcategory-en-title,
+  html.background-image-mode body .subcategory-title,
+  html.background-image-mode body .subcategory-en-title,
+  body.background-image-mode .subcategory-title-card .link-name,
+  body.background-image-mode .subcategory-title-card .link-url,
+  html.background-image-mode body .subcategory-title-card .link-name,
+  html.background-image-mode body .subcategory-title-card .link-url {
+    color: #ffffff !important;
   }
 </style>
 </head>
