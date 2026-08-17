@@ -6326,7 +6326,7 @@ try {
   <p class="quote-text" id="quoteText"></p>
 </section>
 
-<div class="category-tabs" id="categoryTabs"></div>
+  <div class="category-tabs" id="categoryTabs"></div>
 <div class="music-bar-bottom-container">
   <canvas class="music-bar-bottom" id="musicBarBottom"></canvas>
   <button class="music-fx-btn" id="musicFxBtn" title="切换律动效果">
@@ -6359,7 +6359,6 @@ try {
   </div>
   <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
   <p class="footer-copy">聚合 · 优质网站收藏</p>
-  <p class="footer-version">版本号：1.58 · 共 1828 个链接</p>
 </footer>
 
 <script>
@@ -6395,6 +6394,13 @@ const linksData = [
           { name: "摸鱼导航", url: "https://moyu.games/", description: "摸鱼导航 - 游戏娱乐导航" },
           { name: "Windows XP 专业版", url: "https://win32.run/", description: "Windows XP 网页模拟器" },
           { name: "NSFW", url: "https://quenq.com/nsfw/", description: "不适合在工作场所打开/观看" }
+        ]
+      },
+      {
+        name: "工具集合",
+        enName: "Collections",
+        links: [
+          { name: "skill工具集", url: "https://hub.cocoloop.cn/", description: "Cocoloop技能工具集合" }
         ]
       },
       {
@@ -6693,13 +6699,6 @@ const linksData = [
           { name: "Notion AI", url: "https://notion.so/", description: "Notion AI的写改译能力" },
           { name: "DeepL Write", url: "https://deepl.com/write", description: "写作神器，免费版日常够用" },
           { name: "Fathom", url: "https://fathom.video/", description: "会议边开边录，免费月300分钟" }
-        ]
-      },
-      {
-        name: "工具集合",
-        enName: "Collections",
-        links: [
-          { name: "skill工具集", url: "https://hub.cocoloop.cn/", description: "Cocoloop技能工具集合" }
         ]
       }
     ]
@@ -7160,6 +7159,7 @@ function renderCategories() {
   tabsContainer.appendChild(homeBtn);
 
   linksData.forEach((cat, index) => {
+    if (cat.name === '索引') return;
     const btn = document.createElement('button');
     btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
     btn.textContent = cat.name;
@@ -7820,7 +7820,6 @@ themeToggle.addEventListener('click', (e) => {
 
 // 渲染分类和搜索框
 renderCategories();
-
 // Logo 点击刷新页面
 document.querySelector('.logo').addEventListener('click', function(e) {
   e.preventDefault();

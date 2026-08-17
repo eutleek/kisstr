@@ -6328,8 +6328,7 @@ try {
   <p class="quote-text" id="quoteText"></p>
 </section>
 
-<div class="category-tabs" id="categoryTabs"></div>
-
+  <div class="category-tabs" id="categoryTabs"></div>
 <div class="music-bar-bottom-container">
   <canvas class="music-bar-bottom" id="musicBarBottom"></canvas>
   <button class="music-fx-btn" id="musicFxBtn" title="切换律动效果">
@@ -6362,7 +6361,6 @@ try {
   </div>
   <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
   <p class="footer-copy">X平台 · 优质网站收藏</p>
-  <p class="footer-version">版本号：1.58 · 共 1828 个链接</p>
 </footer>
 
 <script>
@@ -7842,6 +7840,7 @@ function renderCategories() {
   tabsContainer.appendChild(homeBtn);
 
   linksData.forEach((cat, index) => {
+    if (cat.name === '索引') return;
     const btn = document.createElement('button');
     btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
     btn.textContent = cat.name;
@@ -8502,7 +8501,6 @@ themeToggle.addEventListener('click', (e) => {
 
 // 渲染分类和搜索框
 renderCategories();
-
 // Logo 点击刷新页面
 document.querySelector('.logo').addEventListener('click', function(e) {
   e.preventDefault();
