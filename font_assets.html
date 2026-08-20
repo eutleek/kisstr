@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="2e77a380-3ab4-4cc2-ab63-aac249ee26ef"></script>
@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <script>
 (function initColors() {
-  const layoutDefaultVersion = 'v130-magazine-default';
+  const layoutDefaultVersion = 'v141-minimal-default';
   if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
     localStorage.setItem('layout', 'minimal');
     localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -592,6 +592,7 @@ try {
     letter-spacing: -0.5px;
     cursor: pointer;
     user-select: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 
   .logo-group {
@@ -713,18 +714,16 @@ try {
 
   /* 单按钮布局 - 默认显示网格图标（点击切换到网格） */
   .layout-btn .layout-icon-grid {
-    display: block;
+    display: none;
   }
   .layout-btn .layout-icon-minimal {
-    display: none;
-  }
-
-  /* 网格布局时显示杂志图标（点击切换到杂志） */
-  body.layout-grid .layout-icon-grid {
-    display: none;
-  }
-  body.layout-grid .layout-icon-minimal {
     display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-grid {
+    display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-minimal {
+    display: none;
   }
 
   /* 隐藏按钮眼睛图标 */
@@ -744,6 +743,11 @@ try {
   body.hide-mode .hide-icon-hide {
     display: block;
   }
+  /* 隐藏模式：只隐藏网站URL，名字和说明保持可见，卡片大小不变 */
+  body.hide-mode .link-url {
+    visibility: hidden !important;
+  }
+
 
   /* ========== 隐藏名字按钮 ========== */
   .hide-toggle {
@@ -787,7 +791,7 @@ try {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 16px;
-    font-family: 'Noto Sans SC', 'PingFang SC', 'Helvetica Neue', sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     letter-spacing: clamp(2px, 3vw, 12px);
     text-indent: clamp(2px, 3vw, 12px);
     background: linear-gradient(135deg, var(--text-primary), var(--accent));
@@ -878,11 +882,6 @@ try {
     margin-bottom: 24px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--card-border);
-  }
-
-  /* 第一布局隐藏分类图标和标题 */
-  .layout-grid .category-header {
-    display: none;
   }
 
   .category-icon {
@@ -989,48 +988,6 @@ try {
 
   .subcategory-title-card.tilt-active:hover {
     transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
-  }
-
-  /* 第一布局：小分类标题取消卡片，只保留文字 */
-  .layout-grid .subcategory-title-card {
-    background: var(--card-bg) !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 0 0 8px 0 !important;
-    margin-bottom: 16px !important;
-    transition: none !important;
-    transform: none !important;
-    transform-style: flat !important;
-    will-change: auto !important;
-    overflow: visible !important;
-  }
-
-  .layout-grid .subcategory-title-card::before,
-  .layout-grid .subcategory-title-card::after {
-    display: none !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover {
-    transform: none !important;
-    box-shadow: none !important;
-    border-color: transparent !important;
-    background: var(--card-bg) !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover::before,
-  .layout-grid .subcategory-title-card:hover::after {
-    opacity: 0 !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active {
-    transition: none !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active:hover {
-    transform: none !important;
   }
 
   .subcategory-title {
@@ -1503,7 +1460,6 @@ try {
     pointer-events: auto;
     transform: scale(1);
   }
-
 
   .music-btn:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -2185,11 +2141,6 @@ try {
     opacity: 0 !important;
   }
 
-  /* 第一布局隐藏律动栏 */
-  .layout-grid .music-bar-bottom-container {
-    display: none !important;
-  }
-
   .layout-minimal .bg-gradient {
     display: block;
     background: #ffffff;
@@ -2721,6 +2672,147 @@ try {
     max-height: 40px;
     opacity: 1;
     margin-top: 4px;
+  }
+
+  /* ========== 清晰布局（Clear Layout）========== */
+  .layout-clear .link-card,
+  .layout-clear .ai-link-card {
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    min-height: auto;
+    margin: -4px -8px;
+  }
+
+  .layout-clear .link-card:hover,
+  .layout-clear .ai-link-card:hover,
+  .layout-clear .subcategory-title-card:hover {
+    transform: none;
+    box-shadow: 0 2px 12px rgba(184, 150, 83, 0.15);
+    border: none;
+    background: linear-gradient(135deg, rgba(184, 150, 83, 0.08), rgba(212, 175, 110, 0.05));
+  }
+
+  .layout-clear .link-card-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .layout-clear .link-icon {
+    display: none;
+  }
+
+  .layout-clear .link-info {
+    flex: none;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .layout-clear .link-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    position: relative;
+    display: block;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-card:hover .link-name {
+    color: #b89653;
+  }
+
+  .layout-clear .link-card:hover .link-name::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #b89653;
+    transition: all 0.3s ease;
+  }
+
+  .layout-clear .link-url {
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    margin-bottom: 0;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-desc {
+    max-height: 40px;
+    opacity: 1;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .layout-clear .link-arrow {
+    display: none;
+  }
+
+  .layout-clear footer {
+    background: transparent;
+    border-top: 1px solid #e5e5e5;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .layout-clear .footer-badges .badge {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+  }
+
+  .layout-clear .footer-badges .badge:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
+  }
+
+  .layout-clear .disclaimer-btn {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .layout-clear .disclaimer-btn:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
   }
 
   .layout-minimal .link-arrow {
@@ -3284,6 +3376,8 @@ try {
 
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     border-color: transparent;
   }
@@ -3293,18 +3387,24 @@ try {
   [data-theme="deepsea"] body.layout-minimal .search-inline:hover,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
   [data-theme="clay"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     border-color: rgba(255, 255, 255, 0.5);
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff;
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff;
   }
@@ -3500,6 +3600,204 @@ try {
   [data-theme="forest"] body.layout-minimal .footer-copy,
   [data-theme="deepsea"] body.layout-minimal .footer-copy,
   [data-theme="clay"] body.layout-minimal .footer-copy {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ========== Linear 黑（Linear 暗色主题提取） ========== */
+  [data-theme="ink"] {
+    --bg-primary: #08090a;
+    --bg-secondary: #141519;
+    --text-primary: #f7f8f8;
+    --text-secondary: #8a8f98;
+    --accent: #828fff;
+    --accent-hover: #9ba8ff;
+    --card-bg: rgba(28, 28, 31, 0.8);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal {
+    background: linear-gradient(135deg, #08090a 0%, #141519 50%, #1c1d22 100%);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .logo {
+    color: #f7f8f8 !important;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover,
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-tabs {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active::after {
+    background: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-header {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-title,
+  [data-theme="ink"] body.layout-minimal .subcategory-title {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-en-title {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover,
+  [data-theme="ink"] body.layout-minimal .ai-link-card:hover,
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name {
+    color: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name::after {
+    background: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-url {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-desc {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-desc {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle,
+  [data-theme="ink"] body.layout-minimal .layout-btn,
+  [data-theme="ink"] body.layout-minimal .hide-toggle {
+    border-color: transparent;
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] .music-fx-btn,
+  [data-theme="ink"] .music-fx-close {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover,
+  [data-theme="ink"] body.layout-minimal .hide-toggle:hover {
+    background: transparent;
+    color: #f7f8f8;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover svg,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover svg {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active svg {
+    fill: #08090a;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active svg {
+    fill: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal footer {
+    border-top-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn:hover {
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-copy {
     color: rgba(255, 255, 255, 0.6);
   }
 
@@ -3717,7 +4015,6 @@ try {
     transform: scale(1);
   }
 
-
   
 
   /* 控制按钮统一尺寸 + 杂志默认布局适配 */
@@ -3868,8 +4165,6 @@ try {
     }
   }
 
-
-
   /* 最终按钮尺寸覆盖：主题 / 布局 / 隐藏 */
   .theme-toggle,
   .hide-toggle,
@@ -3906,30 +4201,6 @@ try {
                 border-color 0.3s ease,
                 background-color 0.3s ease,
                 box-shadow 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    border-radius: 9px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-    width: 17px !important;
-    height: 17px !important;
-    transition: fill 0.2s ease,
-                filter 0.2s ease,
-                opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    transition: opacity 0.2s ease !important;
   }
 
   .theme-toggle,
@@ -4002,27 +4273,6 @@ try {
       min-width: 0 !important;
       min-height: 0 !important;
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 8px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 40px !important;
-      width: 92px !important;
-    }
   }
 
   @media (max-width: 375px) {
@@ -4053,30 +4303,7 @@ try {
     .category-tabs.search-expanded {
       transform: translateX(-8px);
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 7px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 15px !important;
-      height: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 70px !important;
-    }
   }
-
-
 
   /* 第二布局按钮方块化 */
   body.layout-minimal .theme-toggle,
@@ -4547,47 +4774,6 @@ try {
     filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.75));
   }
 
-  body.layout-grid.background-image-mode .link-icon {
-    box-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle,
-  body.layout-grid .layout-toggle,
-  body.layout-grid .layout-btn,
-  body.layout-grid .hide-toggle {
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg,
-  body.layout-grid .layout-btn svg,
-  body.layout-grid .hide-toggle svg {
-    filter: none !important;
-    text-shadow: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg {
-    color: #f59e0b !important;
-    fill: #f59e0b !important;
-  }
-
-  body.layout-grid .layout-btn svg {
-    color: #3b82f6 !important;
-    fill: #3b82f6 !important;
-  }
-
-  body.layout-grid .hide-toggle svg {
-    color: #10b981 !important;
-    fill: #10b981 !important;
-  }
-
-  body.layout-grid.hide-mode .hide-toggle svg {
-    color: #ef4444 !important;
-    fill: #ef4444 !important;
-  }
-
   body.background-image-mode .music-bar-bottom-container .music-fx-btn {
     color: rgba(255, 255, 255, 0.94) !important;
     filter: none !important;
@@ -4884,10 +5070,6 @@ try {
     cursor: text;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded {
-    border-radius: 18px !important;
-  }
-
   .layout-minimal .search-inline.expanded {
     width: 160px !important;
     min-width: 160px !important;
@@ -4988,41 +5170,6 @@ try {
     color: rgba(255, 255, 255, 0.96) !important;
   }
 
-  /* 本轮仅改 index：经典布局标签按附件恢复，搜索框与手机主题滚动条补强 */
-  body.layout-grid .category-tabs {
-    max-width: 1200px;
-    margin: 0 auto 20px;
-    padding: 0 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    overflow: visible;
-  }
-
-  body.layout-grid .tab-btn {
-    height: auto;
-    min-height: 0;
-    padding: 10px 20px;
-    border-radius: 20px !important;
-    font-size: 14px;
-    line-height: normal;
-    flex: 0 1 auto;
-    white-space: normal;
-  }
-
-  body.layout-grid .tab-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  body.layout-grid .tab-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #ffffff;
-  }
-
   .search-inline,
   .search-inline input,
   .search-inline input::placeholder {
@@ -5036,7 +5183,6 @@ try {
     border-color: rgba(255, 255, 255, 0.88) !important;
     box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18) !important;
   }
-
 
   .theme-toggle.background-picker-open {
     background: var(--card-bg) !important;
@@ -5111,15 +5257,6 @@ try {
     transform: translate(-50%, -50%) !important;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    width: 138px !important;
-  }
-
   .layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 17px !important;
@@ -5131,14 +5268,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 96px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5153,14 +5282,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 32px !important;
-      width: 72px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5173,8 +5294,6 @@ try {
       width: 72px !important;
     }
   }
-
-  body:not(.layout-minimal) .search-inline input,
   .layout-minimal .search-inline input,
   body.background-image-mode .search-inline input,
   body.background-image-mode.layout-minimal .search-inline input {
@@ -5182,8 +5301,6 @@ try {
     transition:
       opacity 0.2s ease !important;
   }
-
-  body:not(.layout-minimal) .search-inline.expanded input,
   .layout-minimal .search-inline.expanded input,
   body.background-image-mode .search-inline.expanded input,
   body.background-image-mode.layout-minimal .search-inline.expanded input {
@@ -5246,23 +5363,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body.layout-grid .category-tabs {
-      padding: 0 16px;
-      gap: 6px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 8px 14px;
-      border-radius: 20px !important;
-      font-size: 13px;
-      height: auto;
-      min-height: 0;
-      line-height: normal;
-    }
 
     .background-strip {
       touch-action: pan-x;
@@ -5291,19 +5391,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body.layout-grid .category-tabs {
-      padding: 0 12px;
-      gap: 4px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 6px 10px;
-      border-radius: 20px !important;
-      font-size: 12px;
-    }
   }
 
   /* 全平台适配兜底 */
@@ -5350,8 +5437,6 @@ try {
     }
   }
 /* ========== 背景、主题与全平台适配结束 ========== */
-
-
 
   /* ========== 全平台适配补强 ========== */
   html {
@@ -5455,175 +5540,10 @@ try {
     }
   }
 
-
-  
-/* ========== 搜索框动画复刻结束 ========== */
-
-
-  /* ========== 经典布局搜索框完全复刻参考文件（仅经典布局，杂志布局不变） ========== */
-  body:not(.layout-minimal) .search-wrapper,
-  body:not(.layout-minimal) .search-wrapper.search-expanded {
-    position: static !important;
-    width: auto !important;
-    height: auto !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    flex: 0 0 auto !important;
-    z-index: auto !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    flex: 0 0 auto !important;
-    border-radius: 20px !important;
-    overflow: hidden !important;
-    will-change: width !important;
-    transition: width 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    width: 180px !important;
-    min-width: 180px !important;
-    flex: 0 0 180px !important;
-    border-radius: 20px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon,
-  body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 11px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 16px !important;
-    height: 16px !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 36px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 130px !important;
-    opacity: 0 !important;
-    transition: opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded input {
-    opacity: 1 !important;
-  }
-
-  body:not(.layout-minimal) .category-tabs.search-expanded {
-    transform: none !important;
-    flex-wrap: wrap !important;
-    overflow: visible !important;
-  }
-
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 140px !important;
-      min-width: 140px !important;
-      flex: 0 0 140px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 90px !important;
-    }
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 100px !important;
-      min-width: 100px !important;
-      flex: 0 0 100px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 64px !important;
-      font-size: 12px !important;
-    }
-  }
-  /* Classic layout search fill follows tab color */
-  body:not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-  }
-
-  [data-theme="starry"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="sunset"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="aurora"] body:not(.background-image-mode):not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    box-shadow: none !important;
-  }
-  /* Classic layout search border matches classic tabs */
-  body.background-image-mode:not(.layout-minimal) .search-inline {
-    border: 1px solid var(--card-border) !important;
-    background: var(--card-bg) !important;
-    box-shadow: none !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-    background: var(--card-bg) !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded {
-    border-color: var(--card-border) !important;
-    background: var(--card-bg) !important;
   }
   /* ========== Minimal layout search box reference (magazine only, classic unchanged) ========== */
   body.layout-minimal .search-wrapper,
@@ -5790,99 +5710,6 @@ try {
     background-image: none !important;
     box-shadow: none !important;
   }
-
-  body.layout-grid .link-icon,
-  body:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    box-shadow: none !important;
-    color: var(--text-primary) !important;
-  }
-
-
-  /* classic layout + wallpaper theme: force icons white */
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-arrow,
-  body.background-image-mode:not(.layout-minimal) .link-arrow {
-    color: #ffffff !important;
-    fill: #ffffff !important;
-  }
-
-  /* classic wallpaper card border first-paint stabilization */
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  body.layout-grid.background-image-mode .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* early html wallpaper mode card border stabilization */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  html.background-image-mode body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* first-second card border rasterization guard */
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: transparent !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    transition: none !important;
-  }
-
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
   /* ========== Capture unlock and mobile bottom seam fix ========== */
   html,
   body,
@@ -5923,13 +5750,6 @@ try {
     }
   }
 
-  /* ========== Search expanded icon spacing tweak ========== */
-  body:not(.layout-minimal) .search-inline.expanded .search-icon,
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 10px !important;
-    transform: translateY(-50%) !important;
-  }
-
   body.layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 8px !important;
@@ -5937,10 +5757,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon,
-    body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 10px !important;
-    }
 
     body.layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -6009,6 +5825,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline,
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     background: transparent !important;
     background-color: transparent !important;
@@ -6032,6 +5850,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline.expanded,
   [data-theme="forest"] body.layout-minimal .search-inline.expanded,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     background: transparent !important;
     background-color: transparent !important;
@@ -6047,6 +5867,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline .search-icon,
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff !important;
     color: #ffffff !important;
@@ -6059,6 +5881,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline input,
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff !important;
   }
@@ -6078,6 +5902,8 @@ try {
   [data-theme="dream"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="forest"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="deepsea"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+  [data-theme="ink"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+
   [data-theme="clay"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover {
     color: #ffffff !important;
   }
@@ -6187,41 +6013,6 @@ try {
     color: #ffffff !important;
   }
 
-
-
-  /* final override: wallpaper classic cards use transparent borders */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card,
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card,
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border: 1px solid transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after {
-    border: 0 !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-
   body.background-image-mode .subcategory-title,
   body.background-image-mode .subcategory-en-title,
   html.background-image-mode body .subcategory-title,
@@ -6238,11 +6029,15 @@ try {
   }
 </style>
 </head>
-<body>
+<body class="layout-minimal">
 <script>
   (function() {
     var saved = localStorage.getItem('layout') || 'minimal';
-    document.body.classList.add('layout-' + saved);
+    if (saved === 'clear') {
+      document.body.classList.add('layout-minimal', 'layout-clear');
+    } else {
+      document.body.classList.add('layout-' + saved);
+    }
 
     try {
       var savedBackground = localStorage.getItem('kisstr_background_picker_selection_v1');
@@ -6273,7 +6068,7 @@ try {
     <div class="logo-group">
       <div class="logo" draggable="false">
         <div class="logo-icon"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M28,16l-6,6H10l-6-6l6-6l6,5.994L22,10L28,16z"/></svg></div>
-        <span id="logoText" style="pointer-events:none">𝗞𝗶𝘀𝘀𝘁𝗿</span>
+        <span id="logoText" style="pointer-events:none">𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐</span>
       </div>
     </div>
     <div class="header-actions">
@@ -6306,7 +6101,7 @@ try {
         </svg>
       </button>
       <div class="layout-toggle" id="layoutToggle">
-        <button class="layout-btn" data-layout="minimal" title="切换布局">
+        <button class="layout-btn" data-layout="clear" title="切换布局（清晰/杂志）">
           <svg class="layout-icon-grid" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"/></svg>
           <svg class="layout-icon-minimal" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h18v4H3zM3 13h18v4H3z"/></svg>
         </button>
@@ -6359,7 +6154,8 @@ try {
     <span class="badge">✨ 无弹窗</span>
     <span class="badge">✨ 无盈利</span>
   </div>
-  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
+  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>&nbsp;&nbsp;
+  <a href="https://m.baike.com/wikiid/7316069310949130294" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">关于作者</a>
   <p class="footer-copy">字体素材 · 优质网站收藏</p>
 </footer>
 
@@ -6380,177 +6176,177 @@ const linksData = [
           {
             "name": "Google Fonts",
             "url": "https://fonts.google.com",
-            "description": "谷歌官方开源字体库，提供大量高质量免费商用英文及多语言网页字体。"
+            "description": "谷歌官方开源字体库，提供大量高质量免费商用英文及多"
           },
           {
             "name": "DaFont",
             "url": "https://www.dafont.com",
-            "description": "全球最大的免费字体下载社区之一，按风格分类极细，包含海量创意字体。"
+            "description": "全球最大的免费字体下载社区之一，按风格分类极细"
           },
           {
             "name": "Fontspace",
             "url": "https://www.fontspace.com",
-            "description": "拥有超过 10 万款由设计师上传的免费字体，支持在线实时预览与下载。"
+            "description": "拥有超过 10 万款由设计师上传的免费字体"
           },
           {
             "name": "1001 Free Fonts",
             "url": "https://www.1001freefonts.com",
-            "description": "老牌字体下载网站，收录上万款分类明确的个人及商业免费字体。"
+            "description": "老牌字体下载网站，收录上万款分类明确的个人及商业免"
           },
           {
             "name": "Font Squirrel",
             "url": "https://www.fontsquirrel.com",
-            "description": "严格筛选 100% 免费可商业用途字体的优质资源站，附带字体生成器。"
+            "description": "严格筛选 100% 免费可商业用途字体的优质资源站"
           },
           {
             "name": "Adobe Fonts",
             "url": "https://fonts.adobe.com",
-            "description": "Adobe 官方字体服务平台，整合于 Creative Cloud，提供数千种顶级商业字体。"
+            "description": "Adobe 官方字体服务平台"
           },
           {
             "name": "MyFonts",
             "url": "https://www.myfonts.com",
-            "description": "全球最大的商业字体零售交易平台，汇聚顶级字体设计公司与独立字库。"
+            "description": "全球最大的商业字体零售交易平台"
           },
           {
             "name": "字由 (HelloFont)",
             "url": "https://www.hellofont.cn",
-            "description": "国内知名字体管理与应用软件平台，聚合数千款中英文字体及免费商用字库。"
+            "description": "国内知名字体管理与应用软件平台"
           },
           {
             "name": "字魂网",
             "url": "https://izihun.com",
-            "description": "国内知名原创字库与字体下载平台，提供丰富的商用艺术字、书法字及黑体字。"
+            "description": "国内知名原创字库与字体下载平台"
           },
           {
             "name": "猫啃网",
             "url": "https://www.maoken.com",
-            "description": "专注于整理与分享“免费可商用中文字体”的公益性中文字体资讯与下载站。"
+            "description": "专注于整理与分享“免费可商用中文字体”的公益性中文"
           },
           {
             "name": "字体天下",
             "url": "https://www.ziti163.com",
-            "description": "国内大型字体下载平台，收录海量中英文字体、艺术字及毛笔书法字体。"
+            "description": "国内大型字体下载平台，收录海量中英文字体"
           },
           {
             "name": "字体家",
             "url": "https://www.zitijia.com",
-            "description": "书法字体与艺术字体在线生成及下载平台，涵盖大量个人原创与商业字库。"
+            "description": "书法字体与艺术字体在线生成及下载平台"
           },
           {
             "name": "第一字体网",
             "url": "https://www.diyiziti.com",
-            "description": "知名在线艺术字体生成与转换工具站，支持各类书法字、签名字在线预览。"
+            "description": "知名在线艺术字体生成与转换工具站，支持各类书法字"
           },
           {
             "name": "求字体网",
             "url": "https://www.qiuziti.com",
-            "description": "强大的图片识别找字体工具与字体下载平台，上传截图即可精准查找对应字体。"
+            "description": "强大的图片识别找字体工具与字体下载平台"
           },
           {
             "name": "FontKe (字客网)",
             "url": "https://www.fontke.com",
-            "description": "专业级字体搜索引擎与字库数据平台，支持字体识别、转换、修改及下载。"
+            "description": "专业级字体搜索引擎与字库数据平台，支持字体识别"
           },
           {
             "name": "Fonts2u",
             "url": "https://www.fonts2u.com",
-            "description": "大型免费字体数据库，支持 Windows 和 Mac 格式，提供多语言字体检索。"
+            "description": "大型免费字体数据库，支持 Windows 和"
           },
           {
             "name": "Abstract Fonts",
             "url": "https://www.abstractfonts.com",
-            "description": "收录超过 13,000 款精美免费字体的设计类资源站，界面干净易用。"
+            "description": "收录超过 13,000 款精美免费字体的设计类资源"
           },
           {
             "name": "Creative Market (Fonts)",
             "url": "https://creativemarket.com/fonts",
-            "description": "知名独立设计师作品交易市场，提供极具设计感与现代感的的高品质商业字体。"
+            "description": "知名独立设计师作品交易市场"
           },
           {
             "name": "Envato Elements (Fonts)",
             "url": "https://elements.envato.com/fonts",
-            "description": "订阅制设计素材库，包含数万种高品质商业英文、手写及装饰字体。"
+            "description": "订阅制设计素材库，包含数万种高品质商业英文"
           },
           {
             "name": "Behance (Free Fonts)",
             "url": "https://www.behance.net",
-            "description": "Adobe 旗下的全球设计师作品集社区，许多设计大咖会在上面免费分享原创字体。"
+            "description": "Adobe 旗下的全球设计师作品集社区"
           },
           {
             "name": "Dribbble (Free Fonts)",
             "url": "https://dribbble.com",
-            "description": "全球顶尖视觉设计社区，搜索“Free Font”可发现大量高颜值的免费英文字体。"
+            "description": "全球顶尖视觉设计社区，搜索“Free"
           },
           {
             "name": "Urban Fonts",
             "url": "https://www.urbanfonts.com",
-            "description": "拥有超过 8,000 款免费字体与优质付费字体的老牌资源站点。"
+            "description": "拥有超过 8,000 款免费字体与优质付费字体的老"
           },
           {
             "name": "FontFabric",
             "url": "https://www.fontfabric.com",
-            "description": "独立字体设计工作室，提供非常出色的高端品牌、无衬线与手写体免费/付费字体。"
+            "description": "独立字体设计工作室，提供非常出色的高端品牌"
           },
           {
             "name": "Lost Type Co-Op",
             "url": "https://losttype.com",
-            "description": "Pay-what-you-want(随心付款)机制的独立字体合作社，提供极具复古文艺范的字体。"
+            "description": "Pay-what-you-want(随心付款)机制"
           },
           {
             "name": "Velvetyne Type Foundry (VTF)",
             "url": "https://velvetyne.fr",
-            "description": "法国著名的开源与免费字体实验室，发布许多极具实验性与艺术感的高质量字体。"
+            "description": "法国著名的开源与免费字体实验室"
           },
           {
             "name": "League of Movable Type",
             "url": "https://www.theleagueofmoveabletype.com",
-            "description": "开源Web字体运动的先驱网站，提供经典且开源的各类标准英文商业字体。"
+            "description": "开源Web字体运动的先驱网站"
           },
           {
             "name": "Collletttivo",
             "url": "https://www.collletttivo.it",
-            "description": "开源独立字体设计机构，免费分发极其新潮且适合现代平面设计的英文字体。"
+            "description": "开源独立字体设计机构，免费分发极其新潮且适合现代平"
           },
           {
             "name": "Fontshare",
             "url": "https://www.fontshare.com",
-            "description": "由 Indian Type Foundry 推出的 100% 免费可商用高品质字体服务平台。"
+            "description": "由 Indian Type Foundry"
           },
           {
             "name": "Uncut.wtf",
             "url": "https://uncut.wtf",
-            "description": "专为现代设计打造的开源与免费字体无限制分类目录，包含大量极简与复古字体。"
+            "description": "专为现代设计打造的开源与免费字体无限制分类目录"
           },
           {
             "name": "Typewolf",
             "url": "https://www.typewolf.com",
-            "description": "排版与字体趋势的行业风向标，提供丰富的字体搭配指南、替代方案及优质字体推荐。"
+            "description": "排版与字体趋势的行业风向标"
           },
           {
             "name": "Fonts In Use",
             "url": "https://fontsinuse.com",
-            "description": "极为庞大的字体排版实例文库，展示各种字体在书籍、海报及品牌设计中的真实效果。"
+            "description": "极为庞大的字体排版实例文库，展示各种字体在书籍"
           },
           {
             "name": "WhatFontis",
             "url": "https://www.whatfontis.com",
-            "description": "基于 AI 的图片字体识别工具，能快速识别图片中的英文字体并给出相似免费替代方案。"
+            "description": "基于 AI 的图片字体识别工具"
           },
           {
             "name": "MyFonts WhatTheFont",
             "url": "https://www.myfonts.com/pages/whatthefont",
-            "description": "MyFonts 官方图片识别字体工具，非常适合识别各类现代商业与印刷字体。"
+            "description": "MyFonts 官方图片识别字体工具"
           },
           {
             "name": "Fontsinuse Archive",
             "url": "https://fontsinuse.com/archive",
-            "description": "按历史时期、行业与媒介整理的字体运用历史索引库，设计师排版灵感宝库。"
+            "description": "按历史时期、行业与媒介整理的字体运用历史索引库"
           },
           {
             "name": "Free Typography",
             "url": "https://freetypography.com",
-            "description": "博客形式的免费字体推荐站，精选来自全球设计师的优秀免费下载字体。"
+            "description": "博客形式的免费字体推荐站"
           },
           {
             "name": "Typefully / Type365",
@@ -6565,67 +6361,67 @@ const linksData = [
           {
             "name": "Typedepot",
             "url": "https://www.typedepot.com",
-            "description": "来自保加利亚的字体设计工作室，提供多款带有免费版本的精致设计字体。"
+            "description": "来自保加利亚的字体设计工作室"
           },
           {
             "name": "Atipo Foundry",
             "url": "https://www.atipofoundry.com",
-            "description": "西班牙设计工作室，提供多款质感极佳、采用“分享即下载”模式的无衬线及衬线字体。"
+            "description": "西班牙设计工作室，提供多款质感极佳"
           },
           {
             "name": "YouWorkForThem",
             "url": "https://www.youworkforthem.com/fonts",
-            "description": "专注数字媒介与平面设计的高端字体及图形素材交易平台。"
+            "description": "专注数字媒介与平面设计的高端字体及图形素材交易平台"
           },
           {
             "name": "Linotype",
             "url": "https://www.linotype.com",
-            "description": "历史悠久的经典字库出版商(包含 Helvetica, Frutiger 等经典字体官方源)。"
+            "description": "历史悠久的经典字库出版商(包含"
           },
           {
             "name": "Monotype",
             "url": "https://www.monotype.com",
-            "description": "全球字体巨头 Monotype 官网，提供企业级字库授权与全球排版技术解决方案。"
+            "description": "全球字体巨头 Monotype 官网"
           },
           {
             "name": "Type Network",
             "url": "https://www.typenetwork.com",
-            "description": "联合全球众多顶尖独立字库厂牌的综合性高质量商业字体授权平台。"
+            "description": "联合全球众多顶尖独立字库厂牌的综合性高质量商业字体"
           },
           {
             "name": "Commercial Type",
             "url": "https://commercialtype.com",
-            "description": "主打报刊、杂志与高端品牌定制排版的纽约与伦敦知名字体设计工作室。"
+            "description": "主打报刊、杂志与高端品牌定制排版的纽约与伦敦知名字"
           },
           {
             "name": "Hoefler & Co.",
             "url": "https://www.typography.com",
-            "description": "由著名字体设计师 Jonathan Hoefler 创立的高端字库(已被 Monotype 收购，包含 Gotham 字体)。"
+            "description": "由著名字体设计师 Jonathan"
           },
           {
             "name": "Pangram Pangram",
             "url": "https://pangrampangram.com",
-            "description": "潮牌级别的现代字体工作室，免费提供高品质个人用途全套字体测试版。"
+            "description": "潮牌级别的现代字体工作室"
           },
           {
             "name": "Grilli Type",
             "url": "https://www.grillitype.com",
-            "description": "瑞士高品质独立字库，作品兼具严谨的瑞士排版风格与现代艺术气息。"
+            "description": "瑞士高品质独立字库，作品兼具严谨的瑞士排版风格与现"
           },
           {
             "name": "Climate Crisis Font",
             "url": "https://www.climatecrisisfont.com",
-            "description": "利用字体粗细动态展示北极冰川融化趋势的公益创意字体官网。"
+            "description": "利用字体粗细动态展示北极冰川融化趋势的公益创意字体"
           },
           {
             "name": "Open Foundry",
             "url": "https://open-foundry.com",
-            "description": "展示开源字体的互动平台，支持在线实时调节字重、字距与视觉样式。"
+            "description": "展示开源字体的互动平台，支持在线实时调节字重"
           },
           {
             "name": "Google Noto Fonts",
             "url": "https://fonts.google.com/noto",
-            "description": "谷歌“消灭豆腐块”计划官方字体库，覆盖全球所有语言文字的开源字体巨无霸。"
+            "description": "谷歌“消灭豆腐块”计划官方字体库"
           }
         ]
       },
@@ -6636,72 +6432,72 @@ const linksData = [
           {
             "name": "思源黑体 (Source Han Sans)",
             "url": "https://github.com/adobe-fonts/source-han-sans",
-            "description": "Adobe 与 Google 联合开发的免费开源泛东亚无衬线中日韩字体库。"
+            "description": "Adobe 与 Google"
           },
           {
             "name": "思源宋体 (Source Han Serif)",
             "url": "https://github.com/adobe-fonts/source-han-serif",
-            "description": "Adobe 与 Google 联合推出的免费开源衬线(宋体/明体)中日韩字体库。"
+            "description": "Adobe 与 Google"
           },
           {
             "name": "文泉驿",
             "url": "http://www.wenq.org",
-            "description": "国内早期著名的开源中文字体项目，包含点阵宋体、正黑体等开源中文字体。"
+            "description": "国内早期著名的开源中文字体项目，包含点阵宋体"
           },
           {
             "name": "方正字库",
             "url": "https://www.foundertype.com",
-            "description": "中国历史最悠久、规模最大的字体研发机构，提供丰富的方正字库商业及个人免费授权。"
+            "description": "中国历史最悠久、规模最大的字体研发机构"
           },
           {
             "name": "汉仪字库",
             "url": "https://www.hanyi.com.cn",
-            "description": "国内顶尖专业字库公司，提供各类中英文精品艺术字体与正文字体服务。"
+            "description": "国内顶尖专业字库公司，提供各类中英文精品艺术字体与"
           },
           {
             "name": "造字工房",
             "url": "http://www.makefont.com",
-            "description": "国内知名个性化艺术字体设计机构，其非商业用途字体提供免费下载。"
+            "description": "国内知名个性化艺术字体设计机构"
           },
           {
             "name": "华康字体 (Dynamcomware)",
             "url": "https://www.dynacw.com.cn",
-            "description": "知名字库厂商，以古籍书体及华康少女体等多元化艺术字体闻名。"
+            "description": "知名字库厂商，以古籍书体及华康少女体等多元化艺术字"
           },
           {
             "name": "蒙纳字库 (Monotype China)",
             "url": "https://www.monotypeasia.com",
-            "description": "蒙纳亚洲官方网站，提供高品质中英文跨平台企业字库开发与授权。"
+            "description": "蒙纳亚洲官方网站，提供高品质中英文跨平台企业字库开"
           },
           {
             "name": "仓耳字库",
             "url": "https://www.tsanger.cn",
-            "description": "主打现代化汉字设计与家族化字库创新的中国新锐字库公司。"
+            "description": "主打现代化汉字设计与家族化字库创新的中国新锐字库公"
           },
           {
             "name": "锐字潮牌字库",
             "url": "https://www.reeji.com",
-            "description": "专注于年轻人流行文化、潮牌视觉及动漫包装的汉字设计创新品牌。"
+            "description": "专注于年轻人流行文化、潮牌视觉及动漫包装的汉字设计"
           },
           {
             "name": "印品字库",
             "url": "https://www.yinpinziku.com",
-            "description": "提供高品质手写体、书法体及商业设计艺术字体的下载与授权平台。"
+            "description": "提供高品质手写体、书法体及商业设计艺术字体的下载与"
           },
           {
             "name": "义启字库",
             "url": "http://www.yiti.com.cn",
-            "description": "主打可爱萌系、卡通风格及社交表达的个性化字体开发平台。"
+            "description": "主打可爱萌系、卡通风格及社交表达的个性化字体开发平"
           },
           {
             "name": "字大师",
             "url": "https://www.zidashi.com",
-            "description": "提供海量商业字体下载、字体版权检测与一键安装管理的桌面与 Web 平台。"
+            "description": "提供海量商业字体下载、字体版权检测与一键安装管理的"
           },
           {
             "name": "字加 (FontChina)",
             "url": "https://www.fontchina.com",
-            "description": "方正字库旗下的字体管理软件平台，包含上万种正版中英文字体库。"
+            "description": "方正字库旗下的字体管理软件平台"
           },
           {
             "name": "字帮手",
@@ -6711,27 +6507,27 @@ const linksData = [
           {
             "name": "Fonts.com",
             "url": "https://www.fonts.com",
-            "description": "Monotype 旗下的全球化字体销售与 Web 字体服务托管平台。"
+            "description": "Monotype 旗下的全球化字体销售与 Web"
           },
           {
             "name": "FontSpring",
             "url": "https://www.fontspring.com",
-            "description": "无须按月订阅的商业字体买断式授权交易平台，政策透明友好。"
+            "description": "无须按月订阅的商业字体买断式授权交易平台"
           },
           {
             "name": "TypeTomorrow",
             "url": "https://typetomorrow.com",
-            "description": "专注于澳大利亚与新西兰新锐独立字体设计师作品展示的平台。"
+            "description": "专注于澳大利亚与新西兰新锐独立字体设计师作品展示的"
           },
           {
             "name": "FontBros",
             "url": "https://www.fontbros.com",
-            "description": "精选各类复古风格、展示风格与艺术感商业字体的零售网站。"
+            "description": "精选各类复古风格、展示风格与艺术感商业字体的零售网"
           },
           {
             "name": "FontShop",
             "url": "https://www.fontshop.com",
-            "description": "由 Erik Spiekermann 创立的著名字库零售网站，排版与字体评测极具深度。"
+            "description": "由 Erik Spiekermann"
           },
           {
             "name": "Type-Together",
@@ -6741,72 +6537,72 @@ const linksData = [
           {
             "name": "Typotheque",
             "url": "https://www.typotheque.com",
-            "description": "荷兰著名独立字库，跨语言字体(如汉字、阿拉伯文、梵文)排版研究先驱。"
+            "description": "荷兰著名独立字库，跨语言字体(如汉字、阿拉伯文"
           },
           {
             "name": "Emigre Fonts",
             "url": "https://www.emigre.com",
-            "description": "数字排版革命先锋《Emigre》杂志旗下的传奇独立字体设计厂牌。"
+            "description": "数字排版革命先锋《Emigre》杂志旗下的传奇独立"
           },
           {
             "name": "House Industries",
             "url": "https://houseind.com",
-            "description": "以美式复古文化、设计艺术与高超手工技艺著称的传奇字体设计工作室。"
+            "description": "以美式复古文化、设计艺术与高超手工技艺著称的传奇字"
           },
           {
             "name": "Underware",
             "url": "https://www.underware.nl",
-            "description": "以创造带有动态智能属性与极具幽默感的现代字体而闻名的荷兰工作室。"
+            "description": "以创造带有动态智能属性与极具幽默感的现代字体而闻名"
           },
           {
             "name": "Darden Studio",
             "url": "https://www.dardenstudio.com",
-            "description": "位于纽约布鲁克林，专注高品质实用性正文字体设计的字体厂牌。"
+            "description": "位于纽约布鲁克林，专注高品质实用性正文字体设计的字"
           },
           {
             "name": "Lineto",
             "url": "https://lineto.com",
-            "description": "瑞士顶尖数字字库，设计了大量深受极简主义与科技品牌喜爱的无衬线字体。"
+            "description": "瑞士顶尖数字字库，设计了大量深受极简主义与科技品牌"
           },
           {
             "name": "Suitcase Type Foundry",
             "url": "https://suitcasetype.com",
-            "description": "捷克独立字库，致力于为现代印刷与数字媒介打造精密优质的正文字体。"
+            "description": "捷克独立字库，致力于为现代印刷与数字媒介打造精密优"
           },
           {
             "name": "Dalton Maag",
             "url": "https://www.daltonmaag.com",
-            "description": "总部位于伦敦的大型跨国字体设计公司，为亚马逊、Netflix 等定制专属字体。"
+            "description": "总部位于伦敦的大型跨国字体设计公司，为亚马逊"
           },
           {
             "name": "LucasFonts",
             "url": "https://www.lucasfonts.com",
-            "description": "由著名设计师 Luc(as) de Groot 创立，著名的 Consolas 字体即出自其手。"
+            "description": "由著名设计师 Luc(as) de Groot"
           },
           {
             "name": "Bold Monday",
             "url": "https://www.boldmonday.com",
-            "description": "荷兰独立字库，擅长制作高难度定制字体与复杂多语种字库。"
+            "description": "荷兰独立字库，擅长制作高难度定制字体与复杂多语种字"
           },
           {
             "name": "Klim Type Foundry",
             "url": "https://klim.co",
-            "description": "新西兰著名字体设计师 Kris Sowersby 创立的字库，作品备受全球品牌青睐。"
+            "description": "新西兰著名字体设计师 Kris Sowersby"
           },
           {
             "name": "Production Type",
             "url": "https://www.productiontype.com",
-            "description": "法国知名数字字体设计公司，专门为时尚、文化与工业设计提供先锋字体。"
+            "description": "法国知名数字字体设计公司，专门为时尚"
           },
           {
             "name": "Commercial Classics",
             "url": "https://commercialclassics.com",
-            "description": "专门复刻 19 世纪英国经典历史字体的复古排版宝库。"
+            "description": "专门复刻 19 世纪英国经典历史字体的复古排版宝库"
           },
           {
             "name": "Swiss Typefaces",
             "url": "https://www.swisstypefaces.com",
-            "description": "代表瑞士 contemporary 设计巅峰的新一代独立字体设计厂牌。"
+            "description": "代表瑞士 contemporary"
           },
           {
             "name": "Optimised Type",
@@ -6816,12 +6612,12 @@ const linksData = [
           {
             "name": "FontStruct",
             "url": "https://fontstruct.com",
-            "description": "基于几何模块在线快速构建并生成专属模块化字体的创意工具社区。"
+            "description": "基于几何模块在线快速构建并生成专属模块化字体的创意"
           },
           {
             "name": "Glyphs App (Resources)",
             "url": "https://glyphsapp.com",
-            "description": "专业级 Mac 字体设计软件 Glyphs 官网，提供丰富的字体设计教程与资源。"
+            "description": "专业级 Mac 字体设计软件 Glyphs 官网"
           },
           {
             "name": "FontLab",
@@ -6831,7 +6627,7 @@ const linksData = [
           {
             "name": "RoboFont",
             "url": "https://robofont.com",
-            "description": "基于 Python 的高可定制化专业字体设计师编辑环境官网。"
+            "description": "基于 Python 的高可定制化专业字体设计师编辑"
           },
           {
             "name": "FontForge",
@@ -6841,47 +6637,47 @@ const linksData = [
           {
             "name": "BirdFont",
             "url": "https://birdfont.org",
-            "description": "免费开源的矢量图形与 TTF/OTF/SVG 字体生成编辑工具。"
+            "description": "免费开源的矢量图形与 TTF/OTF/SVG"
           },
           {
             "name": "Calligraphr",
             "url": "https://www.calligraphr.com",
-            "description": "将个人手写字迹快速扫描并转化为真实电脑字体的在线生成工具。"
+            "description": "将个人手写字迹快速扫描并转化为真实电脑字体的在线生"
           },
           {
             "name": "Fontifier",
             "url": "https://www.fontify.me",
-            "description": "老牌在线手写体生成服务，将打印扫描件转换为 TrueType 字体。"
+            "description": "老牌在线手写体生成服务，将打印扫描件转换为"
           },
           {
             "name": "Fontdrop",
             "url": "https://fontdrop.info",
-            "description": "拖拽字体文件即可在线查看字体元数据、字符集及 Opentype 特性的实用工具。"
+            "description": "拖拽字体文件即可在线查看字体元数据"
           },
           {
             "name": "Wakamai Fondue",
             "url": "https://wakamaifondue.com",
-            "description": "专门用于测试与分析 OpenType 字体功能、可变属性与特性的在线分析神器。"
+            "description": "专门用于测试与分析 OpenType 字体功能"
           },
           {
             "name": "Font Vector Converter",
             "url": "https://cloudconvert.com/font-converter",
-            "description": "CloudConvert 旗下强大的字体格式转换器(TTF, OTF, WOFF, WOFF2)。"
+            "description": "CloudConvert"
           },
           {
             "name": "TransType",
             "url": "https://www.fontlab.com/font-converter/transtype/",
-            "description": "FontLab 旗下的专业级字体格式批量转换与代码优化软件。"
+            "description": "FontLab 旗下的专业级字体格式批量转换与代码"
           },
           {
             "name": "Font Squirrel Webfont Generator",
             "url": "https://www.fontsquirrel.com/tools/webfont-generator",
-            "description": "业界最著名的网页字体格式(WOFF/WOFF2)在线转换与压缩工具。"
+            "description": "业界最著名的网页字体格式(WOFF/WOFF2)在"
           },
           {
             "name": "Fontello",
             "url": "https://fontello.com",
-            "description": "将 SVG 图标在线打包合成为轻量级自定义图标字体的开发者工具。"
+            "description": "将 SVG 图标在线打包合成为轻量级自定义图标字体"
           }
         ]
       },
@@ -6897,17 +6693,17 @@ const linksData = [
           {
             "name": "Font Awesome",
             "url": "https://fontawesome.com",
-            "description": "全球最流行、使用最广泛的矢量 Web 矢量图标字体库。"
+            "description": "全球最流行、使用最广泛的矢量 Web"
           },
           {
             "name": "Iconify",
             "url": "https://iconify.design",
-            "description": "统一集成上万种开源图标库的开放性矢量图标与字体框架。"
+            "description": "统一集成上万种开源图标库的开放性矢量图标与字体框架"
           },
           {
             "name": "Material Icons (Google)",
             "url": "https://fonts.google.com/icons",
-            "description": "谷歌官方基于 Material Design 规范设计的开源 UI 图标字体库。"
+            "description": "谷歌官方基于 Material Design"
           },
           {
             "name": "Feather Icons",
@@ -6917,32 +6713,32 @@ const linksData = [
           {
             "name": "ByteDance IconPark",
             "url": "https://iconpark.bytedance.com",
-            "description": "字节跳动开源的高质量可定制图标库，支持一键导出图标字体。"
+            "description": "字节跳动开源的高质量可定制图标库"
           },
           {
             "name": "Remix Icon",
             "url": "https://remixicon.com",
-            "description": "专为设计师与开发者打造的开源中文友好型 UI 矢量图标字体库。"
+            "description": "专为设计师与开发者打造的开源中文友好型 UI"
           },
           {
             "name": "Bootstrap Icons",
             "url": "https://icons.getbootstrap.com",
-            "description": "Bootstrap 官方开源的免费 UI 图标库，支持作为 Icon Font 快速引入。"
+            "description": "Bootstrap 官方开源的免费 UI 图标库"
           },
           {
             "name": "Codrops Typography",
             "url": "https://tympanus.net/codrops/tag/typography/",
-            "description": "知名前端设计博客 Codrops 的字体与特效文字特效展示区。"
+            "description": "知名前端设计博客 Codrops"
           },
           {
             "name": "Text-Image.com",
             "url": "https://www.text-image.com",
-            "description": "将普通图片在线转换为由 ASCII 字符或指定文本组成的字符艺术画像站点。"
+            "description": "将普通图片在线转换为由 ASCII"
           },
           {
             "name": "Cool Text",
             "url": "https://cooltext.com",
-            "description": "经典在线发光字、3D 艺术字与动态特效标题字体生成器。"
+            "description": "经典在线发光字、3D 艺术字与动态特效标题字体生成"
           },
           {
             "name": "Font Generator (NetFont)",
@@ -6952,12 +6748,12 @@ const linksData = [
           {
             "name": "Lingojam Fancy Text",
             "url": "https://lingojam.com/FancyTextGenerator",
-            "description": "将标准英文一键转换为各种 Unicode 特殊艺术字与花体字。"
+            "description": "将标准英文一键转换为各种 Unicode"
           },
           {
             "name": "PimpMyText",
             "url": "https://pimpmytext.com",
-            "description": "快速生成带有霓虹灯、闪光、金属质感的网页艺术字图片工具。"
+            "description": "快速生成带有霓虹灯、闪光"
           },
           {
             "name": "FontM",
@@ -6972,27 +6768,27 @@ const linksData = [
           {
             "name": "Bunny Fonts",
             "url": "https://fonts.bunny.net",
-            "description": "保护隐私且符合 GDPR 法规的开源 Google Fonts 无缝替代服务平台。"
+            "description": "保护隐私且符合 GDPR 法规的开源"
           },
           {
             "name": "Coollabs Fonts",
             "url": "https://fonts.coollabs.io",
-            "description": "高可用且注重隐私保护的免费开源 Web 字体 CDN 托管服务。"
+            "description": "高可用且注重隐私保护的免费开源 Web 字体"
           },
           {
             "name": "FontCDN",
             "url": "https://fontcdn.org",
-            "description": "方便开发者快速搜索与引用 Google 字体库的极简前端工具。"
+            "description": "方便开发者快速搜索与引用 Google"
           },
           {
             "name": "Font Library",
             "url": "https://fontlibrary.org",
-            "description": "致力于倡导和推广完全自由开源(Free Software)字体的公益网站。"
+            "description": "致力于倡导和推广完全自由开源(Free"
           },
           {
             "name": "CNKG (中国国家字库)",
             "url": "http://www.fonts.org.cn",
-            "description": "收录中国传统书法及规范汉字的大型字库历史文献展示平台。"
+            "description": "收录中国传统书法及规范汉字的大型字库历史文献展示平"
           },
           {
             "name": "日文字体网 (FREE Japanese Fonts)",
@@ -7002,77 +6798,77 @@ const linksData = [
           {
             "name": "FONT FREE (日本)",
             "url": "https://fontfree.me",
-            "description": "日本极为知名的日系免费字体分类索引与介绍网站(大量支持汉字)。"
+            "description": "日本极为知名的日系免费字体分类索引与介绍网站(大量"
           },
           {
             "name": "Hakusyu Fonts (白舟书体)",
             "url": "https://www.hakusyu.com",
-            "description": "日本著名书法字库厂牌，提供多款高品质水墨书法字体的试用版下载。"
+            "description": "日本著名书法字库厂牌，提供多款高品质水墨书法字体的"
           },
           {
             "name": "Jikasei Font (自家製フォント工房)",
             "url": "http://nkai.ca/font/",
-            "description": "日本开源字体改造站，基于思源黑体改造了多款可爱日系汉字字体。"
+            "description": "日本开源字体改造站，基于思源黑体改造了多款可爱日系"
           },
           {
             "name": "Designers Fonts (日本)",
             "url": "https://designfont500.com",
-            "description": "精选 500 款日本设计师最常用高品质免费字体的推荐平台。"
+            "description": "精选 500 款日本设计师最常用高品质免费字体的推"
           },
           {
             "name": "Noonnu (눈누 - 韩国)",
             "url": "https://noonnu.cc",
-            "description": "韩国最著名的商业免费韩文字体与包含汉字韩系字体的汇总展示平台。"
+            "description": "韩国最著名的商业免费韩文字体与包含汉字韩系字体的汇"
           },
           {
             "name": "Gmarket Sans",
             "url": "https://global.gmarket.co.kr/design/index",
-            "description": "韩国电商巨头 Gmarket 开源的高品质无衬线多语言商业字体官网。"
+            "description": "韩国电商巨头 Gmarket"
           },
           {
             "name": "Naver Nanum Fonts",
             "url": "https://hangeul.naver.com/font",
-            "description": "韩国科技巨头 Naver 开源的经典 Nanum 系列高品质多语种字库。"
+            "description": "韩国科技巨头 Naver 开源的经典 Nanum"
           },
           {
             "name": "Figma Fonts Search",
             "url": "https://www.figma.com/community",
-            "description": "Figma 官方社区，包含大量设计师整理的字体搭配模板与开源字体包。"
+            "description": "Figma 官方社区，包含大量设计师整理的字体搭配"
           },
           {
             "name": "Canva Font Combinations",
             "url": "https://www.canva.com/font-combinations/",
-            "description": "Canva 官方在线字体搭配工具，输入字体自动推荐最佳配对方案。"
+            "description": "Canva 官方在线字体搭配工具"
           },
           {
             "name": "FontPair",
             "url": "https://www.fontpair.co",
-            "description": "专注于 Google Fonts 字体跨界搭配与网页排版设计灵感的工具网站。"
+            "description": "专注于 Google Fonts"
           },
           {
             "name": "Typescale",
             "url": "https://typescale.com",
-            "description": "在线字体字号梯阶计算器，帮助 UI 设计师建立科学的网页排版层级。"
+            "description": "在线字体字号梯阶计算器，帮助 UI"
           },
           {
             "name": "Modular Scale",
             "url": "https://www.modularscale.com",
-            "description": "利用黄金分割与音乐音程比例计算完美排版字号比例的工具。"
+            "description": "利用黄金分割与音乐音程比例计算完美排版字号比例的工"
           },
           {
             "name": "Type Scale (Modern)",
             "url": "https://type-scale.com",
-            "description": "新版可视化字号阶梯设计工具，支持实时预览与 CSS 代码一键生成。"
+            "description": "新版可视化字号阶梯设计工具"
           },
           {
             "name": "Fontjoy",
             "url": "https://fontjoy.com",
-            "description": "利用深度学习与神经网络技术自动生成高美感字体搭配组合的神器。"
+            "description": "利用深度学习与神经网络技术自动生成高美感字体搭配组"
           },
           {
             "name": "Mixfont",
             "url": "https://www.mixfont.com",
-            "description": "交互式字体发现与配对工具，快速寻找不同风格的英文字体搭配。"
+            "description": "交互式字体发现与配对工具"
           },
           {
             "name": "Type365 Pairing",
@@ -7082,7 +6878,7 @@ const linksData = [
           {
             "name": "Wordmark.it",
             "url": "https://wordmark.it",
-            "description": "输入任意文本，即可一键将本机安装的所有字体排版效果可视化平铺展示。"
+            "description": "输入任意文本，即可一键将本机安装的所有字体排版效果"
           },
           {
             "name": "FlipFont (Monotype)",
@@ -7092,7 +6888,7 @@ const linksData = [
           {
             "name": "Cubic 11 (俐方体11)",
             "url": "https://github.com/ACh-K/Cubic-11",
-            "description": "基于 M+ FONTS 改造的开源像素风繁简中文商用字体项目。"
+            "description": "基于 M+ FONTS 改造的开源像素风繁简中文商"
           },
           {
             "name": "Ark Pixel Font (方舟像素体)",
@@ -7102,42 +6898,42 @@ const linksData = [
           {
             "name": "Glow Sans (凛黑体)",
             "url": "https://github.com/eagofai/glow-sans",
-            "description": "基于思源黑体打造的高清晰度显示优化与多字重开源汉字。"
+            "description": "基于思源黑体打造的高清晰度显示优化与多字重开源汉字"
           },
           {
             "name": "Chill Font (Chill Round Chill Bitmap)",
             "url": "https://github.com/Rewrite00/Chill-Bitmap",
-            "description": "针对开源游戏与像素艺术设计的免费开源中文圆体与点阵字。"
+            "description": "针对开源游戏与像素艺术设计的免费开源中文圆体与点阵"
           },
           {
             "name": "LXGW WenKai (霞鹜文楷)",
             "url": "https://github.com/lxgw/LxgwWenKai",
-            "description": "极具人气、基于 Kose-Font 改造的开源免费中文字体，硬笔楷书质感优异。"
+            "description": "极具人气、基于 Kose-Font"
           },
           {
             "name": "LXGW Neo XiHei (霞鹜新晰黑)",
             "url": "https://github.com/lxgw/LxgwNeoXiHei",
-            "description": "基于 IPAEx 黑体打造的更加符合现代屏幕阅读体验的中文开源黑体。"
+            "description": "基于 IPAEx 黑体打造的更加符合现代屏幕阅读体"
           },
           {
             "name": "IPA Font (日本)",
             "url": "https://fonnts.jp/ipa/",
-            "description": "日本情报处理推进机构(IPA)发布的经典官方开源汉字字库。"
+            "description": "日本情报处理推进机构(IPA)发布的经典官方开源汉"
           },
           {
             "name": "Hanazono Mincho (花园明朝)",
             "url": "https://glyphwiki.org/wiki/Glyphwiki:MainPage",
-            "description": "收录极度罕见古籍生僻字与全量 Unicode 汉字的开源巨型明朝体。"
+            "description": "收录极度罕见古籍生僻字与全量 Unicode"
           },
           {
             "name": "GlyphWiki (字形维基)",
             "url": "https://glyphwiki.org",
-            "description": "全球志愿者共同构建的汉字字形矢量数据协作与生僻字查询维基。"
+            "description": "全球志愿者共同构建的汉字字形矢量数据协作与生僻字查"
           },
           {
             "name": "FontShop News",
             "url": "https://www.fontshop.com/news",
-            "description": "汇聚深度字体设计历史、字体排版评论与设计师专访的深度内容区。"
+            "description": "汇聚深度字体设计历史、字体排版评论与设计师专访的深"
           }
         ]
       },
@@ -7148,42 +6944,42 @@ const linksData = [
           {
             "name": "Eye Magazine (Typography)",
             "url": "https://www.eyemagazine.com",
-            "description": "国际顶级平面设计杂志 Eye 的视觉排版与字体专题板块。"
+            "description": "国际顶级平面设计杂志 Eye"
           },
           {
             "name": "Typographica",
             "url": "https://typographica.org",
-            "description": "权威的字体书评、年度字体设计评审与排版文化评论网站。"
+            "description": "权威的字体书评、年度字体设计评审与排版文化评论网站"
           },
           {
             "name": "Letterform Archive",
             "url": "https://letterformarchive.org",
-            "description": "位于旧金山的字体设计档案馆，线上展出数万件珍贵排版历史文物与手稿。"
+            "description": "位于旧金山的字体设计档案馆"
           },
           {
             "name": "ATypI (国际文字设计协会)",
             "url": "https://www.atypi.org",
-            "description": "全球最权威的字体设计非营利组织，定期举办全球顶级文字设计研讨会。"
+            "description": "全球最权威的字体设计非营利组织"
           },
           {
             "name": "TDC (Type Directors Club)",
             "url": "https://www.tdc.org",
-            "description": "纽约字体指导俱乐部官方网站，全球字体设计最高奖项颁发机构。"
+            "description": "纽约字体指导俱乐部官方网站"
           },
           {
             "name": "Type Cache",
             "url": "https://typecache.com",
-            "description": "专业记录和追踪全球各大独立字库最新发布的字库新品信息网。"
+            "description": "专业记录和追踪全球各大独立字库最新发布的字库新品信"
           },
           {
             "name": "TypeDrawers",
             "url": "https://typedrawers.com",
-            "description": "全球专业字体设计师与排版工程师聚集的高质量讨论论坛。"
+            "description": "全球专业字体设计师与排版工程师聚集的高质量讨论论坛"
           },
           {
             "name": "Reddit /r/fonts",
             "url": "https://www.reddit.com/r/fonts/",
-            "description": "Reddit 字体讨论社区，包含各类字体求助、分享与排版交流。"
+            "description": "Reddit 字体讨论社区，包含各类字体求助"
           },
           {
             "name": "Reddit /r/typography",
@@ -7198,42 +6994,42 @@ const linksData = [
           {
             "name": "ZCOOL Fonts (站酷字体)",
             "url": "https://www.zcool.com.cn/special/zcoolfonts/",
-            "description": "站酷网联合多位设计师推出的站酷快乐体、站酷高端黑等多款免费商用字体。"
+            "description": "站酷网联合多位设计师推出的站酷快乐体"
           },
           {
             "name": "阿里巴巴普惠体",
             "url": "https://alibabafont.com",
-            "description": "阿里巴巴官方推出的面向全球商家免费可商用的高品质中英文家族字体。"
+            "description": "阿里巴巴官方推出的面向全球商家免费可商用的高品质中"
           },
           {
             "name": "腾讯体 (Tencent Sans)",
             "url": "https://brand.tencent.com",
-            "description": "腾讯官方联合 Monotype 打造的具有向前倾斜动感的标志性科技品牌字体。"
+            "description": "腾讯官方联合 Monotype"
           },
           {
             "name": "百度字体",
             "url": "https://brand.baidu.com",
-            "description": "百度品牌专用的科技感无衬线中英文字体官方展示展示页。"
+            "description": "百度品牌专用的科技感无衬线中英文字体官方展示展示页"
           },
           {
             "name": "华为 HarmonyOS Sans",
             "url": "https://developer.huawei.com/consumer/cn/design/harmonyos-sans/",
-            "description": "华为鸿蒙系统官方开源商用字体，针对多设备屏幕做了极致排版优化。"
+            "description": "华为鸿蒙系统官方开源商用字体"
           },
           {
             "name": "小米 MiSans",
             "url": "https://hyperos.mi.com/font/zh/",
-            "description": "小米公司推出的免费可商用系统字体，线条简洁平滑，支持丰富 OpenType 特性。"
+            "description": "小米公司推出的免费可商用系统字体，线条简洁平滑"
           },
           {
             "name": "OPPO Sans",
             "url": "https://open.oppomobile.com/new/developmentDoc/info?id=10738",
-            "description": "OPPO 官方推出的免费商用定制字体，结构舒展，视觉感受温润优雅。"
+            "description": "OPPO 官方推出的免费商用定制字体，结构舒展"
           },
           {
             "name": "钉钉进步体",
             "url": "https://page.dingtalk.com/wow/dingtalk/act/jinbuti",
-            "description": "钉钉推出的专为标题设计、充满活力与前进力量感的免费商用斜体。"
+            "description": "钉钉推出的专为标题设计、充满活力与前进力量感的免费"
           },
           {
             "name": "网易抗疫字体 / 易信字体",
@@ -7248,12 +7044,12 @@ const linksData = [
           {
             "name": "字体帮",
             "url": "https://www.zitibang.com",
-            "description": "每日更新字体设计练习、字体教程与商业字形改造案例的知名公众号网站。"
+            "description": "每日更新字体设计练习、字体教程与商业字形改造案例的"
           },
           {
             "name": "字体传奇网",
             "url": "http://www.ziticq.com",
-            "description": "国内知名以字体设计交流、字体竞赛与艺术字教程为主的垂直社区。"
+            "description": "国内知名以字体设计交流、字体竞赛与艺术字教程为主的"
           },
           {
             "name": "设计达人 (字体区)",
@@ -7263,62 +7059,62 @@ const linksData = [
           {
             "name": "优设网 (字体板块)",
             "url": "https://www.uisdc.com/category/resource/font",
-            "description": "国内极具影响力的设计师平台，提供最新的免费商用字体资讯与打包下载。"
+            "description": "国内极具影响力的设计师平台"
           },
           {
             "name": "站酷网 (字体设计)",
             "url": "https://www.zcool.com.cn/discover/8!0!0!0!0!!!!-1!1!1",
-            "description": "国内最大设计师社区的字体设计频道，展示顶尖汉字设计作品。"
+            "description": "国内最大设计师社区的字体设计频道"
           },
           {
             "name": "古今文字 (GlyphWiki Mirror)",
             "url": "https://tool.lu/zhfont/",
-            "description": "收集古代篆书、隶书、楷书等古籍书体字形检索的实用工具平台。"
+            "description": "收集古代篆书、隶书、楷书等古籍书体字形检索的实用工"
           },
           {
             "name": "中华精品字库",
             "url": "http://www.foundertype.com/index.php/FindFont/speciality/id/30.html",
-            "description": "方正字库将历代书法名家手迹转化为现代正字库的宏大工程专区。"
+            "description": "方正字库将历代书法名家手迹转化为现代正字库的宏大工"
           },
           {
             "name": "汉仪名家书法字库",
             "url": "https://www.hanyi.com.cn/shufa",
-            "description": "汉仪推出的集成王羲之、颜真卿、柳公权等历代大师书法的数字化字库。"
+            "description": "汉仪推出的集成王羲之、颜真卿"
           },
           {
             "name": "字心坊",
             "url": "https://www.zixinzi.com",
-            "description": "国内新锐字体设计公司，提供多款高保真视觉设计艺术字体。"
+            "description": "国内新锐字体设计公司，提供多款高保真视觉设计艺术字"
           },
           {
             "name": "Fontlab Pad",
             "url": "https://www.fontlab.com/font-utility/fontlab-pad/",
-            "description": "免安装彩色字体(Color Font/Emoji)渲染与排版打印实用工具。"
+            "description": "免安装彩色字体(Color"
           },
           {
             "name": "Color Fonts (Brami Design)",
             "url": "https://www.colorfonts.wtf",
-            "description": "展示与推广 SVG 彩色矢量字体的先锋艺术实验网站。"
+            "description": "展示与推广 SVG 彩色矢量字体的先锋艺术实验网站"
           },
           {
             "name": "Variable Fonts (v-fonts)",
             "url": "https://v-fonts.com",
-            "description": "庞大的可变字体(Variable Fonts)互动展示与测试平台。"
+            "description": "庞大的可变字体(Variable"
           },
           {
             "name": "Axis Praxis",
             "url": "https://axis-praxis.org",
-            "description": "全球最早用于测试 OpenType 可变字体多轴调节属性的实验平台。"
+            "description": "全球最早用于测试 OpenType"
           },
           {
             "name": "Google Variable Fonts",
             "url": "https://fonts.google.com/variablefonts",
-            "description": "谷歌官方可变字体集合，支持在一个字体文件内自由调节字重与倾斜度。"
+            "description": "谷歌官方可变字体集合，支持在一个字体文件内自由调节"
           },
           {
             "name": "Type-Design-Resources",
             "url": "https://github.com/michaeltraficante/type-design-resources",
-            "description": "GitHub 上超全的字体设计学习路线、电子书与开源软件工具汇总。"
+            "description": "GitHub 上超全的字体设计学习路线"
           },
           {
             "name": "Type Detail",
@@ -7328,17 +7124,17 @@ const linksData = [
           {
             "name": "FontPro",
             "url": "https://fontpro.com",
-            "description": "提供在线实时测试字体在不同背景色与排版情境下表现的排版神器。"
+            "description": "提供在线实时测试字体在不同背景色与排版情境下表现的"
           },
           {
             "name": "Typ.io",
             "url": "https://typ.io",
-            "description": "基于真实优秀网页设计案例的字体搭配 inspiration 案例库。"
+            "description": "基于真实优秀网页设计案例的字体搭配"
           },
           {
             "name": "Webfont Specimen",
             "url": "https://webfontspecimen.com",
-            "description": "专为前端开发与设计师打造的 Web 字体在浏览器真实渲染测试排版模版。"
+            "description": "专为前端开发与设计师打造的 Web"
           },
           {
             "name": "Fonts In the Wild",
@@ -7348,47 +7144,47 @@ const linksData = [
           {
             "name": "Better Web Type",
             "url": "https://betterwebtype.com",
-            "description": "面向 Web 开发者与 UI 设计师的文字排版课程与优质字体分析博客。"
+            "description": "面向 Web 开发者与 UI"
           },
           {
             "name": "Typewolf Pairing Guides",
             "url": "https://www.typewolf.com/recommendations",
-            "description": "Typewolf 出品的业界认可度极高的权威字体替代与搭配推荐指南。"
+            "description": "Typewolf 出品的业界认可度极高的权威字体替"
           },
           {
             "name": "Free Font Arsenal",
             "url": "https://www.freefontarsenal.com",
-            "description": "干净整洁、专注于搜集独立设计师优质免费商业字体的站点。"
+            "description": "干净整洁、专注于搜集独立设计师优质免费商业字体的站"
           },
           {
             "name": "FontZone",
             "url": "https://fontzone.net",
-            "description": "收录超过 50,000 款免费英文字体的数据库，支持按字母快速检索。"
+            "description": "收录超过 50,000 款免费英文字体的数据库"
           },
           {
             "name": "FontPalace",
             "url": "https://www.fontpalace.com",
-            "description": "提供丰富 Windows 和 Mac 平台免费字体下载的老牌分类站点。"
+            "description": "提供丰富 Windows 和 Mac"
           },
           {
             "name": "Fonts101",
             "url": "https://www.fonts101.com",
-            "description": "免费下载各种个性展示字体、三维字体与艺术字体的素材站。"
+            "description": "免费下载各种个性展示字体"
           },
           {
             "name": "Abstract Fonts Chinese",
             "url": "https://www.abstractfonts.com/language/11/Chinese",
-            "description": "Abstract Fonts 旗下的中文字体与东亚字符集收集分类专区。"
+            "description": "Abstract Fonts"
           },
           {
             "name": "FontGeek",
             "url": "http://fontgeek.com",
-            "description": "专注于各种特殊符号、科技感字体与复古字体搜集的开发者站点。"
+            "description": "专注于各种特殊符号、科技感字体与复古字体搜集的开发"
           },
           {
             "name": "Font Library OpenSource",
             "url": "https://fontlibrary.org/en/catalogue",
-            "description": "全球完全开放源码字体(GPL/OFL 协议)的最全分类展示目录。"
+            "description": "全球完全开放源码字体(GPL/OFL"
           }
         ]
       }
@@ -7594,7 +7390,7 @@ const linksData = [
         {
           "name": "AI开发",
           "url": "https://kisstr.com/ai_development.html",
-          "description": "AI API、模型开发、向量数据库、算力与工程工具导航"
+          "description": "AI API、模型开发、向量数据库"
         },
         {
           "name": "AI绘图",
@@ -7619,7 +7415,7 @@ const linksData = [
         {
           "name": "游戏网站",
           "url": "https://kisstr.com/game_sites.html",
-          "description": "游戏平台、游戏资讯、独立游戏、主机资源与玩家社区导航"
+          "description": "游戏平台、游戏资讯、独立游戏"
         },
         {
           "name": "漫画网站",
@@ -7669,172 +7465,6 @@ function getColorFromName(name) {
   const index = hashCode(name) % colors.length;
   return colors[index];
 }
-
-// 古诗词数据库（诗人 + 诗句）
-const poemData = [
-  { poet: "李白", poem: "床前明月光，疑是地上霜" },
-  { poet: "杜甫", poem: "国破山河在，城春草木深" },
-  { poet: "白居易", poem: "离离原上草，一岁一枯荣" },
-  { poet: "王维", poem: "独在异乡为异客，每逢佳节倍思亲" },
-  { poet: "苏轼", poem: "但愿人长久，千里共婵娟" },
-  { poet: "李清照", poem: "昨夜雨疏风骤，浓睡不消残酒" },
-  { poet: "辛弃疾", poem: "众里寻他千百度，蓦然回首" },
-  { poet: "陆游", poem: "山重水复疑无路，柳暗花明又一村" },
-  { poet: "王安石", poem: "春风又绿江南岸，明月何时照我还" },
-  { poet: "孟浩然", poem: "春眠不觉晓，处处闻啼鸟" },
-  { poet: "陶渊明", poem: "采菊东篱下，悠然见南山" },
-  { poet: "李商隐", poem: "春蚕到死丝方尽，蜡炬成灰泪始干" },
-  { poet: "杜牧", poem: "停车坐爱枫林晚，霜叶红于二月花" },
-  { poet: "岑参", poem: "忽如一夜春风来，千树万树梨花开" },
-  { poet: "高适", poem: "莫愁前路无知己，天下谁人不识君" },
-  { poet: "王勃", poem: "海内存知己，天涯若比邻" },
-  { poet: "杨炯", poem: "宁为百夫长，胜作一书生" },
-  { poet: "陈子昂", poem: "前不见古人，后不见来者" },
-  { poet: "张九龄", poem: "海上生明月，天涯共此时" },
-  { poet: "柳宗元", poem: "千山鸟飞绝，万径人踪灭" },
-  { poet: "韩愈", poem: "天街小雨润如酥，草色遥看近却无" },
-  { poet: "刘禹锡", poem: "沉舟侧畔千帆过，病树前头万木春" },
-  { poet: "贾岛", poem: "鸟宿池边树，僧敲月下门" },
-  { poet: "孟郊", poem: "谁言寸草心，报得三春晖" },
-  { poet: "贾岛", poem: "松下问童子，言师采药去" },
-  { poet: "元稹", poem: "曾经沧海难为水，除却巫山不是云" },
-  { poet: "韦应物", poem: "春潮带雨晚来急，野渡无人舟自横" },
-  { poet: "刘长卿", poem: "日暮苍山远，天寒白屋贫" },
-  { poet: "温庭筠", poem: "鸡声茅店月，人迹板桥霜" },
-  { poet: "贺知章", poem: "不知细叶谁裁出，二月春风似剪刀" },
-  { poet: "贺铸", poem: "一川烟草，满城风絮，梅子黄时雨" },
-  { poet: "周邦彦", poem: "叶上初阳干宿雨，水面清圆" },
-  { poet: "晏殊", poem: "无可奈何花落去，似曾相识燕归来" },
-  { poet: "欧阳修", poem: "月上柳梢头，人约黄昏后" },
-  { poet: "秦观", poem: "两情若是久长时，又岂在朝朝暮暮" },
-  { poet: "柳永", poem: "衣带渐宽终不悔，为伊消得人憔悴" },
-  { poet: "范仲淹", poem: "先天下之忧而忧，后天下之乐而乐" },
-  { poet: "岳飞", poem: "莫等闲，白了少年头，空悲切" },
-  { poet: "文天祥", poem: "人生自古谁无死，留取丹心照汗青" },
-  { poet: "于谦", poem: "粉骨碎身浑不怕，要留清白在人间" },
-  { poet: "郑板桥", poem: "千磨万击还坚劲，任尔东西南北风" },
-  { poet: "袁枚", poem: "白日不到处，青春恰自来" },
-  { poet: "龚自珍", poem: "落红不是无情物，化作春泥更护花" },
-  { poet: "纳兰性德", poem: "人生若只如初见，何事秋风悲画扇" },
-  { poet: "仓央嘉措", poem: "世间安得双全法，不负如来不负卿" },
-  { poet: "林徽因", poem: "你是爱，是暖，是希望" },
-  { poet: "徐志摩", poem: "轻轻的我走了，正如我轻轻的来" },
-  { poet: "戴望舒", poem: "撑着油纸伞，独自彷徨在悠长" },
-  { poet: "艾青", poem: "为什么我的眼里常含泪水" },
-  { poet: "海子", poem: "面朝大海，春暖花开" }
-];
-
-// 高奢品牌数据库（品牌名 + slogan）
-const luxuryBrandData = [
-  { brand: "HERMÈS", slogan: "Luxury is a way of life", url: "https://www.hermes.com" },
-  { brand: "CHANEL", slogan: "Fashion passes, style remains", url: "https://www.chanel.com" },
-  { brand: "LOUIS VUITTON", slogan: "The art of travel", url: "https://www.louisvuitton.com" },
-  { brand: "DIOR", slogan: "The elegance is a state of mind", url: "https://www.dior.com" },
-  { brand: "CARTIER", slogan: "Jeweler of kings", url: "https://www.cartier.com" },
-  { brand: "TIFFANY & CO.", slogan: "True love, true luxury", url: "https://www.tiffany.com" },
-  { brand: "GUCCI", slogan: "Quality is remembered long after price is forgotten", url: "https://www.gucci.com" },
-  { brand: "PRADA", slogan: "Fashion is instant language", url: "https://www.prada.com" },
-  { brand: "BURBERRY", slogan: "Pioneering British luxury", url: "https://www.burberry.com" },
-  { brand: "BALENCIAGA", slogan: "Elegance in motion", url: "https://www.balenciaga.com" },
-  { brand: "FENDI", slogan: "Fun fur and luxury", url: "https://www.fendi.com" },
-  { brand: "BOTTEGA VENETA", slogan: "When your own initials are enough", url: "https://www.bottegaveneta.com" },
-  { brand: "SAINT LAURENT", slogan: "For the modern woman", url: "https://www.ysl.com" },
-  { brand: "GIVENCHY", slogan: "Elegance is refusal", url: "https://www.givenchy.com" },
-  { brand: "VALENTINO", slogan: "Luxury with a soul", url: "https://www.valentino.com" },
-  { brand: "VERSACE", slogan: "Medusa of fashion", url: "https://www.versace.com" },
-  { brand: "DOLCE & GABBANA", slogan: "Sicilian luxury tradition", url: "https://www.dolcegabbana.com" },
-  { brand: "ARMANI", slogan: "Timeless sophistication", url: "https://www.armani.com" },
-  { brand: "HUGO BOSS", slogan: "Define your success", url: "https://www.hugoboss.com" },
-  { brand: "COACH", slogan: "Modern luxury for all", url: "https://www.coach.com" },
-  { brand: "MICHAEL KORS", slogan: "Jet set luxury", url: "https://www.michaelkors.com" },
-  { brand: "TORY BURCH", slogan: "Effortless style", url: "https://www.toryburch.com" },
-  { brand: "KATE SPADE", slogan: "Live colorfully", url: "https://www.katespade.com" },
-  { brand: "RIMOWA", slogan: "Journey well", url: "https://www.rimowa.com" },
-  { brand: "MONTBLANC", slogan: "The art of writing", url: "https://www.montblanc.com" },
-  { brand: "PATEK PHILIPPE", slogan: "You never actually own one", url: "https://www.patek.com" },
-  { brand: "ROLEX", slogan: "A crown for every achievement", url: "https://www.rolex.com" },
-  { brand: "OMEGA", slogan: "Reflects your world", url: "https://www.omegawatches.com" },
-  { brand: "IWC", slogan: "Engineering for perfection", url: "https://www.iwc.com" },
-  { brand: "JAEGER-LECOULTRE", slogan: "Watchmaking mastery", url: "https://www.jaeger-lecoultre.com" },
-  { brand: "BREITLING", slogan: "Instruments for professionals", url: "https://www.breitling.com" },
-  { brand: "TAG HEUER", slogan: "Don't crack under pressure", url: "https://www.tagheuer.com" },
-  { brand: "LONGINES", slogan: "Elegance is an attitude", url: "https://www.longines.com" },
-  { brand: "RAYMOND WEIL", slogan: "Independent watchmaking", url: "https://www.raymond-weil.com" },
-  { brand: "A. LANGE & SÖHNE", slogan: "Glashütte precision", url: "https://www.alange-soehne.com" },
-  { brand: "BLANCPAIN", slogan: "The oldest watch brand", url: "https://www.blancpain.com" },
-  { brand: "CHAUMET", slogan: "The jeweler of feelings", url: "https://www.chaumet.com" },
-  { brand: "BOUCHERON", slogan: "Parisian high jewelry", url: "https://www.boucheron.com" },
-  { brand: "VAN CLEEF & ARPELS", slogan: "Poetry of time", url: "https://www.vancleefarpels.com" },
-  { brand: "PIAGET", slogan: "Always do better than necessary", url: "https://www.piaget.com" },
-  { brand: "CHOPARD", slogan: "The art of luxury", url: "https://www.chopard.com" },
-  { brand: "MISSONI", slogan: "Colored luxury knitwear", url: "https://www.missoni.com" },
-  { brand: "ALAÏA", slogan: "Sculptor of the female form", url: "https://www.alaia.com" },
-  { brand: "ISSEY MIYAKE", slogan: "A piece of cloth", url: "https://www.isseymiyake.com" },
-  { brand: "COMME des GARÇONS", slogan: "Fashion is an attitude", url: "https://www.comme-des-garcons.com" },
-  { brand: "MAISON MARGIELA", slogan: "The anonymous designer", url: "https://www.maisonmargiela.com" },
-  { brand: "RICK OWENS", slogan: "Dark glamour", url: "https://www.rickowens.eu" },
-  { brand: "UNDERCOVER", slogan: "Wear your rebellion", url: "https://www.undercoverism.com" },
-  { brand: "JIL SANDER", slogan: "Less is more", url: "https://www.jilsander.com" },
-  { brand: "THE ROW", slogan: "Quiet luxury redefined", url: "https://www.therow.com" }
-];
-
-// 存储每个网站的隐藏状态
-let linkSecretData = new Map();
-let isHiddenMode = false;
-
-function generateSecretData() {
-  linksData.forEach(cat => {
-    const linkList = cat.subcategories ? cat.subcategories.flatMap(s => s.links) : cat.links;
-    linkList.forEach(link => {
-      const key = link.url;
-      if (!linkSecretData.has(key)) {
-        const poemIndex = hashCode(link.name + 'poem') % poemData.length;
-        const brandIndex = hashCode(link.name + 'brand') % luxuryBrandData.length;
-        linkSecretData.set(key, {
-          poem: poemData[poemIndex],
-          brand: luxuryBrandData[brandIndex]
-        });
-      }
-    });
-  });
-}
-
-// 切换隐藏模式
-function toggleHideMode() {
-  isHiddenMode = !isHiddenMode;
-  const hideToggle = document.getElementById('hideToggle');
-
-  if (isHiddenMode) {
-    document.body.classList.add('hide-mode');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-    localStorage.setItem('hideMode', 'true');
-  } else {
-    document.body.classList.remove('hide-mode');
-    hideToggle.classList.remove('active');
-    hideToggle.title = '已显示';
-    localStorage.setItem('hideMode', 'false');
-  }
-
-  // 重新渲染以更新数据
-  renderLinks(document.getElementById('searchInput').value, currentCategory);
-}
-
-// 初始化隐藏模式
-function initHideMode() {
-  const savedMode = localStorage.getItem('hideMode');
-  if (savedMode === 'true') {
-    isHiddenMode = true;
-    document.body.classList.add('hide-mode');
-    const hideToggle = document.getElementById('hideToggle');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-  } else {
-    const hideToggle = document.getElementById('hideToggle');
-    if (hideToggle) hideToggle.title = '已显示';
-  }
-}
-
 function renderCategories() {
   const tabsContainer = document.getElementById('categoryTabs');
   tabsContainer.innerHTML = '';
@@ -7896,7 +7526,6 @@ function openUrlInNewTab(url) {
   const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
   if (newWindow) newWindow.opener = null;
 }
-
 
 function getIndexCardClickUrl(url) {
   if (!url || url === '#') return url || '';
@@ -8025,71 +7654,32 @@ function createLinkCard(link, catIndex, linkIndex) {
     }
   }
 
-  const secretData = linkSecretData.get(link.url) || {
-    poem: { poet: "佚名", poem: "诗不在多，有情则灵" },
-    brand: { brand: "LUXURY", slogan: "Timeless elegance", url: "https://www.example.com" }
-  };
-  
-  const isMinimalLayout = document.body.classList.contains('layout-minimal');
-  const hiddenName = isMinimalLayout ? secretData.brand.brand : secretData.poem.poet;
-  const hiddenDesc = isMinimalLayout ? secretData.brand.slogan : secretData.poem.poem;
-  const hiddenUrl = isMinimalLayout && secretData.brand.url ? secretData.brand.url : link.url;
-
-  if (isHiddenMode) {
-    card.classList.add('hidden-mode-card');
-  }
-
-  prepareStealthLinkCard(card, isHiddenMode ? hiddenUrl : link.url);
+  prepareStealthLinkCard(card, link.url);
 
   const linkIcon = document.createElement('div');
   linkIcon.className = 'link-icon';
-  if (isHiddenMode) {
-    linkIcon.textContent = hiddenName.charAt(0);
-    linkIcon.style.background = getColorFromName(hiddenName);
-  } else {
-    linkIcon.textContent = getInitial(link.name);
-    linkIcon.style.background = getColorFromName(link.name);
-  }
+  linkIcon.textContent = getInitial(link.name);
+  linkIcon.style.background = getColorFromName(link.name);
 
   const linkInfo = document.createElement('div');
   linkInfo.className = 'link-info';
 
   const linkName = document.createElement('div');
   linkName.className = 'link-name';
-  if (isHiddenMode) {
-    linkName.textContent = hiddenName;
-    linkName.style.position = 'relative';
-    linkName.style.minHeight = '24px';
-  } else {
-    linkName.textContent = link.name;
-  }
+  linkName.textContent = link.name;
 
   const linkUrl = document.createElement('div');
   linkUrl.className = 'link-url';
-  if (isHiddenMode) {
-    linkUrl.textContent = hiddenUrl.replace(/^https?:\/\//, '');
-    linkUrl.classList.add('hidden-link-url');
-  } else {
-    linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
-  }
+  linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
 
   const linkDesc = document.createElement('div');
   linkDesc.className = 'link-desc';
-  if (isHiddenMode) {
-    linkDesc.textContent = hiddenDesc;
-  } else {
-    linkDesc.textContent = link.description;
-  }
+  linkDesc.textContent = link.description;
 
   linkInfo.appendChild(linkName);
-  if (isHiddenMode) {
+  linkInfo.appendChild(linkUrl);
+  if (link.description) {
     linkInfo.appendChild(linkDesc);
-    linkInfo.appendChild(linkUrl);
-  } else {
-    linkInfo.appendChild(linkUrl);
-    if (link.description) {
-      linkInfo.appendChild(linkDesc);
-    }
   }
 
   const arrow = document.createElement('div');
@@ -8281,45 +7871,6 @@ function doRenderLinks(filterText, category) {
 
         const isMinimalLayout = document.body.classList.contains('layout-minimal');
 
-        if (!isMinimalLayout) {
-          if (subcat.name && !subcat.hideTitle) {
-            const titleCard = document.createElement('div');
-            titleCard.className = 'subcategory-title-card';
-
-            const subTitle = document.createElement('h3');
-            subTitle.className = 'subcategory-title';
-            subTitle.textContent = subcat.name;
-            titleCard.appendChild(subTitle);
-
-            if (subcat.enName) {
-              const subEnTitle = document.createElement('p');
-              subEnTitle.className = 'subcategory-en-title';
-              subEnTitle.textContent = subcat.enName;
-              titleCard.appendChild(subEnTitle);
-            }
-
-            if (subcat.easterEggUrl) {
-              titleCard.style.cursor = 'pointer';
-              titleCard.dataset.eggClicks = '0';
-              titleCard.addEventListener('click', () => {
-                const clicks = Number(titleCard.dataset.eggClicks || '0') + 1;
-                titleCard.dataset.eggClicks = String(clicks);
-                clearTimeout(titleCard._eggTimer);
-                if (clicks >= 3) {
-                  titleCard.dataset.eggClicks = '0';
-                  window.open(subcat.easterEggUrl, '_blank', 'noopener');
-                } else {
-                  titleCard._eggTimer = setTimeout(() => {
-                    titleCard.dataset.eggClicks = '0';
-                  }, 900);
-                }
-              });
-            }
-
-            subcategory.appendChild(titleCard);
-          }
-        }
-
         const grid = document.createElement('div');
         grid.className = (cat.name === '全球 AI') ? 'ai-grid' : 'links-grid';
 
@@ -8414,16 +7965,16 @@ const sunIcon = document.getElementById('sunIcon');
 const moonIcon = document.getElementById('moonIcon');
 
 // 第一布局（经典）使用7个主题，第二布局（杂志）不使用极光青、暮光橙、星空蓝
-const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
-const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
 
 // 暗色主题列表（显示太阳图标）
-const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay'];
+const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay', 'ink'];
 
 function getCurrentLayout() {
-  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'grid';
+  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'minimal';
 }
 
 function getThemes() {
@@ -8455,7 +8006,8 @@ function setTheme(theme) {
     "dream": "#667eea",
     "forest": "#2d5f4e",
     "deepsea": "#1a4a6e",
-    "clay": "#6b4a35"
+    "clay": "#6b4a35",
+    "ink": "#08090a"
   };
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
 
@@ -8519,14 +8071,29 @@ document.querySelector('.logo').addEventListener('click', function(e) {
   return false;
 });
 
+
+  // 隐藏按钮：切换隐私模式（链接变透明）
+  const hideToggle = document.getElementById('hideToggle');
+  if (hideToggle) {
+    hideToggle.addEventListener('click', (e) => {
+      document.body.classList.toggle('hide-mode');
+      e.currentTarget.blur();
+    });
+  }
+
 // 布局切换
 const layoutToggle = document.getElementById('layoutToggle');
 const layoutBtn = layoutToggle.querySelector('.layout-btn');
 
 function setLayout(layout) {
+  if (layout === 'grid') layout = 'clear';
   localStorage.setItem('layout', layout);
-  document.body.classList.remove('layout-grid', 'layout-minimal');
-  document.body.classList.add('layout-' + layout);
+  document.body.classList.remove('layout-minimal', 'layout-clear');
+  if (layout === 'clear') {
+    document.body.classList.add('layout-minimal', 'layout-clear');
+  } else {
+    document.body.classList.add('layout-' + layout);
+  }
 
   
   let isImageBackground = false;
@@ -8562,12 +8129,18 @@ function setLayout(layout) {
   // 布局二 logo 显示英文艺术字体
   const logoText = document.getElementById('logoText');
   if (logoText) {
-    logoText.textContent = layout === 'minimal' ? '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐' : '𝗞𝗶𝘀𝘀𝘁𝗿';
+    logoText.textContent = '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐';
   }
 
   // 动态更新布局按钮提示
   if (layoutBtn) {
-    layoutBtn.title = layout === 'minimal' ? '杂志布局' : '经典布局';
+    if (layout === 'clear') {
+      layoutBtn.title = '清晰布局';
+    } else if (layout === 'minimal') {
+      layoutBtn.title = '杂志布局';
+    } else {
+      layoutBtn.title = '清晰布局';
+    }
   }
 
   if (!isImageBackground) {
@@ -8616,7 +8189,7 @@ function setLayout(layout) {
   renderLinks(searchValue, currentCategory);
 }
 
-const layoutDefaultVersion = 'v130-magazine-default';
+const layoutDefaultVersion = 'v141-minimal-default';
 if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
   localStorage.setItem('layout', 'minimal');
   localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -8625,8 +8198,8 @@ const savedLayout = localStorage.getItem('layout') || 'minimal';
 setLayout(savedLayout);
 
 layoutBtn.addEventListener('click', (e) => {
-  const currentLayout = document.body.classList.contains('layout-grid') ? 'grid' : 'minimal';
-  const newLayout = currentLayout === 'grid' ? 'minimal' : 'grid';
+  const currentLayout = document.body.classList.contains('layout-clear') ? 'clear' : 'minimal';
+  const newLayout = currentLayout === 'clear' ? 'minimal' : 'clear';
   setLayout(newLayout);
   e.currentTarget.blur();
 });
@@ -8774,9 +8347,6 @@ lofiAudio.addEventListener('error', (e) => {
   if (isPlaying && !isChangingStation) tryNextStationSource();
 });
 
-lofiAudio.addEventListener('loadedmetadata', () => {
-  console.log('音频元数据加载成功');
-});
 
 lofiAudio.addEventListener('playing', () => {
   stationRetryCount = 0;
@@ -8833,7 +8403,7 @@ function changeStation(direction) {
   mbStart();
 
   playAudio().catch(e => {
-    console.warn('鍒囨崲鐢靛彴鎾斁澶辫触:', e.message);
+    console.warn('切换电台播放失败:', e.message);
     clearTimeout(stationUnlockTimer);
     isChangingStation = false;
     setTimeout(tryNextStationSource, 250);
@@ -8848,18 +8418,6 @@ function changeStation(direction) {
 
 musicPrev.addEventListener('click', (e) => { changeStation(-1); e.currentTarget.blur(); });
 musicNext.addEventListener('click', (e) => { changeStation(1); e.currentTarget.blur(); });
-
-// 生成隐藏数据
-generateSecretData();
-
-// 初始化隐藏模式
-initHideMode();
-
-// 绑定隐藏按钮点击事件
-document.getElementById('hideToggle').addEventListener('click', function(e) {
-  toggleHideMode();
-  e.currentTarget.blur();
-});
 
 renderLinks('', currentCategory);
 
@@ -8972,13 +8530,6 @@ document.addEventListener('keydown', (e) => {
     if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
       e.preventDefault();
       layoutBtn.click();
-    }
-  }
-
-  if (e.key === 'h' || e.key === 'H') {
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-      e.preventDefault();
-      document.getElementById('hideToggle').click();
     }
   }
 
@@ -9607,7 +9158,6 @@ const mbObserver = new MutationObserver(() => {
 });
 mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
 
-
 // ========== 背景选择器 ==========
 // === 背景选择器：纯色/渐变 + WebP 壁纸，按需创建预览 ===
 (function() {
@@ -9619,6 +9169,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-ocean', type: 'theme', theme: 'ocean', name: '海洋蓝', preview: 'linear-gradient(135deg, #f0f8ff, #d7ecff)' },
     { id: 'theme-twilight', type: 'theme', theme: 'twilight', name: '晨曦紫', preview: 'linear-gradient(135deg, #f5f0ff, #e9dcff)' },
     { id: 'theme-midnight', type: 'theme', theme: 'midnight', name: '深夜黑', preview: 'linear-gradient(135deg, #000212, #0c0c1d)' },
+    { id: 'theme-ink', type: 'theme', theme: 'ink', name: 'Linear 黑', preview: 'linear-gradient(135deg, #08090a, #1c1d22)' },
     { id: 'theme-starry', type: 'theme', theme: 'starry', name: '星空蓝', preview: 'linear-gradient(135deg, #0c0c1d, #1b2b5f)' },
     { id: 'theme-sunset', type: 'theme', theme: 'sunset', name: '暮光橙', preview: 'linear-gradient(135deg, #2d1b0e, #7a3b1e)' },
     { id: 'theme-aurora', type: 'theme', theme: 'aurora', name: '极光青', preview: 'linear-gradient(135deg, #1a2a3a, #3db8a8)' },
@@ -9628,49 +9179,49 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-clay', type: 'theme', theme: 'clay', name: '暖陶土', preview: 'linear-gradient(135deg, #4a3326, #8a6a4f)' }
   ];
   const imageBackgrounds = [
-    { id: '樱野', name: '樱野', url: 'wallpapers_webp/樱野.webp', thumb: 'wallpapers_webp/thumbs/樱野.webp' },
-    { id: '星夜', name: '星夜', url: 'wallpapers_webp/星夜.webp', thumb: 'wallpapers_webp/thumbs/星夜.webp' },
-    { id: '秋林', name: '秋林', url: 'wallpapers_webp/秋林.webp', thumb: 'wallpapers_webp/thumbs/秋林.webp' },
-    { id: '樱河', name: '樱河', url: 'wallpapers_webp/樱河.webp', thumb: 'wallpapers_webp/thumbs/樱河.webp' },
-    { id: '海站', name: '海站', url: 'wallpapers_webp/海站.webp', thumb: 'wallpapers_webp/thumbs/海站.webp' },
-    { id: '雨读', name: '雨读', url: 'wallpapers_webp/雨读.webp', thumb: 'wallpapers_webp/thumbs/雨读.webp' },
-    { id: '薰月', name: '薰月', url: 'wallpapers_webp/薰月.webp', thumb: 'wallpapers_webp/thumbs/薰月.webp' },
-    { id: '屋园', name: '屋园', url: 'wallpapers_webp/屋园.webp', thumb: 'wallpapers_webp/thumbs/屋园.webp' },
-    { id: '云海', name: '云海', url: 'wallpapers_webp/云海.webp', thumb: 'wallpapers_webp/thumbs/云海.webp' },
-    { id: '花街', name: '花街', url: 'wallpapers_webp/花街.webp', thumb: 'wallpapers_webp/thumbs/花街.webp' },
-    { id: '雪村', name: '雪村', url: 'wallpapers_webp/雪村.webp', thumb: 'wallpapers_webp/thumbs/雪村.webp' },
-    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/灯塔.webp', thumb: 'wallpapers_webp/thumbs/灯塔.webp' },
-    { id: '林茶', name: '林茶', url: 'wallpapers_webp/林茶.webp', thumb: 'wallpapers_webp/thumbs/林茶.webp' },
-    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/稻霞.webp', thumb: 'wallpapers_webp/thumbs/稻霞.webp' },
-    { id: '温室', name: '温室', url: 'wallpapers_webp/温室.webp', thumb: 'wallpapers_webp/thumbs/温室.webp' },
-    { id: '游园', name: '游园', url: 'wallpapers_webp/游园.webp', thumb: 'wallpapers_webp/thumbs/游园.webp' },
-    { id: '学园', name: '学园', url: 'wallpapers_webp/学园.webp', thumb: 'wallpapers_webp/thumbs/学园.webp' },
-    { id: '水族', name: '水族', url: 'wallpapers_webp/水族.webp', thumb: 'wallpapers_webp/thumbs/水族.webp' },
-    { id: '阁星', name: '阁星', url: 'wallpapers_webp/阁星.webp', thumb: 'wallpapers_webp/thumbs/阁星.webp' },
-    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/竹晨.webp', thumb: 'wallpapers_webp/thumbs/竹晨.webp' },
-    { id: '夜市', name: '夜市', url: 'wallpapers_webp/夜市.webp', thumb: 'wallpapers_webp/thumbs/夜市.webp' },
-    { id: '星象', name: '星象', url: 'wallpapers_webp/星象.webp', thumb: 'wallpapers_webp/thumbs/星象.webp' },
-    { id: '风车', name: '风车', url: 'wallpapers_webp/风车.webp', thumb: 'wallpapers_webp/thumbs/风车.webp' },
-    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/猫窗.webp', thumb: 'wallpapers_webp/thumbs/猫窗.webp' },
-    { id: '兔野', name: '兔野', url: 'wallpapers_webp/兔野.webp', thumb: 'wallpapers_webp/thumbs/兔野.webp' },
-    { id: '书童', name: '书童', url: 'wallpapers_webp/书童.webp', thumb: 'wallpapers_webp/thumbs/书童.webp' },
-    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/紫阳.webp', thumb: 'wallpapers_webp/thumbs/紫阳.webp' },
-    { id: '月秋', name: '月秋', url: 'wallpapers_webp/月秋.webp', thumb: 'wallpapers_webp/thumbs/月秋.webp' },
-    { id: '庭院', name: '庭院', url: 'wallpapers_webp/庭院.webp', thumb: 'wallpapers_webp/thumbs/庭院.webp' },
-    { id: '水母', name: '水母', url: 'wallpapers_webp/水母.webp', thumb: 'wallpapers_webp/thumbs/水母.webp' },
-    { id: '草莓', name: '草莓', url: 'wallpapers_webp/草莓.webp', thumb: 'wallpapers_webp/thumbs/草莓.webp' },
-    { id: '魔书', name: '魔书', url: 'wallpapers_webp/魔书.webp', thumb: 'wallpapers_webp/thumbs/魔书.webp' },
-    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/冬暖.webp', thumb: 'wallpapers_webp/thumbs/冬暖.webp' },
-    { id: '画室', name: '画室', url: 'wallpapers_webp/画室.webp', thumb: 'wallpapers_webp/thumbs/画室.webp' },
-    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/犬伴.webp', thumb: 'wallpapers_webp/thumbs/犬伴.webp' },
-    { id: '野餐', name: '野餐', url: 'wallpapers_webp/野餐.webp', thumb: 'wallpapers_webp/thumbs/野餐.webp' },
-    { id: '狐社', name: '狐社', url: 'wallpapers_webp/狐社.webp', thumb: 'wallpapers_webp/thumbs/狐社.webp', excludeFromRandom: true },
-    { id: '阅台', name: '阅台', url: 'wallpapers_webp/阅台.webp', thumb: 'wallpapers_webp/thumbs/阅台.webp' },
-    { id: '虹池', name: '虹池', url: 'wallpapers_webp/虹池.webp', thumb: 'wallpapers_webp/thumbs/虹池.webp', excludeFromRandom: true },
-    { id: '绿意', name: '绿意', url: 'wallpapers_webp/绿意.webp', thumb: 'wallpapers_webp/thumbs/绿意.webp', excludeFromRandom: true },
-    { id: '茶花', name: '茶花', url: 'wallpapers_webp/茶花.webp', thumb: 'wallpapers_webp/thumbs/茶花.webp' },
-    { id: '海骑', name: '海骑', url: 'wallpapers_webp/海骑.webp', thumb: 'wallpapers_webp/thumbs/海骑.webp' },
-    { id: '萤光', name: '萤光', url: 'wallpapers_webp/萤光.webp', thumb: 'wallpapers_webp/thumbs/萤光.webp' }
+    { id: '樱野', name: '樱野', url: 'wallpapers_webp/35_樱野.webp', thumb: 'wallpapers_webp/thumbs/35_樱野.webp' },
+    { id: '星夜', name: '星夜', url: 'wallpapers_webp/28_星夜.webp', thumb: 'wallpapers_webp/thumbs/28_星夜.webp' },
+    { id: '秋林', name: '秋林', url: 'wallpapers_webp/18_秋林.webp', thumb: 'wallpapers_webp/thumbs/18_秋林.webp' },
+    { id: '樱河', name: '樱河', url: 'wallpapers_webp/34_樱河.webp', thumb: 'wallpapers_webp/thumbs/34_樱河.webp' },
+    { id: '海站', name: '海站', url: 'wallpapers_webp/09_海站.webp', thumb: 'wallpapers_webp/thumbs/09_海站.webp' },
+    { id: '雨读', name: '雨读', url: 'wallpapers_webp/38_雨读.webp', thumb: 'wallpapers_webp/thumbs/38_雨读.webp' },
+    { id: '薰月', name: '薰月', url: 'wallpapers_webp/31_薰月.webp', thumb: 'wallpapers_webp/thumbs/31_薰月.webp' },
+    { id: '屋园', name: '屋园', url: 'wallpapers_webp/26_屋园.webp', thumb: 'wallpapers_webp/thumbs/26_屋园.webp' },
+    { id: '云海', name: '云海', url: 'wallpapers_webp/41_云海.webp', thumb: 'wallpapers_webp/thumbs/41_云海.webp' },
+    { id: '花街', name: '花街', url: 'wallpapers_webp/12_花街.webp', thumb: 'wallpapers_webp/thumbs/12_花街.webp' },
+    { id: '雪村', name: '雪村', url: 'wallpapers_webp/30_雪村.webp', thumb: 'wallpapers_webp/thumbs/30_雪村.webp' },
+    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/04_灯塔.webp', thumb: 'wallpapers_webp/thumbs/04_灯塔.webp' },
+    { id: '林茶', name: '林茶', url: 'wallpapers_webp/14_林茶.webp', thumb: 'wallpapers_webp/thumbs/14_林茶.webp' },
+    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/03_稻霞.webp', thumb: 'wallpapers_webp/thumbs/03_稻霞.webp' },
+    { id: '温室', name: '温室', url: 'wallpapers_webp/25_温室.webp', thumb: 'wallpapers_webp/thumbs/25_温室.webp' },
+    { id: '游园', name: '游园', url: 'wallpapers_webp/37_游园.webp', thumb: 'wallpapers_webp/thumbs/37_游园.webp' },
+    { id: '学园', name: '学园', url: 'wallpapers_webp/29_学园.webp', thumb: 'wallpapers_webp/thumbs/29_学园.webp' },
+    { id: '水族', name: '水族', url: 'wallpapers_webp/22_水族.webp', thumb: 'wallpapers_webp/thumbs/22_水族.webp' },
+    { id: '阁星', name: '阁星', url: 'wallpapers_webp/07_阁星.webp', thumb: 'wallpapers_webp/thumbs/07_阁星.webp' },
+    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/42_竹晨.webp', thumb: 'wallpapers_webp/thumbs/42_竹晨.webp' },
+    { id: '夜市', name: '夜市', url: 'wallpapers_webp/33_夜市.webp', thumb: 'wallpapers_webp/thumbs/33_夜市.webp' },
+    { id: '星象', name: '星象', url: 'wallpapers_webp/27_星象.webp', thumb: 'wallpapers_webp/thumbs/27_星象.webp' },
+    { id: '风车', name: '风车', url: 'wallpapers_webp/06_风车.webp', thumb: 'wallpapers_webp/thumbs/06_风车.webp' },
+    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/16_猫窗.webp', thumb: 'wallpapers_webp/thumbs/16_猫窗.webp' },
+    { id: '兔野', name: '兔野', url: 'wallpapers_webp/24_兔野.webp', thumb: 'wallpapers_webp/thumbs/24_兔野.webp' },
+    { id: '书童', name: '书童', url: 'wallpapers_webp/20_书童.webp', thumb: 'wallpapers_webp/thumbs/20_书童.webp' },
+    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/43_紫阳.webp', thumb: 'wallpapers_webp/thumbs/43_紫阳.webp' },
+    { id: '月秋', name: '月秋', url: 'wallpapers_webp/39_月秋.webp', thumb: 'wallpapers_webp/thumbs/39_月秋.webp' },
+    { id: '庭院', name: '庭院', url: 'wallpapers_webp/23_庭院.webp', thumb: 'wallpapers_webp/thumbs/23_庭院.webp' },
+    { id: '水母', name: '水母', url: 'wallpapers_webp/21_水母.webp', thumb: 'wallpapers_webp/thumbs/21_水母.webp' },
+    { id: '草莓', name: '草莓', url: 'wallpapers_webp/01_草莓.webp', thumb: 'wallpapers_webp/thumbs/01_草莓.webp' },
+    { id: '魔书', name: '魔书', url: 'wallpapers_webp/17_魔书.webp', thumb: 'wallpapers_webp/thumbs/17_魔书.webp' },
+    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/05_冬暖.webp', thumb: 'wallpapers_webp/thumbs/05_冬暖.webp' },
+    { id: '画室', name: '画室', url: 'wallpapers_webp/13_画室.webp', thumb: 'wallpapers_webp/thumbs/13_画室.webp' },
+    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/19_犬伴.webp', thumb: 'wallpapers_webp/thumbs/19_犬伴.webp' },
+    { id: '野餐', name: '野餐', url: 'wallpapers_webp/32_野餐.webp', thumb: 'wallpapers_webp/thumbs/32_野餐.webp' },
+    { id: '狐社', name: '狐社', url: 'wallpapers_webp/11_狐社.webp', thumb: 'wallpapers_webp/thumbs/11_狐社.webp', excludeFromRandom: true },
+    { id: '阅台', name: '阅台', url: 'wallpapers_webp/40_阅台.webp', thumb: 'wallpapers_webp/thumbs/40_阅台.webp' },
+    { id: '虹池', name: '虹池', url: 'wallpapers_webp/10_虹池.webp', thumb: 'wallpapers_webp/thumbs/10_虹池.webp', excludeFromRandom: true },
+    { id: '绿意', name: '绿意', url: 'wallpapers_webp/15_绿意.webp', thumb: 'wallpapers_webp/thumbs/15_绿意.webp', excludeFromRandom: true },
+    { id: '茶花', name: '茶花', url: 'wallpapers_webp/02_茶花.webp', thumb: 'wallpapers_webp/thumbs/02_茶花.webp' },
+    { id: '海骑', name: '海骑', url: 'wallpapers_webp/08_海骑.webp', thumb: 'wallpapers_webp/thumbs/08_海骑.webp' },
+    { id: '萤光', name: '萤光', url: 'wallpapers_webp/36_萤光.webp', thumb: 'wallpapers_webp/thumbs/36_萤光.webp' }
   ].map(item => ({ ...item, type: 'image' }));
 
   /* reorder: 精选背景 → 风景 → 人物 */
@@ -9785,10 +9336,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
   }
 
   function getImageOverlay() {
-    const isGrid = document.body.classList.contains('layout-grid');
-    return isGrid
-      ? ['rgba(18, 18, 36, 0.34)', 'rgba(18, 18, 36, 0.43)']
-      : ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
+    return ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
   }
 
   function syncImageBackgroundChrome(bgImageValue) {
@@ -10096,7 +9644,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     const width = Math.max(336, Math.min(920, viewportWidth - 24));
     const panel = modal.querySelector('.background-modal-panel');
     if (panel) panel.style.width = `${width}px`;
-    const layoutOffset = document.body.classList.contains('layout-grid') ? 14 : 0;
+    const layoutOffset = 0;
     modal.style.setProperty('--bg-picker-top', `${rect.bottom + 18 + layoutOffset}px`);
   }
 
@@ -10133,7 +9681,8 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
       }
     }
     /* 没有用户选择时，默认从全部壁纸图片中随机；用户手动选择后仍按保存值恢复 */
-    var randomPool = imageBackgrounds.filter(function(o) { return !o.excludeFromRandom; });
+    var defaultRandomIds = ['星夜', '雨读', '林茶', '竹晨'];
+    var randomPool = imageBackgrounds.filter(function(o) { return defaultRandomIds.indexOf(o.id) !== -1; });
     if (randomPool.length > 0) {
       var randomIdx = Math.floor(Math.random() * randomPool.length);
       applySelection(randomPool[randomIdx], false, false);

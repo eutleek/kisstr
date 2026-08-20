@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <script>
 (function initColors() {
-  const layoutDefaultVersion = 'v130-magazine-default';
+  const layoutDefaultVersion = 'v141-minimal-default';
   if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
     localStorage.setItem('layout', 'minimal');
     localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -592,6 +592,7 @@ try {
     letter-spacing: -0.5px;
     cursor: pointer;
     user-select: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 
   .logo-group {
@@ -713,18 +714,16 @@ try {
 
   /* 单按钮布局 - 默认显示网格图标（点击切换到网格） */
   .layout-btn .layout-icon-grid {
-    display: block;
+    display: none;
   }
   .layout-btn .layout-icon-minimal {
-    display: none;
-  }
-
-  /* 网格布局时显示杂志图标（点击切换到杂志） */
-  body.layout-grid .layout-icon-grid {
-    display: none;
-  }
-  body.layout-grid .layout-icon-minimal {
     display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-grid {
+    display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-minimal {
+    display: none;
   }
 
   /* 隐藏按钮眼睛图标 */
@@ -744,6 +743,11 @@ try {
   body.hide-mode .hide-icon-hide {
     display: block;
   }
+  /* 隐藏模式：只隐藏网站URL，名字和说明保持可见，卡片大小不变 */
+  body.hide-mode .link-url {
+    visibility: hidden !important;
+  }
+
 
   /* ========== 隐藏名字按钮 ========== */
   .hide-toggle {
@@ -787,7 +791,7 @@ try {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 16px;
-    font-family: 'Noto Sans SC', 'PingFang SC', 'Helvetica Neue', sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     letter-spacing: clamp(2px, 3vw, 12px);
     text-indent: clamp(2px, 3vw, 12px);
     background: linear-gradient(135deg, var(--text-primary), var(--accent));
@@ -878,11 +882,6 @@ try {
     margin-bottom: 24px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--card-border);
-  }
-
-  /* 第一布局隐藏分类图标和标题 */
-  .layout-grid .category-header {
-    display: none;
   }
 
   .category-icon {
@@ -989,48 +988,6 @@ try {
 
   .subcategory-title-card.tilt-active:hover {
     transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
-  }
-
-  /* 第一布局：小分类标题取消卡片，只保留文字 */
-  .layout-grid .subcategory-title-card {
-    background: var(--card-bg) !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 0 0 8px 0 !important;
-    margin-bottom: 16px !important;
-    transition: none !important;
-    transform: none !important;
-    transform-style: flat !important;
-    will-change: auto !important;
-    overflow: visible !important;
-  }
-
-  .layout-grid .subcategory-title-card::before,
-  .layout-grid .subcategory-title-card::after {
-    display: none !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover {
-    transform: none !important;
-    box-shadow: none !important;
-    border-color: transparent !important;
-    background: var(--card-bg) !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover::before,
-  .layout-grid .subcategory-title-card:hover::after {
-    opacity: 0 !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active {
-    transition: none !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active:hover {
-    transform: none !important;
   }
 
   .subcategory-title {
@@ -1503,7 +1460,6 @@ try {
     pointer-events: auto;
     transform: scale(1);
   }
-
 
   .music-btn:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -2185,11 +2141,6 @@ try {
     opacity: 0 !important;
   }
 
-  /* 第一布局隐藏律动栏 */
-  .layout-grid .music-bar-bottom-container {
-    display: none !important;
-  }
-
   .layout-minimal .bg-gradient {
     display: block;
     background: #ffffff;
@@ -2721,6 +2672,147 @@ try {
     max-height: 40px;
     opacity: 1;
     margin-top: 4px;
+  }
+
+  /* ========== 清晰布局（Clear Layout）========== */
+  .layout-clear .link-card,
+  .layout-clear .ai-link-card {
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    min-height: auto;
+    margin: -4px -8px;
+  }
+
+  .layout-clear .link-card:hover,
+  .layout-clear .ai-link-card:hover,
+  .layout-clear .subcategory-title-card:hover {
+    transform: none;
+    box-shadow: 0 2px 12px rgba(184, 150, 83, 0.15);
+    border: none;
+    background: linear-gradient(135deg, rgba(184, 150, 83, 0.08), rgba(212, 175, 110, 0.05));
+  }
+
+  .layout-clear .link-card-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .layout-clear .link-icon {
+    display: none;
+  }
+
+  .layout-clear .link-info {
+    flex: none;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .layout-clear .link-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    position: relative;
+    display: block;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-card:hover .link-name {
+    color: #b89653;
+  }
+
+  .layout-clear .link-card:hover .link-name::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #b89653;
+    transition: all 0.3s ease;
+  }
+
+  .layout-clear .link-url {
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    margin-bottom: 0;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-desc {
+    max-height: 40px;
+    opacity: 1;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .layout-clear .link-arrow {
+    display: none;
+  }
+
+  .layout-clear footer {
+    background: transparent;
+    border-top: 1px solid #e5e5e5;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .layout-clear .footer-badges .badge {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+  }
+
+  .layout-clear .footer-badges .badge:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
+  }
+
+  .layout-clear .disclaimer-btn {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .layout-clear .disclaimer-btn:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
   }
 
   .layout-minimal .link-arrow {
@@ -3284,6 +3376,8 @@ try {
 
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     border-color: transparent;
   }
@@ -3293,18 +3387,24 @@ try {
   [data-theme="deepsea"] body.layout-minimal .search-inline:hover,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
   [data-theme="clay"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     border-color: rgba(255, 255, 255, 0.5);
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff;
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff;
   }
@@ -3500,6 +3600,204 @@ try {
   [data-theme="forest"] body.layout-minimal .footer-copy,
   [data-theme="deepsea"] body.layout-minimal .footer-copy,
   [data-theme="clay"] body.layout-minimal .footer-copy {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ========== Linear 黑（Linear 暗色主题提取） ========== */
+  [data-theme="ink"] {
+    --bg-primary: #08090a;
+    --bg-secondary: #141519;
+    --text-primary: #f7f8f8;
+    --text-secondary: #8a8f98;
+    --accent: #828fff;
+    --accent-hover: #9ba8ff;
+    --card-bg: rgba(28, 28, 31, 0.8);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal {
+    background: linear-gradient(135deg, #08090a 0%, #141519 50%, #1c1d22 100%);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .logo {
+    color: #f7f8f8 !important;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover,
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-tabs {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active::after {
+    background: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-header {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-title,
+  [data-theme="ink"] body.layout-minimal .subcategory-title {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-en-title {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover,
+  [data-theme="ink"] body.layout-minimal .ai-link-card:hover,
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name {
+    color: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name::after {
+    background: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-url {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-desc {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-desc {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle,
+  [data-theme="ink"] body.layout-minimal .layout-btn,
+  [data-theme="ink"] body.layout-minimal .hide-toggle {
+    border-color: transparent;
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] .music-fx-btn,
+  [data-theme="ink"] .music-fx-close {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover,
+  [data-theme="ink"] body.layout-minimal .hide-toggle:hover {
+    background: transparent;
+    color: #f7f8f8;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover svg,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover svg {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active svg {
+    fill: #08090a;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active svg {
+    fill: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal footer {
+    border-top-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn:hover {
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-copy {
     color: rgba(255, 255, 255, 0.6);
   }
 
@@ -3717,7 +4015,6 @@ try {
     transform: scale(1);
   }
 
-
   
 
   /* 控制按钮统一尺寸 + 杂志默认布局适配 */
@@ -3868,8 +4165,6 @@ try {
     }
   }
 
-
-
   /* 最终按钮尺寸覆盖：主题 / 布局 / 隐藏 */
   .theme-toggle,
   .hide-toggle,
@@ -3906,30 +4201,6 @@ try {
                 border-color 0.3s ease,
                 background-color 0.3s ease,
                 box-shadow 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    border-radius: 9px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-    width: 17px !important;
-    height: 17px !important;
-    transition: fill 0.2s ease,
-                filter 0.2s ease,
-                opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    transition: opacity 0.2s ease !important;
   }
 
   .theme-toggle,
@@ -4002,27 +4273,6 @@ try {
       min-width: 0 !important;
       min-height: 0 !important;
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 8px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 40px !important;
-      width: 92px !important;
-    }
   }
 
   @media (max-width: 375px) {
@@ -4053,30 +4303,7 @@ try {
     .category-tabs.search-expanded {
       transform: translateX(-8px);
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 7px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 15px !important;
-      height: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 70px !important;
-    }
   }
-
-
 
   /* 第二布局按钮方块化 */
   body.layout-minimal .theme-toggle,
@@ -4547,47 +4774,6 @@ try {
     filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.75));
   }
 
-  body.layout-grid.background-image-mode .link-icon {
-    box-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle,
-  body.layout-grid .layout-toggle,
-  body.layout-grid .layout-btn,
-  body.layout-grid .hide-toggle {
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg,
-  body.layout-grid .layout-btn svg,
-  body.layout-grid .hide-toggle svg {
-    filter: none !important;
-    text-shadow: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg {
-    color: #f59e0b !important;
-    fill: #f59e0b !important;
-  }
-
-  body.layout-grid .layout-btn svg {
-    color: #3b82f6 !important;
-    fill: #3b82f6 !important;
-  }
-
-  body.layout-grid .hide-toggle svg {
-    color: #10b981 !important;
-    fill: #10b981 !important;
-  }
-
-  body.layout-grid.hide-mode .hide-toggle svg {
-    color: #ef4444 !important;
-    fill: #ef4444 !important;
-  }
-
   body.background-image-mode .music-bar-bottom-container .music-fx-btn {
     color: rgba(255, 255, 255, 0.94) !important;
     filter: none !important;
@@ -4884,10 +5070,6 @@ try {
     cursor: text;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded {
-    border-radius: 18px !important;
-  }
-
   .layout-minimal .search-inline.expanded {
     width: 160px !important;
     min-width: 160px !important;
@@ -4988,41 +5170,6 @@ try {
     color: rgba(255, 255, 255, 0.96) !important;
   }
 
-  /* 本轮仅改 index：经典布局标签按附件恢复，搜索框与手机主题滚动条补强 */
-  body.layout-grid .category-tabs {
-    max-width: 1200px;
-    margin: 0 auto 20px;
-    padding: 0 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    overflow: visible;
-  }
-
-  body.layout-grid .tab-btn {
-    height: auto;
-    min-height: 0;
-    padding: 10px 20px;
-    border-radius: 20px !important;
-    font-size: 14px;
-    line-height: normal;
-    flex: 0 1 auto;
-    white-space: normal;
-  }
-
-  body.layout-grid .tab-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  body.layout-grid .tab-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #ffffff;
-  }
-
   .search-inline,
   .search-inline input,
   .search-inline input::placeholder {
@@ -5036,7 +5183,6 @@ try {
     border-color: rgba(255, 255, 255, 0.88) !important;
     box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18) !important;
   }
-
 
   .theme-toggle.background-picker-open {
     background: var(--card-bg) !important;
@@ -5111,15 +5257,6 @@ try {
     transform: translate(-50%, -50%) !important;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    width: 138px !important;
-  }
-
   .layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 17px !important;
@@ -5131,14 +5268,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 96px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5153,14 +5282,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 32px !important;
-      width: 72px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5173,8 +5294,6 @@ try {
       width: 72px !important;
     }
   }
-
-  body:not(.layout-minimal) .search-inline input,
   .layout-minimal .search-inline input,
   body.background-image-mode .search-inline input,
   body.background-image-mode.layout-minimal .search-inline input {
@@ -5182,8 +5301,6 @@ try {
     transition:
       opacity 0.2s ease !important;
   }
-
-  body:not(.layout-minimal) .search-inline.expanded input,
   .layout-minimal .search-inline.expanded input,
   body.background-image-mode .search-inline.expanded input,
   body.background-image-mode.layout-minimal .search-inline.expanded input {
@@ -5246,23 +5363,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body.layout-grid .category-tabs {
-      padding: 0 16px;
-      gap: 6px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 8px 14px;
-      border-radius: 20px !important;
-      font-size: 13px;
-      height: auto;
-      min-height: 0;
-      line-height: normal;
-    }
 
     .background-strip {
       touch-action: pan-x;
@@ -5291,19 +5391,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body.layout-grid .category-tabs {
-      padding: 0 12px;
-      gap: 4px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 6px 10px;
-      border-radius: 20px !important;
-      font-size: 12px;
-    }
   }
 
   /* 全平台适配兜底 */
@@ -5350,8 +5437,6 @@ try {
     }
   }
 /* ========== 背景、主题与全平台适配结束 ========== */
-
-
 
   /* ========== 全平台适配补强 ========== */
   html {
@@ -5455,175 +5540,10 @@ try {
     }
   }
 
-
-  
-/* ========== 搜索框动画复刻结束 ========== */
-
-
-  /* ========== 经典布局搜索框完全复刻参考文件（仅经典布局，杂志布局不变） ========== */
-  body:not(.layout-minimal) .search-wrapper,
-  body:not(.layout-minimal) .search-wrapper.search-expanded {
-    position: static !important;
-    width: auto !important;
-    height: auto !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    flex: 0 0 auto !important;
-    z-index: auto !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    flex: 0 0 auto !important;
-    border-radius: 20px !important;
-    overflow: hidden !important;
-    will-change: width !important;
-    transition: width 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    width: 180px !important;
-    min-width: 180px !important;
-    flex: 0 0 180px !important;
-    border-radius: 20px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon,
-  body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 11px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 16px !important;
-    height: 16px !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 36px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 130px !important;
-    opacity: 0 !important;
-    transition: opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded input {
-    opacity: 1 !important;
-  }
-
-  body:not(.layout-minimal) .category-tabs.search-expanded {
-    transform: none !important;
-    flex-wrap: wrap !important;
-    overflow: visible !important;
-  }
-
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 140px !important;
-      min-width: 140px !important;
-      flex: 0 0 140px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 90px !important;
-    }
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 100px !important;
-      min-width: 100px !important;
-      flex: 0 0 100px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 64px !important;
-      font-size: 12px !important;
-    }
-  }
-  /* Classic layout search fill follows tab color */
-  body:not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-  }
-
-  [data-theme="starry"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="sunset"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="aurora"] body:not(.background-image-mode):not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    box-shadow: none !important;
-  }
-  /* Classic layout search border matches classic tabs */
-  body.background-image-mode:not(.layout-minimal) .search-inline {
-    border: 1px solid var(--card-border) !important;
-    background: var(--card-bg) !important;
-    box-shadow: none !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-    background: var(--card-bg) !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded {
-    border-color: var(--card-border) !important;
-    background: var(--card-bg) !important;
   }
   /* ========== Minimal layout search box reference (magazine only, classic unchanged) ========== */
   body.layout-minimal .search-wrapper,
@@ -5790,99 +5710,6 @@ try {
     background-image: none !important;
     box-shadow: none !important;
   }
-
-  body.layout-grid .link-icon,
-  body:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    box-shadow: none !important;
-    color: var(--text-primary) !important;
-  }
-
-
-  /* classic layout + wallpaper theme: force icons white */
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-arrow,
-  body.background-image-mode:not(.layout-minimal) .link-arrow {
-    color: #ffffff !important;
-    fill: #ffffff !important;
-  }
-
-  /* classic wallpaper card border first-paint stabilization */
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  body.layout-grid.background-image-mode .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* early html wallpaper mode card border stabilization */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  html.background-image-mode body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* first-second card border rasterization guard */
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: transparent !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    transition: none !important;
-  }
-
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
   /* ========== Capture unlock and mobile bottom seam fix ========== */
   html,
   body,
@@ -5923,13 +5750,6 @@ try {
     }
   }
 
-  /* ========== Search expanded icon spacing tweak ========== */
-  body:not(.layout-minimal) .search-inline.expanded .search-icon,
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 10px !important;
-    transform: translateY(-50%) !important;
-  }
-
   body.layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 8px !important;
@@ -5937,10 +5757,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon,
-    body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 10px !important;
-    }
 
     body.layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -6009,6 +5825,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline,
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     background: transparent !important;
     background-color: transparent !important;
@@ -6032,6 +5850,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline.expanded,
   [data-theme="forest"] body.layout-minimal .search-inline.expanded,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     background: transparent !important;
     background-color: transparent !important;
@@ -6047,6 +5867,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline .search-icon,
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff !important;
     color: #ffffff !important;
@@ -6059,6 +5881,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline input,
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff !important;
   }
@@ -6078,6 +5902,8 @@ try {
   [data-theme="dream"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="forest"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="deepsea"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+  [data-theme="ink"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+
   [data-theme="clay"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover {
     color: #ffffff !important;
   }
@@ -6187,41 +6013,6 @@ try {
     color: #ffffff !important;
   }
 
-
-
-  /* final override: wallpaper classic cards use transparent borders */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card,
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card,
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border: 1px solid transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after {
-    border: 0 !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-
   body.background-image-mode .subcategory-title,
   body.background-image-mode .subcategory-en-title,
   html.background-image-mode body .subcategory-title,
@@ -6238,11 +6029,15 @@ try {
   }
 </style>
 </head>
-<body>
+<body class="layout-minimal">
 <script>
   (function() {
     var saved = localStorage.getItem('layout') || 'minimal';
-    document.body.classList.add('layout-' + saved);
+    if (saved === 'clear') {
+      document.body.classList.add('layout-minimal', 'layout-clear');
+    } else {
+      document.body.classList.add('layout-' + saved);
+    }
 
     try {
       var savedBackground = localStorage.getItem('kisstr_background_picker_selection_v1');
@@ -6273,7 +6068,7 @@ try {
     <div class="logo-group">
       <div class="logo" draggable="false">
         <div class="logo-icon"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M28,16l-6,6H10l-6-6l6-6l6,5.994L22,10L28,16z"/></svg></div>
-        <span id="logoText" style="pointer-events:none">𝗞𝗶𝘀𝘀𝘁𝗿</span>
+        <span id="logoText" style="pointer-events:none">𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐</span>
       </div>
     </div>
     <div class="header-actions">
@@ -6306,7 +6101,7 @@ try {
         </svg>
       </button>
       <div class="layout-toggle" id="layoutToggle">
-        <button class="layout-btn" data-layout="minimal" title="切换布局">
+        <button class="layout-btn" data-layout="clear" title="切换布局（清晰/杂志）">
           <svg class="layout-icon-grid" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"/></svg>
           <svg class="layout-icon-minimal" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h18v4H3zM3 13h18v4H3z"/></svg>
         </button>
@@ -6359,7 +6154,8 @@ try {
     <span class="badge">✨ 无弹窗</span>
     <span class="badge">✨ 无盈利</span>
   </div>
-  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
+  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>&nbsp;&nbsp;
+  <a href="https://m.baike.com/wikiid/7316069310949130294" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">关于作者</a>
   <p class="footer-copy">排行 · 优质网站收藏</p>
 </footer>
 
@@ -6370,446 +6166,517 @@ window.name = 'kisstr_home';
 const linksData = [
   {
     name: "网站排行",
-    icon: "🏆",
+    icon: "🌐",
     color: "linear-gradient(135deg, #f5af19, #f12711)",
     subcategories: [
       {
         name: "全球网站排行",
-        enName: "TOP 200",
+        enName: "TOP 500",
         links: [
-          { name: "Google", url: "https://google.com", description: "全球最大搜索引擎" },
-          { name: "YouTube", url: "https://youtube.com", description: "全球最大视频分享平台" },
-          { name: "Facebook", url: "https://facebook.com", description: "全球社交网络" },
-          { name: "Instagram", url: "https://instagram.com", description: "图片与短视频社交平台" },
-          { name: "WhatsApp", url: "https://whatsapp.com", description: "全球即时通讯平台" },
-          { name: "X", url: "https://x.com", description: "原Twitter - 社交/新闻平台" },
-          { name: "维基百科", url: "https://wikipedia.org", description: "自由的网络百科全书" },
-          { name: "Yahoo!", url: "https://yahoo.com", description: "雅虎 - 综合新闻门户与邮箱" },
-          { name: "Reddit", url: "https://reddit.com", description: "美国知名社区与新闻发帖论坛" },
-          { name: "雅虎日本", url: "https://yahoo.co.jp", description: "日本最大的综合门户网站" },
-          { name: "百度", url: "https://baidu.com", description: "中国最大的搜索引擎" },
-          { name: "Yandex", url: "https://yandex.ru", description: "俄罗斯最大的搜索引擎" },
-          { name: "TikTok", url: "https://tiktok.com", description: "抖音国际版 - 短视频平台" },
-          { name: "Amazon", url: "https://amazon.com", description: "亚马逊 - 全球最大在线零售" },
-          { name: "OpenAI", url: "https://openai.com", description: "ChatGPT - 人工智能智能助手" },
-          { name: "Netflix", url: "https://netflix.com", description: "网飞 - 全球在线流媒体影音" },
-          { name: "Microsoft Office", url: "https://office.com", description: "微软在线办公套件" },
-          { name: "Outlook / Live", url: "https://live.com", description: "微软邮箱与登录服务" },
-          { name: "Microsoft", url: "https://microsoft.com", description: "微软官方门户与软件" },
-          { name: "Bing", url: "https://bing.com", description: "必应 - 微软旗下搜索引擎" },
-          { name: "LinkedIn", url: "https://linkedin.com", description: "领英 - 全球职场社交网络" },
-          { name: "Naver", url: "https://naver.com", description: "韩国第一大门户与搜索引擎" },
-          { name: "VKontakte", url: "https://vk.com", description: "俄罗斯最大社交网络" },
-          { name: "哔哩哔哩", url: "https://bilibili.com", description: "B站 - 中国弹幕视频社区" },
-          { name: "Twitch", url: "https://twitch.tv", description: "全球知名游戏与实况直播平台" },
-          { name: "Dzen", url: "https://dzen.ru", description: "俄罗斯流行内容推荐与资讯门户" },
-          { name: "Pinterest", url: "https://pinterest.com", description: "图片视觉探索与灵感平台" },
-          { name: "The Weather Channel", url: "https://weather.com", description: "全球天气预报" },
-          { name: "Temu", url: "https://temu.com", description: "拼多多海外版 - 电商巨头" },
-          { name: "DuckDuckGo", url: "https://duckduckgo.com", description: "隐私搜索引擎" },
-          { name: "腾讯网", url: "https://qq.com", description: "中国综合门户与社交枢纽" },
-          { name: "Telegram", url: "https://t.me", description: "电报应用网页端/短链" },
-          { name: "Fandom", url: "https://fandom.com", description: "全球最大影视游戏Wiki社区" },
-          { name: "雅虎日本新闻", url: "https://news.yahoo.co.jp", description: "雅虎日本新闻频道" },
-          { name: "Quora", url: "https://quora.com", description: "全球在线问答社区" },
-          { name: "AliExpress", url: "https://aliexpress.com", description: "速卖通 - 跨境电商" },
-          { name: "MSN", url: "https://msn.com", description: "微软新闻与资讯门户" },
-          { name: "eBay", url: "https://ebay.com", description: "全球在线拍卖与购物网站" },
-          { name: "Globo", url: "https://globo.com", description: "巴西最大新闻媒体门户" },
-          { name: "Roblox", url: "https://roblox.com", description: "罗布乐思 - 大型多人在线游戏" },
-          { name: "Canva", url: "https://canva.com", description: "在线图形设计与设计工具" },
-          { name: "SAPO", url: "https://sapo.pt", description: "葡萄牙主流门户网站" },
-          { name: "BBC", url: "https://bbc.com", description: "英国广播公司新闻服务" },
-          { name: "Mail.ru", url: "https://mail.ru", description: "俄罗斯电子邮箱与门户" },
-          { name: "IMDb", url: "https://imdb.com", description: "互联网电影与影视资料库" },
-          { name: "Indeed", url: "https://indeed.com", description: "全球最大求职招聘网站" },
-          { name: "Booking.com", url: "https://booking.com", description: "缤客 - 全球酒旅预订" },
-          { name: "日本乐天", url: "https://rakuten.co.jp", description: "日本大型综合电商/金融" },
-          { name: "ESPN", url: "https://espn.com", description: "全球著名体育新闻与直播网" },
-          { name: "搜狐", url: "https://sohu.com", description: "中国综合新闻与资讯门户" },
-          { name: "Spotify", url: "https://spotify.com", description: "全球流媒体音乐与播客" },
-          { name: "Adobe", url: "https://adobe.com", description: "图像与创意软件官方门户" },
-          { name: "Steam", url: "https://steampowered.com", description: "全球最大PC电子游戏分销平台" },
-          { name: "Etsy", url: "https://etsy.com", description: "全球手工艺品与复古商品电商" },
-          { name: "Walmart", url: "https://walmart.com", description: "沃尔玛官方线上购物" },
-          { name: "Allegro", url: "https://allegro.pl", description: "波兰最大综合电商平台" },
-          { name: "SHEIN", url: "https://shein.com", description: "希音 - 全球快时尚跨境电商" },
-          { name: "The New York Times", url: "https://nytimes.com", description: "纽约时报" },
-          { name: "Daily Mail", url: "https://dailymail.co.uk", description: "英国每日邮报新闻网" },
-          { name: "LINE", url: "https://line.me", description: "亚洲主流即时通讯工具" },
-          { name: "Craigslist", url: "https://craigslist.org", description: "分类信息与二手交易" },
-          { name: "Mercado Libre 阿根廷", url: "https://mercadolibre.com.ar", description: "拉美电商" },
-          { name: "GitHub", url: "https://github.com", description: "全球开发者代码托管与开源社区" },
-          { name: "Mercado Livre 巴西站", url: "https://mercadolivre.com.br", description: "拉美最大电商" },
-          { name: "Speedtest", url: "https://speedtest.net", description: "Ookla网络测速" },
-          { name: "Taboola", url: "https://taboola.com", description: "全球网络广告与内容推荐" },
-          { name: "Target", url: "https://target.com", description: "美国塔吉特大型百货" },
-          { name: "PayPal", url: "https://paypal.com", description: "全球在线支付与转账" },
-          { name: "Zoom", url: "https://zoom.us", description: "全球在线视频会议" },
-          { name: "Outbrain", url: "https://outbrain.com", description: "计算与数字内容营销" },
-          { name: "UOL", url: "https://uol.com.br", description: "巴西大型互联网综合门户" },
-          { name: "Investing.com", url: "https://investing.com", description: "英为财情 - 财经金融" },
-          { name: "Healthline", url: "https://healthline.com", description: "全球医学与健康资讯" },
-          { name: "Coursera", url: "https://coursera.org", description: "全球知名在线高等教育平台" },
-          { name: "Chess.com", url: "https://chess.com", description: "全球最大在线国际象棋平台" },
-          { name: "Internet Archive", url: "https://archive.org", description: "数字图书馆/网页时光机" },
-          { name: "亚马逊日本站", url: "https://amazon.co.jp", description: "Amazon Japan" },
-          { name: "亚马逊德国站", url: "https://amazon.de", description: "Amazon Germany" },
-          { name: "亚马逊英国站", url: "https://amazon.co.uk", description: "Amazon UK" },
-          { name: "Cricbuzz", url: "https://cricbuzz.com", description: "全球最大板球资讯与比分" },
-          { name: "Fox News", url: "https://foxnews.com", description: "美国福克斯新闻" },
-          { name: "CNN", url: "https://cnn.com", description: "美国有线电视新闻网" },
-          { name: "DeepL", url: "https://deepl.com", description: "高质量AI机器翻译" },
-          { name: "SAPO资讯", url: "https://sapo.pt", description: "SAPO资讯与邮件门户" },
-          { name: "Avito", url: "https://avito.ru", description: "俄罗斯最大的分类信息与二手交易" },
-          { name: "Medium", url: "https://medium.com", description: "全球内容创作与博客写作平台" },
-          { name: "速卖通美国站", url: "https://aliexpress.us", description: "AliExpress US" },
-          { name: "Roblox体验门户", url: "https://roblox.com", description: "Roblox体验入口" },
-          { name: "Zendesk", url: "https://zendesk.com", description: "SaaS客户服务与支持平台" },
-          { name: "微博", url: "https://weibo.com", description: "中国社交媒体与实时热搜" },
-          { name: "Discord", url: "https://discord.com", description: "玩家与社群实时语音社区" },
-          { name: "GMX", url: "https://gmx.net", description: "德国与欧洲主流免费邮箱" },
-          { name: "Salesforce", url: "https://force.com", description: "全球领先的企业CRM服务" },
-          { name: "Wildberries", url: "https://wildberries.ru", description: "俄罗斯最大的在线电商平台" },
-          { name: "Tokopedia", url: "https://tokopedia.com", description: "印度尼西亚本土电商巨头" },
-          { name: "Shopee印尼站", url: "https://shopee.co.id", description: "虾皮购物 - 印尼站" },
-          { name: "Shopee台湾站", url: "https://shopee.tw", description: "虾皮购物 - 台湾站" },
-          { name: "Disney+", url: "https://disneyplus.com", description: "迪士尼在线流媒体视频" },
-          { name: "Apple", url: "https://apple.com", description: "苹果公司官方网站" },
-          { name: "Behance", url: "https://behance.net", description: "Adobe旗下的设计师作品展示网" },
-          { name: "Pixiv", url: "https://pixiv.net", description: "日本插画师与艺术创作社区" },
-          { name: "Kinopoisk", url: "https://kinopoisk.ru", description: "俄罗斯最大影视数据库与影评网" },
-          { name: "Amazon Prime Video", url: "https://primevideo.com", description: "亚马逊影音" },
-          { name: "豆瓣", url: "https://douban.com", description: "中国图书、电影、音乐评论社区" },
-          { name: "知乎", url: "https://zhihu.com", description: "中国深度问答与知识社区" },
-          { name: "Fast.com", url: "https://fast.com", description: "Netflix提供的极简网速测试" },
-          { name: "The Guardian", url: "https://theguardian.com", description: "英国卫报" },
-          { name: "The Home Depot", url: "https://homedepot.com", description: "家得宝 - 家居建材零售" },
-          { name: "TripAdvisor", url: "https://tripadvisor.com", description: "猫途鹰 - 全球旅游点评" },
-          { name: "Notion", url: "https://notion.so", description: "全能笔记、知识库与协作软件" },
-          { name: "Figma", url: "https://figma.com", description: "在线协同UI/UX设计软件" },
-          { name: "Stack Exchange", url: "https://stackexchange.com", description: "专业技术问答网络" },
-          { name: "Stack Overflow", url: "https://stackoverflow.com", description: "全球程序员代码问答社区" },
-          { name: "Cloudflare", url: "https://cloudflare.com", description: "网络安全、CDN与云服务" },
-          { name: "HuffPost", url: "https://huffpost.com", description: "赫芬顿邮报 - 新闻资讯" },
-          { name: "La Gazzetta dello Sport", url: "https://gazzetta.it", description: "意大利米兰体育报" },
-          { name: "红网", url: "https://rednet.cn", description: "中国区域新闻门户" },
-          { name: "Naver日本", url: "https://naver.jp", description: "Naver日本相关服务站点" },
-          { name: "ChatGPT", url: "https://chatgpt.com", description: "ChatGPT独立域名界面" },
-          { name: "Claude", url: "https://claude.ai", description: "Anthropic旗下AI大模型助手" },
-          { name: "Subito", url: "https://subito.it", description: "意大利分类信息与二手交易" },
-          { name: "OLX波兰", url: "https://olx.pl", description: "欧洲区域二手交易与服务" },
-          { name: "Ozon", url: "https://ozon.ru", description: "俄罗斯顶级B2C电商平台" },
-          { name: "Best Buy", url: "https://bestbuy.com", description: "百思买 - 消费电子产品零售" },
-          { name: "Nike", url: "https://nike.com", description: "耐克官方运动品牌商城" },
-          { name: "FedEx", url: "https://fedex.com", description: "联邦快递在线包裹追踪" },
-          { name: "UPS", url: "https://ups.com", description: "联合包裹全球服务" },
-          { name: "USPS", url: "https://usps.com", description: "美国邮政署官方门户" },
-          { name: "缤客中国区", url: "https://booking.cn", description: "缤客中国区预订服务" },
-          { name: "DuckDuckGo搜索", url: "https://duckduckgo.com", description: "DuckDuckGo搜索子服务" },
-          { name: "WebMD", url: "https://webmd.com", description: "美国在线医疗与健康咨询" },
-          { name: "Forbes", url: "https://forbes.com", description: "福布斯 - 商业与财富杂志" },
-          { name: "Business Insider", url: "https://businessinsider.com", description: "商业内幕" },
-          { name: "Bloomberg", url: "https://bloomberg.com", description: "彭博社 - 金融与全球商业" },
-          { name: "The Washington Post", url: "https://washingtonpost.com", description: "华盛顿邮报" },
-          { name: "IGN", url: "https://ign.com", description: "全球知名电子游戏与娱乐媒体" },
-          { name: "Gamepedia", url: "https://gamepedia.com", description: "游戏专业百科维基" },
-          { name: "Grammarly", url: "https://grammarly.com", description: "语法检查与AI写作助手" },
-          { name: "Duolingo", url: "https://duolingo.com", description: "多邻国 - 语言学习平台" },
-          { name: "Scribd", url: "https://scribd.com", description: "数字图书、文档与电子书库" },
-          { name: "Hulu", url: "https://hulu.com", description: "美国流媒体视频" },
-          { name: "Max", url: "https://max.com", description: "原HBO Max - 电影与剧集流媒体" },
-          { name: "ESPNcricinfo", url: "https://espncricinfo.com", description: "板球赛事信息" },
-          { name: "网易", url: "https://163.com", description: "中国综合门户与邮箱系统" },
-          { name: "新浪", url: "https://sina.com.cn", description: "中国新闻门户与财经资讯" },
-          { name: "今日头条", url: "https://toutiao.com", description: "资讯推荐平台" },
-          { name: "爱奇艺", url: "https://iqiyi.com", description: "中国高清视频流媒体" },
-          { name: "优酷", url: "https://youku.com", description: "中国视频分享平台" },
-          { name: "Daum", url: "https://daum.net", description: "韩国第二大综合门户与搜索引擎" },
-          { name: "DMM.com", url: "https://dmm.com", description: "日本综合娱乐/游戏与数字内容" },
-          { name: "Niconico频道", url: "https://nicochannel.jp", description: "Niconico频道服务" },
-          { name: "Kakaku", url: "https://kakaku.com", description: "日本著名的价格比较与比价网" },
-          { name: "Zoho", url: "https://zoho.com", description: "企业级在线办公与云端应用" },
-          { name: "Dropbox", url: "https://dropbox.com", description: "全球网盘与云端存储服务" },
-          { name: "Vimeo", url: "https://vimeo.com", description: "高清视频专业分享平台" },
-          { name: "SlideShare", url: "https://slideshare.net", description: "PPT与专业文档分享平台" },
-          { name: "Patreon", url: "https://patreon.com", description: "创作者众筹与会员赞助平台" },
-          { name: "SoundCloud", url: "https://soundcloud.com", description: "独立音乐人与音频分享平台" },
-          { name: "Genius", url: "https://genius.com", description: "全球流行歌词与音乐解读社区" },
-          { name: "MyAnimeList", url: "https://myanimelist.net", description: "MAL - 动漫数据库与社区" },
-          { name: "GameFault", url: "https://gamefault.com", description: "游戏资讯与社区门户" },
-          { name: "Costco", url: "https://costco.com", description: "好市多 - 开市客线上超市" },
-          { name: "IKEA", url: "https://ikea.com", description: "宜家家居全球门户" },
-          { name: "ASOS", url: "https://asos.com", description: "英国知名快时尚时尚电商" },
-          { name: "Wayfair", url: "https://wayfair.com", description: "美国大型家具与家居电商" },
-          { name: "Zillow", url: "https://zillow.com", description: "美国最大的房地产交易与租赁平台" },
-          { name: "Redfin", url: "https://redfin.com", description: "美国在线房产中介与估值平台" },
-          { name: "Realtor.com", url: "https://realtor.com", description: "美国官方房产listings平台" },
-          { name: "KAYAK", url: "https://kayak.com", description: "全球机票、酒店与租车比价" },
-          { name: "Expedia", url: "https://expedia.com", description: "全球综合在线旅游预订" },
-          { name: "Airbnb", url: "https://airbnb.com", description: "爱彼迎 - 全球民宿预订" },
-          { name: "Skyscanner", url: "https://skyscanner.net", description: "天巡 - 全球机票搜索比价" },
-          { name: "Trip.com", url: "https://trip.com", description: "携程海外版 - 国际酒旅预订" },
-          { name: "美国国家气象局", url: "https://weather.gov", description: "NWS官方网站" },
-          { name: "AccuWeather", url: "https://accuweather.com", description: "精准全球天气预报" },
-          { name: "Coursera全球入口", url: "https://coursera.com", description: "Coursera全球入口" },
-          { name: "Udemy", url: "https://udemy.com", description: "全球技能课程学习超市" },
-          { name: "ResearchGate", url: "https://researchgate.net", description: "全球科研人员社交与学术论文" },
-          { name: "ScienceDirect", url: "https://sciencedirect.com", description: "Elsevier旗下学术文献库" },
-          { name: "arXiv", url: "https://arxiv.org", description: "预印本学术论文预印库" },
-          { name: "Nature", url: "https://nature.com", description: "《自然》科学期刊官方网站" },
-          { name: "美国国家卫生研究院", url: "https://nih.gov", description: "NIH官方门户" },
-          { name: "Mayo Clinic", url: "https://mayoclinic.org", description: "妙佑医疗国际 - 医疗健康" },
-          { name: "克利夫兰诊所", url: "https://clevelandclinic.org", description: "权威医疗健康资讯" },
-          { name: "Investor's Business Daily", url: "https://investors.com", description: "投资者商业日报" },
-          { name: "MarketWatch", url: "https://marketwatch.com", description: "道琼斯旗下金融市场新闻" },
-          { name: "CNBC", url: "https://cnbc.com", description: "全球财经新闻与市场直播" },
-          { name: "TradingView", url: "https://tradingview.com", description: "全球金融图表分析与交易社区" }
+          { name: "Google", url: "https://www.google.com", description: "全球最大的搜索引擎，提供网页搜索、地图、邮件及各类云计算服务。" },
+          { name: "YouTube", url: "https://www.youtube.com", description: "全球最大的视频分享与流媒体平台，允许用户上传、观看及互动。" },
+          { name: "Facebook", url: "https://www.facebook.com", description: "全球用户规模最大的社交网络服务平台，连接世界各地的用户。" },
+          { name: "Baidu", url: "https://www.baidu.com", description: "中国最大的搜索引擎，提供网页、资讯、地图及人工智能服务。" },
+          { name: "Wikipedia", url: "https://www.wikipedia.org", description: "全球最大的自由开放式多语言网络百科全书。" },
+          { name: "Yahoo", url: "https://www.yahoo.com", description: "历史悠久的综合性门户网站，提供新闻、邮箱、财经等多元服务。" },
+          { name: "Reddit", url: "https://www.reddit.com", description: "全球最大的综合性网络论坛与社交新闻聚合平台。" },
+          { name: "Amazon", url: "https://www.amazon.com", description: "全球最大的电子商务与云计算服务平台。" },
+          { name: "Instagram", url: "https://www.instagram.com", description: "全球极其流行的图片与短视频分享社交平台。" },
+          { name: "Twitter (X)", url: "https://x.com", description: "全球知名的实时信息发布与微博客社交平台。" },
+          { name: "Bilibili", url: "https://www.bilibili.com", description: "中国知名的弹幕视频分享网站，深耕年轻人ACG与PUGV内容社区。" },
+          { name: "WhatsApp", url: "https://www.whatsapp.com", description: "全球使用最广泛的即时通讯与跨平台通讯应用服务网站。" },
+          { name: "Yandex", url: "https://www.yandex.ru", description: "俄罗斯最大的搜索引擎及综合互联网科技门户。" },
+          { name: "Yahoo JP", url: "https://www.yahoo.co.jp", description: "日本访问量最高的综合性门户及电商服务网站。" },
+          { name: "Netflix", url: "https://www.netflix.com", description: "全球领先的订阅制流媒体影视与原创内容播放平台。" },
+          { name: "LinkedIn", url: "https://www.linkedin.com", description: "全球最大的职业社交与职场招聘平台。" },
+          { name: "TikTok", url: "https://www.tiktok.com", description: "全球风靡的短视频创作与分享社交平台。" },
+          { name: "Bing", url: "https://www.bing.com", description: "微软旗下的全球性搜索引擎，整合AI智能搜索体验。" },
+          { name: "Microsoft", url: "https://www.microsoft.com", description: "微软官方门户，提供软件下载、Windows服务及云产品。" },
+          { name: "OpenAI", url: "https://www.openai.com", description: "领先的人工智能研究机构，ChatGPT与DALL-E的官方平台。" },
+          { name: "Twitch", url: "https://www.twitch.tv", description: "全球最大的游戏实时直播与电子竞技社交平台。" },
+          { name: "Naver", url: "https://www.naver.com", description: "韩国访问量最高的搜索引擎与综合互联网门户。" },
+          { name: "VKontakte", url: "https://vk.com", description: "俄罗斯及东欧地区最受欢迎的社交网络平台。" },
+          { name: "Taobao", url: "https://www.taobao.com", description: "中国规模最大的网购零售与C2C电子商务平台。" },
+          { name: "AliExpress", url: "https://www.aliexpress.com", description: "阿里巴巴旗下的全球跨境跨境电商消费购物平台。" },
+          { name: "Pinterest", url: "https://www.pinterest.com", description: "全球最大的视觉探索、灵感收集与图片社交网站。" },
+          { name: "Discord", url: "https://www.discord.com", description: "专为玩家及各类兴趣社群打造的语音、文字与视频通讯平台。" },
+          { name: "GitHub", url: "https://www.github.com", description: "全球最大的软件代码托管与开发者开源协作社区。" },
+          { name: "Mail.ru", url: "https://mail.ru", description: "俄罗斯知名的综合性电子邮件与互联网门户平台。" },
+          { name: "QQ", url: "https://www.qq.com", description: "腾讯旗下综合综合门户网站，提供即时通讯与全方位新闻资讯。" },
+          { name: "MSN", url: "https://www.msn.com", description: "微软推出的全球新闻、财经、天气与资讯综合门户。" },
+          { name: "DuckDuckGo", url: "https://duckduckgo.com", description: "主打隐私保护、不跟踪用户历史的搜索引擎。" },
+          { name: "eBay", url: "https://www.ebay.com", description: "全球知名线上拍卖与C2C/B2C电子交易平台。" },
+          { name: "Roblox", url: "https://www.roblox.com", description: "全球最大的多人在线游戏创作与元宇宙体验平台。" },
+          { name: "Quora", url: "https://www.quora.com", description: "全球知名的英文问答社区与知识共享平台。" },
+          { name: "Samsung", url: "https://www.samsung.com", description: "三星电子官方网站，展示与销售各类智能电子产品。" },
+          { name: "Walmart", url: "https://www.walmart.com", description: "美国零售巨头沃尔玛的在线官方购物与电商平台。" },
+          { name: "Apple", url: "https://www.apple.com", description: "苹果公司官方网站，展示产品硬件、软件服务及系统支持。" },
+          { name: "Fandom", url: "https://www.fandom.com", description: "全球最大的娱乐、游戏、影视维基百科社群平台。" },
+          { name: "Canva", url: "https://www.canva.com", description: "全球流行的在线图形设计、排版与创意内容制作平台。" },
+          { name: "Telegram", url: "https://web.telegram.org", description: "主打安全隐私与加密通信的即时通讯Web服务端。" },
+          { name: "Steampowered", url: "https://store.steampowered.com", description: "全球最大的PC数字游戏发行与社群服务平台。" },
+          { name: "Spotify", url: "https://www.spotify.com", description: "全球订阅用户最多的流媒体音乐与播客听书平台。" },
+          { name: "Douyin", url: "https://www.douyin.com", description: "中国领先的短视频生活分享与直播电商平台。" },
+          { name: "Google Maps", url: "https://maps.google.com", description: "全球最受欢迎的地图导航与位置服务平台。" },
+          { name: "Speedtest", url: "https://www.speedtest.net", description: "全球最权威的互联网宽带与移动网络测速工具。" },
+          { name: "IMDb", url: "https://www.imdb.com", description: "全球最大的电影、电视节目与演职员权威数据库。" },
+          { name: "Etsy", url: "https://www.etsy.com", description: "全球最大的复古物品、手工艺品与创意设计C2C交易平台。" },
+          { name: "Booking.com", url: "https://www.booking.com", description: "全球领先的在线酒店住宿订购与旅游预订服务网站。" },
+          { name: "CNN", url: "https://www.cnn.com", description: "美国有线电视新闻网，提供全球实时新闻与深度报道。" },
+          { name: "BBC", url: "https://www.bbc.com", description: "英国广播公司官方新闻门户，权威报道国际时事与文化。" },
+          { name: "The Guardian", url: "https://www.theguardian.com", description: "英国老牌独立报纸《卫报》的全球新闻网站。" },
+          { name: "NYTimes", url: "https://www.nytimes.com", description: "美国《纽约时报》官网，享誉全球的综合性新闻媒体。" },
+          { name: "Weather.com", url: "https://weather.com", description: "全球气象频道官网，提供全球天气预报与气象数据。" },
+          { name: "Zhihu", url: "https://www.zhihu.com", description: "中国知名的深度问答社区与高质量知识分享平台。" },
+          { name: "JD.com", url: "https://www.jd.com", description: "中国知名的综合性自营电商与高效物流平台。" },
+          { name: "Sina", url: "https://www.sina.com.cn", description: "中国老牌新闻门户网站，提供全方位资讯与财经信息。" },
+          { name: "Weibo", url: "https://weibo.com", description: "中国最具影响力的社交媒体与公共微博互动平台。" },
+          { name: "Office.com", url: "https://www.office.com", description: "微软Microsoft 365在线办公套件与云端文档门户。" },
+          { name: "Stack Overflow", url: "https://stackoverflow.com", description: "全球最大的程序开发与技术IT问答互动社区。" },
+          { name: "Zoom", url: "https://zoom.us", description: "全球企业与个人广泛使用的在线视频会议与远程协作平台。" },
+          { name: "Target", url: "https://www.target.com", description: "美国大型百货零售商塔吉特的在线官方购物网站。" },
+          { name: "PayPal", url: "https://www.paypal.com", description: "全球使用最广泛的第三方跨国在线支付与转账平台。" },
+          { name: "Adobe", url: "https://www.adobe.com", description: "创意设计软件巨头官网，提供PS、PR等工具与云服务。" },
+          { name: "Daily Mail", url: "https://www.dailymail.co.uk", description: "英国《每日邮报》官网，以小道新闻与娱乐八卦闻名。" },
+          { name: "Fox News", url: "https://www.foxnews.com", description: "美国福克斯新闻网，专注政治、新闻与实时评论。" },
+          { name: "ESPN", url: "https://www.espn.com", description: "全球知名的体育新闻、实时比分与体育赛事直播平台。" },
+          { name: "WordPress.com", url: "https://wordpress.com", description: "全球最流行的建站系统与博客托管服务平台。" },
+          { name: "Medium", url: "https://medium.com", description: "全球优质内容创作者与深度长文阅读博客社区。" },
+          { name: "SourceForge", url: "https://sourceforge.net", description: "历史悠久的开源软件托管、下载与开发合作平台。" },
+          { name: "Notion", url: "https://www.notion.so", description: "全球风靡的集笔记、任务管理与知识库于一体的无缝协作平台。" },
+          { name: "Archive.org", url: "https://archive.org", description: "全球互联网档案馆，保存网页历史快照、免费图书与数字资源。" },
+          { name: "ChatGPT", url: "https://chatgpt.com", description: "OpenAI开发的对话式AI助手，提供智能问答与创作支持。" },
+          { name: "Tripadvisor", url: "https://www.tripadvisor.com", description: "全球最大的旅行点评、酒店评价与餐饮指南平台。" },
+          { name: "Rakuten", url: "https://www.rakuten.co.jp", description: "日本最大的综合性电子购物与互联网金融服务平台。" },
+          { name: "LINE", url: "https://line.me", description: "日本及东南亚极受欢迎的即时通讯与生活服务平台。" },
+          { name: "KakaoTalk", url: "https://www.kakaocorp.com", description: "韩国国民级即时通讯与综合互联网服务生态平台。" },
+          { name: "Dailymotion", url: "https://www.dailymotion.com", description: "来自法国的全球大型视频分享与探索平台。" },
+          { name: "Vimeo", url: "https://vimeo.com", description: "高清专业视频高清存储、展示与创作服务社区。" },
+          { name: "Blogger", url: "https://www.blogger.com", description: "谷歌旗下的免费个人博客创建与发布平台。" },
+          { name: "Tumblr", url: "https://www.tumblr.com", description: "全球流行的轻博客社交平台，支持多样化多媒体内容创作。" },
+          { name: "Gitee", url: "https://gitee.com", description: "中国领先的代码托管与软件研发协作平台（码云）。" },
+          { name: "CSDN", url: "https://www.csdn.net", description: "中国最大的IT技术交流、博客与软件开发者社区。" },
+          { name: "Sohu", url: "https://www.sohu.com", description: "中国大型综合门户网站，涵盖新闻、娱乐、体育与视频。" },
+          { name: "163.com", url: "https://www.163.com", description: "网易综合门户，提供权威新闻资讯与网易邮箱服务。" },
+          { name: "Toutiao", url: "https://www.toutiao.com", description: "基于算法推荐的智能个性化资讯与新闻内容聚合平台。" },
+          { name: "Xinhuanet", url: "https://www.xinhuanet.com", description: "新华网，中国权威国家通讯社官方新闻网站。" },
+          { name: "People.cn", url: "https://www.people.com.cn", description: "人民网，中国国家重点新闻网站与综合资讯平台。" },
+          { name: "Amazon UK", url: "https://www.amazon.co.uk", description: "亚马逊英国站，英国最大的综合线上购物网站。" },
+          { name: "Amazon JP", url: "https://www.amazon.co.jp", description: "亚马逊日本站，日本极其受欢迎的网购商城。" },
+          { name: "Amazon DE", url: "https://www.amazon.de", description: "亚马逊德国站，欧洲规模最大的在线零售门户之一。" },
+          { name: "Mercari", url: "https://jp.mercari.com", description: "日本极其流行的二手物品跳蚤市场在线交易平台。" },
+          { name: "Shopee", url: "https://shopee.com", description: "东南亚及拉美地区领先的移动社交电商与购物平台。" },
+          { name: "Lazada", url: "https://www.lazada.com", description: "东南亚地区主流的综合性网购与跨境B2C商城。" },
+          { name: "MercadoLibre", url: "https://www.mercadolibre.com", description: "拉丁美洲最大的电子交易与线上支付生态平台。" },
+          { name: "Flipkart", url: "https://www.flipkart.com", description: "印度最大的本土电子商务与网购消费平台。" },
+          { name: "Allegro", url: "https://allegro.pl", description: "波兰及东欧地区规模最大的电商与拍卖网站。" },
+          { name: "Trendyol", url: "https://www.trendyol.com", description: "土耳其规模最大的时尚与综合电子购物平台。" },
+          { name: "Wildberries", url: "https://www.wildberries.ru", description: "俄罗斯最大的在线零售与时尚电商网站。" },
+          { name: "Ozon", url: "https://www.ozon.ru", description: "俄罗斯老牌综合性电商平台，被称为“俄罗斯亚马逊”。" },
+          { name: "Avito", url: "https://www.avito.ru", description: "俄罗斯最大的分类信息、二手交易与租赁服务网站。" },
+          { name: "Canva CN", url: "https://www.canva.cn", description: "Canva可画中国版，提供海量优质中文设计模板与在线排版。" },
+          { name: "Figma", url: "https://www.figma.com", description: "全球UI/UX设计师首选的在线实时协作界面设计工具。" },
+          { name: "Pixabay", url: "https://pixabay.com", description: "全球知名的免费无版权图片、插画、视频与音乐素材库。" },
+          { name: "Unsplash", url: "https://unsplash.com", description: "全球高品质摄影图片共享与免费商用图片社区。" },
+          { name: "Freepik", url: "https://www.freepik.com", description: "全球优质矢量图、PSD源文件、插画与设计素材下载网站。" },
+          { name: "Behance", url: "https://www.behance.net", description: "Adobe旗下的全球创意艺术、设计作品展示与分享平台。" },
+          { name: "Dribbble", url: "https://dribbble.com", description: "全球顶尖UI/UX设计师与插画师作品展示与交流社区。" },
+          { name: "ArtStation", url: "https://www.artstation.com", description: "全球CG艺术家、游戏美术师与概念设计展示社区。" },
+          { name: "DeviantArt", url: "https://www.deviantart.com", description: "历史悠久的全球数字艺术、插画与创作爱好者社区。" },
+          { name: "Artlist", url: "https://artlist.io", description: "专为视频创作者提供正版无版权配乐与音效的资源平台。" },
+          { name: "Shutterstock", url: "https://www.shutterstock.com", description: "全球最大的正版微图图片、视频及音频商业库。" },
+          { name: "Getty Images", url: "https://www.gettyimages.com", description: "全球顶尖的商业媒体图片、新闻摄影与视频素材库。" },
+          { name: "Envato Elements", url: "https://elements.envato.com", description: "创意数字资产订阅平台，涵盖网页模板、音效与3D模型。" },
+          { name: "ArtStation JP", url: "https://www.artstation.com", description: "游戏与动漫艺术创作交流，吸引全球数码艺术家。" },
+          { name: "Pexels", url: "https://www.pexels.com", description: "免费高画质摄影图片与无版权视频共享素材网站。" },
+          { name: "Iconfinder", url: "https://www.iconfinder.com", description: "全球知名的矢量图标与SVG素材搜索引擎与交易平台。" },
+          { name: "Flaticon", url: "https://www.flaticon.com", description: "全球最大的免费矢量图标、扁平化图标下载网站。" },
+          { name: "Fontspace", url: "https://www.fontspace.com", description: "免费西文字体与艺术字体下载社区。" },
+          { name: "DaFont", url: "https://www.dafont.com", description: "海量个性化西文字体、手写体与艺术字免费下载平台。" },
+          { name: "Google Fonts", url: "https://fonts.google.com", description: "谷歌推出的免费开源网络字体库与设计交互服务。" },
+          { name: "DeepL", url: "https://www.deepl.com", description: "利用神经网络打造的极其精准的高质量多语言翻译工具。" },
+          { name: "Google Translate", url: "https://translate.google.com", description: "谷歌免费在线多语言即时机器翻译服务。" },
+          { name: "Baidu Fanyi", url: "https://fanyi.baidu.com", description: "百度多语种在线文本、文档及图片翻译平台。" },
+          { name: "Youdao", url: "https://www.youdao.com", description: "中国网易旗下的智能词典、文档翻译与在线教育门户。" },
+          { name: "Papago", url: "https://papago.naver.com", description: "Naver旗下的韩语及亚洲语种精准AI翻译工具。" },
+          { name: "Grammarly", url: "https://www.grammarly.com", description: "基于AI的英文语法纠错、写作优化与拼写检查工具。" },
+          { name: "QuillBot", url: "https://quillbot.com", description: "AI英文转述、重写、润色与论文辅助工具。" },
+          { name: "Duolingo", url: "https://www.duolingo.com", description: "全球最受欢迎的趣味多语言在线学习平台。" },
+          { name: "Coursera", url: "https://www.coursera.org", description: "全球顶尖大学与机构联合打造的高等在线教育与课程平台。" },
+          { name: "edX", url: "https://www.edx.org", description: "由哈佛与麻省理工联合发起的开源大型在线课程平台。" },
+          { name: "Udemy", url: "https://www.udemy.com", description: "全球最大的实用技能与职业技能在线视频教程平台。" },
+          { name: "Khan Academy", url: "https://www.khanacademy.org", description: "享誉全球的免费非营利K12与基础科学在线教育网站。" },
+          { name: "Skillshare", url: "https://www.skillshare.com", description: "专注于设计、摄影、插画等创意技能的订阅制在线学习社区。" },
+          { name: "Codecademy", url: "https://www.codecademy.com", description: "交互式编程学习网站，提供多种代码语言入门课程。" },
+          { name: "LeetCode", url: "https://leetcode.com", description: "全球程序员首选的算法刷题、技术面试准备与代码提升平台。" },
+          { name: "W3Schools", url: "https://www.w3schools.com", description: "全球最受欢迎的WEB前端开发基础语法教程网站。" },
+          { name: "MDN Web Docs", url: "https://developer.mozilla.org", description: "开发者公认的权威前端Web技术文档与标准指南。" },
+          { name: "GeeksforGeeks", url: "https://www.geeksforgeeks.org", description: "专为计算机学生与程序员打造的技术学习与算法文章库。" },
+          { name: "Runoob", url: "https://www.runoob.com", description: "菜鸟教程，中国简明易懂的各类编程语言与Web技术入门网站。" },
+          { name: "V2EX", url: "https://www.v2ex.com", description: "中国知名的程序员、创意工作者与极客生活讨论社区。" },
+          { name: "OSCHINA", url: "https://www.oschina.net", description: "开源中国，中国最大的开源技术交流与软件资讯平台。" },
+          { name: "SegmentFault", url: "https://segmentfault.com", description: "思否，中国领先的开发者技术问答与知识分享社区。" },
+          { name: "Juejin", url: "https://juejin.cn", description: "掘金，面向掘金者的技术社区，深耕前端、后端与移动端开发。" },
+          { name: "InfoQ", url: "https://www.infoq.cn", description: "关注软件开发领袖与前沿架构的技术实践新闻媒体。" },
+          { name: "Slashdot", url: "https://slashdot.org", description: "历史悠久的科技新闻、技术讨论与极客文化论坛。" },
+          { name: "Hacker News", url: "https://news.ycombinator.com", description: "Y Combinator旗下专注于创业、计算机科学与科技的极客社区。" },
+          { name: "TechCrunch", url: "https://techcrunch.com", description: "全球最具影响力的初创企业、科技科技新闻与创业投资媒体。" },
+          { name: "The Verge", url: "https://www.theverge.com", description: "专注于前沿消费电子、科技新闻、文化与科学评论网站。" },
+          { name: "Wired", url: "https://www.wired.com", description: "美国《连线》杂志官网，报道科技对文化、经济与政治的深刻影响。" },
+          { name: "Engadget", url: "https://www.engadget.com", description: "追踪数码产品新品发售、消费电子测评与科技资讯网站。" },
+          { name: "GSMArena", url: "https://www.gsmarena.com", description: "全球最详尽的智能手机参数规格查询与权威测评网站。" },
+          { name: "Tom's Hardware", url: "https://www.tomshardware.com", description: "权威的PC硬件、CPU、显卡及组装电脑测评指南。" },
+          { name: "AnandTech", url: "https://www.anandtech.com", description: "深度PC硬件架构分析与高性能计算评测网站。" },
+          { name: "36Kr", url: "https://36kr.com", description: "中国领先的科技新经济服务平台，报道新创业与创投资讯。" },
+          { name: "Huxiu", url: "https://www.huxiu.com", description: "虎嗅网，深度剖析科技商业、商业模式与商业创新的媒体。" },
+          { name: "ITHome", url: "https://www.ithome.com", description: "IT之家，提供快速前沿的数码资讯、硬件评测与软硬件新闻。" },
+          { name: "cnBeta", url: "https://www.cnbeta.com.tw", description: "历史悠久的实时科技新闻、软件更新与数码资讯聚合网站。" },
+          { name: "Fast.com", url: "https://fast.com", description: "Netflix提供的极简纯粹极速网速测试网站。" },
+          { name: "SpeedTest CN", url: "https://www.speedtest.cn", description: "测速网，中国本土的网络质量检测与网速测试服务平台。" },
+          { name: "Ping.pe", url: "https://ping.pe", description: "便捷的全球节点Ping与网络连通性测试工具。" },
+          { name: "IP138", url: "https://www.ip138.com", description: "历史悠久的IP地址查询、网络工具与手机号码归属地查询。" },
+          { name: "站长工具", url: "https://chinaz.com", description: "中国网站管理者常用的SEO查询、IP检测与域名综合工具。" },
+          { name: "Ahrefs", url: "https://ahrefs.com", description: "全球顶尖的SEO优化分析、关键词挖掘与竞争对手研究平台。" },
+          { name: "SEMrush", url: "https://www.semrush.com", description: "一站式数字营销、搜索引擎优化与网络广告竞品分析工具。" },
+          { name: "Similarweb", url: "https://www.similarweb.com", description: "全球网站流量分析、APP数据与行业竞争分析服务平台。" },
+          { name: "Google Analytics", url: "https://analytics.google.com", description: "谷歌免费的大型网站与移动应用数据统计与分析系统。" },
+          { name: "Cloudflare", url: "https://www.cloudflare.com", description: "全球最大的网络安全、CDN加速、DNS解析与DDoS防护平台。" },
+          { name: "Namecheap", url: "https://www.namecheap.com", description: "全球知名且价格亲民的域名注册、托管与网络安全服务商。" },
+          { name: "GoDaddy", url: "https://www.godaddy.com", description: "全球最大的域名注册商及网站基础托管服务提供商。" },
+          { name: "DigitalOcean", url: "https://www.digitalocean.com", description: "专为开发者打造的简洁高效云服务器与VPS云计算服务。" },
+          { name: "Vultr", url: "https://www.vultr.com", description: "提供全球多节点高性能云服务器部署的VPS供应商。" },
+          { name: "Linode", url: "https://www.linode.com", description: "Akamai旗下的经典云计算服务商，专注于开发者基础设施。" },
+          { name: "AWS", url: "https://aws.amazon.com", description: "亚马逊云计算，全球市场份额第一的综合云基础设施服务平台。" },
+          { name: "Azure", url: "https://azure.microsoft.com", description: "微软企业级云计算平台，提供全面的AI与云端算力解决方案。" },
+          { name: "Google Cloud", url: "https://cloud.google.com", description: "谷歌云服务，主打大数据处理、人工智能与云原生计算。" },
+          { name: "Aliyun", url: "https://www.aliyun.com", description: "阿里云，中国最大的云计算与云基础设施服务平台。" },
+          { name: "Tencent Cloud", url: "https://cloud.tencent.com", description: "腾讯云，提供音视频、游戏云与综合企业级云端解决方案。" },
+          { name: "Huawei Cloud", url: "https://www.huaweicloud.com", description: "华为云，赋能政企数字化的全球公有云与AI算力平台。" },
+          { name: "Vercel", url: "https://vercel.com", description: "前端开发者最爱的全栈自动化部署与Next.js无缝云托管平台。" },
+          { name: "Netlify", url: "https://www.netlify.com", description: "专注于现代JAMstack静态网站构建、自动化部署与云托管平台。" },
+          { name: "Firebase", url: "https://firebase.google.com", description: "谷歌推出的无服务器移动与Web应用开发综合平台。" },
+          { name: "Docker", url: "https://www.docker.com", description: "容器化技术鼻祖，提供容器镜像托管Hub与开发者工具。" },
+          { name: "Supabase", url: "https://supabase.com", description: "开源的Firebase替代方案，基于PostgreSQL提供即用型后端。" },
+          { name: "MongoDB", url: "https://www.mongodb.com", description: "领先的NoSQL非关系型数据库官方平台与云端Atlas数据库。" },
+          { name: "NPM", url: "https://www.npmjs.com", description: "全球最大的JavaScript代码包与前端依赖库托管注册表。" },
+          { name: "PyPI", url: "https://pypi.org", description: "Python官方软件包索引仓库，Python开发者的核心工具依赖库。" },
+          { name: "Docker Hub", url: "https://hub.docker.com", description: "全球最大的容器镜像存储、搜索与分发中心。" },
+          { name: "Hugging Face", url: "https://huggingface.co", description: "全球AI开源社区，汇聚海量AI预训练模型、数据集与Demo。" },
+          { name: "Kaggle", url: "https://www.kaggle.com", description: "全球最大的数据科学、机器学习竞赛与数据挖掘社区。" },
+          { name: "Midjourney", url: "https://www.midjourney.com", description: "享誉全球的文字生成高质量AI艺术画像创作平台。" },
+          { name: "Civitai", url: "https://civitai.com", description: "全球最大的Stable Diffusion开源AI绘画模型分享与交流社区。" },
+          { name: "Claude", url: "https://claude.ai", description: "Anthropic开发的高智能对话AI，在逻辑分析与长文本阅读上表现优异。" },
+          { name: "Perplexity", url: "https://www.perplexity.ai", description: "基于AI大模型的下一代实时对话式智能搜索引擎。" },
+          { name: "RunWay", url: "https://runwayml.com", description: "领先的生成式AI视频制作与AI多媒体艺术创作工具平台。" },
+          { name: "Suno", url: "https://suno.com", description: "生成式AI音乐创作平台，输入文字即可自动生成全套歌曲。" },
+          { name: "ElevenLabs", url: "https://elevenlabs.io", description: "顶尖的AI语音合成、克隆与多语言文本转语音平台。" },
+          { name: "Product Hunt", url: "https://www.producthunt.com", description: "全球新科技产品、独立应用与创新工具每日首发揭榜平台。" },
+          { name: "Kickstarter", url: "https://www.kickstarter.com", description: "全球最大的创意科技、游戏与文化项目众筹平台。" },
+          { name: "Indiegogo", url: "https://www.indiegogo.com", description: "知名的全球科技新品与创业项目众筹与预购平台。" },
+          { name: "Steam Community", url: "https://steamcommunity.com", description: "Steam玩家社群，涵盖玩家组、组内讨论与玩家市场。" },
+          { name: "Epic Games", url: "https://store.epicgames.com", description: "知名游戏开发商与数字游戏商城，以每周赠送免费游戏闻名。" },
+          { name: "GOG", url: "https://www.gog.com", description: "CD Projekt旗下的无DRM保护老游戏与独立PC游戏销售平台。" },
+          { name: "IGN", url: "https://www.ign.com", description: "全球规模最大的综合性游戏新闻、评测、攻略与娱乐媒体。" },
+          { name: "GameSpot", url: "https://www.gamespot.com", description: "历史悠久的全球知名电子游戏新闻、专业评测与视频门户。" },
+          { name: "PCGamer", url: "https://www.pcgamer.com", description: "专注于PC电子游戏硬件、新游评测与行业新闻的权威媒体。" },
+          { name: "Kotaku", url: "https://kotaku.com", description: "关注游戏文化、行业内幕与玩家社群的知名游戏博客。" },
+          { name: "Polygon", url: "https://www.polygon.com", description: "聚焦游戏、动漫与流行文化的现代综合娱乐资讯网站。" },
+          { name: "Nexus Mods", url: "https://www.nexusmods.com", description: "全球最大的单机游戏MOD（模组）玩家下载与分享社区。" },
+          { name: "CurseForge", url: "https://www.curseforge.com", description: "全球最大的《我的世界》与《魔兽世界》插件模组托管平台。" },
+          { name: "TapTap", url: "https://www.taptap.com", description: "高品质手游分享社区，提供正版手机游戏下载与玩家真实点评。" },
+          { name: "Gamersky", url: "https://www.gamersky.com", description: "游民星空，中国领先的单机游戏门户，提供单机资讯与单机攻略。" },
+          { name: "3DMGame", url: "https://www.3dmgame.com", description: "中国知名的单机游戏资讯、MOD汉化与玩家交流论坛。" },
+          { name: "NGA", url: "https://bbs.nga.cn", description: "艾泽拉斯国家地理，中国极其活跃的游戏精英玩家深度讨论论坛。" },
+          { name: "GameRant", url: "https://gamerant.com", description: "涵盖主流游戏新闻、角色攻略、硬件与行业见解的网媒。" },
+          { name: "Eurogamer", url: "https://www.eurogamer.net", description: "来自欧洲的权威游戏评论、深度行业访谈与独立评测网站。" },
+          { name: "Roblox Developer", url: "https://create.roblox.com", description: "专为Roblox游戏开发者打造的创作中心与开发文档。" },
+          { name: "Chess.com", url: "https://www.chess.com", description: "全球最大的国际象棋在线对弈、学习与大师赛事直播平台。" },
+          { name: "Lichess", url: "https://lichess.org", description: "全球最受欢迎的完全免费、无广告开源国际象棋平台。" },
+          { name: "Speedrun.com", url: "https://www.speedrun.com", description: "全球游戏速通排行榜与速通爱好者官方记录社区。" },
+          { name: "Spotify for Artists", url: "https://artists.spotify.com", description: "音乐人音乐管理平台，提供流媒体播放数据与音乐发布。" },
+          { name: "Soundcloud", url: "https://soundcloud.com", description: "全球独立音乐人、DJ分享与探索原创音频内容的云端社区。" },
+          { name: "Bandcamp", url: "https://bandcamp.com", description: "独立音乐人直面歌迷销售无损音乐与周边商品的在线音乐平台。" },
+          { name: "Apple Music", url: "https://music.apple.com", description: "苹果旗下的无损音质流媒体音乐播放服务Web端。" },
+          { name: "Last.fm", url: "https://www.last.fm", description: "记录用户听歌习惯、推荐音乐与探索同类歌手的音乐社交网站。" },
+          { name: "Genius", url: "https://genius.com", description: "全球最大的歌词分析、音乐背景介绍与歌词注释互动社区。" },
+          { name: "NetEase Music", url: "https://music.163.com", description: "网易云音乐，以特色歌单与情感网易云评论闻名的音乐社交平台。" },
+          { name: "QQ Music", url: "https://y.qq.com", description: "腾讯QQ音乐，中国音乐曲库庞大的正版数字流媒体音乐平台。" },
+          { name: "Billboard", url: "https://www.billboard.com", description: "全球最权威的音乐排行榜《公告牌》官方新闻与榜单网站。" },
+          { name: "Discogs", url: "https://www.discogs.com", description: "全球最大的实体唱片（黑胶、CD）数据库与实体音乐交易平台。" },
+          { name: "Letterboxd", url: "https://letterboxd.com", description: "全球影迷最喜爱的电影观影记录、影评分享与电影社交社区。" },
+          { name: "Rotten Tomatoes", url: "https://www.rottentomatoes.com", description: "全球著名的电影评论聚合网站（烂番茄），以新鲜度闻名。" },
+          { name: "Metacritic", url: "https://www.metacritic.com", description: "整合游戏、电影、电视与音乐权威媒体评分的综合评分网。" },
+          { name: "Douban", url: "https://www.douban.com", description: "中国极富文化气息的书影音标记、生活小组与兴趣社区。" },
+          { name: "MyAnimeList", url: "https://myanimelist.net", description: "全球最大的动漫数据库、追番记录与欧美漫迷讨论社区。" },
+          { name: "Crunchyroll", url: "https://www.crunchyroll.com", description: "全球最大的海外正版日本动漫流媒体在线播放平台。" },
+          { name: "Pixiv", url: "https://www.pixiv.net", description: "日本乃至全球二次元插画师、漫画家作品交流与展示社群。" },
+          { name: "Bahamut", url: "https://www.gamer.com.tw", description: "巴哈姆特，台湾地区最大的电玩、动漫与二次元综合论坛（动画疯）。" },
+          { name: "PTT", url: "https://www.ptt.cc", description: "台湾地区历史最悠久、用户规模极大的BBS电子布告栏论坛。" },
+          { name: "Dcard", url: "https://www.dcard.tw", description: "台湾地区深受年轻人与大学生欢迎的匿名社交论坛。" },
+          { name: "Mobile01", url: "https://www.mobile01.com", description: "台湾地区知名的开箱测评、数码产品、汽车与生活讨论网。" },
+          { name: "HKEPC", url: "https://www.hkepc.com", description: "香港电脑领域权威的前沿电脑硬件资讯、电脑评测与科技论坛。" },
+          { name: "LIHKG", url: "https://lihkg.com", description: "香港流行的综合网络论坛（连登），讨论时事、娱乐与生活。" },
+          { name: "Naver Webtoon", url: "https://comic.naver.com", description: "韩国Naver旗下的官方网络条漫阅读与条漫创作发布平台。" },
+          { name: "Kakao Page", url: "https://page.kakao.com", description: "韩国Kakao旗下主流的网络小说、韩国漫画阅读门户。" },
+          { name: "Webtoon", url: "https://www.webtoons.com", description: "全球广泛使用的免费在线网络条漫阅读网站。" },
+          { name: "MangaDex", url: "https://mangadex.org", description: "全球多语言免费线上漫画阅读与民间翻译组共享社区。" },
+          { name: "BookWalker", url: "https://bookwalker.jp", description: "角川旗下著名的正版电子书、轻小说与日本漫画购买平台。" },
+          { name: "Syosetu", url: "https://syosetu.com", description: "日本最大的原创网络小说投稿与免费阅读网站（成为小说家吧）。" },
+          { name: "Ciweimao", url: "https://www.ciweimao.com", description: "刺猬猫，中国知名的二次元轻小说与宅文原创阅读平台。" },
+          { name: "Qidian", url: "https://www.qidian.com", description: "中国最大的原创网络文学创作与网络小说阅读门户。" },
+          { name: "Jinjiang", url: "https://www.jjwxc.net", description: "晋江文学城，中国极具影响力的女性向网络文学与言情小说网站。" },
+          { name: "ReadFree", url: "https://readfree.me", description: "电子书爱好者分享与交流Kindle电子书资源的社区。" },
+          { name: "Z-Library", url: "https://z-lib.gs", description: "全球最大的数字图书馆之一，提供海量免费电子书与学术文章。" },
+          { name: "ResearchGate", url: "https://www.researchgate.net", description: "全球科学家与科研人员交流学术论文与科研成果的社交平台。" },
+          { name: "Google Scholar", url: "https://scholar.google.com", description: "谷歌旗下的免费学术文献、论文与专利搜索引擎。" },
+          { name: "CNKI", url: "https://www.cnki.net", description: "中国知网，中国最权威的学术期刊、学位论文与知识基础设施库。" },
+          { name: "Wanfang Data", url: "https://www.wanfangdata.com.cn", description: "中国大型学术数据资源库，涵盖科技期刊与学位论文。" },
+          { name: "arXiv", url: "https://arxiv.org", description: "由康奈尔大学维护的物理学、计算机科学与数学预印本学术论文库。" },
+          { name: "ScienceDirect", url: "https://www.sciencedirect.com", description: "爱思唯尔旗下的全球知名科学、技术与医学学术期刊平台。" },
+          { name: "SpringerLink", url: "https://link.springer.com", description: "施普林格旗下的全球科研学术图书与权威期刊数据库。" },
+          { name: "Nature", url: "https://www.nature.com", description: "《自然》周刊官网，全球最顶尖的科学学术期刊之一。" },
+          { name: "Science", url: "https://www.science.org", description: "《科学》杂志官网，发表全球前沿科学研究突破的权威期刊。" },
+          { name: "IEEE Xplore", url: "https://ieeexplore.ieee.org", description: "全球电气电子工程师学会旗下电子、电气与计算机学术文献库。" },
+          { name: "JSTOR", url: "https://www.jstor.org", description: "数字图书馆平台，收录大量人文社科领域学术期刊与图书。" },
+          { name: "Sci-Hub", url: "https://sci-hub.se", description: "致力于打破学术壁垒、提供免费学术论文下载的公开平台。" },
+          { name: "PubMed", url: "https://pubmed.ncbi.nlm.nih.gov", description: "全球最大的生物医学与生命科学文献数据库。" },
+          { name: "Web of Science", url: "https://www.webofscience.com", description: "全球权威引文索引数据库，收录SCI、SSCI等优质学术期刊。" },
+          { name: "Overleaf", url: "https://www.overleaf.com", description: "基于云端的在线LaTeX学术论文实时协作与排版编辑器。" },
+          { name: "WolframAlpha", url: "https://www.wolframalpha.com", description: "全球知名的计算知识引擎，解答数学、科学与数据计算问题。" },
+          { name: "Mathway", url: "https://www.mathway.com", description: "强大的在线一步步自动解答代数、微积分与几何数学题网站。" },
+          { name: "Symbolab", url: "https://www.symbolab.com", description: "提供详细解题步骤的高级在线数学计算与方程求解工具。" },
+          { name: "Desmos", url: "https://www.desmos.com", description: "免费且功能强大的在线图形计算器，广泛用于数学教学。" },
+          { name: "GeoGebra", url: "https://www.geogebra.org", description: "动态几何、代数、统计与微积分融合的数学教学软件平台。" },
+          { name: "Chegg", url: "https://www.chegg.com", description: "美国大学生常用的在线教材租赁、作业辅导与答疑平台。" },
+          { name: "Quizlet", url: "https://quizlet.com", description: "全球流行的卡片记忆法、语言学习与考试背诵工具网站。" },
+          { name: "Grammarly Business", url: "https://www.grammarly.com/business", description: "专为企业团队打造的英文写作规范与公文润色服务。" },
+          { name: "Bloomberg", url: "https://www.bloomberg.com", description: "全球顶尖的财经商业新闻、市场实时数据与金融分析平台。" },
+          { name: "Reuters", url: "https://www.reuters.com", description: "路透社官方网站，提供全球即时财经资讯与国际新闻报道。" },
+          { name: "Wall Street Journal", url: "https://www.wsj.com", description: "《华尔街日报》官网，全球知名的商业财经与政治新闻媒体。" },
+          { name: "Financial Times", url: "https://www.ft.com", description: "英国《金融时报》官网，关注国际商业、经济与金融市场。" },
+          { name: "CNBC", url: "https://www.cnbc.com", description: "全球著名的财经新闻频道官网，实时跟进美股与全球金融动态。" },
+          { name: "MarketWatch", url: "https://www.marketwatch.com", description: "提供实时股市行情、金融资讯与投资分析的财经门户。" },
+          { name: "Investing.com", url: "https://www.investing.com", description: "全球知名的金融市场数据分析、外汇、股票与期货行情平台。" },
+          { name: "Yahoo Finance", url: "https://finance.yahoo.com", description: "全球访问量极高的免费财经门户，提供股票行情与财务数据。" },
+          { name: "TradingView", url: "https://www.tradingview.com", description: "全球交易员与投资者最爱的在线股票、外汇与加密货币K线图表平台。" },
+          { name: "CoinMarketCap", url: "https://coinmarketcap.com", description: "全球最大的加密货币价格、市值、交易量与行情追踪网站。" },
+          { name: "CoinGecko", url: "https://www.coingecko.com", description: "全球领先的独立加密货币市场数据与去中心化金融统计网站。" },
+          { name: "Binance", url: "https://www.binance.com", description: "全球交易量最大的加密货币交易与区块链生态服务平台。" },
+          { name: "Coinbase", url: "https://www.coinbase.com", description: "美国合规上市的加密货币资产交易与数字钱包托管平台。" },
+          { name: "OKX", url: "https://www.okx.com", description: "全球知名的加密货币与Web3数字资产交易综合服务平台。" },
+          { name: "Bybit", url: "https://www.bybit.com", description: "全球发展迅猛的数字货币衍生品与现货交易服务平台。" },
+          { name: "Eastmoney", url: "https://www.eastmoney.com", description: "东方财富网，中国规模巨大的财经资讯与证券理财门户。" },
+          { name: "Xueqiu", url: "https://xueqiu.com", description: "雪球，中国知名的投资者社交沟通与股票证券投资交流社区。" },
+          { name: "Sina Finance", url: "https://finance.sina.com.cn", description: "新浪财经，提供全面的A股、港美股行情与宏观经济报道。" },
+          { name: "Yicai", url: "https://www.yicai.com", description: "第一财经，中国领先的原创财经媒体与商业资讯平台。" },
+          { name: "Caixin", url: "https://www.caixin.com", description: "财新网，以深度调查报道与宏观经济分析著称的财经媒体。" },
+          { name: "Wind", url: "https://www.wind.com.cn", description: "万得，中国金融机构广泛使用的金融数据与分析终端提供商。" },
+          { name: "Zhaopin", url: "https://www.zhaopin.com", description: "智联招聘，中国历史悠久的大型企业招聘与人才求职门户。" },
+          { name: "51job", url: "https://www.51job.com", description: "前程无忧，中国领先的人力资源综合服务与招聘网。" },
+          { name: "Boss Zhipin", url: "https://www.zhipin.com", description: "BOSS直聘，采用“直聊”模式的中国高效人才招聘平台。" },
+          { name: "Liepin", url: "https://www.liepin.com", description: "猎聘网，专注于中高端人才猎头招聘与职业发展服务平台。" },
+          { name: "Glassdoor", url: "https://www.glassdoor.com", description: "全球知名的企业薪酬查询、面试经验与员工真实评价网站。" },
+          { name: "Indeed", url: "https://www.indeed.com", description: "全球最大的综合招聘搜索引擎，聚合全球海量职位信息。" },
+          { name: "Monster", url: "https://www.monster.com", description: "全球老牌的网络招聘平台，提供求职简历投递与职业指南。" },
+          { name: "Upwork", url: "https://www.upwork.com", description: "全球最大的自由职业者外包、远程工作与项目接单平台。" },
+          { name: "Fiverr", url: "https://www.fiverr.com", description: "全球流行的按件计料、5美元起步的自由职业微服务交易市场。" },
+          { name: "Freelancer", url: "https://www.freelancer.com", description: "全球大型众包与自由职业者竞标接单平台。" },
+          { name: "Toptal", url: "https://www.toptal.com", description: "高度筛选全球前3%顶尖开发者、设计师与财务专家的自由职业平台。" },
+          { name: "Remote OK", url: "https://remoteok.com", description: "全球知名的IT与数字游民远程工作机会聚合网站。" },
+          { name: "We Work Remotely", url: "https://weworkremotely.com", description: "全球极具规模的远程全职与兼职工作招聘平台。" },
+          { name: "TaskRabbit", url: "https://www.taskrabbit.com", description: "专注于本地家政、组装家具与线下零工服务的自由职业平台。" },
+          { name: "Airbnb", url: "https://www.airbnb.com", description: "全球最大的民宿预订、特色短租与独特体验在线平台。" },
+          { name: "Expedia", url: "https://www.expedia.com", description: "全球著名的在线旅游预订巨头，提供机票、酒店与租车服务。" },
+          { name: "Skyscanner", url: "https://www.skyscanner.com", description: "天巡，全球领先的机票对比、酒店与租车搜索比价引擎。" },
+          { name: "Kayak", url: "https://www.kayak.com", description: "享誉全球的元搜索旅游比价网站，覆盖机票、酒店与度假套餐。" },
+          { name: "Agoda", url: "https://www.agoda.com", description: "深耕亚太地区的在线酒店、度假村与民宿优惠预订网站。" },
+          { name: "Ctrip", url: "https://www.ctrip.com", description: "携程旅行，中国最大的在线旅游预订、机票酒店与商务出行平台。" },
+          { name: "Qunar", url: "https://www.qunar.com", description: "去哪儿网，中国知名的机票酒店搜索比价与旅游预订服务商。" },
+          { name: "Fliggy", url: "https://www.fliggy.com", description: "飞猪旅行，阿里巴巴旗下的综合在线旅游服务与度假平台。" },
+          { name: "Mafengwo", url: "https://www.mafengwo.cn", description: "马蜂窝，中国知名的旅游攻略自由行分享与路书社区。" },
+          { name: "Klook", url: "https://www.klook.com", description: "客路，全球领先的当地景点门票、一日游与交通卡预订平台。" },
+          { name: "KKday", url: "https://www.kkday.com", description: "亚洲著名的深度自由行体验、当地一日游与门票预订网站。" },
+          { name: "Flightradar24", url: "https://www.flightradar24.com", description: "全球最受欢迎的实时航班跟踪、雷达地图与飞行轨迹网站。" },
+          { name: "MarineTraffic", url: "https://www.marinetraffic.com", description: "全球船舶实时位置定位、AIS航运轨迹与港口数据平台。" },
+          { name: "Uber", url: "https://www.uber.com", description: "全球最大的在线网约车、出租车与出行服务官方平台。" },
+          { name: "Grab", url: "https://www.grab.com", description: "东南亚规模最大的网约车、打车与外卖配送综合生活服务商。" },
+          { name: "Lyft", url: "https://www.lyft.com", description: "北美地区知名的在线网约车与共享出行服务平台。" },
+          { name: "DiDi", url: "https://www.didiglobal.com", description: "滴滴出行，中国领先的一站式移动出行与网约车服务平台。" },
+          { name: "AutoNavi", url: "https://www.amap.com", description: "高德地图，中国领先的数字地图内容、导航与出行服务提供商。" },
+          { name: "Baidu Maps", url: "https://map.baidu.com", description: "百度地图，提供智能化路线规划、精准导航与POI搜索服务。" },
+          { name: "OpenStreetMap", url: "https://www.openstreetmap.org", description: "全球最大的自由开源可编辑免费地图数据社区。" },
+          { name: "Yelp", url: "https://www.yelp.com", description: "美国最大的本地商家点评、餐厅吃喝玩乐评价网站。" },
+          { name: "OpenTable", url: "https://www.opentable.com", description: "全球领先的餐厅在线预订与美食用餐指南网站。" },
+          { name: "Dianping", url: "https://www.dianping.com", description: "大众点评，中国本土最具影响力的生活吃喝玩乐点评与团购平台。" },
+          { name: "Meituan", url: "https://www.meituan.com", description: "中国领先的生活服务与外卖订餐综合电子商务平台。" },
+          { name: "Ele.me", url: "https://www.ele.me", description: "饿了么，中国知名的本地生活服务与即时外卖配送平台。" },
+          { name: "DoorDash", url: "https://www.doordash.com", description: "北美市场份额领先的在线餐饮外卖与配送服务网站。" },
+          { name: "Uber Eats", url: "https://www.ubereats.com", description: "Uber旗下的全球在线美食外卖订购与配送平台。" },
+          { name: "Deliveroo", url: "https://deliveroo.co.uk", description: "英国及欧洲著名的餐饮外卖在线派送服务网站。" },
+          { name: "Delivery Hero", url: "https://www.deliveryhero.com", description: "总部位于德国的全球跨国外卖订餐与即时零售巨头。" },
+          { name: "Foodpanda", url: "https://www.foodpanda.com", description: "亚太及中东地区极具影响力的外卖配送与生鲜送达平台。" },
+          { name: "Just Eat", url: "https://www.justeattakeaway.com", description: "欧洲领先的跨国在线订餐与外卖派送门户。" },
+          { name: "Instacart", url: "https://www.instacart.com", description: "北美最大的杂货生鲜在线代购与小时达配送服务平台。" },
+          { name: "Boxed", url: "https://www.boxed.com", description: "美国知名的大容量批量杂货在线购物与送货上门网站。" },
+          { name: "Target Circle", url: "https://www.target.com/circle", description: "塔吉特百货的忠诚会员打折与专属积分平台。" },
+          { name: "Best Buy", url: "https://www.bestbuy.com", description: "全球大型消费电子产品与家电零售商百思买在线商城。" },
+          { name: "Home Depot", url: "https://www.homedepot.com", description: "全球最大的家居建材、家具与家居装修用品零售商城。" },
+          { name: "Lowe's", url: "https://www.lowes.com", description: "美国著名的大型家装、建材与家电在线购物服务门户。" },
+          { name: "IKEA", url: "https://www.ikea.com", description: "宜家家居官方网站，展示与销售现代简约风家居用品。" },
+          { name: "Wayfair", url: "https://www.wayfair.com", description: "北美最大的家居家具、装饰品在线垂直电商平台。" },
+          { name: "Overstock", url: "https://www.overstock.com", description: "北美著名的折扣家居、寝具与家具电商购物网站。" },
+          { name: "Newegg", url: "https://www.newegg.com", description: "新蛋网，全球知名的电脑硬件、数码3C专营电子商城。" },
+          { name: "B&H Photo Video", url: "https://www.bhphotovideo.com", description: "美国著名的摄影器材、专业影音设备与数码购物天堂。" },
+          { name: "Adorama", url: "https://www.adorama.com", description: "享誉北美的专业摄影设备、相机镜头与电子消费品商城。" },
+          { name: "Micro Center", url: "https://www.microcenter.com", description: "美国极具口碑的DIY电脑配件、电子产品零售线上网站。" },
+          { name: "ASOS", url: "https://www.asos.com", description: "英国知名的高街时尚与青年服饰在线购物门户。" },
+          { name: "SHEIN", url: "https://www.shein.com", description: "全球风靡的快时尚跨境电商平台，主打高性价比女装与服饰。" },
+          { name: "Temu", url: "https://www.temu.com", description: "拼多多旗下的跨境电商平台，以超高性价比全品类风靡全球。" },
+          { name: "Pinduoduo", url: "https://www.pinduoduo.com", description: "拼多多，中国领先的社交拼团电商与高性价比购物平台。" },
+          { name: "Vipshop", url: "https://www.vip.com", description: "唯品会，中国知名的名牌折扣特卖与品牌正品电商平台。" },
+          { name: "Suning", url: "https://www.suning.com", description: "苏宁易购，中国大型综合性3C家电与零售购物平台。" },
+          { name: "Xianyu", url: "https://2.taobao.com", description: "闲鱼，阿里巴巴旗下的中国最大二手闲置物品交易社区。" },
+          { name: "Zhuanzhuan", url: "https://www.zhuanzhuan.com", description: "转转，中国知名的二手手机与3C数码闲置交易平台。" },
+          { name: "Poshmark", url: "https://poshmark.com", description: "北美著名的二手服装、时尚名牌与配饰C2C交易社交平台。" },
+          { name: "ThredUp", url: "https://www.thredup.com", description: "全球最大的二手女性与儿童服装寄售在线平台。" },
+          { name: "The RealReal", url: "https://www.therealreal.com", description: "美国正品二手奢侈品时装、珠宝与名表寄售平台。" },
+          { name: "Chrono24", url: "https://www.chrono24.com", description: "全球最大的奢华手表买卖、交易与名表行情评估平台。" },
+          { name: "StockX", url: "https://stockx.com", description: "全球著名的潮流球鞋、限量潮服与卡牌动态竞价交易平台。" },
+          { name: "GOAT", url: "https://www.goat.com", description: "全球知名的正品限量球鞋、高街服装与潮流单品交易平台。" },
+          { name: "Poizon", url: "https://www.dewu.com", description: "得物，中国知名的正品潮流装备鉴别与潮流生活社区。" },
+          { name: "Farfetch", url: "https://www.farfetch.com", description: "全球领先的独立奢侈品买手店与高端时装聚合购物平台。" },
+          { name: "SSENSE", url: "https://www.ssense.com", description: "加拿大知名的高端独立设计师品牌与奢华街头时尚电商。" },
+          { name: "Net-A-Porter", url: "https://www.net-a-porter.com", description: "全球顶尖的女装奢侈品时尚电子零售网站。" },
+          { name: "End Clothing", url: "https://www.endclothing.com", description: "英国著名的男士高端潮牌、球鞋与设计师时装购物网站。" },
+          { name: "Revolve", url: "https://www.revolve.com", description: "美国时尚轻奢与网红时尚品牌线上购物平台。" },
+          { name: "Zara", url: "https://www.zara.com", description: "西班牙快时尚巨头ZARA官方在线购物与新品发售门户。" },
+          { name: "H&M", url: "https://www.hm.com", description: "瑞典著名快时尚品牌H&M官方网店，提供全家时装购买。" },
+          { name: "Uniqlo", url: "https://www.uniqlo.com", description: "优衣库官方商城，主打舒适高品质基础款服饰与功能内衣。" },
+          { name: "Nike", url: "https://www.nike.com", description: "耐克官方网站，销售各类运动鞋、运动健身服饰与限定装备。" },
+          { name: "Adidas", url: "https://www.adidas.com", description: "阿迪达斯官网，提供经典三条纹运动系列与潮流合作款。" },
+          { name: "Lululemon", url: "https://www.lululemon.com", description: "高端瑜伽服饰与专业运动生活方式品牌官方商城。" },
+          { name: "Under Armour", url: "https://www.underarmour.com", description: "安德玛官网，主打专业高端功能性运动紧身衣与装备。" },
+          { name: "Decathlon", url: "https://www.decathlon.com", description: "迪卡侬官方网站，提供高性价比全品类体育运动装备。" },
+          { name: "Sephora", url: "https://www.sephora.com", description: "丝芙兰官网，全球美妆彩妆、护肤品与香水综合零售天堂。" },
+          { name: "Ulta Beauty", url: "https://www.ulta.com", description: "美国大型美妆护肤品综合在线零售商城。" },
+          { name: "Lookfantastic", url: "https://www.lookfantastic.com", description: "英国知名的欧洲美妆护肤品与美发产品海淘网站。" },
+          { name: "Cult Beauty", url: "https://www.cultbeauty.co.uk", description: "英国深受美妆达人喜爱的独立小众护肤品电商。" },
+          { name: "iHerb", url: "https://www.iherb.com", description: "全球知名的天然保健品、膳食补充剂与母婴用品海淘平台。" },
+          { name: "Vitacost", url: "https://www.vitacost.com", description: "北美大型有机食品、天然营养补剂与健康产品电商。" },
+          { name: "Myprotein", url: "https://www.myprotein.com", description: "欧洲领先的运动营养品、蛋白粉与健身补剂品牌官网。" },
+          { name: "Bodybuilding.com", url: "https://www.bodybuilding.com", description: "健身爱好者喜爱的专业补剂商城与健身训练计划库。" },
+          { name: "Strava", url: "https://www.strava.com", description: "全球户外骑行与跑步爱好者最爱的GPS运动追踪与社交社区。" },
+          { name: "Garmin", url: "https://www.garmin.com", description: "佳明官网，领先的户外智能运动手表与GPS导航设备展示平台。" },
+          { name: "Fitbit", url: "https://www.fitbit.com", description: "智能健康手环与睡眠健康监测设备官方网站。" },
+          { name: "Healthline", url: "https://www.healthline.com", description: "美国极其权威的医疗健康知识、营养学与健康资讯网站。" },
+          { name: "WebMD", url: "https://www.webmd.com", description: "全球知名的医疗健康信息、症状自查与医药知识门户。" },
+          { name: "Mayo Clinic", url: "https://www.mayoclinic.org", description: "梅奥诊所官网，全球顶尖的医疗机构与权威医学健康科普。" },
+          { name: "Medical News Today", url: "https://www.medicalnewstoday.com", description: "提供最新医学研究进展与健康前沿新闻的网站。" },
+          { name: "DXY", url: "https://www.dxy.cn", description: "丁香园，中国领先的医疗领域连接者，提供专业医学知识与健康服务。" },
+          { name: "GoodRx", url: "https://www.goodrx.com", description: "美国著名的处方药价格对比与购药打折优惠券平台。" },
+          { name: "RxList", url: "https://www.rxlist.com", description: "详尽的药品索引、副作用说明与医学专业术语查询网站。" },
+          { name: "NYGov", url: "https://www.ny.gov", description: "美国纽约州政府官方政务与公共服务门户网站。" },
+          { name: "USA.gov", url: "https://www.usa.gov", description: "美国联邦政府官方政务信息与公众服务统一入口。" },
+          { name: "GOV.UK", url: "https://www.gov.uk", description: "英国政府公共服务与官方信息的极简高效统一门户。" },
+          { name: "France.fr", url: "https://www.france.fr", description: "法国官方旅游与文化推广门户网站。" },
+          { name: "Japan.go.jp", url: "https://www.japan.go.jp", description: "日本政府官方对外门户，展示政策、文化与国家资讯。" },
+          { name: "Gov.cn", url: "https://www.gov.cn", description: "中国政府网，中国国务院及各部门权威政策发布的官方门户。" },
+          { name: "IRS", url: "https://www.irs.gov", description: "美国国家税务局官网，办理税务申报与政策查询。" },
+          { name: "USPS", url: "https://www.usps.com", description: "美国邮政署官网，提供邮政寄递、邮编查询与追踪。" },
+          { name: "FedEx", url: "https://www.fedex.com", description: "联邦快递官网，全球国际快递寄递与包裹实时追踪。" },
+          { name: "UPS", url: "https://www.ups.com", description: "联合包裹服务官网，全球物流运输与供应链管理。" },
+          { name: "DHL", url: "https://www.dhl.com", description: "敦豪快递官网，专业的国际航空快递与物流服务。" },
+          { name: "SF Express", url: "https://www.sf-express.com", description: "顺丰速运，中国领先的高效综合物流与快递服务平台。" },
+          { name: "Cainiao", url: "https://www.cainiao.com", description: "菜鸟网络，阿里巴巴旗下的全球智慧物流与跨境包裹追踪平台。" },
+          { name: "12306", url: "https://www.12306.cn", description: "中国铁路客户服务中心官方网站，唯一官方火车票预订平台。" },
+          { name: "FlightAware", url: "https://www.flightaware.com", description: "全球航班跟踪、机场延误数据与航空大数据平台。" },
+          { name: "SeatGuru", url: "https://www.seatguru.com", description: "各大航空公司客机座位图查询与最佳座位推荐指南。" },
+          { name: "Booking.com JP", url: "https://www.booking.com/index.ja.html", description: "Booking日本站，日本精致旅馆与住宿预订。" },
+          { name: "Agoda JP", url: "https://www.agoda.com/ja-jp/", description: "Agoda日本站，极受日本自由行游客喜爱的订房网。" },
+          { name: "Jalan", url: "https://www.jalan.net", description: "日本著名的温泉旅馆、酒店预订与当地旅游指南网站。" },
+          { name: "Rakuten Travel", url: "https://travel.rakuten.co.jp", description: "乐天旅游，日本规模巨大的国内与国际旅游预订网。" },
+          { name: "Trivago", url: "https://www.trivago.com", description: "全球知名的在线酒店搜索与跨平台价格对比网站。" },
+          { name: "Hotels.com", url: "https://www.hotels.com", description: "好订网，全球酒店预订平台，以“住十晚送一晚”闻名。" },
+          { name: "Hostelworld", url: "https://www.hostelworld.com", description: "全球青年旅舍、背包客栈在线预订首选平台。" },
+          { name: "Couchsurfing", url: "https://www.couchsurfing.com", description: "全球沙发客沙龙，提供免费互助住宿与国际文化交流。" },
+          { name: "Workaway", url: "https://www.workaway.info", description: "全球文化交流与换宿义工旅行申请社区。" },
+          { name: "Worldpackers", url: "https://www.worldpackers.com", description: "用技能交换住宿的全球义工旅行与背包客平台。" },
+          { name: "Meetup", url: "https://www.meetup.com", description: "全球线上与线下兴趣社群聚会、同城活动发起平台。" },
+          { name: "Eventbrite", url: "https://www.eventbrite.com", description: "全球知名的活动票务发售、展会管理与同城活动聚合网。" },
+          { name: "Ticketmaster", url: "https://www.ticketmaster.com", description: "全球最大的演唱会、体育赛事与戏剧门票发售平台。" },
+          { name: "StubHub", url: "https://www.stubhub.com", description: "全球大型二手门票买卖与演出票务转让交易市场。" },
+          { name: "Live Nation", url: "https://www.livenation.com", description: "全球顶尖的音乐现场演出制作与演唱会票务官方平台。" },
+          { name: "Damai", url: "https://www.damai.cn", description: "大麦网，中国领先的演唱会、话剧、体育比赛演出票务总代理。" },
+          { name: "Maoyan", url: "https://www.maoyan.com", description: "猫眼电影，中国知名的电影票在线预订与影视娱乐大数据平台。" },
+          { name: "Tao Piaopiao", url: "https://www.taopiaopiao.com", description: "淘票票，阿里影业旗下在线电影观影选座与优惠购票平台。" },
+          { name: "Box Office Mojo", url: "https://www.boxofficemojo.com", description: "全球最权威的电影票房数据统计与排行榜网站。" },
+          { name: "The Numbers", url: "https://www.the-numbers.com", description: "详尽的电影市场票房、财务分析与影业数据追踪。" },
+          { name: "Rotten Tomatoes Movies", url: "https://www.rottentomatoes.com/browse/movies_in_theaters", description: "影院热映电影评价与口碑榜。" },
+          { name: "Hollywood Reporter", url: "https://www.hollywoodreporter.com", description: "好莱坞权威影视新闻、娱乐内幕与行业趋势报道。" },
+          { name: "Variety", url: "https://variety.com", description: "享誉百年的美国娱乐界行业报刊《综艺》官方新闻网站。" },
+          { name: "Deadline", url: "https://deadline.com", description: "实时跟进好莱坞选角、影视破产与娱乐票房突发新闻网站。" },
+          { name: "IndieWire", url: "https://www.indiewire.com", description: "专注于独立电影、艺术电影评测与电影节动态的专业媒体。" },
+          { name: "Vulture", url: "https://www.vulture.com", description: "探讨电视、电影、音乐与流行文化的深度评论与文化网。" },
+          { name: "Pitchfork", url: "https://pitchfork.com", description: "全球独立音乐与流行音乐界最具影响力的音乐评论网站。" },
+          { name: "NME", url: "https://www.nme.com", description: "英国老牌音乐与流行文化杂志《新音乐快递》官方网站。" },
+          { name: "Rolling Stone", url: "https://www.rollingstone.com", description: "《滚石》杂志官网，报道音乐、政治与大众文化。" },
+          { name: "Stereogum", url: "https://www.stereogum.com", description: "专注独立音乐新闻、新歌首发与乐评的音乐博客。" },
+          { name: "AllMusic", url: "https://www.allmusic.com", description: "极详尽的音乐唱片目录、曲风分类与专辑深度评论库。" },
+          { name: "Discogs Marketplace", url: "https://www.discogs.com/sell/list", description: "全球实体唱片集市，买卖珍稀黑胶与磁带。" },
+          { name: "Ultimate Guitar", url: "https://www.ultimate-guitar.com", description: "全球最大的吉他吉他谱、贝斯谱与尤克里里谱社区。" },
+          { name: "Songsterr", url: "https://www.songsterr.com", description: "带真音试听功能的交互式在线吉他Tab乐谱网站。" },
+          { name: "Musescore", url: "https://musescore.com", description: "全球免费制谱软件社区，共享数百万份管弦乐与钢琴谱。" },
+          { name: "IMSLP", url: "https://imslp.org", description: "国际乐谱库项目，全球最大的公有领域古典音乐乐谱数字图书馆。" },
+          { name: "Pianofiles", url: "https://pianofiles.com", description: "经典钢琴乐谱交流与钢琴曲探索者论坛。" },
+          { name: "BandLab", url: "https://www.bandlab.com", description: "跨平台免费云端音乐制作与在线音乐创作社区。" },
+          { name: "Soundtrap", url: "https://www.soundtrap.com", description: "Spotify旗下的在线网页版音乐制作与录音室工具。" },
+          { name: "Splice", url: "https://splice.com", description: "全球音乐人最爱的采样库、声音素材与插件云端订阅服务。" },
+          { name: "Native Instruments", url: "https://www.native-instruments.com", description: "著名音乐生产软件、虚拟乐器与硬件开发商官网。" },
+          { name: "Ableton", url: "https://www.ableton.com", description: "知名音乐制作软件Live与Push硬件官方网站。" },
+          { name: "FL Studio", url: "https://www.image-line.com", description: "热门音乐制作软件水果（FL Studio）官方发售与教程网。" },
+          { name: "KVR Audio", url: "https://www.kvraudio.com", description: "全球音频插件、VST音色库与音频软件新闻枢纽。" },
+          { name: "Gearspace", url: "https://gearspace.com", description: "全球最大的录音室硬件、混音师与录音工程师讨论论坛。" },
+          { name: "Sound on Sound", url: "https://www.soundonsound.com", description: "英国权威录音技术、音频设备测评与混音教程杂志。" },
+          { name: "PCPartPicker", url: "https://pcpartpicker.com", description: "装机爱好者首选的电脑硬件兼容性匹配与极速比价网站。" },
+          { name: "UserBenchmark", url: "https://www.userbenchmark.com", description: "基于海量真实用户数据的PC硬件性能对比测试网。" },
+          { name: "PassMark", url: "https://www.passmark.com", description: "权威的CPU与显卡跑分性能排行榜查询网站。" },
+          { name: "TechPowerUp", url: "https://www.techpowerup.com", description: "知名显卡GPU-Z软件母站，提供硬件评测与BIOS数据库。" },
+          { name: "Guru3D", url: "https://www.guru3d.com", description: "专注于PC显卡超频、驱动更新与PC游戏硬件测评。" },
+          { name: "Overclock.net", url: "https://www.overclock.net", description: "全球极客与硬件超频爱好者深度技术讨论论坛。" },
+          { name: "CPU-Z", url: "https://www.cpuid.com", description: "权威CPU检测软件CPU-Z与硬件诊断工具官方网站。" },
+          { name: "Geeks3D", url: "https://www.geeks3d.com", description: "显卡烤机软件FurMark（甜甜圈）开发商官方网站。" },
+          { name: "TechSpot", url: "https://www.techspot.com", description: "面向电脑爱好者与技术专家的PC硬件分析与科技新闻。" },
+          { name: "Notebookcheck", url: "https://www.notebookcheck.net", description: "全球最全面严谨的笔记本电脑与移动芯片测评网站。" },
+          { name: "RTINGS", url: "https://www.rtings.com", description: "以极度客观科学的数据实测电视、耳机与显示器的网站。" },
+          { name: "DisplaySpecifications", url: "https://www.displayspecifications.com", description: "详尽查询显示器与电视面板参数规格的数据库。" },
+          { name: "TFTCentral", url: "https://tftcentral.co.uk", description: "深入探讨显示器面板技术、色彩校准与响应时间的专业网。" },
+          { name: "Hongkiat", url: "https://www.hongkiat.com", description: "专为设计师与技术爱好者提供实用网页设计技巧的博客。" },
+          { name: "Smashing Magazine", url: "https://www.smashingmagazine.com", description: "享誉全球的前端开发与网页设计高质量深度文章网。" },
+          { name: "CSS-Tricks", url: "https://css-tricks.com", description: "全球最受欢迎的Web前端CSS样式与前端开发技巧网站。" },
+          { name: "Codepen", url: "https://codepen.io", description: "前端开发者在线编写、展示HTML/CSS/JS代码片段的沙盒社区。" },
+          { name: "JSFiddle", url: "https://jsfiddle.net", description: "极简高效的在线JavaScript代码测试与原型调试平台。" },
+          { name: "Replit", url: "https://replit.com", description: "支持50+语言的在线云端IDE，支持协作与一键代码部署。" },
+          { name: "Glitch", url: "https://glitch.com", description: "友好的云端Web应用开发与前端项目快速构建社区。" },
+          { name: "CodeSandbox", url: "https://codesandbox.io", description: "专为React、Vue等现代前端框架打造的云端开发环境。" },
+          { name: "StackBlitz", url: "https://stackblitz.com", description: "基于WebContainers技术的极速云端IDE，瞬间启动Node.js。" },
+          { name: "Postman", url: "https://www.postman.com", description: "全球API开发、调试、测试与团队协作的首选平台。" },
+          { name: "Insomnia", url: "https://insomnia.rest", description: "开源的高质感REST与GraphQL API调试与测试客户端官网。" },
+          { name: "RegEx101", url: "https://regex101.com", description: "强大的在线正则表达式测试、调试与一步一步语法解释工具。" },
+          { name: "JSONLint", url: "https://jsonlint.com", description: "经典易用的在线JSON格式化、校验与语法排错工具。" },
+          { name: "Crontab.guru", url: "https://crontab.guru", description: "极简直观的定时任务Cron表达式在线生成与验证表达式工具。" },
+          { name: "Carbon", url: "https://carbon.now.sh", description: "将代码片段快速生成高颜值漂亮图片的在线分享工具。" },
+          { name: "Shield.io", url: "https://shields.io", description: "为GitHub项目README提供各类简洁矢量徽章的平台。" },
+          { name: "Badgen", url: "https://badgen.net", description: "极速矢量SVG状态徽章生成服务，常用于开源项目。" },
+          { name: "DevDocs", url: "https://devdocs.io", description: "离线可用的多编程语言API官方文档快速查询一站式平台。" },
+          { name: "Explainshell", url: "https://explainshell.com", description: "输入Linux复杂命令行自动拆解并匹配帮助文档的利器。" },
+          { name: "DistroWatch", url: "https://distrowatch.com", description: "全球各大Linux发行版更新资讯、排行榜与下载聚合站。" },
+          { name: "Linux.org", url: "https://www.linux.org", description: "Linux操作系统官方社区，提供学习论坛与系统指南。" },
+          { name: "Ubuntu", url: "https://ubuntu.com", description: "全球极受欢迎的开源Linux发行版Ubuntu官方网站。" },
+          { name: "Debian", url: "https://www.debian.org", description: "历史悠久、以极其稳定著称的自由Linux操作系统社区。" },
         ]
       }
     ]
-  },
-  {
-  "name": "索引",
-  "icon": "✨",
-  "color": "linear-gradient(135deg, #0071e3, #8e2de2)",
-  "easterEggUrl": "https://www.omniglot.com/language/phrases/iloveyou.htm",
-  "subcategories": [
-    {
-      "name": "索引♡",
-      "enName": "Categories",
-      "hideTitle": true,
-      "easterEggUrl": "https://www.omniglot.com/language/phrases/iloveyou.htm",
-      "links": [
-        {
-          "name": "书影音",
-          "url": "https://kisstr.com/books_media.html",
-          "description": "书籍、影视、音乐与文化资源导航"
-        },
-        {
-          "name": "ACGN",
-          "url": "https://kisstr.com/acgn.html",
-          "description": "动漫、漫画、游戏、轻小说与壁纸资源导航"
-        },
-        {
-          "name": "聚合索引",
-          "url": "https://kisstr.com/aggregate.html",
-          "description": "精选推荐、AI导航、影视导航等聚合站点"
-        },
-        {
-          "name": "网站排行",
-          "url": "https://kisstr.com/ranking.html",
-          "description": "全球网站排行 TOP 200"
-        },
-        {
-          "name": "世界五百强",
-          "url": "https://kisstr.com/fortune_500.html",
-          "description": "全球五百强企业官网与行业巨头入口"
-        },
-        {
-          "name": "全球 AI",
-          "url": "https://kisstr.com/ai.html",
-          "description": "精选AI工具与平台导航"
-        },
-        {
-          "name": "AI 域名排行",
-          "url": "https://kisstr.com/ai_domain_ranking.html",
-          "description": "全球 AI 域名 TOP 300 排行导航"
-        },
-        {
-          "name": "没有用的网站",
-          "url": "https://kisstr.com/useless_websites.html",
-          "description": "无聊、有趣、怪诞与解压类无用网站合集"
-        },
-        {
-          "name": "时尚品牌",
-          "url": "https://kisstr.com/fashion.html",
-          "description": "顶级奢侈品与时尚品牌官网导航"
-        },
-        {
-          "name": "新闻媒体",
-          "url": "https://kisstr.com/news.html",
-          "description": "全球权威新闻媒体与国际时事阅读入口"
-        },
-        {
-          "name": "植物美学",
-          "url": "https://kisstr.com/flowers.html",
-          "description": "花艺设计、植物美学、婚礼花艺与花卉农场灵感"
-        },
-        {
-          "name": "时尚期刊",
-          "url": "https://kisstr.com/journal.html",
-          "description": "时尚期刊、创意媒体、商业趋势与设计杂志"
-        },
-        {
-          "name": "家居设计",
-          "url": "https://kisstr.com/home_design.html",
-          "description": "家居设计、民宿短租、特色住宿与旅居平台"
-        },
-        {
-          "name": "设计建筑",
-          "url": "https://kisstr.com/design_architecture.html",
-          "description": "设计、建筑权威媒体与商业空间灵感导航"
-        },
-        {
-          "name": "建筑图纸",
-          "url": "https://kisstr.com/architecture_tech.html",
-          "description": "建筑图纸、材料、古建与数字技术资源导航"
-        },
-        {
-          "name": "视觉图库",
-          "url": "https://kisstr.com/visual_commons.html",
-          "description": "高清无版权图库、公有领域视觉与开放影像资源"
-        },
-        {
-          "name": "高级时装",
-          "url": "https://kisstr.com/couture_archive.html",
-          "description": "高级时装、先锋设计师品牌、奢侈品与古着档案"
-        },
-        {
-          "name": "白噪音乐",
-          "url": "https://kisstr.com/white_noise.html",
-          "description": "白噪音、声音档案馆与小众音乐站"
-        },
-        {
-          "name": "空间美学",
-          "url": "https://kisstr.com/living_space.html",
-          "description": "家居植物、空间生活与生活美学灵感"
-        },
-        {
-          "name": "先锋视觉",
-          "url": "https://kisstr.com/digital_art.html",
-          "description": "先锋视觉、数字艺术与设计灵感资源"
-        },
-        {
-          "name": "思想智库",
-          "url": "https://kisstr.com/think_tank.html",
-          "description": "哲学、数字人文与思想智库资源导航"
-        },
-        {
-          "name": "未来科技",
-          "url": "https://kisstr.com/future_tech.html",
-          "description": "先锋科技、赛博朋克与未来趋势资源"
-        },
-        {
-          "name": "独立出版",
-          "url": "https://kisstr.com/indie_publishing.html",
-          "description": "独立出版、小众杂志与书籍装帧资源"
-        },
-        {
-          "name": "摄影电影",
-          "url": "https://kisstr.com/photo_cinema.html",
-          "description": "摄影美学、电影视觉与图像纪实资源"
-        },
-        {
-          "name": "声学艺术",
-          "url": "https://kisstr.com/soundscape.html",
-          "description": "声学艺术、独立音乐与环境音景资源"
-        },
-        {
-          "name": "开源项目",
-          "url": "https://kisstr.com/open_source.html",
-          "description": "开源软件、开源项目与开源文化资源"
-        },
-        {
-          "name": "YouTube热门账号",
-          "url": "https://kisstr.com/youtube_creators.html",
-          "description": "YouTube 热门创作者与频道导航"
-        },
-        {
-          "name": "X 平台热门账号",
-          "url": "https://kisstr.com/x_creators.html",
-          "description": "X 平台热门账号与全球意见领袖导航"
-        },
-        {
-          "name": "TikTok热门账号",
-          "url": "https://kisstr.com/tiktok_creators.html",
-          "description": "TikTok 热门创作者与平台账号导航"
-        },
-        {
-          "name": "Instagram热门账号",
-          "url": "https://kisstr.com/instagram_creators.html",
-          "description": "Instagram 热门账号与视觉创作者导航"
-        },
-        {
-          "name": "动漫网站",
-          "url": "https://kisstr.com/anime_sites.html",
-          "description": "正版动画、番剧资讯、动漫社区与资源站导航"
-        },
-        {
-          "name": "地图地理",
-          "url": "https://kisstr.com/maps_geography.html",
-          "description": "地图、地理、卫星影像与空间数据资源导航"
-        },
-        {
-          "name": "美食美学",
-          "url": "https://kisstr.com/food_aesthetics.html",
-          "description": "餐饮美学、料理灵感、甜品烘焙与美食媒体导航"
-        },
-        {
-          "name": "户外自然",
-          "url": "https://kisstr.com/outdoor_nature.html",
-          "description": "户外运动、自然探索、露营徒步与生态影像资源"
-        },
-        {
-          "name": "手工造物",
-          "url": "https://kisstr.com/handmade_craft.html",
-          "description": "手作工艺、造物设计、材料教程与匠人社区导航"
-        },
-        {
-          "name": "古典艺文",
-          "url": "https://kisstr.com/classical_arts.html",
-          "description": "古典艺术、文学、博物馆、典籍与人文资源导航"
-        },
-        {
-          "name": "字体素材",
-          "url": "https://kisstr.com/font_assets.html",
-          "description": "字体下载、排版素材、图标资源与设计资产导航"
-        },
-        {
-          "name": "AI开发",
-          "url": "https://kisstr.com/ai_development.html",
-          "description": "AI API、模型开发、向量数据库、算力与工程工具导航"
-        },
-        {
-          "name": "AI绘图",
-          "url": "https://kisstr.com/ai_drawing.html",
-          "description": "AI绘图、生成式视觉、模型社区与创作工具导航"
-        },
-        {
-          "name": "播客网站",
-          "url": "https://kisstr.com/podcast_sites.html",
-          "description": "播客平台、音频节目、访谈内容与声音媒体导航"
-        },
-        {
-          "name": "影视影评",
-          "url": "https://kisstr.com/film_resources.html",
-          "description": "影视播放、片源资料、影评数据库与观影工具导航"
-        },
-        {
-          "name": "电子书网站",
-          "url": "https://kisstr.com/ebook_sites.html",
-          "description": "电子书、公版书、学术图书、有声书与阅读平台导航"
-        },
-        {
-          "name": "游戏网站",
-          "url": "https://kisstr.com/game_sites.html",
-          "description": "游戏平台、游戏资讯、独立游戏、主机资源与玩家社区导航"
-        },
-        {
-          "name": "漫画网站",
-          "url": "https://kisstr.com/manga_sites.html",
-          "description": "漫画阅读、正版平台、漫画工具与图源社区导航"
-        },
-        {
-          "name": "软件工具",
-          "url": "https://kisstr.com/software_tools.html",
-          "description": "本地播放器、电子书阅读器与漫画阅读器导航"
-        }
-      ]
-    }
-  ]
-}
+  }
 ];
 
 function getInitial(name) {
@@ -6844,172 +6711,6 @@ function getColorFromName(name) {
   const index = hashCode(name) % colors.length;
   return colors[index];
 }
-
-// 古诗词数据库（诗人 + 诗句）
-const poemData = [
-  { poet: "李白", poem: "床前明月光，疑是地上霜" },
-  { poet: "杜甫", poem: "国破山河在，城春草木深" },
-  { poet: "白居易", poem: "离离原上草，一岁一枯荣" },
-  { poet: "王维", poem: "独在异乡为异客，每逢佳节倍思亲" },
-  { poet: "苏轼", poem: "但愿人长久，千里共婵娟" },
-  { poet: "李清照", poem: "昨夜雨疏风骤，浓睡不消残酒" },
-  { poet: "辛弃疾", poem: "众里寻他千百度，蓦然回首" },
-  { poet: "陆游", poem: "山重水复疑无路，柳暗花明又一村" },
-  { poet: "王安石", poem: "春风又绿江南岸，明月何时照我还" },
-  { poet: "孟浩然", poem: "春眠不觉晓，处处闻啼鸟" },
-  { poet: "陶渊明", poem: "采菊东篱下，悠然见南山" },
-  { poet: "李商隐", poem: "春蚕到死丝方尽，蜡炬成灰泪始干" },
-  { poet: "杜牧", poem: "停车坐爱枫林晚，霜叶红于二月花" },
-  { poet: "岑参", poem: "忽如一夜春风来，千树万树梨花开" },
-  { poet: "高适", poem: "莫愁前路无知己，天下谁人不识君" },
-  { poet: "王勃", poem: "海内存知己，天涯若比邻" },
-  { poet: "杨炯", poem: "宁为百夫长，胜作一书生" },
-  { poet: "陈子昂", poem: "前不见古人，后不见来者" },
-  { poet: "张九龄", poem: "海上生明月，天涯共此时" },
-  { poet: "柳宗元", poem: "千山鸟飞绝，万径人踪灭" },
-  { poet: "韩愈", poem: "天街小雨润如酥，草色遥看近却无" },
-  { poet: "刘禹锡", poem: "沉舟侧畔千帆过，病树前头万木春" },
-  { poet: "贾岛", poem: "鸟宿池边树，僧敲月下门" },
-  { poet: "孟郊", poem: "谁言寸草心，报得三春晖" },
-  { poet: "贾岛", poem: "松下问童子，言师采药去" },
-  { poet: "元稹", poem: "曾经沧海难为水，除却巫山不是云" },
-  { poet: "韦应物", poem: "春潮带雨晚来急，野渡无人舟自横" },
-  { poet: "刘长卿", poem: "日暮苍山远，天寒白屋贫" },
-  { poet: "温庭筠", poem: "鸡声茅店月，人迹板桥霜" },
-  { poet: "贺知章", poem: "不知细叶谁裁出，二月春风似剪刀" },
-  { poet: "贺铸", poem: "一川烟草，满城风絮，梅子黄时雨" },
-  { poet: "周邦彦", poem: "叶上初阳干宿雨，水面清圆" },
-  { poet: "晏殊", poem: "无可奈何花落去，似曾相识燕归来" },
-  { poet: "欧阳修", poem: "月上柳梢头，人约黄昏后" },
-  { poet: "秦观", poem: "两情若是久长时，又岂在朝朝暮暮" },
-  { poet: "柳永", poem: "衣带渐宽终不悔，为伊消得人憔悴" },
-  { poet: "范仲淹", poem: "先天下之忧而忧，后天下之乐而乐" },
-  { poet: "岳飞", poem: "莫等闲，白了少年头，空悲切" },
-  { poet: "文天祥", poem: "人生自古谁无死，留取丹心照汗青" },
-  { poet: "于谦", poem: "粉骨碎身浑不怕，要留清白在人间" },
-  { poet: "郑板桥", poem: "千磨万击还坚劲，任尔东西南北风" },
-  { poet: "袁枚", poem: "白日不到处，青春恰自来" },
-  { poet: "龚自珍", poem: "落红不是无情物，化作春泥更护花" },
-  { poet: "纳兰性德", poem: "人生若只如初见，何事秋风悲画扇" },
-  { poet: "仓央嘉措", poem: "世间安得双全法，不负如来不负卿" },
-  { poet: "林徽因", poem: "你是爱，是暖，是希望" },
-  { poet: "徐志摩", poem: "轻轻的我走了，正如我轻轻的来" },
-  { poet: "戴望舒", poem: "撑着油纸伞，独自彷徨在悠长" },
-  { poet: "艾青", poem: "为什么我的眼里常含泪水" },
-  { poet: "海子", poem: "面朝大海，春暖花开" }
-];
-
-// 高奢品牌数据库（品牌名 + slogan）
-const luxuryBrandData = [
-  { brand: "HERMÈS", slogan: "Luxury is a way of life", url: "https://www.hermes.com" },
-  { brand: "CHANEL", slogan: "Fashion passes, style remains", url: "https://www.chanel.com" },
-  { brand: "LOUIS VUITTON", slogan: "The art of travel", url: "https://www.louisvuitton.com" },
-  { brand: "DIOR", slogan: "The elegance is a state of mind", url: "https://www.dior.com" },
-  { brand: "CARTIER", slogan: "Jeweler of kings", url: "https://www.cartier.com" },
-  { brand: "TIFFANY & CO.", slogan: "True love, true luxury", url: "https://www.tiffany.com" },
-  { brand: "GUCCI", slogan: "Quality is remembered long after price is forgotten", url: "https://www.gucci.com" },
-  { brand: "PRADA", slogan: "Fashion is instant language", url: "https://www.prada.com" },
-  { brand: "BURBERRY", slogan: "Pioneering British luxury", url: "https://www.burberry.com" },
-  { brand: "BALENCIAGA", slogan: "Elegance in motion", url: "https://www.balenciaga.com" },
-  { brand: "FENDI", slogan: "Fun fur and luxury", url: "https://www.fendi.com" },
-  { brand: "BOTTEGA VENETA", slogan: "When your own initials are enough", url: "https://www.bottegaveneta.com" },
-  { brand: "SAINT LAURENT", slogan: "For the modern woman", url: "https://www.ysl.com" },
-  { brand: "GIVENCHY", slogan: "Elegance is refusal", url: "https://www.givenchy.com" },
-  { brand: "VALENTINO", slogan: "Luxury with a soul", url: "https://www.valentino.com" },
-  { brand: "VERSACE", slogan: "Medusa of fashion", url: "https://www.versace.com" },
-  { brand: "DOLCE & GABBANA", slogan: "Sicilian luxury tradition", url: "https://www.dolcegabbana.com" },
-  { brand: "ARMANI", slogan: "Timeless sophistication", url: "https://www.armani.com" },
-  { brand: "HUGO BOSS", slogan: "Define your success", url: "https://www.hugoboss.com" },
-  { brand: "COACH", slogan: "Modern luxury for all", url: "https://www.coach.com" },
-  { brand: "MICHAEL KORS", slogan: "Jet set luxury", url: "https://www.michaelkors.com" },
-  { brand: "TORY BURCH", slogan: "Effortless style", url: "https://www.toryburch.com" },
-  { brand: "KATE SPADE", slogan: "Live colorfully", url: "https://www.katespade.com" },
-  { brand: "RIMOWA", slogan: "Journey well", url: "https://www.rimowa.com" },
-  { brand: "MONTBLANC", slogan: "The art of writing", url: "https://www.montblanc.com" },
-  { brand: "PATEK PHILIPPE", slogan: "You never actually own one", url: "https://www.patek.com" },
-  { brand: "ROLEX", slogan: "A crown for every achievement", url: "https://www.rolex.com" },
-  { brand: "OMEGA", slogan: "Reflects your world", url: "https://www.omegawatches.com" },
-  { brand: "IWC", slogan: "Engineering for perfection", url: "https://www.iwc.com" },
-  { brand: "JAEGER-LECOULTRE", slogan: "Watchmaking mastery", url: "https://www.jaeger-lecoultre.com" },
-  { brand: "BREITLING", slogan: "Instruments for professionals", url: "https://www.breitling.com" },
-  { brand: "TAG HEUER", slogan: "Don't crack under pressure", url: "https://www.tagheuer.com" },
-  { brand: "LONGINES", slogan: "Elegance is an attitude", url: "https://www.longines.com" },
-  { brand: "RAYMOND WEIL", slogan: "Independent watchmaking", url: "https://www.raymond-weil.com" },
-  { brand: "A. LANGE & SÖHNE", slogan: "Glashütte precision", url: "https://www.alange-soehne.com" },
-  { brand: "BLANCPAIN", slogan: "The oldest watch brand", url: "https://www.blancpain.com" },
-  { brand: "CHAUMET", slogan: "The jeweler of feelings", url: "https://www.chaumet.com" },
-  { brand: "BOUCHERON", slogan: "Parisian high jewelry", url: "https://www.boucheron.com" },
-  { brand: "VAN CLEEF & ARPELS", slogan: "Poetry of time", url: "https://www.vancleefarpels.com" },
-  { brand: "PIAGET", slogan: "Always do better than necessary", url: "https://www.piaget.com" },
-  { brand: "CHOPARD", slogan: "The art of luxury", url: "https://www.chopard.com" },
-  { brand: "MISSONI", slogan: "Colored luxury knitwear", url: "https://www.missoni.com" },
-  { brand: "ALAÏA", slogan: "Sculptor of the female form", url: "https://www.alaia.com" },
-  { brand: "ISSEY MIYAKE", slogan: "A piece of cloth", url: "https://www.isseymiyake.com" },
-  { brand: "COMME des GARÇONS", slogan: "Fashion is an attitude", url: "https://www.comme-des-garcons.com" },
-  { brand: "MAISON MARGIELA", slogan: "The anonymous designer", url: "https://www.maisonmargiela.com" },
-  { brand: "RICK OWENS", slogan: "Dark glamour", url: "https://www.rickowens.eu" },
-  { brand: "UNDERCOVER", slogan: "Wear your rebellion", url: "https://www.undercoverism.com" },
-  { brand: "JIL SANDER", slogan: "Less is more", url: "https://www.jilsander.com" },
-  { brand: "THE ROW", slogan: "Quiet luxury redefined", url: "https://www.therow.com" }
-];
-
-// 存储每个网站的隐藏状态
-let linkSecretData = new Map();
-let isHiddenMode = false;
-
-function generateSecretData() {
-  linksData.forEach(cat => {
-    const linkList = cat.subcategories ? cat.subcategories.flatMap(s => s.links) : cat.links;
-    linkList.forEach(link => {
-      const key = link.url;
-      if (!linkSecretData.has(key)) {
-        const poemIndex = hashCode(link.name + 'poem') % poemData.length;
-        const brandIndex = hashCode(link.name + 'brand') % luxuryBrandData.length;
-        linkSecretData.set(key, {
-          poem: poemData[poemIndex],
-          brand: luxuryBrandData[brandIndex]
-        });
-      }
-    });
-  });
-}
-
-// 切换隐藏模式
-function toggleHideMode() {
-  isHiddenMode = !isHiddenMode;
-  const hideToggle = document.getElementById('hideToggle');
-
-  if (isHiddenMode) {
-    document.body.classList.add('hide-mode');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-    localStorage.setItem('hideMode', 'true');
-  } else {
-    document.body.classList.remove('hide-mode');
-    hideToggle.classList.remove('active');
-    hideToggle.title = '已显示';
-    localStorage.setItem('hideMode', 'false');
-  }
-
-  // 重新渲染以更新数据
-  renderLinks(document.getElementById('searchInput').value, currentCategory);
-}
-
-// 初始化隐藏模式
-function initHideMode() {
-  const savedMode = localStorage.getItem('hideMode');
-  if (savedMode === 'true') {
-    isHiddenMode = true;
-    document.body.classList.add('hide-mode');
-    const hideToggle = document.getElementById('hideToggle');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-  } else {
-    const hideToggle = document.getElementById('hideToggle');
-    if (hideToggle) hideToggle.title = '已显示';
-  }
-}
-
 function renderCategories() {
   const tabsContainer = document.getElementById('categoryTabs');
   tabsContainer.innerHTML = '';
@@ -7071,7 +6772,6 @@ function openUrlInNewTab(url) {
   const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
   if (newWindow) newWindow.opener = null;
 }
-
 
 function getIndexCardClickUrl(url) {
   if (!url || url === '#') return url || '';
@@ -7200,71 +6900,32 @@ function createLinkCard(link, catIndex, linkIndex, rank) {
     }
   }
 
-  const secretData = linkSecretData.get(link.url) || {
-    poem: { poet: "佚名", poem: "诗不在多，有情则灵" },
-    brand: { brand: "LUXURY", slogan: "Timeless elegance", url: "https://www.example.com" }
-  };
-  
-  const isMinimalLayout = document.body.classList.contains('layout-minimal');
-  const hiddenName = isMinimalLayout ? secretData.brand.brand : secretData.poem.poet;
-  const hiddenDesc = isMinimalLayout ? secretData.brand.slogan : secretData.poem.poem;
-  const hiddenUrl = isMinimalLayout && secretData.brand.url ? secretData.brand.url : link.url;
-
-  if (isHiddenMode) {
-    card.classList.add('hidden-mode-card');
-  }
-
-  prepareStealthLinkCard(card, isHiddenMode ? hiddenUrl : link.url);
+  prepareStealthLinkCard(card, link.url);
 
   const linkIcon = document.createElement('div');
   linkIcon.className = 'link-icon';
-  if (isHiddenMode) {
-    linkIcon.textContent = hiddenName.charAt(0);
-    linkIcon.style.background = getColorFromName(hiddenName);
-  } else {
-    linkIcon.textContent = getInitial(link.name);
-    linkIcon.style.background = getColorFromName(link.name);
-  }
+  linkIcon.textContent = getInitial(link.name);
+  linkIcon.style.background = getColorFromName(link.name);
 
   const linkInfo = document.createElement('div');
   linkInfo.className = 'link-info';
 
   const linkName = document.createElement('div');
   linkName.className = 'link-name';
-  if (isHiddenMode) {
-    linkName.textContent = hiddenName;
-    linkName.style.position = 'relative';
-    linkName.style.minHeight = '24px';
-  } else {
-    linkName.textContent = rank ? rank + '. ' + link.name : link.name;
-  }
+  linkName.textContent = rank ? rank + '. ' + link.name : link.name;
 
   const linkUrl = document.createElement('div');
   linkUrl.className = 'link-url';
-  if (isHiddenMode) {
-    linkUrl.textContent = hiddenUrl.replace(/^https?:\/\//, '');
-    linkUrl.classList.add('hidden-link-url');
-  } else {
-    linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
-  }
+  linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
 
   const linkDesc = document.createElement('div');
   linkDesc.className = 'link-desc';
-  if (isHiddenMode) {
-    linkDesc.textContent = hiddenDesc;
-  } else {
-    linkDesc.textContent = link.description;
-  }
+  linkDesc.textContent = link.description;
 
   linkInfo.appendChild(linkName);
-  if (isHiddenMode) {
+  linkInfo.appendChild(linkUrl);
+  if (link.description) {
     linkInfo.appendChild(linkDesc);
-    linkInfo.appendChild(linkUrl);
-  } else {
-    linkInfo.appendChild(linkUrl);
-    if (link.description) {
-      linkInfo.appendChild(linkDesc);
-    }
   }
 
   const arrow = document.createElement('div');
@@ -7457,45 +7118,6 @@ function doRenderLinks(filterText, category) {
 
         const isMinimalLayout = document.body.classList.contains('layout-minimal');
 
-        if (!isMinimalLayout) {
-          if (subcat.name && !subcat.hideTitle) {
-            const titleCard = document.createElement('div');
-            titleCard.className = 'subcategory-title-card';
-
-            const subTitle = document.createElement('h3');
-            subTitle.className = 'subcategory-title';
-            subTitle.textContent = subcat.name;
-            titleCard.appendChild(subTitle);
-
-            if (subcat.enName) {
-              const subEnTitle = document.createElement('p');
-              subEnTitle.className = 'subcategory-en-title';
-              subEnTitle.textContent = subcat.enName;
-              titleCard.appendChild(subEnTitle);
-            }
-
-            if (subcat.easterEggUrl) {
-              titleCard.style.cursor = 'pointer';
-              titleCard.dataset.eggClicks = '0';
-              titleCard.addEventListener('click', () => {
-                const clicks = Number(titleCard.dataset.eggClicks || '0') + 1;
-                titleCard.dataset.eggClicks = String(clicks);
-                clearTimeout(titleCard._eggTimer);
-                if (clicks >= 3) {
-                  titleCard.dataset.eggClicks = '0';
-                  window.open(subcat.easterEggUrl, '_blank', 'noopener');
-                } else {
-                  titleCard._eggTimer = setTimeout(() => {
-                    titleCard.dataset.eggClicks = '0';
-                  }, 900);
-                }
-              });
-            }
-
-            subcategory.appendChild(titleCard);
-          }
-        }
-
         const grid = document.createElement('div');
         grid.className = (cat.name === '全球 AI') ? 'ai-grid' : 'links-grid';
 
@@ -7591,16 +7213,16 @@ const sunIcon = document.getElementById('sunIcon');
 const moonIcon = document.getElementById('moonIcon');
 
 // 第一布局（经典）使用7个主题，第二布局（杂志）不使用极光青、暮光橙、星空蓝
-const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
-const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
 
 // 暗色主题列表（显示太阳图标）
-const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay'];
+const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay', 'ink'];
 
 function getCurrentLayout() {
-  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'grid';
+  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'minimal';
 }
 
 function getThemes() {
@@ -7632,7 +7254,8 @@ function setTheme(theme) {
     "dream": "#667eea",
     "forest": "#2d5f4e",
     "deepsea": "#1a4a6e",
-    "clay": "#6b4a35"
+    "clay": "#6b4a35",
+    "ink": "#08090a"
   };
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
 
@@ -7696,14 +7319,29 @@ document.querySelector('.logo').addEventListener('click', function(e) {
   return false;
 });
 
+
+  // 隐藏按钮：切换隐私模式（链接变透明）
+  const hideToggle = document.getElementById('hideToggle');
+  if (hideToggle) {
+    hideToggle.addEventListener('click', (e) => {
+      document.body.classList.toggle('hide-mode');
+      e.currentTarget.blur();
+    });
+  }
+
 // 布局切换
 const layoutToggle = document.getElementById('layoutToggle');
 const layoutBtn = layoutToggle.querySelector('.layout-btn');
 
 function setLayout(layout) {
+  if (layout === 'grid') layout = 'clear';
   localStorage.setItem('layout', layout);
-  document.body.classList.remove('layout-grid', 'layout-minimal');
-  document.body.classList.add('layout-' + layout);
+  document.body.classList.remove('layout-minimal', 'layout-clear');
+  if (layout === 'clear') {
+    document.body.classList.add('layout-minimal', 'layout-clear');
+  } else {
+    document.body.classList.add('layout-' + layout);
+  }
 
   
   let isImageBackground = false;
@@ -7739,12 +7377,18 @@ function setLayout(layout) {
   // 布局二 logo 显示英文艺术字体
   const logoText = document.getElementById('logoText');
   if (logoText) {
-    logoText.textContent = layout === 'minimal' ? '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐' : '𝗞𝗶𝘀𝘀𝘁𝗿';
+    logoText.textContent = '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐';
   }
 
   // 动态更新布局按钮提示
   if (layoutBtn) {
-    layoutBtn.title = layout === 'minimal' ? '杂志布局' : '经典布局';
+    if (layout === 'clear') {
+      layoutBtn.title = '清晰布局';
+    } else if (layout === 'minimal') {
+      layoutBtn.title = '杂志布局';
+    } else {
+      layoutBtn.title = '清晰布局';
+    }
   }
 
   if (!isImageBackground) {
@@ -7793,7 +7437,7 @@ function setLayout(layout) {
   renderLinks(searchValue, currentCategory);
 }
 
-const layoutDefaultVersion = 'v130-magazine-default';
+const layoutDefaultVersion = 'v141-minimal-default';
 if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
   localStorage.setItem('layout', 'minimal');
   localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -7802,8 +7446,8 @@ const savedLayout = localStorage.getItem('layout') || 'minimal';
 setLayout(savedLayout);
 
 layoutBtn.addEventListener('click', (e) => {
-  const currentLayout = document.body.classList.contains('layout-grid') ? 'grid' : 'minimal';
-  const newLayout = currentLayout === 'grid' ? 'minimal' : 'grid';
+  const currentLayout = document.body.classList.contains('layout-clear') ? 'clear' : 'minimal';
+  const newLayout = currentLayout === 'clear' ? 'minimal' : 'clear';
   setLayout(newLayout);
   e.currentTarget.blur();
 });
@@ -7951,9 +7595,6 @@ lofiAudio.addEventListener('error', (e) => {
   if (isPlaying && !isChangingStation) tryNextStationSource();
 });
 
-lofiAudio.addEventListener('loadedmetadata', () => {
-  console.log('音频元数据加载成功');
-});
 
 lofiAudio.addEventListener('playing', () => {
   stationRetryCount = 0;
@@ -8010,7 +7651,7 @@ function changeStation(direction) {
   mbStart();
 
   playAudio().catch(e => {
-    console.warn('鍒囨崲鐢靛彴鎾斁澶辫触:', e.message);
+    console.warn('切换电台播放失败:', e.message);
     clearTimeout(stationUnlockTimer);
     isChangingStation = false;
     setTimeout(tryNextStationSource, 250);
@@ -8025,18 +7666,6 @@ function changeStation(direction) {
 
 musicPrev.addEventListener('click', (e) => { changeStation(-1); e.currentTarget.blur(); });
 musicNext.addEventListener('click', (e) => { changeStation(1); e.currentTarget.blur(); });
-
-// 生成隐藏数据
-generateSecretData();
-
-// 初始化隐藏模式
-initHideMode();
-
-// 绑定隐藏按钮点击事件
-document.getElementById('hideToggle').addEventListener('click', function(e) {
-  toggleHideMode();
-  e.currentTarget.blur();
-});
 
 renderLinks('', currentCategory);
 
@@ -8149,13 +7778,6 @@ document.addEventListener('keydown', (e) => {
     if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
       e.preventDefault();
       layoutBtn.click();
-    }
-  }
-
-  if (e.key === 'h' || e.key === 'H') {
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-      e.preventDefault();
-      document.getElementById('hideToggle').click();
     }
   }
 
@@ -8784,7 +8406,6 @@ const mbObserver = new MutationObserver(() => {
 });
 mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
 
-
 // ========== 背景选择器 ==========
 // === 背景选择器：纯色/渐变 + WebP 壁纸，按需创建预览 ===
 (function() {
@@ -8796,6 +8417,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-ocean', type: 'theme', theme: 'ocean', name: '海洋蓝', preview: 'linear-gradient(135deg, #f0f8ff, #d7ecff)' },
     { id: 'theme-twilight', type: 'theme', theme: 'twilight', name: '晨曦紫', preview: 'linear-gradient(135deg, #f5f0ff, #e9dcff)' },
     { id: 'theme-midnight', type: 'theme', theme: 'midnight', name: '深夜黑', preview: 'linear-gradient(135deg, #000212, #0c0c1d)' },
+    { id: 'theme-ink', type: 'theme', theme: 'ink', name: 'Linear 黑', preview: 'linear-gradient(135deg, #08090a, #1c1d22)' },
     { id: 'theme-starry', type: 'theme', theme: 'starry', name: '星空蓝', preview: 'linear-gradient(135deg, #0c0c1d, #1b2b5f)' },
     { id: 'theme-sunset', type: 'theme', theme: 'sunset', name: '暮光橙', preview: 'linear-gradient(135deg, #2d1b0e, #7a3b1e)' },
     { id: 'theme-aurora', type: 'theme', theme: 'aurora', name: '极光青', preview: 'linear-gradient(135deg, #1a2a3a, #3db8a8)' },
@@ -8805,49 +8427,49 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-clay', type: 'theme', theme: 'clay', name: '暖陶土', preview: 'linear-gradient(135deg, #4a3326, #8a6a4f)' }
   ];
   const imageBackgrounds = [
-    { id: '樱野', name: '樱野', url: 'wallpapers_webp/樱野.webp', thumb: 'wallpapers_webp/thumbs/樱野.webp' },
-    { id: '星夜', name: '星夜', url: 'wallpapers_webp/星夜.webp', thumb: 'wallpapers_webp/thumbs/星夜.webp' },
-    { id: '秋林', name: '秋林', url: 'wallpapers_webp/秋林.webp', thumb: 'wallpapers_webp/thumbs/秋林.webp' },
-    { id: '樱河', name: '樱河', url: 'wallpapers_webp/樱河.webp', thumb: 'wallpapers_webp/thumbs/樱河.webp' },
-    { id: '海站', name: '海站', url: 'wallpapers_webp/海站.webp', thumb: 'wallpapers_webp/thumbs/海站.webp' },
-    { id: '雨读', name: '雨读', url: 'wallpapers_webp/雨读.webp', thumb: 'wallpapers_webp/thumbs/雨读.webp' },
-    { id: '薰月', name: '薰月', url: 'wallpapers_webp/薰月.webp', thumb: 'wallpapers_webp/thumbs/薰月.webp' },
-    { id: '屋园', name: '屋园', url: 'wallpapers_webp/屋园.webp', thumb: 'wallpapers_webp/thumbs/屋园.webp' },
-    { id: '云海', name: '云海', url: 'wallpapers_webp/云海.webp', thumb: 'wallpapers_webp/thumbs/云海.webp' },
-    { id: '花街', name: '花街', url: 'wallpapers_webp/花街.webp', thumb: 'wallpapers_webp/thumbs/花街.webp' },
-    { id: '雪村', name: '雪村', url: 'wallpapers_webp/雪村.webp', thumb: 'wallpapers_webp/thumbs/雪村.webp' },
-    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/灯塔.webp', thumb: 'wallpapers_webp/thumbs/灯塔.webp' },
-    { id: '林茶', name: '林茶', url: 'wallpapers_webp/林茶.webp', thumb: 'wallpapers_webp/thumbs/林茶.webp' },
-    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/稻霞.webp', thumb: 'wallpapers_webp/thumbs/稻霞.webp' },
-    { id: '温室', name: '温室', url: 'wallpapers_webp/温室.webp', thumb: 'wallpapers_webp/thumbs/温室.webp' },
-    { id: '游园', name: '游园', url: 'wallpapers_webp/游园.webp', thumb: 'wallpapers_webp/thumbs/游园.webp' },
-    { id: '学园', name: '学园', url: 'wallpapers_webp/学园.webp', thumb: 'wallpapers_webp/thumbs/学园.webp' },
-    { id: '水族', name: '水族', url: 'wallpapers_webp/水族.webp', thumb: 'wallpapers_webp/thumbs/水族.webp' },
-    { id: '阁星', name: '阁星', url: 'wallpapers_webp/阁星.webp', thumb: 'wallpapers_webp/thumbs/阁星.webp' },
-    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/竹晨.webp', thumb: 'wallpapers_webp/thumbs/竹晨.webp' },
-    { id: '夜市', name: '夜市', url: 'wallpapers_webp/夜市.webp', thumb: 'wallpapers_webp/thumbs/夜市.webp' },
-    { id: '星象', name: '星象', url: 'wallpapers_webp/星象.webp', thumb: 'wallpapers_webp/thumbs/星象.webp' },
-    { id: '风车', name: '风车', url: 'wallpapers_webp/风车.webp', thumb: 'wallpapers_webp/thumbs/风车.webp' },
-    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/猫窗.webp', thumb: 'wallpapers_webp/thumbs/猫窗.webp' },
-    { id: '兔野', name: '兔野', url: 'wallpapers_webp/兔野.webp', thumb: 'wallpapers_webp/thumbs/兔野.webp' },
-    { id: '书童', name: '书童', url: 'wallpapers_webp/书童.webp', thumb: 'wallpapers_webp/thumbs/书童.webp' },
-    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/紫阳.webp', thumb: 'wallpapers_webp/thumbs/紫阳.webp' },
-    { id: '月秋', name: '月秋', url: 'wallpapers_webp/月秋.webp', thumb: 'wallpapers_webp/thumbs/月秋.webp' },
-    { id: '庭院', name: '庭院', url: 'wallpapers_webp/庭院.webp', thumb: 'wallpapers_webp/thumbs/庭院.webp' },
-    { id: '水母', name: '水母', url: 'wallpapers_webp/水母.webp', thumb: 'wallpapers_webp/thumbs/水母.webp' },
-    { id: '草莓', name: '草莓', url: 'wallpapers_webp/草莓.webp', thumb: 'wallpapers_webp/thumbs/草莓.webp' },
-    { id: '魔书', name: '魔书', url: 'wallpapers_webp/魔书.webp', thumb: 'wallpapers_webp/thumbs/魔书.webp' },
-    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/冬暖.webp', thumb: 'wallpapers_webp/thumbs/冬暖.webp' },
-    { id: '画室', name: '画室', url: 'wallpapers_webp/画室.webp', thumb: 'wallpapers_webp/thumbs/画室.webp' },
-    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/犬伴.webp', thumb: 'wallpapers_webp/thumbs/犬伴.webp' },
-    { id: '野餐', name: '野餐', url: 'wallpapers_webp/野餐.webp', thumb: 'wallpapers_webp/thumbs/野餐.webp' },
-    { id: '狐社', name: '狐社', url: 'wallpapers_webp/狐社.webp', thumb: 'wallpapers_webp/thumbs/狐社.webp', excludeFromRandom: true },
-    { id: '阅台', name: '阅台', url: 'wallpapers_webp/阅台.webp', thumb: 'wallpapers_webp/thumbs/阅台.webp' },
-    { id: '虹池', name: '虹池', url: 'wallpapers_webp/虹池.webp', thumb: 'wallpapers_webp/thumbs/虹池.webp', excludeFromRandom: true },
-    { id: '绿意', name: '绿意', url: 'wallpapers_webp/绿意.webp', thumb: 'wallpapers_webp/thumbs/绿意.webp', excludeFromRandom: true },
-    { id: '茶花', name: '茶花', url: 'wallpapers_webp/茶花.webp', thumb: 'wallpapers_webp/thumbs/茶花.webp' },
-    { id: '海骑', name: '海骑', url: 'wallpapers_webp/海骑.webp', thumb: 'wallpapers_webp/thumbs/海骑.webp' },
-    { id: '萤光', name: '萤光', url: 'wallpapers_webp/萤光.webp', thumb: 'wallpapers_webp/thumbs/萤光.webp' }
+    { id: '樱野', name: '樱野', url: 'wallpapers_webp/35_樱野.webp', thumb: 'wallpapers_webp/thumbs/35_樱野.webp' },
+    { id: '星夜', name: '星夜', url: 'wallpapers_webp/28_星夜.webp', thumb: 'wallpapers_webp/thumbs/28_星夜.webp' },
+    { id: '秋林', name: '秋林', url: 'wallpapers_webp/18_秋林.webp', thumb: 'wallpapers_webp/thumbs/18_秋林.webp' },
+    { id: '樱河', name: '樱河', url: 'wallpapers_webp/34_樱河.webp', thumb: 'wallpapers_webp/thumbs/34_樱河.webp' },
+    { id: '海站', name: '海站', url: 'wallpapers_webp/09_海站.webp', thumb: 'wallpapers_webp/thumbs/09_海站.webp' },
+    { id: '雨读', name: '雨读', url: 'wallpapers_webp/38_雨读.webp', thumb: 'wallpapers_webp/thumbs/38_雨读.webp' },
+    { id: '薰月', name: '薰月', url: 'wallpapers_webp/31_薰月.webp', thumb: 'wallpapers_webp/thumbs/31_薰月.webp' },
+    { id: '屋园', name: '屋园', url: 'wallpapers_webp/26_屋园.webp', thumb: 'wallpapers_webp/thumbs/26_屋园.webp' },
+    { id: '云海', name: '云海', url: 'wallpapers_webp/41_云海.webp', thumb: 'wallpapers_webp/thumbs/41_云海.webp' },
+    { id: '花街', name: '花街', url: 'wallpapers_webp/12_花街.webp', thumb: 'wallpapers_webp/thumbs/12_花街.webp' },
+    { id: '雪村', name: '雪村', url: 'wallpapers_webp/30_雪村.webp', thumb: 'wallpapers_webp/thumbs/30_雪村.webp' },
+    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/04_灯塔.webp', thumb: 'wallpapers_webp/thumbs/04_灯塔.webp' },
+    { id: '林茶', name: '林茶', url: 'wallpapers_webp/14_林茶.webp', thumb: 'wallpapers_webp/thumbs/14_林茶.webp' },
+    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/03_稻霞.webp', thumb: 'wallpapers_webp/thumbs/03_稻霞.webp' },
+    { id: '温室', name: '温室', url: 'wallpapers_webp/25_温室.webp', thumb: 'wallpapers_webp/thumbs/25_温室.webp' },
+    { id: '游园', name: '游园', url: 'wallpapers_webp/37_游园.webp', thumb: 'wallpapers_webp/thumbs/37_游园.webp' },
+    { id: '学园', name: '学园', url: 'wallpapers_webp/29_学园.webp', thumb: 'wallpapers_webp/thumbs/29_学园.webp' },
+    { id: '水族', name: '水族', url: 'wallpapers_webp/22_水族.webp', thumb: 'wallpapers_webp/thumbs/22_水族.webp' },
+    { id: '阁星', name: '阁星', url: 'wallpapers_webp/07_阁星.webp', thumb: 'wallpapers_webp/thumbs/07_阁星.webp' },
+    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/42_竹晨.webp', thumb: 'wallpapers_webp/thumbs/42_竹晨.webp' },
+    { id: '夜市', name: '夜市', url: 'wallpapers_webp/33_夜市.webp', thumb: 'wallpapers_webp/thumbs/33_夜市.webp' },
+    { id: '星象', name: '星象', url: 'wallpapers_webp/27_星象.webp', thumb: 'wallpapers_webp/thumbs/27_星象.webp' },
+    { id: '风车', name: '风车', url: 'wallpapers_webp/06_风车.webp', thumb: 'wallpapers_webp/thumbs/06_风车.webp' },
+    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/16_猫窗.webp', thumb: 'wallpapers_webp/thumbs/16_猫窗.webp' },
+    { id: '兔野', name: '兔野', url: 'wallpapers_webp/24_兔野.webp', thumb: 'wallpapers_webp/thumbs/24_兔野.webp' },
+    { id: '书童', name: '书童', url: 'wallpapers_webp/20_书童.webp', thumb: 'wallpapers_webp/thumbs/20_书童.webp' },
+    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/43_紫阳.webp', thumb: 'wallpapers_webp/thumbs/43_紫阳.webp' },
+    { id: '月秋', name: '月秋', url: 'wallpapers_webp/39_月秋.webp', thumb: 'wallpapers_webp/thumbs/39_月秋.webp' },
+    { id: '庭院', name: '庭院', url: 'wallpapers_webp/23_庭院.webp', thumb: 'wallpapers_webp/thumbs/23_庭院.webp' },
+    { id: '水母', name: '水母', url: 'wallpapers_webp/21_水母.webp', thumb: 'wallpapers_webp/thumbs/21_水母.webp' },
+    { id: '草莓', name: '草莓', url: 'wallpapers_webp/01_草莓.webp', thumb: 'wallpapers_webp/thumbs/01_草莓.webp' },
+    { id: '魔书', name: '魔书', url: 'wallpapers_webp/17_魔书.webp', thumb: 'wallpapers_webp/thumbs/17_魔书.webp' },
+    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/05_冬暖.webp', thumb: 'wallpapers_webp/thumbs/05_冬暖.webp' },
+    { id: '画室', name: '画室', url: 'wallpapers_webp/13_画室.webp', thumb: 'wallpapers_webp/thumbs/13_画室.webp' },
+    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/19_犬伴.webp', thumb: 'wallpapers_webp/thumbs/19_犬伴.webp' },
+    { id: '野餐', name: '野餐', url: 'wallpapers_webp/32_野餐.webp', thumb: 'wallpapers_webp/thumbs/32_野餐.webp' },
+    { id: '狐社', name: '狐社', url: 'wallpapers_webp/11_狐社.webp', thumb: 'wallpapers_webp/thumbs/11_狐社.webp', excludeFromRandom: true },
+    { id: '阅台', name: '阅台', url: 'wallpapers_webp/40_阅台.webp', thumb: 'wallpapers_webp/thumbs/40_阅台.webp' },
+    { id: '虹池', name: '虹池', url: 'wallpapers_webp/10_虹池.webp', thumb: 'wallpapers_webp/thumbs/10_虹池.webp', excludeFromRandom: true },
+    { id: '绿意', name: '绿意', url: 'wallpapers_webp/15_绿意.webp', thumb: 'wallpapers_webp/thumbs/15_绿意.webp', excludeFromRandom: true },
+    { id: '茶花', name: '茶花', url: 'wallpapers_webp/02_茶花.webp', thumb: 'wallpapers_webp/thumbs/02_茶花.webp' },
+    { id: '海骑', name: '海骑', url: 'wallpapers_webp/08_海骑.webp', thumb: 'wallpapers_webp/thumbs/08_海骑.webp' },
+    { id: '萤光', name: '萤光', url: 'wallpapers_webp/36_萤光.webp', thumb: 'wallpapers_webp/thumbs/36_萤光.webp' }
   ].map(item => ({ ...item, type: 'image' }));
 
   /* reorder: 精选背景 → 风景 → 人物 */
@@ -8962,10 +8584,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
   }
 
   function getImageOverlay() {
-    const isGrid = document.body.classList.contains('layout-grid');
-    return isGrid
-      ? ['rgba(18, 18, 36, 0.34)', 'rgba(18, 18, 36, 0.43)']
-      : ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
+    return ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
   }
 
   function syncImageBackgroundChrome(bgImageValue) {
@@ -9273,7 +8892,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     const width = Math.max(336, Math.min(920, viewportWidth - 24));
     const panel = modal.querySelector('.background-modal-panel');
     if (panel) panel.style.width = `${width}px`;
-    const layoutOffset = document.body.classList.contains('layout-grid') ? 14 : 0;
+    const layoutOffset = 0;
     modal.style.setProperty('--bg-picker-top', `${rect.bottom + 18 + layoutOffset}px`);
   }
 
@@ -9310,7 +8929,8 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
       }
     }
     /* 没有用户选择时，默认从全部壁纸图片中随机；用户手动选择后仍按保存值恢复 */
-    var randomPool = imageBackgrounds.filter(function(o) { return !o.excludeFromRandom; });
+    var defaultRandomIds = ['星夜', '雨读', '林茶', '竹晨'];
+    var randomPool = imageBackgrounds.filter(function(o) { return defaultRandomIds.indexOf(o.id) !== -1; });
     if (randomPool.length > 0) {
       var randomIdx = Math.floor(Math.random() * randomPool.length);
       applySelection(randomPool[randomIdx], false, false);

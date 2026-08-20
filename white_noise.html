@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="2e77a380-3ab4-4cc2-ab63-aac249ee26ef"></script>
@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <script>
 (function initColors() {
-  const layoutDefaultVersion = 'v130-magazine-default';
+  const layoutDefaultVersion = 'v141-minimal-default';
   if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
     localStorage.setItem('layout', 'minimal');
     localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -592,6 +592,7 @@ try {
     letter-spacing: -0.5px;
     cursor: pointer;
     user-select: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 
   .logo-group {
@@ -713,18 +714,16 @@ try {
 
   /* 单按钮布局 - 默认显示网格图标（点击切换到网格） */
   .layout-btn .layout-icon-grid {
-    display: block;
+    display: none;
   }
   .layout-btn .layout-icon-minimal {
-    display: none;
-  }
-
-  /* 网格布局时显示杂志图标（点击切换到杂志） */
-  body.layout-grid .layout-icon-grid {
-    display: none;
-  }
-  body.layout-grid .layout-icon-minimal {
     display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-grid {
+    display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-minimal {
+    display: none;
   }
 
   /* 隐藏按钮眼睛图标 */
@@ -744,6 +743,11 @@ try {
   body.hide-mode .hide-icon-hide {
     display: block;
   }
+  /* 隐藏模式：只隐藏网站URL，名字和说明保持可见，卡片大小不变 */
+  body.hide-mode .link-url {
+    visibility: hidden !important;
+  }
+
 
   /* ========== 隐藏名字按钮 ========== */
   .hide-toggle {
@@ -787,7 +791,7 @@ try {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 16px;
-    font-family: 'Noto Sans SC', 'PingFang SC', 'Helvetica Neue', sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     letter-spacing: clamp(2px, 3vw, 12px);
     text-indent: clamp(2px, 3vw, 12px);
     background: linear-gradient(135deg, var(--text-primary), var(--accent));
@@ -878,11 +882,6 @@ try {
     margin-bottom: 24px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--card-border);
-  }
-
-  /* 第一布局隐藏分类图标和标题 */
-  .layout-grid .category-header {
-    display: none;
   }
 
   .category-icon {
@@ -989,48 +988,6 @@ try {
 
   .subcategory-title-card.tilt-active:hover {
     transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
-  }
-
-  /* 第一布局：小分类标题取消卡片，只保留文字 */
-  .layout-grid .subcategory-title-card {
-    background: var(--card-bg) !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 0 0 8px 0 !important;
-    margin-bottom: 16px !important;
-    transition: none !important;
-    transform: none !important;
-    transform-style: flat !important;
-    will-change: auto !important;
-    overflow: visible !important;
-  }
-
-  .layout-grid .subcategory-title-card::before,
-  .layout-grid .subcategory-title-card::after {
-    display: none !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover {
-    transform: none !important;
-    box-shadow: none !important;
-    border-color: transparent !important;
-    background: var(--card-bg) !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover::before,
-  .layout-grid .subcategory-title-card:hover::after {
-    opacity: 0 !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active {
-    transition: none !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active:hover {
-    transform: none !important;
   }
 
   .subcategory-title {
@@ -1503,7 +1460,6 @@ try {
     pointer-events: auto;
     transform: scale(1);
   }
-
 
   .music-btn:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -2185,11 +2141,6 @@ try {
     opacity: 0 !important;
   }
 
-  /* 第一布局隐藏律动栏 */
-  .layout-grid .music-bar-bottom-container {
-    display: none !important;
-  }
-
   .layout-minimal .bg-gradient {
     display: block;
     background: #ffffff;
@@ -2721,6 +2672,147 @@ try {
     max-height: 40px;
     opacity: 1;
     margin-top: 4px;
+  }
+
+  /* ========== 清晰布局（Clear Layout）========== */
+  .layout-clear .link-card,
+  .layout-clear .ai-link-card {
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    min-height: auto;
+    margin: -4px -8px;
+  }
+
+  .layout-clear .link-card:hover,
+  .layout-clear .ai-link-card:hover,
+  .layout-clear .subcategory-title-card:hover {
+    transform: none;
+    box-shadow: 0 2px 12px rgba(184, 150, 83, 0.15);
+    border: none;
+    background: linear-gradient(135deg, rgba(184, 150, 83, 0.08), rgba(212, 175, 110, 0.05));
+  }
+
+  .layout-clear .link-card-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .layout-clear .link-icon {
+    display: none;
+  }
+
+  .layout-clear .link-info {
+    flex: none;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .layout-clear .link-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    position: relative;
+    display: block;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-card:hover .link-name {
+    color: #b89653;
+  }
+
+  .layout-clear .link-card:hover .link-name::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #b89653;
+    transition: all 0.3s ease;
+  }
+
+  .layout-clear .link-url {
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    margin-bottom: 0;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-desc {
+    max-height: 40px;
+    opacity: 1;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .layout-clear .link-arrow {
+    display: none;
+  }
+
+  .layout-clear footer {
+    background: transparent;
+    border-top: 1px solid #e5e5e5;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .layout-clear .footer-badges .badge {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+  }
+
+  .layout-clear .footer-badges .badge:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
+  }
+
+  .layout-clear .disclaimer-btn {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .layout-clear .disclaimer-btn:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
   }
 
   .layout-minimal .link-arrow {
@@ -3284,6 +3376,8 @@ try {
 
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     border-color: transparent;
   }
@@ -3293,18 +3387,24 @@ try {
   [data-theme="deepsea"] body.layout-minimal .search-inline:hover,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
   [data-theme="clay"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     border-color: rgba(255, 255, 255, 0.5);
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff;
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff;
   }
@@ -3500,6 +3600,204 @@ try {
   [data-theme="forest"] body.layout-minimal .footer-copy,
   [data-theme="deepsea"] body.layout-minimal .footer-copy,
   [data-theme="clay"] body.layout-minimal .footer-copy {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ========== Linear 黑（Linear 暗色主题提取） ========== */
+  [data-theme="ink"] {
+    --bg-primary: #08090a;
+    --bg-secondary: #141519;
+    --text-primary: #f7f8f8;
+    --text-secondary: #8a8f98;
+    --accent: #828fff;
+    --accent-hover: #9ba8ff;
+    --card-bg: rgba(28, 28, 31, 0.8);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal {
+    background: linear-gradient(135deg, #08090a 0%, #141519 50%, #1c1d22 100%);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .logo {
+    color: #f7f8f8 !important;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover,
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-tabs {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active::after {
+    background: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-header {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-title,
+  [data-theme="ink"] body.layout-minimal .subcategory-title {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-en-title {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover,
+  [data-theme="ink"] body.layout-minimal .ai-link-card:hover,
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name {
+    color: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name::after {
+    background: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-url {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-desc {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-desc {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle,
+  [data-theme="ink"] body.layout-minimal .layout-btn,
+  [data-theme="ink"] body.layout-minimal .hide-toggle {
+    border-color: transparent;
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] .music-fx-btn,
+  [data-theme="ink"] .music-fx-close {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover,
+  [data-theme="ink"] body.layout-minimal .hide-toggle:hover {
+    background: transparent;
+    color: #f7f8f8;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover svg,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover svg {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active svg {
+    fill: #08090a;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active svg {
+    fill: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal footer {
+    border-top-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn:hover {
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-copy {
     color: rgba(255, 255, 255, 0.6);
   }
 
@@ -3717,7 +4015,6 @@ try {
     transform: scale(1);
   }
 
-
   
 
   /* 控制按钮统一尺寸 + 杂志默认布局适配 */
@@ -3868,8 +4165,6 @@ try {
     }
   }
 
-
-
   /* 最终按钮尺寸覆盖：主题 / 布局 / 隐藏 */
   .theme-toggle,
   .hide-toggle,
@@ -3906,30 +4201,6 @@ try {
                 border-color 0.3s ease,
                 background-color 0.3s ease,
                 box-shadow 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    border-radius: 9px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-    width: 17px !important;
-    height: 17px !important;
-    transition: fill 0.2s ease,
-                filter 0.2s ease,
-                opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    transition: opacity 0.2s ease !important;
   }
 
   .theme-toggle,
@@ -4002,27 +4273,6 @@ try {
       min-width: 0 !important;
       min-height: 0 !important;
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 8px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 40px !important;
-      width: 92px !important;
-    }
   }
 
   @media (max-width: 375px) {
@@ -4053,30 +4303,7 @@ try {
     .category-tabs.search-expanded {
       transform: translateX(-8px);
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 7px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 15px !important;
-      height: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 70px !important;
-    }
   }
-
-
 
   /* 第二布局按钮方块化 */
   body.layout-minimal .theme-toggle,
@@ -4547,47 +4774,6 @@ try {
     filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.75));
   }
 
-  body.layout-grid.background-image-mode .link-icon {
-    box-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle,
-  body.layout-grid .layout-toggle,
-  body.layout-grid .layout-btn,
-  body.layout-grid .hide-toggle {
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg,
-  body.layout-grid .layout-btn svg,
-  body.layout-grid .hide-toggle svg {
-    filter: none !important;
-    text-shadow: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg {
-    color: #f59e0b !important;
-    fill: #f59e0b !important;
-  }
-
-  body.layout-grid .layout-btn svg {
-    color: #3b82f6 !important;
-    fill: #3b82f6 !important;
-  }
-
-  body.layout-grid .hide-toggle svg {
-    color: #10b981 !important;
-    fill: #10b981 !important;
-  }
-
-  body.layout-grid.hide-mode .hide-toggle svg {
-    color: #ef4444 !important;
-    fill: #ef4444 !important;
-  }
-
   body.background-image-mode .music-bar-bottom-container .music-fx-btn {
     color: rgba(255, 255, 255, 0.94) !important;
     filter: none !important;
@@ -4884,10 +5070,6 @@ try {
     cursor: text;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded {
-    border-radius: 18px !important;
-  }
-
   .layout-minimal .search-inline.expanded {
     width: 160px !important;
     min-width: 160px !important;
@@ -4988,41 +5170,6 @@ try {
     color: rgba(255, 255, 255, 0.96) !important;
   }
 
-  /* 本轮仅改 index：经典布局标签按附件恢复，搜索框与手机主题滚动条补强 */
-  body.layout-grid .category-tabs {
-    max-width: 1200px;
-    margin: 0 auto 20px;
-    padding: 0 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    overflow: visible;
-  }
-
-  body.layout-grid .tab-btn {
-    height: auto;
-    min-height: 0;
-    padding: 10px 20px;
-    border-radius: 20px !important;
-    font-size: 14px;
-    line-height: normal;
-    flex: 0 1 auto;
-    white-space: normal;
-  }
-
-  body.layout-grid .tab-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  body.layout-grid .tab-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #ffffff;
-  }
-
   .search-inline,
   .search-inline input,
   .search-inline input::placeholder {
@@ -5036,7 +5183,6 @@ try {
     border-color: rgba(255, 255, 255, 0.88) !important;
     box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18) !important;
   }
-
 
   .theme-toggle.background-picker-open {
     background: var(--card-bg) !important;
@@ -5111,15 +5257,6 @@ try {
     transform: translate(-50%, -50%) !important;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    width: 138px !important;
-  }
-
   .layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 17px !important;
@@ -5131,14 +5268,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 96px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5153,14 +5282,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 32px !important;
-      width: 72px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5173,8 +5294,6 @@ try {
       width: 72px !important;
     }
   }
-
-  body:not(.layout-minimal) .search-inline input,
   .layout-minimal .search-inline input,
   body.background-image-mode .search-inline input,
   body.background-image-mode.layout-minimal .search-inline input {
@@ -5182,8 +5301,6 @@ try {
     transition:
       opacity 0.2s ease !important;
   }
-
-  body:not(.layout-minimal) .search-inline.expanded input,
   .layout-minimal .search-inline.expanded input,
   body.background-image-mode .search-inline.expanded input,
   body.background-image-mode.layout-minimal .search-inline.expanded input {
@@ -5246,23 +5363,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body.layout-grid .category-tabs {
-      padding: 0 16px;
-      gap: 6px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 8px 14px;
-      border-radius: 20px !important;
-      font-size: 13px;
-      height: auto;
-      min-height: 0;
-      line-height: normal;
-    }
 
     .background-strip {
       touch-action: pan-x;
@@ -5291,19 +5391,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body.layout-grid .category-tabs {
-      padding: 0 12px;
-      gap: 4px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 6px 10px;
-      border-radius: 20px !important;
-      font-size: 12px;
-    }
   }
 
   /* 全平台适配兜底 */
@@ -5350,8 +5437,6 @@ try {
     }
   }
 /* ========== 背景、主题与全平台适配结束 ========== */
-
-
 
   /* ========== 全平台适配补强 ========== */
   html {
@@ -5455,175 +5540,10 @@ try {
     }
   }
 
-
-  
-/* ========== 搜索框动画复刻结束 ========== */
-
-
-  /* ========== 经典布局搜索框完全复刻参考文件（仅经典布局，杂志布局不变） ========== */
-  body:not(.layout-minimal) .search-wrapper,
-  body:not(.layout-minimal) .search-wrapper.search-expanded {
-    position: static !important;
-    width: auto !important;
-    height: auto !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    flex: 0 0 auto !important;
-    z-index: auto !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    flex: 0 0 auto !important;
-    border-radius: 20px !important;
-    overflow: hidden !important;
-    will-change: width !important;
-    transition: width 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    width: 180px !important;
-    min-width: 180px !important;
-    flex: 0 0 180px !important;
-    border-radius: 20px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon,
-  body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 11px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 16px !important;
-    height: 16px !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 36px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 130px !important;
-    opacity: 0 !important;
-    transition: opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded input {
-    opacity: 1 !important;
-  }
-
-  body:not(.layout-minimal) .category-tabs.search-expanded {
-    transform: none !important;
-    flex-wrap: wrap !important;
-    overflow: visible !important;
-  }
-
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 140px !important;
-      min-width: 140px !important;
-      flex: 0 0 140px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 90px !important;
-    }
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 100px !important;
-      min-width: 100px !important;
-      flex: 0 0 100px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 64px !important;
-      font-size: 12px !important;
-    }
-  }
-  /* Classic layout search fill follows tab color */
-  body:not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-  }
-
-  [data-theme="starry"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="sunset"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="aurora"] body:not(.background-image-mode):not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    box-shadow: none !important;
-  }
-  /* Classic layout search border matches classic tabs */
-  body.background-image-mode:not(.layout-minimal) .search-inline {
-    border: 1px solid var(--card-border) !important;
-    background: var(--card-bg) !important;
-    box-shadow: none !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-    background: var(--card-bg) !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded {
-    border-color: var(--card-border) !important;
-    background: var(--card-bg) !important;
   }
   /* ========== Minimal layout search box reference (magazine only, classic unchanged) ========== */
   body.layout-minimal .search-wrapper,
@@ -5790,99 +5710,6 @@ try {
     background-image: none !important;
     box-shadow: none !important;
   }
-
-  body.layout-grid .link-icon,
-  body:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    box-shadow: none !important;
-    color: var(--text-primary) !important;
-  }
-
-
-  /* classic layout + wallpaper theme: force icons white */
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-arrow,
-  body.background-image-mode:not(.layout-minimal) .link-arrow {
-    color: #ffffff !important;
-    fill: #ffffff !important;
-  }
-
-  /* classic wallpaper card border first-paint stabilization */
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  body.layout-grid.background-image-mode .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* early html wallpaper mode card border stabilization */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  html.background-image-mode body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* first-second card border rasterization guard */
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: transparent !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    transition: none !important;
-  }
-
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
   /* ========== Capture unlock and mobile bottom seam fix ========== */
   html,
   body,
@@ -5923,13 +5750,6 @@ try {
     }
   }
 
-  /* ========== Search expanded icon spacing tweak ========== */
-  body:not(.layout-minimal) .search-inline.expanded .search-icon,
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 10px !important;
-    transform: translateY(-50%) !important;
-  }
-
   body.layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 8px !important;
@@ -5937,10 +5757,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon,
-    body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 10px !important;
-    }
 
     body.layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -6009,6 +5825,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline,
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     background: transparent !important;
     background-color: transparent !important;
@@ -6032,6 +5850,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline.expanded,
   [data-theme="forest"] body.layout-minimal .search-inline.expanded,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     background: transparent !important;
     background-color: transparent !important;
@@ -6047,6 +5867,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline .search-icon,
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff !important;
     color: #ffffff !important;
@@ -6059,6 +5881,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline input,
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff !important;
   }
@@ -6078,6 +5902,8 @@ try {
   [data-theme="dream"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="forest"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="deepsea"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+  [data-theme="ink"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+
   [data-theme="clay"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover {
     color: #ffffff !important;
   }
@@ -6187,41 +6013,6 @@ try {
     color: #ffffff !important;
   }
 
-
-
-  /* final override: wallpaper classic cards use transparent borders */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card,
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card,
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border: 1px solid transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after {
-    border: 0 !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-
   body.background-image-mode .subcategory-title,
   body.background-image-mode .subcategory-en-title,
   html.background-image-mode body .subcategory-title,
@@ -6238,11 +6029,15 @@ try {
   }
 </style>
 </head>
-<body>
+<body class="layout-minimal">
 <script>
   (function() {
     var saved = localStorage.getItem('layout') || 'minimal';
-    document.body.classList.add('layout-' + saved);
+    if (saved === 'clear') {
+      document.body.classList.add('layout-minimal', 'layout-clear');
+    } else {
+      document.body.classList.add('layout-' + saved);
+    }
 
     try {
       var savedBackground = localStorage.getItem('kisstr_background_picker_selection_v1');
@@ -6273,7 +6068,7 @@ try {
     <div class="logo-group">
       <div class="logo" draggable="false">
         <div class="logo-icon"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M28,16l-6,6H10l-6-6l6-6l6,5.994L22,10L28,16z"/></svg></div>
-        <span id="logoText" style="pointer-events:none">𝗞𝗶𝘀𝘀𝘁𝗿</span>
+        <span id="logoText" style="pointer-events:none">𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐</span>
       </div>
     </div>
     <div class="header-actions">
@@ -6306,7 +6101,7 @@ try {
         </svg>
       </button>
       <div class="layout-toggle" id="layoutToggle">
-        <button class="layout-btn" data-layout="minimal" title="切换布局">
+        <button class="layout-btn" data-layout="clear" title="切换布局（清晰/杂志）">
           <svg class="layout-icon-grid" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"/></svg>
           <svg class="layout-icon-minimal" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h18v4H3zM3 13h18v4H3z"/></svg>
         </button>
@@ -6359,7 +6154,8 @@ try {
     <span class="badge">✨ 无弹窗</span>
     <span class="badge">✨ 无盈利</span>
   </div>
-  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
+  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>&nbsp;&nbsp;
+  <a href="https://m.baike.com/wikiid/7316069310949130294" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">关于作者</a>
   <p class="footer-copy">白噪音乐 · 优质网站收藏</p>
 </footer>
 
@@ -6380,77 +6176,77 @@ const linksData = [
           {
             "name": "myNoise",
             "url": "https://mynoise.net",
-            "description": "全球顶级的环境音效与白噪音生成器，支持自定义频段调节与个性化混音。"
+            "description": "全球顶级的环境音效与白噪音生成器"
           },
           {
             "name": "Noisli",
             "url": "https://www.noisli.com",
-            "description": "极简风格的环境音混合器，可自由搭配雨声、风声、咖啡馆与篝火音效。"
+            "description": "极简风格的环境音混合器，可自由搭配雨声、风声"
           },
           {
             "name": "A Soft Murmur",
             "url": "https://asoftmurmur.com",
-            "description": "清爽无广告的自然音效生成网，支持雨声、雷鸣、浪潮与唱碗音频叠加。"
+            "description": "清爽无广告的自然音效生成网，支持雨声、雷鸣"
           },
           {
             "name": "Defonic",
             "url": "https://defonic.com",
-            "description": "拟物化视觉的环境音效拟真站，包含森林、夜晚、白噪音与轻柔噪音。"
+            "description": "拟物化视觉的环境音效拟真站，包含森林、夜晚"
           },
           {
             "name": "Rainy Mood",
             "url": "https://rainymood.com",
-            "description": "经典老牌雨声模拟网站，提供高品质的真实下雨与雷鸣背景音。"
+            "description": "经典老牌雨声模拟网站，提供高品质的真实下雨与雷鸣背"
           },
           {
             "name": "Calmsound",
             "url": "https://www.calmsound.com",
-            "description": "提供高清大自然实景原声(如瀑布、海浪、森林)与放松视频。"
+            "description": "提供高清大自然实景原声(如瀑布、海浪"
           },
           {
             "name": "Moodil",
             "url": "https://www.moodil.com",
-            "description": "支持多种环境元素自由组合的放松音效与专注白噪音平台。"
+            "description": "支持多种环境元素自由组合的放松音效与专注白噪音平台"
           },
           {
             "name": "Ambient-Mixer",
             "url": "https://www.ambient-mixer.com",
-            "description": "开放式环境音社区，可播放或创作如霍格沃茨图书馆等特定场景音。"
+            "description": "开放式环境音社区，可播放或创作如霍格沃茨图书馆等特"
           },
           {
             "name": "Tabletop Audio",
             "url": "https://tabletopaudio.com",
-            "description": "专为桌面游戏(TRPG)与奇幻写作设计的专业背景音乐与氛围音效。"
+            "description": "专为桌面游戏(TRPG)与奇幻写作设计的专业背景音"
           },
           {
             "name": "Soundrown",
             "url": "https://soundrown.com",
-            "description": "简易好用的多轨道环境音效播放器，涵盖咖啡馆、公园与火车声。"
+            "description": "简易好用的多轨道环境音效播放器，涵盖咖啡馆"
           },
           {
             "name": "Coffitivity",
             "url": "https://coffitivity.com",
-            "description": "还原真实咖啡馆背景人声与环境音，提升日常工作与学习专注力。"
+            "description": "还原真实咖啡馆背景人声与环境音"
           },
           {
             "name": "Hipster Sound",
             "url": "https://hipstersound.com",
-            "description": "主打各类精致咖啡馆、酒吧与室内工作区氛围音效的生成器。"
+            "description": "主打各类精致咖啡馆、酒吧与室内工作区氛围音效的生成"
           },
           {
             "name": "Purrli",
             "url": "https://purrli.com",
-            "description": "专门模拟猫咪噜噜声(猫喘息)的音效生成器，可自由调节情绪状态。"
+            "description": "专门模拟猫咪噜噜声(猫喘息)的音效生成器"
           },
           {
             "name": "Noisetherapist",
             "url": "https://noisetherapist.com",
-            "description": "结合声音疗法与频率调节的专业白噪音与粉红噪音生成站。"
+            "description": "结合声音疗法与频率调节的专业白噪音与粉红噪音生成站"
           },
           {
             "name": "Free Sound Analyzer & White Noise",
             "url": "https://www.soundclear.com",
-            "description": "提供纯净粉红噪音、棕色噪音与白噪音的专业高保真播放器。"
+            "description": "提供纯净粉红噪音、棕色噪音与白噪音的专业高保真播放"
           },
           {
             "name": "Snowfall Sound",
@@ -6460,12 +6256,12 @@ const linksData = [
           {
             "name": "Lava Lamp Chill",
             "url": "https://lavalampchill.com",
-            "description": "配合动态熔岩灯视觉的低调环境音与 Lofi 沉浸体验站。"
+            "description": "配合动态熔岩灯视觉的低调环境音与 Lofi"
           },
           {
             "name": "Virtual Cottage",
             "url": "https://duelingducks.itch.io/virtual-cottage",
-            "description": "小屋氛围音效与计时器，提供舒适的书房背景声与放松音质。"
+            "description": "小屋氛围音效与计时器，提供舒适的书房背景声与放松音"
           },
           {
             "name": "Softly.c",
@@ -6475,32 +6271,32 @@ const linksData = [
           {
             "name": "Brain.fm",
             "url": "https://www.brain.fm",
-            "description": "结合功能性音乐与神经科学打造的专注、放松与入睡音效网。"
+            "description": "结合功能性音乐与神经科学打造的专注"
           },
           {
             "name": "Endel",
             "url": "https://endel.io",
-            "description": "AI 驱动的个性化声学环境网，根据天气、心率与时间生成实时声音。"
+            "description": "AI 驱动的个性化声学环境网，根据天气"
           },
           {
             "name": "Focus at Will",
             "url": "https://www.focusatwill.com",
-            "description": "根据神经类型定制后台背景音乐，大幅提升阅读与工作效率。"
+            "description": "根据神经类型定制后台背景音乐"
           },
           {
             "name": "Portal",
             "url": "https://portal.app",
-            "description": "将全球顶级的自然原声与高画质实景结合的沉浸式空间声音网。"
+            "description": "将全球顶级的自然原声与高画质实景结合的沉浸式空间声"
           },
           {
             "name": "Calm",
             "url": "https://www.calm.com",
-            "description": "全球知名冥想与睡眠网站，提供睡前故事、自然音效与静心音乐。"
+            "description": "全球知名冥想与睡眠网站，提供睡前故事"
           },
           {
             "name": "Headspace",
             "url": "https://www.headspace.com",
-            "description": "专业冥想与正念引导网，包含大量工作专注与情绪安抚音效。"
+            "description": "专业冥想与正念引导网，包含大量工作专注与情绪安抚音"
           },
           {
             "name": "Insight Timer",
@@ -6520,12 +6316,12 @@ const linksData = [
           {
             "name": "Generative.fm",
             "url": "https://generative.fm",
-            "description": "生成式无限环境音乐库，由代码实时渲染出永不重复的无尽音景。"
+            "description": "生成式无限环境音乐库，由代码实时渲染出永不重复的无"
           },
           {
             "name": "City Soundscapes",
             "url": "https://citysoundscapes.com",
-            "description": "收集全球各大都市(东京、巴黎、纽约等)街头背景音的模拟网。"
+            "description": "收集全球各大都市(东京、巴黎"
           },
           {
             "name": "Night Cafe Sound",
@@ -6565,12 +6361,12 @@ const linksData = [
           {
             "name": "Ambient Sleeping Pill",
             "url": "https://ambientsleepingpill.com",
-            "description": "24小时不间断播放无节奏、极其平缓的深沉入睡环境音乐。"
+            "description": "24小时不间断播放无节奏"
           },
           {
             "name": "Sleep Jar",
             "url": "https://sleepjar.com",
-            "description": "专门提供各类定制白噪音(风扇声、洗衣机声、雨声)的音频站。"
+            "description": "专门提供各类定制白噪音(风扇声、洗衣机声"
           },
           {
             "name": "Blank Wave",
@@ -6586,32 +6382,32 @@ const linksData = [
           {
             "name": "Radio Garden",
             "url": "https://radio.garden",
-            "description": "互动式三维地球声景地图，拖动地球即可实时收听全球数万个地方电台。"
+            "description": "互动式三维地球声景地图，拖动地球即可实时收听全球数"
           },
           {
             "name": "Cities and Memory",
             "url": "https://citiesandmemory.com",
-            "description": "全球最大的声音艺术项目之一，收录世界各地的原始声音与再创作音景。"
+            "description": "全球最大的声音艺术项目之一"
           },
           {
             "name": "Aporee Soundmaps",
             "url": "https://aporee.org/maps",
-            "description": "开放式环境音地理地图，收录全球用户录制的自然与人文原声。"
+            "description": "开放式环境音地理地图，收录全球用户录制的自然与人文"
           },
           {
             "name": "British Library Sounds",
             "url": "https://sounds.bl.uk",
-            "description": "大英图书馆官方声音档案馆，藏有数十万份历史口述、方言与自然原声。"
+            "description": "大英图书馆官方声音档案馆，藏有数十万份历史口述"
           },
           {
             "name": "Library of Congress Audio Recordings",
             "url": "https://www.loc.gov/audio",
-            "description": "美国国会图书馆音频档案，收录早期民谣、历史演讲与古老广播。"
+            "description": "美国国会图书馆音频档案，收录早期民谣"
           },
           {
             "name": "Earth.fm",
             "url": "https://earth.fm",
-            "description": "大自然版 Spotify，收录全球国家公园与极地自然保护区的高清原声。"
+            "description": "大自然版 Spotify"
           },
           {
             "name": "Sounds of New York City (SONYC)",
@@ -6621,42 +6417,42 @@ const linksData = [
           {
             "name": "Locus Sonus Soundmap",
             "url": "https://locusonus.org/soundmap",
-            "description": "实时流媒体声音地图，传输全球各地安装的流媒体麦克风原声。"
+            "description": "实时流媒体声音地图，传输全球各地安装的流媒体麦克风"
           },
           {
             "name": "Museum of Endangered Sounds",
             "url": "https://savethesounds.info",
-            "description": "濒危声音博物馆，收集了旧式拨号上网、卡带机、打字机等时代记忆声。"
+            "description": "濒危声音博物馆，收集了旧式拨号上网、卡带机"
           },
           {
             "name": "The World Soundscape Project",
             "url": "https://www.sfu.ca/communication/wsp",
-            "description": "声音生态学先驱 Murray Schafer 创立的声音档案与环境声学网。"
+            "description": "声音生态学先驱 Murray Schafer"
           },
           {
             "name": "BBC Sound Effects",
             "url": "https://sound-effects.bbcrewind.co.uk",
-            "description": "BBC 开放的巨型音效库，包含数万个历史事件、自然与工业原声。"
+            "description": "BBC 开放的巨型音效库，包含数万个历史事件"
           },
           {
             "name": "Europeana Audio",
             "url": "https://www.europeana.eu/en/collections/topic/18-audio",
-            "description": "欧洲数字图书馆音频专区，藏有欧洲百年来民间音乐与自然原声。"
+            "description": "欧洲数字图书馆音频专区，藏有欧洲百年来民间音乐与自"
           },
           {
             "name": "UNESCO Intangible Cultural Heritage Audio",
             "url": "https://ich.unesco.org",
-            "description": "联合国教科文组织非物质文化遗产音频，收录全球古老民歌与仪式声。"
+            "description": "联合国教科文组织非物质文化遗产音频"
           },
           {
             "name": "Wild Sanctuary",
             "url": "https://www.wildsanctuary.com",
-            "description": "声学生态学家 Bernie Krause 创办，收录数千小时未受人类破坏的自然音景。"
+            "description": "声学生态学家 Bernie Krause 创办"
           },
           {
             "name": "Nature Soundmap",
             "url": "https://www.naturesoundmap.com",
-            "description": "由全球数十位顶级声音专业人士联合制作的高清自然生态声音地图。"
+            "description": "由全球数十位顶级声音专业人士联合制作的高清自然生态"
           },
           {
             "name": "Ambient Weather Sound Map",
@@ -6666,32 +6462,32 @@ const linksData = [
           {
             "name": "Sounding Jerusalem",
             "url": "https://soundingjerusalem.com",
-            "description": "记录古城耶路撒冷宗教唱腔、市集杂音与钟声的特色声音档案。"
+            "description": "记录古城耶路撒冷宗教唱腔"
           },
           {
             "name": "Listening to the Deep Ocean",
             "url": "https://www.listentothedeep.com",
-            "description": "收录全球大洋底水下麦克风捕捉到的鲸鱼歌声、冰架裂解与海底火山声。"
+            "description": "收录全球大洋底水下麦克风捕捉到的鲸鱼歌声"
           },
           {
             "name": "Underwater Sound Archive (NOAA)",
             "url": "https://www.pmel.noaa.gov/audio",
-            "description": "美国国家海洋和大气局水下音频档案，探索海洋生物与地质声音。"
+            "description": "美国国家海洋和大气局水下音频档案"
           },
           {
             "name": "Macaulay Library (Cornell Lab)",
             "url": "https://www.macaulaylibrary.org",
-            "description": "康奈尔大学鸟类学实验室，全球最大的动物声音与鸟鸣科学档案馆。"
+            "description": "康奈尔大学鸟类学实验室，全球最大的动物声音与鸟鸣科"
           },
           {
             "name": "Xeno-canto",
             "url": "https://xeno-canto.org",
-            "description": "全球野生鸟类声音共享社区，收录数十万种鸟鸣的音频与地理标记。"
+            "description": "全球野生鸟类声音共享社区"
           },
           {
             "name": "Frogwatch Sound Library",
             "url": "https://www.aza.org/frogwatch",
-            "description": "专门收集北美及全球各类蛙类与两栖动物鸣叫声的数据库。"
+            "description": "专门收集北美及全球各类蛙类与两栖动物鸣叫声的数据库"
           },
           {
             "name": "Insect Sounds Database",
@@ -6701,47 +6497,47 @@ const linksData = [
           {
             "name": "Forest Soundmap (Timber Festival)",
             "url": "https://timberfestival.org.uk/sound-of-the-forest",
-            "description": "全球森林声音地图，采集世界各地森林中的树叶沙沙声与生态环境音。"
+            "description": "全球森林声音地图，采集世界各地森林中的树叶沙沙声与"
           },
           {
             "name": "Chatty Maps",
             "url": "http://goodcitylife.org/chattymaps",
-            "description": "分析城市街道声音(音乐、机械、自然、人声)并画出的音景地图。"
+            "description": "分析城市街道声音(音乐、机械、自然"
           },
           {
             "name": "London Sound Survey",
             "url": "https://www.soundsoflondon.co.uk",
-            "description": "记录伦敦近百年来街道、工业、运河与历史建筑环境音的专业档案站。"
+            "description": "记录伦敦近百年来街道、工业"
           },
           {
             "name": "Paris Soundscapes Archive",
             "url": "https://parissoundscapes.com",
-            "description": "记录巴黎市集、塞纳河畔与地铁站特色人声与氛围音的沉浸档案。"
+            "description": "记录巴黎市集、塞纳河畔与地铁站特色人声与氛围音的沉"
           },
           {
             "name": "Venice Soundmap",
             "url": "https://www.venicesoundmap.eu",
-            "description": "威尼斯水城声音地图，记录划桨声、潮汐与古老教堂钟声。"
+            "description": "威尼斯水城声音地图，记录划桨声"
           },
           {
             "name": "Tokyo Sound Project",
             "url": "https://tokyosoundproject.com",
-            "description": "采集东京电车提示音、繁华街区与神巷静谧环境音的声音档案馆。"
+            "description": "采集东京电车提示音、繁华街区与神巷静谧环境音的声音"
           },
           {
             "name": "Berlin Sound Map",
             "url": "https://berlinsoundmap.com",
-            "description": "记录柏林墙遗址、地下俱乐部门口与公园环境音的城市声景网。"
+            "description": "记录柏林墙遗址、地下俱乐部门口与公园环境音的城市声"
           },
           {
             "name": "Hong Kong Audio Archive",
             "url": "https://hkaudioarchive.org",
-            "description": "记录香港小贩呼喊、双层巴士与老旧街区烟火气的声音地图。"
+            "description": "记录香港小贩呼喊、双层巴士与老旧街区烟火气的声音地"
           },
           {
             "name": "Icelandic Soundscapes",
             "url": "https://icelandicsoundscapes.com",
-            "description": "收集冰岛瀑布、地热喷泉、冰川融化与极地强风的极端自然音。"
+            "description": "收集冰岛瀑布、地热喷泉、冰川融化与极地强风的极端自"
           },
           {
             "name": "Rainforest Sound Archive",
@@ -6751,37 +6547,37 @@ const linksData = [
           {
             "name": "Volcano Sound Archive",
             "url": "https://volcanosounds.org",
-            "description": "收集全球活火山喷发、岩浆咕嘟声与地壳变动低频声音的数据库。"
+            "description": "收集全球活火山喷发、岩浆咕嘟声与地壳变动低频声音的"
           },
           {
             "name": "Train Sound Archive",
             "url": "https://trainsoundarchive.com",
-            "description": "收录全球经典蒸汽火车、高铁与老旧铁路行驶交响曲的声音站。"
+            "description": "收录全球经典蒸汽火车、高铁与老旧铁路行驶交响曲的声"
           },
           {
             "name": "Airport Ambient Archive",
             "url": "https://airportambience.com",
-            "description": "专门采集全球各大机场候机楼、广播与飞机起降环境音的网站。"
+            "description": "专门采集全球各大机场候机楼"
           },
           {
             "name": "Harbor & Maritime Sounds",
             "url": "https://maritimesounds.net",
-            "description": "海港汽笛、水波拍击船体与码头吊车等海洋工业声音集锦。"
+            "description": "海港汽笛、水波拍击船体与码头吊车等海洋工业声音集锦"
           },
           {
             "name": "Old Radio Programs Archive",
             "url": "https://www.oldradioworld.com",
-            "description": "20世纪 30-50 年代老无线电广播剧、新闻联播与历史原声档案。"
+            "description": "20世纪 30-50 年代老无线电广播剧"
           },
           {
             "name": "NASA Audio Archive",
             "url": "https://images.nasa.gov",
-            "description": "NASA 官方公开的太空探索原声、火箭发射、宇宙电波与宇航员通话。"
+            "description": "NASA 官方公开的太空探索原声、火箭发射"
           },
           {
             "name": "Internet Archive Audio",
             "url": "https://archive.org/details/audio",
-            "description": "互联网档案馆音频区，拥有数百万个免费历史音乐、现场录音与广播。"
+            "description": "互联网档案馆音频区，拥有数百万个免费历史音乐"
           }
         ]
       },
@@ -6792,87 +6588,87 @@ const linksData = [
           {
             "name": "Bandcamp",
             "url": "https://bandcamp.com",
-            "description": "全球最大的独立音乐人直接售卖数字唱片、黑胶与周边的小众音乐圣地。"
+            "description": "全球最大的独立音乐人直接售卖数字唱片"
           },
           {
             "name": "NTS Radio",
             "url": "https://www.nts.live",
-            "description": "伦敦先锋地下网络电台，汇聚全球极具探索精神的 DJ 与实验音乐。"
+            "description": "伦敦先锋地下网络电台，汇聚全球极具探索精神的"
           },
           {
             "name": "Resident Advisor (RA)",
             "url": "https://ra.co",
-            "description": "全球电子音乐、地下俱乐部文化与先锋 DJ 界的权威资讯与音乐平台。"
+            "description": "全球电子音乐、地下俱乐部文化与先锋 DJ"
           },
           {
             "name": "Discogs",
             "url": "https://www.discogs.com",
-            "description": "全球最大的实体唱片(黑胶、CD、磁带)数据库、交易市场与音乐百科。"
+            "description": "全球最大的实体唱片(黑胶、CD、磁带)数据库"
           },
           {
             "name": "Bleep",
             "url": "https://bleep.com",
-            "description": "Warp Records 旗下知名独立数字唱片店，专注于高品质先锋电子与实验乐。"
+            "description": "Warp Records 旗下知名独立数字唱片店"
           },
           {
             "name": "Boomkat",
             "url": "https://boomkat.com",
-            "description": "英国顶级小众与先锋音乐唱片店，精选暗黑电子、环境音与实验派唱片。"
+            "description": "英国顶级小众与先锋音乐唱片店，精选暗黑电子"
           },
           {
             "name": "Forced Exposure",
             "url": "https://www.forcedexposure.com",
-            "description": "老牌小众音乐分销商，涵盖海量地下摇滚、爵士、自由即兴与前卫音乐。"
+            "description": "老牌小众音乐分销商，涵盖海量地下摇滚、爵士"
           },
           {
             "name": "Norman Records",
             "url": "https://www.normanrecords.com",
-            "description": "英国知名独立唱片店，以极其幽默专业的唱片评价与小众选品著称。"
+            "description": "英国知名独立唱片店，以极其幽默专业的唱片评价与小众"
           },
           {
             "name": "Juno Records",
             "url": "https://www.juno.co.uk",
-            "description": "英国大型电子乐、黑胶唱片与 DJ 设备供应商，试听资源极其庞大。"
+            "description": "英国大型电子乐、黑胶唱片与 DJ 设备供应商"
           },
           {
             "name": "Hardwax",
             "url": "https://hardwax.com",
-            "description": "柏林传奇黑胶唱片店，Techno 与 Dubstep 地下电子乐的风向标。"
+            "description": "柏林传奇黑胶唱片店，Techno 与"
           },
           {
             "name": "Phonica Records",
             "url": "https://www.phonicarecords.com",
-            "description": "伦敦 Soho 区核心黑胶唱片店，专营各类先锋舞曲与独立电子。"
+            "description": "伦敦 Soho 区核心黑胶唱片店"
           },
           {
             "name": "Dublab",
             "url": "https://www.dublab.com",
-            "description": "洛杉矶非营利先锋网络电台，自 1999 年起推广前卫音乐与声音艺术。"
+            "description": "洛杉矶非营利先锋网络电台"
           },
           {
             "name": "Worldwide FM",
             "url": "https://worldwidefm.net",
-            "description": "Gilles Peterson 创办的全球音乐电台，融合爵士、世界音乐与地下电子。"
+            "description": "Gilles Peterson"
           },
           {
             "name": "Rinse FM",
             "url": "https://rinse.fm",
-            "description": "伦敦传奇地下海盗电台演变而来的 Grime, Dubstep 与英国本土电子圣地。"
+            "description": "伦敦传奇地下海盗电台演变而来的 Grime,"
           },
           {
             "name": "The Lot Radio",
             "url": "https://www.thelotradio.com",
-            "description": "纽约布鲁克林集装箱场地发起的24小时独立 DJ 与音乐直播电台。"
+            "description": "纽约布鲁克林集装箱场地发起的24小时独立 DJ"
           },
           {
             "name": "KEXP Radio",
             "url": "https://www.kexp.org",
-            "description": "西雅图知名公共电台，以顶级的独立摇滚与现场不插电 Live Session 闻名。"
+            "description": "西雅图知名公共电台，以顶级的独立摇滚与现场不插电"
           },
           {
             "name": "NPR Tiny Desk Concerts",
             "url": "https://www.npr.org/series/tiny-desk-concerts",
-            "description": "美国国家公共电台标志性的办公室办公桌现场音乐表演视频网。"
+            "description": "美国国家公共电台标志性的办公室办公桌现场音乐表演视"
           },
           {
             "name": "Boiler Room",
@@ -6882,7 +6678,7 @@ const linksData = [
           {
             "name": "HÖR BERLIN",
             "url": "https://hor.berlin",
-            "description": "柏林标志性浴室风格瓷砖直播间，展示全球尖端 Techno 与 DJ 套曲。"
+            "description": "柏林标志性浴室风格瓷砖直播间"
           },
           {
             "name": "CDandLP",
@@ -6892,87 +6688,87 @@ const linksData = [
           {
             "name": "Rush Hour",
             "url": "https://www.rushhour.nl",
-            "description": "阿姆斯特丹著名唱片店与厂牌，主打 House, Techno 与稀有黑胶。"
+            "description": "阿姆斯特丹著名唱片店与厂牌"
           },
           {
             "name": "Clone.nl",
             "url": "https://clone.nl",
-            "description": "荷兰鹿特丹知名电子乐黑胶网，涵盖大量的地下电子与复古电音。"
+            "description": "荷兰鹿特丹知名电子乐黑胶网"
           },
           {
             "name": "Honest Jon's",
             "url": "https://www.honestjons.com",
-            "description": "伦敦独立唱片店，专营稀有雷鬼、爵士、雷克典与世界音乐。"
+            "description": "伦敦独立唱片店，专营稀有雷鬼、爵士"
           },
           {
             "name": "Sounds of the Universe",
             "url": "https://soundsoftheuniverse.com",
-            "description": "Soul Jazz Records 旗下唱片店，涵盖 Funk, Soul, Reggae 与先锋爵士。"
+            "description": "Soul Jazz Records 旗下唱片店"
           },
           {
             "name": "Amoeba Music",
             "url": "https://www.amoeba.com",
-            "description": "美国大型独立唱片店，其“What's in My Bag”节目深度推荐小众音乐。"
+            "description": "美国大型独立唱片店，其“What's in My"
           },
           {
             "name": "Rough Trade",
             "url": "https://www.roughtrade.com",
-            "description": "英国传奇独立唱片店与厂牌，独立摇滚与后朋克文化的摇篮。"
+            "description": "英国传奇独立唱片店与厂牌"
           },
           {
             "name": "Piccadilly Records",
             "url": "https://www.piccadillyrecords.com",
-            "description": "曼彻斯特著名独立唱片店，提供优质的独立流行、暖心民谣与电子选品。"
+            "description": "曼彻斯特著名独立唱片店，提供优质的独立流行"
           },
           {
             "name": "Water Tower Music",
             "url": "https://www.watertower-music.com",
-            "description": "专注原声带(OST)、电影配乐与戏剧氛围音乐的唱片网站。"
+            "description": "专注原声带(OST)、电影配乐与戏剧氛围音乐的唱片"
           },
           {
             "name": "Milan Records",
             "url": "https://milanrecords.com",
-            "description": "知名电影配乐与动漫原声带(如《阿基拉》等)发行厂牌官网。"
+            "description": "知名电影配乐与动漫原声带(如《阿基拉》等)发行厂牌"
           },
           {
             "name": "Mondo / Death Waltz",
             "url": "https://mondoshop.com/collections/music",
-            "description": "以精美绝伦的黑胶封面设计与稀有电影原声带复刻闻名的平台。"
+            "description": "以精美绝伦的黑胶封面设计与稀有电影原声带复刻闻名的"
           },
           {
             "name": "Waxwork Records",
             "url": "https://waxworkrecords.com",
-            "description": "专注于恐怖电影、科幻电影黑胶原声带极致复刻的唱片公司。"
+            "description": "专注于恐怖电影、科幻电影黑胶原声带极致复刻的唱片公"
           },
           {
             "name": "Invada Records",
             "url": "https://invada.bandcamp.com",
-            "description": "由 Portishead 成员创办，主打电影原声(如《怪奇物语》)与实验电子。"
+            "description": "由 Portishead 成员创办"
           },
           {
             "name": "Erased Tapes",
             "url": "https://www.erasedtapes.com",
-            "description": "英国知名新古典与环境音厂牌(Olafur Arnalds, Nils Frahm 等的大本营)。"
+            "description": "英国知名新古典与环境音厂牌(Olafur"
           },
           {
             "name": "Warp Records",
             "url": "https://warp.net",
-            "description": "先锋电子乐传奇厂牌，汇聚 Aphex Twin, Boards of Canada 等大师。"
+            "description": "先锋电子乐传奇厂牌，汇聚 Aphex Twin,"
           },
           {
             "name": "Ninja Tune",
             "url": "https://ninjatune.net",
-            "description": "英国老牌独立电子厂牌，涵括 Trip-Hop, Downtempo 与先锋舞曲。"
+            "description": "英国老牌独立电子厂牌，涵括 Trip-Hop,"
           },
           {
             "name": "Ghostly International",
             "url": "https://ghostly.com",
-            "description": "跨越音乐与视觉艺术的先锋厂牌，主打环境电子与极简美学。"
+            "description": "跨越音乐与视觉艺术的先锋厂牌"
           },
           {
             "name": "Kranky",
             "url": "https://www.kranky.net",
-            "description": "专注 Ambient, Post-Rock(后摇)与无人声实验音乐的传奇厂牌。"
+            "description": "专注 Ambient, Post-Rock(后摇)"
           },
           {
             "name": "Type Records",
@@ -6982,12 +6778,12 @@ const linksData = [
           {
             "name": "4AD",
             "url": "https://4ad.com",
-            "description": "哥特摇滚、仙音派(Dream Pop)与后朋克历史上极具美学色彩的厂牌。"
+            "description": "哥特摇滚、仙音派(Dream"
           },
           {
             "name": "Sub Pop",
             "url": "https://www.subpop.com",
-            "description": "发掘 Nirvana 的西雅图传奇厂牌，至今仍是独立摇滚风向标。"
+            "description": "发掘 Nirvana 的西雅图传奇厂牌"
           }
         ]
       },
@@ -6998,12 +6794,12 @@ const linksData = [
           {
             "name": "UbuWeb",
             "url": "https://www.ubuweb.com",
-            "description": "全球顶级的先锋派艺术、具体音乐(Musique Concrète)与声音艺术数字档案馆。"
+            "description": "全球顶级的先锋派艺术、具体音乐(Musique"
           },
           {
             "name": "AllMusic",
             "url": "https://www.allmusic.com",
-            "description": "庞大的音乐百科与唱片数据库，提供深度乐评、风格演变图谱与艺术家关系链。"
+            "description": "庞大的音乐百科与唱片数据库，提供深度乐评"
           },
           {
             "name": "Rate Your Music (RYM)",
@@ -7018,22 +6814,22 @@ const linksData = [
           {
             "name": "Musicmap",
             "url": "https://musicmap.info",
-            "description": "交互式近现代大众音乐流派演变图谱，直观呈现各音乐流派的发展脉络。"
+            "description": "交互式近现代大众音乐流派演变图谱"
           },
           {
             "name": "Every Single Song (Every Noise at Once)",
             "url": "https://everynoise.com",
-            "description": "由算法生成的巨型音乐流派声学地图，点击任意流派即可试听代表音频。"
+            "description": "由算法生成的巨型音乐流派声学地图"
           },
           {
             "name": "IMSLP (Petrucci Music Library)",
             "url": "https://imslp.org",
-            "description": "国际乐谱库，收录数十万份公有领域古典乐谱与公有领域录音。"
+            "description": "国际乐谱库，收录数十万份公有领域古典乐谱与公有领域"
           },
           {
             "name": "Classical Archives",
             "url": "https://www.classicalarchives.com",
-            "description": "全球庞大的古典音乐数字档案与 MIDI 文件数据库。"
+            "description": "全球庞大的古典音乐数字档案与 MIDI"
           },
           {
             "name": "Choral Public Domain Library (CPDL)",
@@ -7043,22 +6839,22 @@ const linksData = [
           {
             "name": "Free Music Archive (FMA)",
             "url": "https://freemusicarchive.org",
-            "description": "高品质公有领域与 CC 协议免费音乐库，适合播客与视频背景音。"
+            "description": "高品质公有领域与 CC 协议免费音乐库"
           },
           {
             "name": "CCMixter",
             "url": "https://ccmixter.org",
-            "description": "基于知识共享协议的音乐采样、人声干音与混音合作社区。"
+            "description": "基于知识共享协议的音乐采样"
           },
           {
             "name": "Freesound",
             "url": "https://freesound.org",
-            "description": "全球最大的音频采样、环境音效与音效素材开源合作数据库。"
+            "description": "全球最大的音频采样、环境音效与音效素材开源合作数据"
           },
           {
             "name": "SoundBible",
             "url": "https://soundbible.com",
-            "description": "提供免费版权的 sound effects 音效与白噪音下载平台。"
+            "description": "提供免费版权的 sound effects"
           },
           {
             "name": "Sample Focus",
@@ -7073,7 +6869,7 @@ const linksData = [
           {
             "name": "Cymatics Free Media",
             "url": "https://cymatics.fm/pages/free-download-vault",
-            "description": "专业音乐制作人喜爱的免费音频采样包与 Synth 预设库。"
+            "description": "专业音乐制作人喜爱的免费音频采样包与 Synth"
           },
           {
             "name": "SoundCollector",
@@ -7083,22 +6879,22 @@ const linksData = [
           {
             "name": "Electroacoustic Music Archive",
             "url": "https://www.ems-stockholm.se",
-            "description": "斯德哥尔摩电子声学音乐中心，瑞典先锋电子乐历史档案馆。"
+            "description": "斯德哥尔摩电子声学音乐中心"
           },
           {
             "name": "IRCAM Centre Pompidou",
             "url": "https://www.ircam.fr",
-            "description": "法国蓬皮杜中心声学/音乐研究协调研究所，音乐科技与声学前沿。"
+            "description": "法国蓬皮杜中心声学/音乐研究协调研究所"
           },
           {
             "name": "GRM (Groupe de Recherches Musicales)",
             "url": "https://inagrm.com",
-            "description": "法国 INA 旗下具体音乐与电子声学音乐发源地与研究机构。"
+            "description": "法国 INA 旗下具体音乐与电子声学音乐发源地与研"
           },
           {
             "name": "Computer Music Journal",
             "url": "https://direct.mit.edu/comj",
-            "description": "MIT 出版的计算机音乐、数字音频合成与声学研究学术期刊。"
+            "description": "MIT 出版的计算机音乐"
           },
           {
             "name": "Society for Electro-Acoustic Music (SEAMUS)",
@@ -7113,27 +6909,27 @@ const linksData = [
           {
             "name": "Sounding the Body Archive",
             "url": "https://soundingthebody.com",
-            "description": "将生物电信号、心率与人体运动转化为声音艺术的实验库。"
+            "description": "将生物电信号、心率与人体运动转化为声音艺术的实验库"
           },
           {
             "name": "Acoustic Ecology Institute",
             "url": "https://www.acousticecology.org",
-            "description": "声学生态学研究所，探讨噪音污染、自然声景与声音保护。"
+            "description": "声学生态学研究所，探讨噪音污染"
           },
           {
             "name": "World Forum for Acoustic Ecology (WFAE)",
             "url": "https://www.wfae.net",
-            "description": "世界声学生态论坛，联合全球研究者探讨人与声音环境的关系。"
+            "description": "世界声学生态论坛，联合全球研究者探讨人与声音环境的"
           },
           {
             "name": "Sonemic",
             "url": "https://sonemic.com",
-            "description": "RYM 团队打造的下一代音乐、影视与声音艺术综合数据库。"
+            "description": "RYM 团队打造的下一代音乐"
           },
           {
             "name": "Last.fm",
             "url": "https://www.last.fm",
-            "description": "老牌音乐记录与听歌习惯分析平台，拥有强大的相似音乐推荐系统。"
+            "description": "老牌音乐记录与听歌习惯分析平台"
           },
           {
             "name": "Hype Machine",
@@ -7143,17 +6939,17 @@ const linksData = [
           {
             "name": "Hypnagogic Pop Archive",
             "url": "https://hypnagogicarchive.com",
-            "description": "专注 80 年代复古卡带记忆、迷幻电子与梦幻 Pop 的先锋档案。"
+            "description": "专注 80 年代复古卡带记忆"
           },
           {
             "name": "Vaporwave Archive",
             "url": "https://vaporwavearchive.org",
-            "description": "蒸汽波(Vaporwave)音乐、低保真采样与 90 年代互联网美学档案。"
+            "description": "蒸汽波(Vaporwave)音乐"
           },
           {
             "name": "Minimal Wave",
             "url": "https://minimalwave.com",
-            "description": "专门复刻 80 年代小众合成器流行乐(Minimal Synth)与冷爵士的厂牌。"
+            "description": "专门复刻 80 年代小众合成器流行乐("
           },
           {
             "name": "Continuum Encyclopedia of Popular Music",
@@ -7163,32 +6959,32 @@ const linksData = [
           {
             "name": "Vocaloid Archive",
             "url": "https://vocadb.net",
-            "description": "全球 Vocaloid (初音未来等) 虚拟歌手音乐与同人专辑百科数据库。"
+            "description": "全球 Vocaloid (初音未来等)"
           },
           {
             "name": "Video Game Music Archive (VGMRips)",
             "url": "https://vgmrips.net",
-            "description": "收录 8 位、16 位复古电子游戏芯片音乐(Chiptune)的晶片音频库。"
+            "description": "收录 8 位、16 位复古电子游戏芯片音乐("
           },
           {
             "name": "Zophar's Domain",
             "url": "https://www.zophar.net/music",
-            "description": "老牌复古游戏原声(NSF, SPC, GYM 等格式)原生芯片音乐站。"
+            "description": "老牌复古游戏原声(NSF, SPC, GYM"
           },
           {
             "name": "OverClocked ReMix (OCR)",
             "url": "https://ocremix.org",
-            "description": "致力于将电子游戏音乐进行艺术再创作与同人改编的非营利社区。"
+            "description": "致力于将电子游戏音乐进行艺术再创作与同人改编的非营"
           },
           {
             "name": "Classical Net",
             "url": "https://www.classical.net",
-            "description": "老牌古典音乐导读网，包含大量唱片版本比较与作曲家生平。"
+            "description": "老牌古典音乐导读网，包含大量唱片版本比较与作曲家生"
           },
           {
             "name": "Gramophone",
             "url": "https://www.gramophone.co.uk",
-            "description": "英国《留声机》杂志官网，全球古典音乐评论与唱片大奖权威指南。"
+            "description": "英国《留声机》杂志官网，全球古典音乐评论与唱片大奖"
           }
         ]
       },
@@ -7199,42 +6995,42 @@ const linksData = [
           {
             "name": "Incredibox",
             "url": "https://www.incredibox.com",
-            "description": "拖拽不同服饰口技小人即可轻松编排嘻哈、爵士或电音 B-Box 的互动网。"
+            "description": "拖拽不同服饰口技小人即可轻松编排嘻哈"
           },
           {
             "name": "Chrome Music Lab",
             "url": "https://musiclab.chromeexperiments.com",
-            "description": "谷歌音乐实验室，通过趣味互动体验声学、波形、节奏与和声原理。"
+            "description": "谷歌音乐实验室，通过趣味互动体验声学、波形"
           },
           {
             "name": "Blob Opera",
             "url": "https://artsandculture.google.com/experiment/blob-opera",
-            "description": "Google 打造的机器学习歌剧实验，拖拉彩色黏液人即可唱出高难歌剧。"
+            "description": "Google 打造的机器学习歌剧实验"
           },
           {
             "name": "Patatap",
             "url": "https://patatap.com",
-            "description": "按下键盘字母即可发出不同音效并触发绚丽视觉动画的声光实验站。"
+            "description": "按下键盘字母即可发出不同音效并触发绚丽视觉动画的声"
           },
           {
             "name": "Typatone",
             "url": "https://typatone.com",
-            "description": "将输入的文本与字母实时转化为悦耳音乐旋律的文本音效生成器。"
+            "description": "将输入的文本与字母实时转化为悦耳音乐旋律的文本音效"
           },
           {
             "name": "ToneMatrix",
             "url": "https://tonematrix.audiotool.com",
-            "description": "极简 16x16 格子五声音阶点阵正弦波正方形音乐生成器。"
+            "description": "极简 16x16 格子五声音阶点阵正弦波正方形音乐"
           },
           {
             "name": "Audiotool",
             "url": "https://www.audiotool.com",
-            "description": "基于浏览器的巨型线上音乐制作软件，内置合成器、鼓机与效果器。"
+            "description": "基于浏览器的巨型线上音乐制作软件，内置合成器"
           },
           {
             "name": "BandLab",
             "url": "https://www.bandlab.com",
-            "description": "免费的跨平台云端音乐创作与云端协作云端工作站(DAW)。"
+            "description": "免费的跨平台云端音乐创作与云端协作云端工作站("
           },
           {
             "name": "Soundtrap (by Spotify)",
@@ -7244,17 +7040,17 @@ const linksData = [
           {
             "name": "BeepBox",
             "url": "https://beepbox.co",
-            "description": "专门用于创作 8-bit 芯片音乐(Chiptune)的网路在线矩阵作曲器。"
+            "description": "专门用于创作 8-bit"
           },
           {
             "name": "Online Sequencer",
             "url": "https://onlinesequencer.net",
-            "description": "简单直观的网页版 MIDI 音乐编排器，可直接导入导出 MIDI 文件。"
+            "description": "简单直观的网页版 MIDI 音乐编排器"
           },
           {
             "name": "Acid Machine",
             "url": "https://acidmachine.net",
-            "description": "模拟 303 酸性电子乐(Acid House)音色与鼓机的网页模拟器。"
+            "description": "模拟 303 酸性电子乐(Acid"
           },
           {
             "name": "Virtual Piano",
@@ -7264,7 +7060,7 @@ const linksData = [
           {
             "name": "Soundscape Generator (Broomstick)",
             "url": "https://soundscape.glitch.me",
-            "description": "基于 Web Audio API 的互动生成式算法氛围音乐网。"
+            "description": "基于 Web Audio API"
           },
           {
             "name": "Pulselt",
@@ -7274,7 +7070,7 @@ const linksData = [
           {
             "name": "Mikutap",
             "url": "https://aidn.jp/mikutap",
-            "description": "点击或滑动屏幕即可触发初音未来声音片段与炫彩动画的休闲网。"
+            "description": "点击或滑动屏幕即可触发初音未来声音片段与炫彩动画的"
           },
           {
             "name": "Daniel Fisher's Sound Toys",
@@ -7284,12 +7080,12 @@ const linksData = [
           {
             "name": "WebFM Synthesizer",
             "url": "https://webfm.glitch.me",
-            "description": "在网页端直观进行调频(FM)声音合成与波形绘制的工具。"
+            "description": "在网页端直观进行调频(FM)声音合成与波形绘制的工"
           },
           {
             "name": "Soundation",
             "url": "https://soundation.com",
-            "description": "功能强大的网页版 DAW，内置大量 Loops 采样与虚拟乐器。"
+            "description": "功能强大的网页版 DAW"
           },
           {
             "name": "Melozing",
@@ -7299,12 +7095,12 @@ const linksData = [
           {
             "name": "Sampulator",
             "url": "https://sampulator.com",
-            "description": "利用电脑键盘快速切片并打出采样 Drum Beat 的网页采样器。"
+            "description": "利用电脑键盘快速切片并打出采样 Drum"
           },
           {
             "name": "DJ3D / WebDJ",
             "url": "https://webdj.dev",
-            "description": "基于 WebGL 的 3D 模拟双盘位 DJ 混音台网页工具。"
+            "description": "基于 WebGL 的 3D 模拟双盘位 DJ"
           },
           {
             "name": "Plink",
@@ -7319,12 +7115,12 @@ const linksData = [
           {
             "name": "Endlesss",
             "url": "https://endlesss.fm",
-            "description": "专注于实时多人多人音乐 Jam 碰头与音乐循环构建的先锋平台。"
+            "description": "专注于实时多人多人音乐 Jam"
           },
           {
             "name": "Rhythmlab",
             "url": "https://rhythmlab.com",
-            "description": "探索复杂节奏、复合节奏(Polyrhythm)与打击乐律动的在线实验室。"
+            "description": "探索复杂节奏、复合节奏(Polyrhythm)与打"
           },
           {
             "name": "GridSound",
@@ -7344,37 +7140,37 @@ const linksData = [
           {
             "name": "Seaquence",
             "url": "http://seaquence.org",
-            "description": "将声音节点化身海中微生物，通过微观生物碰撞生成音乐的网站。"
+            "description": "将声音节点化身海中微生物"
           },
           {
             "name": "Musical Mind",
             "url": "https://musicalmind.org",
-            "description": "探索听觉错觉(如 Shepard Tone 瑟巴音阶)与声音心理学的试验站。"
+            "description": "探索听觉错觉(如 Shepard Tone"
           },
           {
             "name": "Node Audio Generator",
             "url": "https://nodeaudio.com",
-            "description": "通过连接点与线构建信号流来生成声音的节点式音频生成网。"
+            "description": "通过连接点与线构建信号流来生成声音的节点式音频生成"
           },
           {
             "name": "Playtronica",
             "url": "https://playtronica.com",
-            "description": "探索触觉与声音结合，将日常生活物品转化为触控乐器的艺术站。"
+            "description": "探索触觉与声音结合，将日常生活物品转化为触控乐器的"
           },
           {
             "name": "Solfeggio Frequencies Generator",
             "url": "https://solfeggio.frequencygenerator.com",
-            "description": "专门生成 432Hz, 528Hz 等所谓“索尔费吉奥”疗愈频率的单音发生器。"
+            "description": "专门生成 432Hz, 528Hz"
           },
           {
             "name": "Binaural Beats Generator",
             "url": "https://mynoise.net/NoiseMachines/binauralBeatGenerator.php",
-            "description": "生成双耳差频(Binaural Beats)以诱导脑波进入 alpha 或 theta 状态的网站。"
+            "description": "生成双耳差频(Binaural"
           },
           {
             "name": "White Noise Lite Web",
             "url": "https://whitenoise.com",
-            "description": "专业白噪音品牌的 Web 端，包含海量日常设备与自然环境音。"
+            "description": "专业白噪音品牌的 Web 端"
           },
           {
             "name": "Noise Generator (Online Tone Generator)",
@@ -7389,12 +7185,12 @@ const linksData = [
           {
             "name": "Lofi Cafe",
             "url": "https://loficafe.app",
-            "description": "极简怀旧像素风 Lofi 电台，收听 Chillhop 与复古动画背景音。"
+            "description": "极简怀旧像素风 Lofi 电台"
           },
           {
             "name": "Lofi Girl Official",
             "url": "https://lofigirl.com",
-            "description": "全球知名 Lofi 音乐品牌，提供 24/7 不间断专注与放松音乐流媒体。"
+            "description": "全球知名 Lofi 音乐品牌"
           }
         ]
       }
@@ -7600,7 +7396,7 @@ const linksData = [
         {
           "name": "AI开发",
           "url": "https://kisstr.com/ai_development.html",
-          "description": "AI API、模型开发、向量数据库、算力与工程工具导航"
+          "description": "AI API、模型开发、向量数据库"
         },
         {
           "name": "AI绘图",
@@ -7625,7 +7421,7 @@ const linksData = [
         {
           "name": "游戏网站",
           "url": "https://kisstr.com/game_sites.html",
-          "description": "游戏平台、游戏资讯、独立游戏、主机资源与玩家社区导航"
+          "description": "游戏平台、游戏资讯、独立游戏"
         },
         {
           "name": "漫画网站",
@@ -7675,172 +7471,6 @@ function getColorFromName(name) {
   const index = hashCode(name) % colors.length;
   return colors[index];
 }
-
-// 古诗词数据库（诗人 + 诗句）
-const poemData = [
-  { poet: "李白", poem: "床前明月光，疑是地上霜" },
-  { poet: "杜甫", poem: "国破山河在，城春草木深" },
-  { poet: "白居易", poem: "离离原上草，一岁一枯荣" },
-  { poet: "王维", poem: "独在异乡为异客，每逢佳节倍思亲" },
-  { poet: "苏轼", poem: "但愿人长久，千里共婵娟" },
-  { poet: "李清照", poem: "昨夜雨疏风骤，浓睡不消残酒" },
-  { poet: "辛弃疾", poem: "众里寻他千百度，蓦然回首" },
-  { poet: "陆游", poem: "山重水复疑无路，柳暗花明又一村" },
-  { poet: "王安石", poem: "春风又绿江南岸，明月何时照我还" },
-  { poet: "孟浩然", poem: "春眠不觉晓，处处闻啼鸟" },
-  { poet: "陶渊明", poem: "采菊东篱下，悠然见南山" },
-  { poet: "李商隐", poem: "春蚕到死丝方尽，蜡炬成灰泪始干" },
-  { poet: "杜牧", poem: "停车坐爱枫林晚，霜叶红于二月花" },
-  { poet: "岑参", poem: "忽如一夜春风来，千树万树梨花开" },
-  { poet: "高适", poem: "莫愁前路无知己，天下谁人不识君" },
-  { poet: "王勃", poem: "海内存知己，天涯若比邻" },
-  { poet: "杨炯", poem: "宁为百夫长，胜作一书生" },
-  { poet: "陈子昂", poem: "前不见古人，后不见来者" },
-  { poet: "张九龄", poem: "海上生明月，天涯共此时" },
-  { poet: "柳宗元", poem: "千山鸟飞绝，万径人踪灭" },
-  { poet: "韩愈", poem: "天街小雨润如酥，草色遥看近却无" },
-  { poet: "刘禹锡", poem: "沉舟侧畔千帆过，病树前头万木春" },
-  { poet: "贾岛", poem: "鸟宿池边树，僧敲月下门" },
-  { poet: "孟郊", poem: "谁言寸草心，报得三春晖" },
-  { poet: "贾岛", poem: "松下问童子，言师采药去" },
-  { poet: "元稹", poem: "曾经沧海难为水，除却巫山不是云" },
-  { poet: "韦应物", poem: "春潮带雨晚来急，野渡无人舟自横" },
-  { poet: "刘长卿", poem: "日暮苍山远，天寒白屋贫" },
-  { poet: "温庭筠", poem: "鸡声茅店月，人迹板桥霜" },
-  { poet: "贺知章", poem: "不知细叶谁裁出，二月春风似剪刀" },
-  { poet: "贺铸", poem: "一川烟草，满城风絮，梅子黄时雨" },
-  { poet: "周邦彦", poem: "叶上初阳干宿雨，水面清圆" },
-  { poet: "晏殊", poem: "无可奈何花落去，似曾相识燕归来" },
-  { poet: "欧阳修", poem: "月上柳梢头，人约黄昏后" },
-  { poet: "秦观", poem: "两情若是久长时，又岂在朝朝暮暮" },
-  { poet: "柳永", poem: "衣带渐宽终不悔，为伊消得人憔悴" },
-  { poet: "范仲淹", poem: "先天下之忧而忧，后天下之乐而乐" },
-  { poet: "岳飞", poem: "莫等闲，白了少年头，空悲切" },
-  { poet: "文天祥", poem: "人生自古谁无死，留取丹心照汗青" },
-  { poet: "于谦", poem: "粉骨碎身浑不怕，要留清白在人间" },
-  { poet: "郑板桥", poem: "千磨万击还坚劲，任尔东西南北风" },
-  { poet: "袁枚", poem: "白日不到处，青春恰自来" },
-  { poet: "龚自珍", poem: "落红不是无情物，化作春泥更护花" },
-  { poet: "纳兰性德", poem: "人生若只如初见，何事秋风悲画扇" },
-  { poet: "仓央嘉措", poem: "世间安得双全法，不负如来不负卿" },
-  { poet: "林徽因", poem: "你是爱，是暖，是希望" },
-  { poet: "徐志摩", poem: "轻轻的我走了，正如我轻轻的来" },
-  { poet: "戴望舒", poem: "撑着油纸伞，独自彷徨在悠长" },
-  { poet: "艾青", poem: "为什么我的眼里常含泪水" },
-  { poet: "海子", poem: "面朝大海，春暖花开" }
-];
-
-// 高奢品牌数据库（品牌名 + slogan）
-const luxuryBrandData = [
-  { brand: "HERMÈS", slogan: "Luxury is a way of life", url: "https://www.hermes.com" },
-  { brand: "CHANEL", slogan: "Fashion passes, style remains", url: "https://www.chanel.com" },
-  { brand: "LOUIS VUITTON", slogan: "The art of travel", url: "https://www.louisvuitton.com" },
-  { brand: "DIOR", slogan: "The elegance is a state of mind", url: "https://www.dior.com" },
-  { brand: "CARTIER", slogan: "Jeweler of kings", url: "https://www.cartier.com" },
-  { brand: "TIFFANY & CO.", slogan: "True love, true luxury", url: "https://www.tiffany.com" },
-  { brand: "GUCCI", slogan: "Quality is remembered long after price is forgotten", url: "https://www.gucci.com" },
-  { brand: "PRADA", slogan: "Fashion is instant language", url: "https://www.prada.com" },
-  { brand: "BURBERRY", slogan: "Pioneering British luxury", url: "https://www.burberry.com" },
-  { brand: "BALENCIAGA", slogan: "Elegance in motion", url: "https://www.balenciaga.com" },
-  { brand: "FENDI", slogan: "Fun fur and luxury", url: "https://www.fendi.com" },
-  { brand: "BOTTEGA VENETA", slogan: "When your own initials are enough", url: "https://www.bottegaveneta.com" },
-  { brand: "SAINT LAURENT", slogan: "For the modern woman", url: "https://www.ysl.com" },
-  { brand: "GIVENCHY", slogan: "Elegance is refusal", url: "https://www.givenchy.com" },
-  { brand: "VALENTINO", slogan: "Luxury with a soul", url: "https://www.valentino.com" },
-  { brand: "VERSACE", slogan: "Medusa of fashion", url: "https://www.versace.com" },
-  { brand: "DOLCE & GABBANA", slogan: "Sicilian luxury tradition", url: "https://www.dolcegabbana.com" },
-  { brand: "ARMANI", slogan: "Timeless sophistication", url: "https://www.armani.com" },
-  { brand: "HUGO BOSS", slogan: "Define your success", url: "https://www.hugoboss.com" },
-  { brand: "COACH", slogan: "Modern luxury for all", url: "https://www.coach.com" },
-  { brand: "MICHAEL KORS", slogan: "Jet set luxury", url: "https://www.michaelkors.com" },
-  { brand: "TORY BURCH", slogan: "Effortless style", url: "https://www.toryburch.com" },
-  { brand: "KATE SPADE", slogan: "Live colorfully", url: "https://www.katespade.com" },
-  { brand: "RIMOWA", slogan: "Journey well", url: "https://www.rimowa.com" },
-  { brand: "MONTBLANC", slogan: "The art of writing", url: "https://www.montblanc.com" },
-  { brand: "PATEK PHILIPPE", slogan: "You never actually own one", url: "https://www.patek.com" },
-  { brand: "ROLEX", slogan: "A crown for every achievement", url: "https://www.rolex.com" },
-  { brand: "OMEGA", slogan: "Reflects your world", url: "https://www.omegawatches.com" },
-  { brand: "IWC", slogan: "Engineering for perfection", url: "https://www.iwc.com" },
-  { brand: "JAEGER-LECOULTRE", slogan: "Watchmaking mastery", url: "https://www.jaeger-lecoultre.com" },
-  { brand: "BREITLING", slogan: "Instruments for professionals", url: "https://www.breitling.com" },
-  { brand: "TAG HEUER", slogan: "Don't crack under pressure", url: "https://www.tagheuer.com" },
-  { brand: "LONGINES", slogan: "Elegance is an attitude", url: "https://www.longines.com" },
-  { brand: "RAYMOND WEIL", slogan: "Independent watchmaking", url: "https://www.raymond-weil.com" },
-  { brand: "A. LANGE & SÖHNE", slogan: "Glashütte precision", url: "https://www.alange-soehne.com" },
-  { brand: "BLANCPAIN", slogan: "The oldest watch brand", url: "https://www.blancpain.com" },
-  { brand: "CHAUMET", slogan: "The jeweler of feelings", url: "https://www.chaumet.com" },
-  { brand: "BOUCHERON", slogan: "Parisian high jewelry", url: "https://www.boucheron.com" },
-  { brand: "VAN CLEEF & ARPELS", slogan: "Poetry of time", url: "https://www.vancleefarpels.com" },
-  { brand: "PIAGET", slogan: "Always do better than necessary", url: "https://www.piaget.com" },
-  { brand: "CHOPARD", slogan: "The art of luxury", url: "https://www.chopard.com" },
-  { brand: "MISSONI", slogan: "Colored luxury knitwear", url: "https://www.missoni.com" },
-  { brand: "ALAÏA", slogan: "Sculptor of the female form", url: "https://www.alaia.com" },
-  { brand: "ISSEY MIYAKE", slogan: "A piece of cloth", url: "https://www.isseymiyake.com" },
-  { brand: "COMME des GARÇONS", slogan: "Fashion is an attitude", url: "https://www.comme-des-garcons.com" },
-  { brand: "MAISON MARGIELA", slogan: "The anonymous designer", url: "https://www.maisonmargiela.com" },
-  { brand: "RICK OWENS", slogan: "Dark glamour", url: "https://www.rickowens.eu" },
-  { brand: "UNDERCOVER", slogan: "Wear your rebellion", url: "https://www.undercoverism.com" },
-  { brand: "JIL SANDER", slogan: "Less is more", url: "https://www.jilsander.com" },
-  { brand: "THE ROW", slogan: "Quiet luxury redefined", url: "https://www.therow.com" }
-];
-
-// 存储每个网站的隐藏状态
-let linkSecretData = new Map();
-let isHiddenMode = false;
-
-function generateSecretData() {
-  linksData.forEach(cat => {
-    const linkList = cat.subcategories ? cat.subcategories.flatMap(s => s.links) : cat.links;
-    linkList.forEach(link => {
-      const key = link.url;
-      if (!linkSecretData.has(key)) {
-        const poemIndex = hashCode(link.name + 'poem') % poemData.length;
-        const brandIndex = hashCode(link.name + 'brand') % luxuryBrandData.length;
-        linkSecretData.set(key, {
-          poem: poemData[poemIndex],
-          brand: luxuryBrandData[brandIndex]
-        });
-      }
-    });
-  });
-}
-
-// 切换隐藏模式
-function toggleHideMode() {
-  isHiddenMode = !isHiddenMode;
-  const hideToggle = document.getElementById('hideToggle');
-
-  if (isHiddenMode) {
-    document.body.classList.add('hide-mode');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-    localStorage.setItem('hideMode', 'true');
-  } else {
-    document.body.classList.remove('hide-mode');
-    hideToggle.classList.remove('active');
-    hideToggle.title = '已显示';
-    localStorage.setItem('hideMode', 'false');
-  }
-
-  // 重新渲染以更新数据
-  renderLinks(document.getElementById('searchInput').value, currentCategory);
-}
-
-// 初始化隐藏模式
-function initHideMode() {
-  const savedMode = localStorage.getItem('hideMode');
-  if (savedMode === 'true') {
-    isHiddenMode = true;
-    document.body.classList.add('hide-mode');
-    const hideToggle = document.getElementById('hideToggle');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-  } else {
-    const hideToggle = document.getElementById('hideToggle');
-    if (hideToggle) hideToggle.title = '已显示';
-  }
-}
-
 function renderCategories() {
   const tabsContainer = document.getElementById('categoryTabs');
   tabsContainer.innerHTML = '';
@@ -7902,7 +7532,6 @@ function openUrlInNewTab(url) {
   const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
   if (newWindow) newWindow.opener = null;
 }
-
 
 function getIndexCardClickUrl(url) {
   if (!url || url === '#') return url || '';
@@ -8031,71 +7660,32 @@ function createLinkCard(link, catIndex, linkIndex) {
     }
   }
 
-  const secretData = linkSecretData.get(link.url) || {
-    poem: { poet: "佚名", poem: "诗不在多，有情则灵" },
-    brand: { brand: "LUXURY", slogan: "Timeless elegance", url: "https://www.example.com" }
-  };
-  
-  const isMinimalLayout = document.body.classList.contains('layout-minimal');
-  const hiddenName = isMinimalLayout ? secretData.brand.brand : secretData.poem.poet;
-  const hiddenDesc = isMinimalLayout ? secretData.brand.slogan : secretData.poem.poem;
-  const hiddenUrl = isMinimalLayout && secretData.brand.url ? secretData.brand.url : link.url;
-
-  if (isHiddenMode) {
-    card.classList.add('hidden-mode-card');
-  }
-
-  prepareStealthLinkCard(card, isHiddenMode ? hiddenUrl : link.url);
+  prepareStealthLinkCard(card, link.url);
 
   const linkIcon = document.createElement('div');
   linkIcon.className = 'link-icon';
-  if (isHiddenMode) {
-    linkIcon.textContent = hiddenName.charAt(0);
-    linkIcon.style.background = getColorFromName(hiddenName);
-  } else {
-    linkIcon.textContent = getInitial(link.name);
-    linkIcon.style.background = getColorFromName(link.name);
-  }
+  linkIcon.textContent = getInitial(link.name);
+  linkIcon.style.background = getColorFromName(link.name);
 
   const linkInfo = document.createElement('div');
   linkInfo.className = 'link-info';
 
   const linkName = document.createElement('div');
   linkName.className = 'link-name';
-  if (isHiddenMode) {
-    linkName.textContent = hiddenName;
-    linkName.style.position = 'relative';
-    linkName.style.minHeight = '24px';
-  } else {
-    linkName.textContent = link.name;
-  }
+  linkName.textContent = link.name;
 
   const linkUrl = document.createElement('div');
   linkUrl.className = 'link-url';
-  if (isHiddenMode) {
-    linkUrl.textContent = hiddenUrl.replace(/^https?:\/\//, '');
-    linkUrl.classList.add('hidden-link-url');
-  } else {
-    linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
-  }
+  linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
 
   const linkDesc = document.createElement('div');
   linkDesc.className = 'link-desc';
-  if (isHiddenMode) {
-    linkDesc.textContent = hiddenDesc;
-  } else {
-    linkDesc.textContent = link.description;
-  }
+  linkDesc.textContent = link.description;
 
   linkInfo.appendChild(linkName);
-  if (isHiddenMode) {
+  linkInfo.appendChild(linkUrl);
+  if (link.description) {
     linkInfo.appendChild(linkDesc);
-    linkInfo.appendChild(linkUrl);
-  } else {
-    linkInfo.appendChild(linkUrl);
-    if (link.description) {
-      linkInfo.appendChild(linkDesc);
-    }
   }
 
   const arrow = document.createElement('div');
@@ -8287,45 +7877,6 @@ function doRenderLinks(filterText, category) {
 
         const isMinimalLayout = document.body.classList.contains('layout-minimal');
 
-        if (!isMinimalLayout) {
-          if (subcat.name && !subcat.hideTitle) {
-            const titleCard = document.createElement('div');
-            titleCard.className = 'subcategory-title-card';
-
-            const subTitle = document.createElement('h3');
-            subTitle.className = 'subcategory-title';
-            subTitle.textContent = subcat.name;
-            titleCard.appendChild(subTitle);
-
-            if (subcat.enName) {
-              const subEnTitle = document.createElement('p');
-              subEnTitle.className = 'subcategory-en-title';
-              subEnTitle.textContent = subcat.enName;
-              titleCard.appendChild(subEnTitle);
-            }
-
-            if (subcat.easterEggUrl) {
-              titleCard.style.cursor = 'pointer';
-              titleCard.dataset.eggClicks = '0';
-              titleCard.addEventListener('click', () => {
-                const clicks = Number(titleCard.dataset.eggClicks || '0') + 1;
-                titleCard.dataset.eggClicks = String(clicks);
-                clearTimeout(titleCard._eggTimer);
-                if (clicks >= 3) {
-                  titleCard.dataset.eggClicks = '0';
-                  window.open(subcat.easterEggUrl, '_blank', 'noopener');
-                } else {
-                  titleCard._eggTimer = setTimeout(() => {
-                    titleCard.dataset.eggClicks = '0';
-                  }, 900);
-                }
-              });
-            }
-
-            subcategory.appendChild(titleCard);
-          }
-        }
-
         const grid = document.createElement('div');
         grid.className = (cat.name === '全球 AI') ? 'ai-grid' : 'links-grid';
 
@@ -8420,16 +7971,16 @@ const sunIcon = document.getElementById('sunIcon');
 const moonIcon = document.getElementById('moonIcon');
 
 // 第一布局（经典）使用7个主题，第二布局（杂志）不使用极光青、暮光橙、星空蓝
-const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
-const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
 
 // 暗色主题列表（显示太阳图标）
-const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay'];
+const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay', 'ink'];
 
 function getCurrentLayout() {
-  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'grid';
+  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'minimal';
 }
 
 function getThemes() {
@@ -8461,7 +8012,8 @@ function setTheme(theme) {
     "dream": "#667eea",
     "forest": "#2d5f4e",
     "deepsea": "#1a4a6e",
-    "clay": "#6b4a35"
+    "clay": "#6b4a35",
+    "ink": "#08090a"
   };
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
 
@@ -8525,14 +8077,29 @@ document.querySelector('.logo').addEventListener('click', function(e) {
   return false;
 });
 
+
+  // 隐藏按钮：切换隐私模式（链接变透明）
+  const hideToggle = document.getElementById('hideToggle');
+  if (hideToggle) {
+    hideToggle.addEventListener('click', (e) => {
+      document.body.classList.toggle('hide-mode');
+      e.currentTarget.blur();
+    });
+  }
+
 // 布局切换
 const layoutToggle = document.getElementById('layoutToggle');
 const layoutBtn = layoutToggle.querySelector('.layout-btn');
 
 function setLayout(layout) {
+  if (layout === 'grid') layout = 'clear';
   localStorage.setItem('layout', layout);
-  document.body.classList.remove('layout-grid', 'layout-minimal');
-  document.body.classList.add('layout-' + layout);
+  document.body.classList.remove('layout-minimal', 'layout-clear');
+  if (layout === 'clear') {
+    document.body.classList.add('layout-minimal', 'layout-clear');
+  } else {
+    document.body.classList.add('layout-' + layout);
+  }
 
   
   let isImageBackground = false;
@@ -8568,12 +8135,18 @@ function setLayout(layout) {
   // 布局二 logo 显示英文艺术字体
   const logoText = document.getElementById('logoText');
   if (logoText) {
-    logoText.textContent = layout === 'minimal' ? '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐' : '𝗞𝗶𝘀𝘀𝘁𝗿';
+    logoText.textContent = '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐';
   }
 
   // 动态更新布局按钮提示
   if (layoutBtn) {
-    layoutBtn.title = layout === 'minimal' ? '杂志布局' : '经典布局';
+    if (layout === 'clear') {
+      layoutBtn.title = '清晰布局';
+    } else if (layout === 'minimal') {
+      layoutBtn.title = '杂志布局';
+    } else {
+      layoutBtn.title = '清晰布局';
+    }
   }
 
   if (!isImageBackground) {
@@ -8622,7 +8195,7 @@ function setLayout(layout) {
   renderLinks(searchValue, currentCategory);
 }
 
-const layoutDefaultVersion = 'v130-magazine-default';
+const layoutDefaultVersion = 'v141-minimal-default';
 if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
   localStorage.setItem('layout', 'minimal');
   localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -8631,8 +8204,8 @@ const savedLayout = localStorage.getItem('layout') || 'minimal';
 setLayout(savedLayout);
 
 layoutBtn.addEventListener('click', (e) => {
-  const currentLayout = document.body.classList.contains('layout-grid') ? 'grid' : 'minimal';
-  const newLayout = currentLayout === 'grid' ? 'minimal' : 'grid';
+  const currentLayout = document.body.classList.contains('layout-clear') ? 'clear' : 'minimal';
+  const newLayout = currentLayout === 'clear' ? 'minimal' : 'clear';
   setLayout(newLayout);
   e.currentTarget.blur();
 });
@@ -8780,9 +8353,6 @@ lofiAudio.addEventListener('error', (e) => {
   if (isPlaying && !isChangingStation) tryNextStationSource();
 });
 
-lofiAudio.addEventListener('loadedmetadata', () => {
-  console.log('音频元数据加载成功');
-});
 
 lofiAudio.addEventListener('playing', () => {
   stationRetryCount = 0;
@@ -8839,7 +8409,7 @@ function changeStation(direction) {
   mbStart();
 
   playAudio().catch(e => {
-    console.warn('鍒囨崲鐢靛彴鎾斁澶辫触:', e.message);
+    console.warn('切换电台播放失败:', e.message);
     clearTimeout(stationUnlockTimer);
     isChangingStation = false;
     setTimeout(tryNextStationSource, 250);
@@ -8854,18 +8424,6 @@ function changeStation(direction) {
 
 musicPrev.addEventListener('click', (e) => { changeStation(-1); e.currentTarget.blur(); });
 musicNext.addEventListener('click', (e) => { changeStation(1); e.currentTarget.blur(); });
-
-// 生成隐藏数据
-generateSecretData();
-
-// 初始化隐藏模式
-initHideMode();
-
-// 绑定隐藏按钮点击事件
-document.getElementById('hideToggle').addEventListener('click', function(e) {
-  toggleHideMode();
-  e.currentTarget.blur();
-});
 
 renderLinks('', currentCategory);
 
@@ -8978,13 +8536,6 @@ document.addEventListener('keydown', (e) => {
     if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
       e.preventDefault();
       layoutBtn.click();
-    }
-  }
-
-  if (e.key === 'h' || e.key === 'H') {
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-      e.preventDefault();
-      document.getElementById('hideToggle').click();
     }
   }
 
@@ -9613,7 +9164,6 @@ const mbObserver = new MutationObserver(() => {
 });
 mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
 
-
 // ========== 背景选择器 ==========
 // === 背景选择器：纯色/渐变 + WebP 壁纸，按需创建预览 ===
 (function() {
@@ -9625,6 +9175,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-ocean', type: 'theme', theme: 'ocean', name: '海洋蓝', preview: 'linear-gradient(135deg, #f0f8ff, #d7ecff)' },
     { id: 'theme-twilight', type: 'theme', theme: 'twilight', name: '晨曦紫', preview: 'linear-gradient(135deg, #f5f0ff, #e9dcff)' },
     { id: 'theme-midnight', type: 'theme', theme: 'midnight', name: '深夜黑', preview: 'linear-gradient(135deg, #000212, #0c0c1d)' },
+    { id: 'theme-ink', type: 'theme', theme: 'ink', name: 'Linear 黑', preview: 'linear-gradient(135deg, #08090a, #1c1d22)' },
     { id: 'theme-starry', type: 'theme', theme: 'starry', name: '星空蓝', preview: 'linear-gradient(135deg, #0c0c1d, #1b2b5f)' },
     { id: 'theme-sunset', type: 'theme', theme: 'sunset', name: '暮光橙', preview: 'linear-gradient(135deg, #2d1b0e, #7a3b1e)' },
     { id: 'theme-aurora', type: 'theme', theme: 'aurora', name: '极光青', preview: 'linear-gradient(135deg, #1a2a3a, #3db8a8)' },
@@ -9634,49 +9185,49 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-clay', type: 'theme', theme: 'clay', name: '暖陶土', preview: 'linear-gradient(135deg, #4a3326, #8a6a4f)' }
   ];
   const imageBackgrounds = [
-    { id: '樱野', name: '樱野', url: 'wallpapers_webp/樱野.webp', thumb: 'wallpapers_webp/thumbs/樱野.webp' },
-    { id: '星夜', name: '星夜', url: 'wallpapers_webp/星夜.webp', thumb: 'wallpapers_webp/thumbs/星夜.webp' },
-    { id: '秋林', name: '秋林', url: 'wallpapers_webp/秋林.webp', thumb: 'wallpapers_webp/thumbs/秋林.webp' },
-    { id: '樱河', name: '樱河', url: 'wallpapers_webp/樱河.webp', thumb: 'wallpapers_webp/thumbs/樱河.webp' },
-    { id: '海站', name: '海站', url: 'wallpapers_webp/海站.webp', thumb: 'wallpapers_webp/thumbs/海站.webp' },
-    { id: '雨读', name: '雨读', url: 'wallpapers_webp/雨读.webp', thumb: 'wallpapers_webp/thumbs/雨读.webp' },
-    { id: '薰月', name: '薰月', url: 'wallpapers_webp/薰月.webp', thumb: 'wallpapers_webp/thumbs/薰月.webp' },
-    { id: '屋园', name: '屋园', url: 'wallpapers_webp/屋园.webp', thumb: 'wallpapers_webp/thumbs/屋园.webp' },
-    { id: '云海', name: '云海', url: 'wallpapers_webp/云海.webp', thumb: 'wallpapers_webp/thumbs/云海.webp' },
-    { id: '花街', name: '花街', url: 'wallpapers_webp/花街.webp', thumb: 'wallpapers_webp/thumbs/花街.webp' },
-    { id: '雪村', name: '雪村', url: 'wallpapers_webp/雪村.webp', thumb: 'wallpapers_webp/thumbs/雪村.webp' },
-    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/灯塔.webp', thumb: 'wallpapers_webp/thumbs/灯塔.webp' },
-    { id: '林茶', name: '林茶', url: 'wallpapers_webp/林茶.webp', thumb: 'wallpapers_webp/thumbs/林茶.webp' },
-    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/稻霞.webp', thumb: 'wallpapers_webp/thumbs/稻霞.webp' },
-    { id: '温室', name: '温室', url: 'wallpapers_webp/温室.webp', thumb: 'wallpapers_webp/thumbs/温室.webp' },
-    { id: '游园', name: '游园', url: 'wallpapers_webp/游园.webp', thumb: 'wallpapers_webp/thumbs/游园.webp' },
-    { id: '学园', name: '学园', url: 'wallpapers_webp/学园.webp', thumb: 'wallpapers_webp/thumbs/学园.webp' },
-    { id: '水族', name: '水族', url: 'wallpapers_webp/水族.webp', thumb: 'wallpapers_webp/thumbs/水族.webp' },
-    { id: '阁星', name: '阁星', url: 'wallpapers_webp/阁星.webp', thumb: 'wallpapers_webp/thumbs/阁星.webp' },
-    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/竹晨.webp', thumb: 'wallpapers_webp/thumbs/竹晨.webp' },
-    { id: '夜市', name: '夜市', url: 'wallpapers_webp/夜市.webp', thumb: 'wallpapers_webp/thumbs/夜市.webp' },
-    { id: '星象', name: '星象', url: 'wallpapers_webp/星象.webp', thumb: 'wallpapers_webp/thumbs/星象.webp' },
-    { id: '风车', name: '风车', url: 'wallpapers_webp/风车.webp', thumb: 'wallpapers_webp/thumbs/风车.webp' },
-    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/猫窗.webp', thumb: 'wallpapers_webp/thumbs/猫窗.webp' },
-    { id: '兔野', name: '兔野', url: 'wallpapers_webp/兔野.webp', thumb: 'wallpapers_webp/thumbs/兔野.webp' },
-    { id: '书童', name: '书童', url: 'wallpapers_webp/书童.webp', thumb: 'wallpapers_webp/thumbs/书童.webp' },
-    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/紫阳.webp', thumb: 'wallpapers_webp/thumbs/紫阳.webp' },
-    { id: '月秋', name: '月秋', url: 'wallpapers_webp/月秋.webp', thumb: 'wallpapers_webp/thumbs/月秋.webp' },
-    { id: '庭院', name: '庭院', url: 'wallpapers_webp/庭院.webp', thumb: 'wallpapers_webp/thumbs/庭院.webp' },
-    { id: '水母', name: '水母', url: 'wallpapers_webp/水母.webp', thumb: 'wallpapers_webp/thumbs/水母.webp' },
-    { id: '草莓', name: '草莓', url: 'wallpapers_webp/草莓.webp', thumb: 'wallpapers_webp/thumbs/草莓.webp' },
-    { id: '魔书', name: '魔书', url: 'wallpapers_webp/魔书.webp', thumb: 'wallpapers_webp/thumbs/魔书.webp' },
-    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/冬暖.webp', thumb: 'wallpapers_webp/thumbs/冬暖.webp' },
-    { id: '画室', name: '画室', url: 'wallpapers_webp/画室.webp', thumb: 'wallpapers_webp/thumbs/画室.webp' },
-    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/犬伴.webp', thumb: 'wallpapers_webp/thumbs/犬伴.webp' },
-    { id: '野餐', name: '野餐', url: 'wallpapers_webp/野餐.webp', thumb: 'wallpapers_webp/thumbs/野餐.webp' },
-    { id: '狐社', name: '狐社', url: 'wallpapers_webp/狐社.webp', thumb: 'wallpapers_webp/thumbs/狐社.webp', excludeFromRandom: true },
-    { id: '阅台', name: '阅台', url: 'wallpapers_webp/阅台.webp', thumb: 'wallpapers_webp/thumbs/阅台.webp' },
-    { id: '虹池', name: '虹池', url: 'wallpapers_webp/虹池.webp', thumb: 'wallpapers_webp/thumbs/虹池.webp', excludeFromRandom: true },
-    { id: '绿意', name: '绿意', url: 'wallpapers_webp/绿意.webp', thumb: 'wallpapers_webp/thumbs/绿意.webp', excludeFromRandom: true },
-    { id: '茶花', name: '茶花', url: 'wallpapers_webp/茶花.webp', thumb: 'wallpapers_webp/thumbs/茶花.webp' },
-    { id: '海骑', name: '海骑', url: 'wallpapers_webp/海骑.webp', thumb: 'wallpapers_webp/thumbs/海骑.webp' },
-    { id: '萤光', name: '萤光', url: 'wallpapers_webp/萤光.webp', thumb: 'wallpapers_webp/thumbs/萤光.webp' }
+    { id: '樱野', name: '樱野', url: 'wallpapers_webp/35_樱野.webp', thumb: 'wallpapers_webp/thumbs/35_樱野.webp' },
+    { id: '星夜', name: '星夜', url: 'wallpapers_webp/28_星夜.webp', thumb: 'wallpapers_webp/thumbs/28_星夜.webp' },
+    { id: '秋林', name: '秋林', url: 'wallpapers_webp/18_秋林.webp', thumb: 'wallpapers_webp/thumbs/18_秋林.webp' },
+    { id: '樱河', name: '樱河', url: 'wallpapers_webp/34_樱河.webp', thumb: 'wallpapers_webp/thumbs/34_樱河.webp' },
+    { id: '海站', name: '海站', url: 'wallpapers_webp/09_海站.webp', thumb: 'wallpapers_webp/thumbs/09_海站.webp' },
+    { id: '雨读', name: '雨读', url: 'wallpapers_webp/38_雨读.webp', thumb: 'wallpapers_webp/thumbs/38_雨读.webp' },
+    { id: '薰月', name: '薰月', url: 'wallpapers_webp/31_薰月.webp', thumb: 'wallpapers_webp/thumbs/31_薰月.webp' },
+    { id: '屋园', name: '屋园', url: 'wallpapers_webp/26_屋园.webp', thumb: 'wallpapers_webp/thumbs/26_屋园.webp' },
+    { id: '云海', name: '云海', url: 'wallpapers_webp/41_云海.webp', thumb: 'wallpapers_webp/thumbs/41_云海.webp' },
+    { id: '花街', name: '花街', url: 'wallpapers_webp/12_花街.webp', thumb: 'wallpapers_webp/thumbs/12_花街.webp' },
+    { id: '雪村', name: '雪村', url: 'wallpapers_webp/30_雪村.webp', thumb: 'wallpapers_webp/thumbs/30_雪村.webp' },
+    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/04_灯塔.webp', thumb: 'wallpapers_webp/thumbs/04_灯塔.webp' },
+    { id: '林茶', name: '林茶', url: 'wallpapers_webp/14_林茶.webp', thumb: 'wallpapers_webp/thumbs/14_林茶.webp' },
+    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/03_稻霞.webp', thumb: 'wallpapers_webp/thumbs/03_稻霞.webp' },
+    { id: '温室', name: '温室', url: 'wallpapers_webp/25_温室.webp', thumb: 'wallpapers_webp/thumbs/25_温室.webp' },
+    { id: '游园', name: '游园', url: 'wallpapers_webp/37_游园.webp', thumb: 'wallpapers_webp/thumbs/37_游园.webp' },
+    { id: '学园', name: '学园', url: 'wallpapers_webp/29_学园.webp', thumb: 'wallpapers_webp/thumbs/29_学园.webp' },
+    { id: '水族', name: '水族', url: 'wallpapers_webp/22_水族.webp', thumb: 'wallpapers_webp/thumbs/22_水族.webp' },
+    { id: '阁星', name: '阁星', url: 'wallpapers_webp/07_阁星.webp', thumb: 'wallpapers_webp/thumbs/07_阁星.webp' },
+    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/42_竹晨.webp', thumb: 'wallpapers_webp/thumbs/42_竹晨.webp' },
+    { id: '夜市', name: '夜市', url: 'wallpapers_webp/33_夜市.webp', thumb: 'wallpapers_webp/thumbs/33_夜市.webp' },
+    { id: '星象', name: '星象', url: 'wallpapers_webp/27_星象.webp', thumb: 'wallpapers_webp/thumbs/27_星象.webp' },
+    { id: '风车', name: '风车', url: 'wallpapers_webp/06_风车.webp', thumb: 'wallpapers_webp/thumbs/06_风车.webp' },
+    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/16_猫窗.webp', thumb: 'wallpapers_webp/thumbs/16_猫窗.webp' },
+    { id: '兔野', name: '兔野', url: 'wallpapers_webp/24_兔野.webp', thumb: 'wallpapers_webp/thumbs/24_兔野.webp' },
+    { id: '书童', name: '书童', url: 'wallpapers_webp/20_书童.webp', thumb: 'wallpapers_webp/thumbs/20_书童.webp' },
+    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/43_紫阳.webp', thumb: 'wallpapers_webp/thumbs/43_紫阳.webp' },
+    { id: '月秋', name: '月秋', url: 'wallpapers_webp/39_月秋.webp', thumb: 'wallpapers_webp/thumbs/39_月秋.webp' },
+    { id: '庭院', name: '庭院', url: 'wallpapers_webp/23_庭院.webp', thumb: 'wallpapers_webp/thumbs/23_庭院.webp' },
+    { id: '水母', name: '水母', url: 'wallpapers_webp/21_水母.webp', thumb: 'wallpapers_webp/thumbs/21_水母.webp' },
+    { id: '草莓', name: '草莓', url: 'wallpapers_webp/01_草莓.webp', thumb: 'wallpapers_webp/thumbs/01_草莓.webp' },
+    { id: '魔书', name: '魔书', url: 'wallpapers_webp/17_魔书.webp', thumb: 'wallpapers_webp/thumbs/17_魔书.webp' },
+    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/05_冬暖.webp', thumb: 'wallpapers_webp/thumbs/05_冬暖.webp' },
+    { id: '画室', name: '画室', url: 'wallpapers_webp/13_画室.webp', thumb: 'wallpapers_webp/thumbs/13_画室.webp' },
+    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/19_犬伴.webp', thumb: 'wallpapers_webp/thumbs/19_犬伴.webp' },
+    { id: '野餐', name: '野餐', url: 'wallpapers_webp/32_野餐.webp', thumb: 'wallpapers_webp/thumbs/32_野餐.webp' },
+    { id: '狐社', name: '狐社', url: 'wallpapers_webp/11_狐社.webp', thumb: 'wallpapers_webp/thumbs/11_狐社.webp', excludeFromRandom: true },
+    { id: '阅台', name: '阅台', url: 'wallpapers_webp/40_阅台.webp', thumb: 'wallpapers_webp/thumbs/40_阅台.webp' },
+    { id: '虹池', name: '虹池', url: 'wallpapers_webp/10_虹池.webp', thumb: 'wallpapers_webp/thumbs/10_虹池.webp', excludeFromRandom: true },
+    { id: '绿意', name: '绿意', url: 'wallpapers_webp/15_绿意.webp', thumb: 'wallpapers_webp/thumbs/15_绿意.webp', excludeFromRandom: true },
+    { id: '茶花', name: '茶花', url: 'wallpapers_webp/02_茶花.webp', thumb: 'wallpapers_webp/thumbs/02_茶花.webp' },
+    { id: '海骑', name: '海骑', url: 'wallpapers_webp/08_海骑.webp', thumb: 'wallpapers_webp/thumbs/08_海骑.webp' },
+    { id: '萤光', name: '萤光', url: 'wallpapers_webp/36_萤光.webp', thumb: 'wallpapers_webp/thumbs/36_萤光.webp' }
   ].map(item => ({ ...item, type: 'image' }));
 
   /* reorder: 精选背景 → 风景 → 人物 */
@@ -9791,10 +9342,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
   }
 
   function getImageOverlay() {
-    const isGrid = document.body.classList.contains('layout-grid');
-    return isGrid
-      ? ['rgba(18, 18, 36, 0.34)', 'rgba(18, 18, 36, 0.43)']
-      : ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
+    return ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
   }
 
   function syncImageBackgroundChrome(bgImageValue) {
@@ -10102,7 +9650,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     const width = Math.max(336, Math.min(920, viewportWidth - 24));
     const panel = modal.querySelector('.background-modal-panel');
     if (panel) panel.style.width = `${width}px`;
-    const layoutOffset = document.body.classList.contains('layout-grid') ? 14 : 0;
+    const layoutOffset = 0;
     modal.style.setProperty('--bg-picker-top', `${rect.bottom + 18 + layoutOffset}px`);
   }
 
@@ -10139,7 +9687,8 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
       }
     }
     /* 没有用户选择时，默认从全部壁纸图片中随机；用户手动选择后仍按保存值恢复 */
-    var randomPool = imageBackgrounds.filter(function(o) { return !o.excludeFromRandom; });
+    var defaultRandomIds = ['星夜', '雨读', '林茶', '竹晨'];
+    var randomPool = imageBackgrounds.filter(function(o) { return defaultRandomIds.indexOf(o.id) !== -1; });
     if (randomPool.length > 0) {
       var randomIdx = Math.floor(Math.random() * randomPool.length);
       applySelection(randomPool[randomIdx], false, false);

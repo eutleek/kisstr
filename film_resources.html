@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="2e77a380-3ab4-4cc2-ab63-aac249ee26ef"></script>
@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <script>
 (function initColors() {
-  const layoutDefaultVersion = 'v130-magazine-default';
+  const layoutDefaultVersion = 'v141-minimal-default';
   if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
     localStorage.setItem('layout', 'minimal');
     localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -592,6 +592,7 @@ try {
     letter-spacing: -0.5px;
     cursor: pointer;
     user-select: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 
   .logo-group {
@@ -713,18 +714,16 @@ try {
 
   /* 单按钮布局 - 默认显示网格图标（点击切换到网格） */
   .layout-btn .layout-icon-grid {
-    display: block;
+    display: none;
   }
   .layout-btn .layout-icon-minimal {
-    display: none;
-  }
-
-  /* 网格布局时显示杂志图标（点击切换到杂志） */
-  body.layout-grid .layout-icon-grid {
-    display: none;
-  }
-  body.layout-grid .layout-icon-minimal {
     display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-grid {
+    display: block;
+  }
+  .layout-minimal .layout-btn .layout-icon-minimal {
+    display: none;
   }
 
   /* 隐藏按钮眼睛图标 */
@@ -744,6 +743,11 @@ try {
   body.hide-mode .hide-icon-hide {
     display: block;
   }
+  /* 隐藏模式：只隐藏网站URL，名字和说明保持可见，卡片大小不变 */
+  body.hide-mode .link-url {
+    visibility: hidden !important;
+  }
+
 
   /* ========== 隐藏名字按钮 ========== */
   .hide-toggle {
@@ -787,7 +791,7 @@ try {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 16px;
-    font-family: 'Noto Sans SC', 'PingFang SC', 'Helvetica Neue', sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     letter-spacing: clamp(2px, 3vw, 12px);
     text-indent: clamp(2px, 3vw, 12px);
     background: linear-gradient(135deg, var(--text-primary), var(--accent));
@@ -878,11 +882,6 @@ try {
     margin-bottom: 24px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--card-border);
-  }
-
-  /* 第一布局隐藏分类图标和标题 */
-  .layout-grid .category-header {
-    display: none;
   }
 
   .category-icon {
@@ -989,48 +988,6 @@ try {
 
   .subcategory-title-card.tilt-active:hover {
     transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
-  }
-
-  /* 第一布局：小分类标题取消卡片，只保留文字 */
-  .layout-grid .subcategory-title-card {
-    background: var(--card-bg) !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 0 0 8px 0 !important;
-    margin-bottom: 16px !important;
-    transition: none !important;
-    transform: none !important;
-    transform-style: flat !important;
-    will-change: auto !important;
-    overflow: visible !important;
-  }
-
-  .layout-grid .subcategory-title-card::before,
-  .layout-grid .subcategory-title-card::after {
-    display: none !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover {
-    transform: none !important;
-    box-shadow: none !important;
-    border-color: transparent !important;
-    background: var(--card-bg) !important;
-  }
-
-  .layout-grid .subcategory-title-card:hover::before,
-  .layout-grid .subcategory-title-card:hover::after {
-    opacity: 0 !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active {
-    transition: none !important;
-  }
-
-  .layout-grid .subcategory-title-card.tilt-active:hover {
-    transform: none !important;
   }
 
   .subcategory-title {
@@ -1503,7 +1460,6 @@ try {
     pointer-events: auto;
     transform: scale(1);
   }
-
 
   .music-btn:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -2185,11 +2141,6 @@ try {
     opacity: 0 !important;
   }
 
-  /* 第一布局隐藏律动栏 */
-  .layout-grid .music-bar-bottom-container {
-    display: none !important;
-  }
-
   .layout-minimal .bg-gradient {
     display: block;
     background: #ffffff;
@@ -2721,6 +2672,147 @@ try {
     max-height: 40px;
     opacity: 1;
     margin-top: 4px;
+  }
+
+  /* ========== 清晰布局（Clear Layout）========== */
+  .layout-clear .link-card,
+  .layout-clear .ai-link-card {
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    min-height: auto;
+    margin: -4px -8px;
+  }
+
+  .layout-clear .link-card:hover,
+  .layout-clear .ai-link-card:hover,
+  .layout-clear .subcategory-title-card:hover {
+    transform: none;
+    box-shadow: 0 2px 12px rgba(184, 150, 83, 0.15);
+    border: none;
+    background: linear-gradient(135deg, rgba(184, 150, 83, 0.08), rgba(212, 175, 110, 0.05));
+  }
+
+  .layout-clear .link-card-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .layout-clear .link-icon {
+    display: none;
+  }
+
+  .layout-clear .link-info {
+    flex: none;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .layout-clear .link-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    position: relative;
+    display: block;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-card:hover .link-name {
+    color: #b89653;
+  }
+
+  .layout-clear .link-card:hover .link-name::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #b89653;
+    transition: all 0.3s ease;
+  }
+
+  .layout-clear .link-url {
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    margin-bottom: 0;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .layout-clear .link-desc {
+    max-height: 40px;
+    opacity: 1;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    color: #999999;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .layout-clear .link-arrow {
+    display: none;
+  }
+
+  .layout-clear footer {
+    background: transparent;
+    border-top: 1px solid #e5e5e5;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .layout-clear .footer-badges .badge {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+  }
+
+  .layout-clear .footer-badges .badge:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
+  }
+
+  .layout-clear .disclaimer-btn {
+    background: transparent;
+    border: none;
+    color: #666666;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .layout-clear .disclaimer-btn:hover {
+    background: transparent;
+    color: #1d1d1f;
+    text-decoration: underline;
   }
 
   .layout-minimal .link-arrow {
@@ -3284,6 +3376,8 @@ try {
 
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     border-color: transparent;
   }
@@ -3293,18 +3387,24 @@ try {
   [data-theme="deepsea"] body.layout-minimal .search-inline:hover,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
   [data-theme="clay"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     border-color: rgba(255, 255, 255, 0.5);
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff;
   }
 
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff;
   }
@@ -3500,6 +3600,204 @@ try {
   [data-theme="forest"] body.layout-minimal .footer-copy,
   [data-theme="deepsea"] body.layout-minimal .footer-copy,
   [data-theme="clay"] body.layout-minimal .footer-copy {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ========== Linear 黑（Linear 暗色主题提取） ========== */
+  [data-theme="ink"] {
+    --bg-primary: #08090a;
+    --bg-secondary: #141519;
+    --text-primary: #f7f8f8;
+    --text-secondary: #8a8f98;
+    --accent: #828fff;
+    --accent-hover: #9ba8ff;
+    --card-bg: rgba(28, 28, 31, 0.8);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal {
+    background: linear-gradient(135deg, #08090a 0%, #141519 50%, #1c1d22 100%);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .logo {
+    color: #f7f8f8 !important;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover,
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-tabs {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .tab-btn.active::after {
+    background: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline {
+    border-color: transparent;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline:hover,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .search-inline input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-header {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .category-title,
+  [data-theme="ink"] body.layout-minimal .subcategory-title {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-en-title {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover,
+  [data-theme="ink"] body.layout-minimal .ai-link-card:hover,
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name {
+    color: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-name::after {
+    background: #828fff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-url {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-desc {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  [data-theme="ink"] body.layout-minimal .link-card:hover .link-desc {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .subcategory-title-card .link-name {
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle,
+  [data-theme="ink"] body.layout-minimal .layout-btn,
+  [data-theme="ink"] body.layout-minimal .hide-toggle {
+    border-color: transparent;
+    color: #f7f8f8;
+  }
+
+  [data-theme="ink"] .music-fx-btn,
+  [data-theme="ink"] .music-fx-close {
+    color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover,
+  [data-theme="ink"] body.layout-minimal .hide-toggle:hover {
+    background: transparent;
+    color: #f7f8f8;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-theme="ink"] body.layout-minimal .theme-toggle:hover svg,
+  [data-theme="ink"] body.layout-minimal .layout-btn:hover svg {
+    fill: #f7f8f8;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active {
+    background: #ffffff;
+    color: #08090a;
+    border-color: #ffffff;
+  }
+
+  [data-theme="ink"] body.layout-minimal .layout-btn.active svg {
+    fill: #08090a;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal .hide-toggle.active svg {
+    fill: #000000;
+  }
+
+  [data-theme="ink"] body.layout-minimal footer {
+    border-top-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-badges .badge:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="ink"] body.layout-minimal .disclaimer-btn:hover {
+    color: #333333;
+  }
+
+  [data-theme="ink"] body.layout-minimal .footer-copy {
     color: rgba(255, 255, 255, 0.6);
   }
 
@@ -3717,7 +4015,6 @@ try {
     transform: scale(1);
   }
 
-
   
 
   /* 控制按钮统一尺寸 + 杂志默认布局适配 */
@@ -3868,8 +4165,6 @@ try {
     }
   }
 
-
-
   /* 最终按钮尺寸覆盖：主题 / 布局 / 隐藏 */
   .theme-toggle,
   .hide-toggle,
@@ -3906,30 +4201,6 @@ try {
                 border-color 0.3s ease,
                 background-color 0.3s ease,
                 box-shadow 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    border-radius: 9px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-    width: 17px !important;
-    height: 17px !important;
-    transition: fill 0.2s ease,
-                filter 0.2s ease,
-                opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-    transform: translate(-50%, -50%) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    transition: opacity 0.2s ease !important;
   }
 
   .theme-toggle,
@@ -4002,27 +4273,6 @@ try {
       min-width: 0 !important;
       min-height: 0 !important;
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 8px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 40px !important;
-      width: 92px !important;
-    }
   }
 
   @media (max-width: 375px) {
@@ -4053,30 +4303,7 @@ try {
     .category-tabs.search-expanded {
       transform: translateX(-8px);
     }
-
-    body:not(.layout-minimal) .search-inline {
-      border-radius: 7px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon {
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 15px !important;
-      height: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-      transform: translateY(-50%) !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 70px !important;
-    }
   }
-
-
 
   /* 第二布局按钮方块化 */
   body.layout-minimal .theme-toggle,
@@ -4547,47 +4774,6 @@ try {
     filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.75));
   }
 
-  body.layout-grid.background-image-mode .link-icon {
-    box-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle,
-  body.layout-grid .layout-toggle,
-  body.layout-grid .layout-btn,
-  body.layout-grid .hide-toggle {
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg,
-  body.layout-grid .layout-btn svg,
-  body.layout-grid .hide-toggle svg {
-    filter: none !important;
-    text-shadow: none !important;
-  }
-
-  body.layout-grid .theme-toggle svg {
-    color: #f59e0b !important;
-    fill: #f59e0b !important;
-  }
-
-  body.layout-grid .layout-btn svg {
-    color: #3b82f6 !important;
-    fill: #3b82f6 !important;
-  }
-
-  body.layout-grid .hide-toggle svg {
-    color: #10b981 !important;
-    fill: #10b981 !important;
-  }
-
-  body.layout-grid.hide-mode .hide-toggle svg {
-    color: #ef4444 !important;
-    fill: #ef4444 !important;
-  }
-
   body.background-image-mode .music-bar-bottom-container .music-fx-btn {
     color: rgba(255, 255, 255, 0.94) !important;
     filter: none !important;
@@ -4884,10 +5070,6 @@ try {
     cursor: text;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded {
-    border-radius: 18px !important;
-  }
-
   .layout-minimal .search-inline.expanded {
     width: 160px !important;
     min-width: 160px !important;
@@ -4988,41 +5170,6 @@ try {
     color: rgba(255, 255, 255, 0.96) !important;
   }
 
-  /* 本轮仅改 index：经典布局标签按附件恢复，搜索框与手机主题滚动条补强 */
-  body.layout-grid .category-tabs {
-    max-width: 1200px;
-    margin: 0 auto 20px;
-    padding: 0 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    overflow: visible;
-  }
-
-  body.layout-grid .tab-btn {
-    height: auto;
-    min-height: 0;
-    padding: 10px 20px;
-    border-radius: 20px !important;
-    font-size: 14px;
-    line-height: normal;
-    flex: 0 1 auto;
-    white-space: normal;
-  }
-
-  body.layout-grid .tab-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  body.layout-grid .tab-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #ffffff;
-  }
-
   .search-inline,
   .search-inline input,
   .search-inline input::placeholder {
@@ -5036,7 +5183,6 @@ try {
     border-color: rgba(255, 255, 255, 0.88) !important;
     box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18) !important;
   }
-
 
   .theme-toggle.background-picker-open {
     background: var(--card-bg) !important;
@@ -5111,15 +5257,6 @@ try {
     transform: translate(-50%, -50%) !important;
   }
 
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 18px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 34px !important;
-    width: 138px !important;
-  }
-
   .layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 17px !important;
@@ -5131,14 +5268,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 96px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5153,14 +5282,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 15px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 32px !important;
-      width: 72px !important;
-    }
 
     .layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -5173,8 +5294,6 @@ try {
       width: 72px !important;
     }
   }
-
-  body:not(.layout-minimal) .search-inline input,
   .layout-minimal .search-inline input,
   body.background-image-mode .search-inline input,
   body.background-image-mode.layout-minimal .search-inline input {
@@ -5182,8 +5301,6 @@ try {
     transition:
       opacity 0.2s ease !important;
   }
-
-  body:not(.layout-minimal) .search-inline.expanded input,
   .layout-minimal .search-inline.expanded input,
   body.background-image-mode .search-inline.expanded input,
   body.background-image-mode.layout-minimal .search-inline.expanded input {
@@ -5246,23 +5363,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body.layout-grid .category-tabs {
-      padding: 0 16px;
-      gap: 6px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 8px 14px;
-      border-radius: 20px !important;
-      font-size: 13px;
-      height: auto;
-      min-height: 0;
-      line-height: normal;
-    }
 
     .background-strip {
       touch-action: pan-x;
@@ -5291,19 +5391,6 @@ try {
   }
 
   @media (max-width: 375px) {
-    body.layout-grid .category-tabs {
-      padding: 0 12px;
-      gap: 4px;
-      flex-wrap: wrap;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    body.layout-grid .tab-btn {
-      padding: 6px 10px;
-      border-radius: 20px !important;
-      font-size: 12px;
-    }
   }
 
   /* 全平台适配兜底 */
@@ -5350,8 +5437,6 @@ try {
     }
   }
 /* ========== 背景、主题与全平台适配结束 ========== */
-
-
 
   /* ========== 全平台适配补强 ========== */
   html {
@@ -5455,175 +5540,10 @@ try {
     }
   }
 
-
-  
-/* ========== 搜索框动画复刻结束 ========== */
-
-
-  /* ========== 经典布局搜索框完全复刻参考文件（仅经典布局，杂志布局不变） ========== */
-  body:not(.layout-minimal) .search-wrapper,
-  body:not(.layout-minimal) .search-wrapper.search-expanded {
-    position: static !important;
-    width: auto !important;
-    height: auto !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    flex: 0 0 auto !important;
-    z-index: auto !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    flex: 0 0 auto !important;
-    border-radius: 20px !important;
-    overflow: hidden !important;
-    will-change: width !important;
-    transition: width 0.3s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    width: 180px !important;
-    min-width: 180px !important;
-    flex: 0 0 180px !important;
-    border-radius: 20px !important;
-  }
-
-  body:not(.layout-minimal) .search-inline .search-icon,
-  body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-  body:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 11px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 16px !important;
-    height: 16px !important;
-    transition: none !important;
-  }
-
-  body:not(.layout-minimal) .search-inline input {
-    left: 36px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 130px !important;
-    opacity: 0 !important;
-    transition: opacity 0.2s ease !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded input {
-    opacity: 1 !important;
-  }
-
-  body:not(.layout-minimal) .category-tabs.search-expanded {
-    transform: none !important;
-    flex-wrap: wrap !important;
-    overflow: visible !important;
-  }
-
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 140px !important;
-      min-width: 140px !important;
-      flex: 0 0 140px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 90px !important;
-    }
   }
 
   @media (max-width: 375px) {
-    body:not(.layout-minimal) .search-inline {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      border-radius: 20px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline .search-icon,
-    body:not(.layout-minimal) .search-inline:not(.expanded) .search-icon,
-    body:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 11px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline.expanded {
-      width: 100px !important;
-      min-width: 100px !important;
-      flex: 0 0 100px !important;
-    }
-
-    body:not(.layout-minimal) .search-inline input {
-      left: 36px !important;
-      width: 64px !important;
-      font-size: 12px !important;
-    }
-  }
-  /* Classic layout search fill follows tab color */
-  body:not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-  }
-
-  body:not(.layout-minimal) .search-inline.expanded {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-  }
-
-  [data-theme="starry"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="sunset"] body:not(.background-image-mode):not(.layout-minimal) .search-inline,
-  [data-theme="aurora"] body:not(.background-image-mode):not(.layout-minimal) .search-inline {
-    background: var(--card-bg) !important;
-    border-color: var(--card-border) !important;
-    box-shadow: none !important;
-  }
-  /* Classic layout search border matches classic tabs */
-  body.background-image-mode:not(.layout-minimal) .search-inline {
-    border: 1px solid var(--card-border) !important;
-    background: var(--card-bg) !important;
-    box-shadow: none !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline:hover {
-    border-color: var(--accent) !important;
-    background: var(--card-bg) !important;
-  }
-
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded {
-    border-color: var(--card-border) !important;
-    background: var(--card-bg) !important;
   }
   /* ========== Minimal layout search box reference (magazine only, classic unchanged) ========== */
   body.layout-minimal .search-wrapper,
@@ -5790,99 +5710,6 @@ try {
     background-image: none !important;
     box-shadow: none !important;
   }
-
-  body.layout-grid .link-icon,
-  body:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    box-shadow: none !important;
-    color: var(--text-primary) !important;
-  }
-
-
-  /* classic layout + wallpaper theme: force icons white */
-  body.layout-grid.background-image-mode .link-icon,
-  body.background-image-mode:not(.layout-minimal) .link-icon,
-  body.layout-grid.background-image-mode .link-arrow,
-  body.background-image-mode:not(.layout-minimal) .link-arrow {
-    color: #ffffff !important;
-    fill: #ffffff !important;
-  }
-
-  /* classic wallpaper card border first-paint stabilization */
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  body.layout-grid.background-image-mode .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* early html wallpaper mode card border stabilization */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background-clip: padding-box !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-    transition-property: transform, background-color, color, opacity !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  html.background-image-mode body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* first-second card border rasterization guard */
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: transparent !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    transition: none !important;
-  }
-
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .skeleton-card::after {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
   /* ========== Capture unlock and mobile bottom seam fix ========== */
   html,
   body,
@@ -5923,13 +5750,6 @@ try {
     }
   }
 
-  /* ========== Search expanded icon spacing tweak ========== */
-  body:not(.layout-minimal) .search-inline.expanded .search-icon,
-  body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-    left: 10px !important;
-    transform: translateY(-50%) !important;
-  }
-
   body.layout-minimal .search-inline.expanded .search-icon,
   body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
     left: 8px !important;
@@ -5937,10 +5757,6 @@ try {
   }
 
   @media (max-width: 768px) {
-    body:not(.layout-minimal) .search-inline.expanded .search-icon,
-    body.background-image-mode:not(.layout-minimal) .search-inline.expanded .search-icon {
-      left: 10px !important;
-    }
 
     body.layout-minimal .search-inline.expanded .search-icon,
     body.background-image-mode.layout-minimal .search-inline.expanded .search-icon {
@@ -6009,6 +5825,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline,
   [data-theme="forest"] body.layout-minimal .search-inline,
   [data-theme="deepsea"] body.layout-minimal .search-inline,
+  [data-theme="ink"] body.layout-minimal .search-inline,
+
   [data-theme="clay"] body.layout-minimal .search-inline {
     background: transparent !important;
     background-color: transparent !important;
@@ -6032,6 +5850,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline.expanded,
   [data-theme="forest"] body.layout-minimal .search-inline.expanded,
   [data-theme="deepsea"] body.layout-minimal .search-inline.expanded,
+  [data-theme="ink"] body.layout-minimal .search-inline.expanded,
+
   [data-theme="clay"] body.layout-minimal .search-inline.expanded {
     background: transparent !important;
     background-color: transparent !important;
@@ -6047,6 +5867,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline .search-icon,
   [data-theme="forest"] body.layout-minimal .search-inline .search-icon,
   [data-theme="deepsea"] body.layout-minimal .search-inline .search-icon,
+  [data-theme="ink"] body.layout-minimal .search-inline .search-icon,
+
   [data-theme="clay"] body.layout-minimal .search-inline .search-icon {
     fill: #ffffff !important;
     color: #ffffff !important;
@@ -6059,6 +5881,8 @@ try {
   [data-theme="dream"] body.layout-minimal .search-inline input,
   [data-theme="forest"] body.layout-minimal .search-inline input,
   [data-theme="deepsea"] body.layout-minimal .search-inline input,
+  [data-theme="ink"] body.layout-minimal .search-inline input,
+
   [data-theme="clay"] body.layout-minimal .search-inline input {
     color: #ffffff !important;
   }
@@ -6078,6 +5902,8 @@ try {
   [data-theme="dream"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="forest"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
   [data-theme="deepsea"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+  [data-theme="ink"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover,
+
   [data-theme="clay"] body.layout-minimal .music-bar-bottom-container .music-fx-btn.visible:hover {
     color: #ffffff !important;
   }
@@ -6187,41 +6013,6 @@ try {
     color: #ffffff !important;
   }
 
-
-
-  /* final override: wallpaper classic cards use transparent borders */
-  html.background-image-mode body.layout-grid .link-card,
-  html.background-image-mode body.layout-grid .ai-link-card,
-  html.background-image-mode body.layout-grid .skeleton-card,
-  body.layout-grid.background-image-mode .link-card,
-  body.layout-grid.background-image-mode .ai-link-card,
-  body.layout-grid.background-image-mode .skeleton-card,
-  html.cards-stabilizing body.layout-grid .link-card,
-  html.cards-stabilizing body.layout-grid .ai-link-card,
-  html.cards-stabilizing body.layout-grid .skeleton-card {
-    border: 1px solid transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  html.background-image-mode body.layout-grid .link-card::before,
-  html.background-image-mode body.layout-grid .ai-link-card::before,
-  html.background-image-mode body.layout-grid .link-card::after,
-  html.background-image-mode body.layout-grid .ai-link-card::after,
-  body.layout-grid.background-image-mode .link-card::before,
-  body.layout-grid.background-image-mode .ai-link-card::before,
-  body.layout-grid.background-image-mode .link-card::after,
-  body.layout-grid.background-image-mode .ai-link-card::after,
-  html.cards-stabilizing body.layout-grid .link-card::before,
-  html.cards-stabilizing body.layout-grid .ai-link-card::before,
-  html.cards-stabilizing body.layout-grid .link-card::after,
-  html.cards-stabilizing body.layout-grid .ai-link-card::after {
-    border: 0 !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-
   body.background-image-mode .subcategory-title,
   body.background-image-mode .subcategory-en-title,
   html.background-image-mode body .subcategory-title,
@@ -6238,11 +6029,15 @@ try {
   }
 </style>
 </head>
-<body>
+<body class="layout-minimal">
 <script>
   (function() {
     var saved = localStorage.getItem('layout') || 'minimal';
-    document.body.classList.add('layout-' + saved);
+    if (saved === 'clear') {
+      document.body.classList.add('layout-minimal', 'layout-clear');
+    } else {
+      document.body.classList.add('layout-' + saved);
+    }
 
     try {
       var savedBackground = localStorage.getItem('kisstr_background_picker_selection_v1');
@@ -6273,7 +6068,7 @@ try {
     <div class="logo-group">
       <div class="logo" draggable="false">
         <div class="logo-icon"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M28,16l-6,6H10l-6-6l6-6l6,5.994L22,10L28,16z"/></svg></div>
-        <span id="logoText" style="pointer-events:none">𝗞𝗶𝘀𝘀𝘁𝗿</span>
+        <span id="logoText" style="pointer-events:none">𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐</span>
       </div>
     </div>
     <div class="header-actions">
@@ -6306,7 +6101,7 @@ try {
         </svg>
       </button>
       <div class="layout-toggle" id="layoutToggle">
-        <button class="layout-btn" data-layout="minimal" title="切换布局">
+        <button class="layout-btn" data-layout="clear" title="切换布局（清晰/杂志）">
           <svg class="layout-icon-grid" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"/></svg>
           <svg class="layout-icon-minimal" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h18v4H3zM3 13h18v4H3z"/></svg>
         </button>
@@ -6359,7 +6154,8 @@ try {
     <span class="badge">✨ 无弹窗</span>
     <span class="badge">✨ 无盈利</span>
   </div>
-  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
+  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>&nbsp;&nbsp;
+  <a href="https://m.baike.com/wikiid/7316069310949130294" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">关于作者</a>
   <p class="footer-copy">影视影评 · 优质网站收藏</p>
 </footer>
 
@@ -6380,197 +6176,197 @@ const linksData = [
           {
             "name": "IMDb (Internet Movie Database)",
             "url": "https://www.imdb.com",
-            "description": "全球最大的电影、电视节目、演职员及影评数据库，提供权威评分、演职员表、花絮与预告片。"
+            "description": "全球最大的电影、电视节目、演职员及影评数据库"
           },
           {
             "name": "Rotten Tomatoes (烂番茄)",
             "url": "https://www.rottentomatoes.com",
-            "description": "著名的影评聚合网站，以“新鲜度”和“爆米花指数”代表专业影评人与普通观众的评价。"
+            "description": "著名的影评聚合网站，以“新鲜度”和“爆米花指数”代"
           },
           {
             "name": "Letterboxd",
             "url": "https://letterboxd.com",
-            "description": "全球影迷极力推荐的电影社交与观影记录平台，支持创建私人书单、评分、撰写影评与追踪观影动态。"
+            "description": "全球影迷极力推荐的电影社交与观影记录平台"
           },
           {
             "name": "Douban Movie (豆瓣电影)",
             "url": "https://movie.douban.com",
-            "description": "中国最权威的影视作品评分、影评撰写、观影记录与同好交流的影视文化社区。"
+            "description": "中国最权威的影视作品评分、影评撰写"
           },
           {
             "name": "Netflix",
             "url": "https://www.netflix.com",
-            "description": "全球最大的流媒体视频订阅平台，拥有海量独家高品质自制剧集、电影及纪录片。"
+            "description": "全球最大的流媒体视频订阅平台"
           },
           {
             "name": "Amazon Prime Video",
             "url": "https://www.primevideo.com",
-            "description": "亚马逊旗下全球流媒体平台，提供独家原创剧集、热门院线电影及频道订阅服务。"
+            "description": "亚马逊旗下全球流媒体平台，提供独家原创剧集"
           },
           {
             "name": "Disney+",
             "url": "https://www.disneyplus.com",
-            "description": "迪士尼官方流媒体平台，汇集迪士尼、皮克斯、漫威、星球大战、国家地理及Star等品牌内容。"
+            "description": "迪士尼官方流媒体平台，汇集迪士尼、皮克斯、漫威"
           },
           {
             "name": "Max (HBO Max)",
             "url": "https://www.max.com",
-            "description": "华纳兄弟探索旗下流媒体，拥有HBO经典剧集、DC宇宙、华纳电影及各种纪录片。"
+            "description": "华纳兄弟探索旗下流媒体，拥有HBO经典剧集"
           },
           {
             "name": "Apple TV+",
             "url": "https://tv.apple.com",
-            "description": "苹果公司旗下的高清流媒体平台，主打高品质自制原创剧集、独家电影与纪录片。"
+            "description": "苹果公司旗下的高清流媒体平台"
           },
           {
             "name": "Hulu",
             "url": "https://www.hulu.com",
-            "description": "北美知名流媒体平台，以快速更新当前电视热播剧集、电影及独家自制剧集见长。"
+            "description": "北美知名流媒体平台，以快速更新当前电视热播剧集"
           },
           {
             "name": "YouTube Movies & TV",
             "url": "https://www.youtube.com/feed/storefront",
-            "description": "YouTube官方影视频道，提供最新院线大片的数字版租借、购买及免费含广告电影。"
+            "description": "YouTube官方影视频道"
           },
           {
             "name": "Peacock",
             "url": "https://www.peacocktv.com",
-            "description": "NBC环球旗下的流媒体平台，提供环球影业电影、NBC经典剧集、体育赛事直播及独家节目。"
+            "description": "NBC环球旗下的流媒体平台，提供环球影业电影"
           },
           {
             "name": "Paramount+",
             "url": "https://www.paramountplus.com",
-            "description": "派拉蒙旗下的流媒体服务，包含派拉蒙影业电影、CBS剧集、星际迷航系列及各类体育直播。"
+            "description": "派拉蒙旗下的流媒体服务，包含派拉蒙影业电影"
           },
           {
             "name": "Tubi TV",
             "url": "https://tubitv.com",
-            "description": "北美最大的免费含广告流媒体服务平台(AVOD)，提供上万部正版电影与电视节目。"
+            "description": "北美最大的免费含广告流媒体服务平台(AVOD)"
           },
           {
             "name": "Pluto TV",
             "url": "https://pluto.tv",
-            "description": "派拉蒙旗下的免费流媒体电视频道服务，提供数百个流媒体直播频道及海量免费点播影视。"
+            "description": "派拉蒙旗下的免费流媒体电视频道服务"
           },
           {
             "name": "Vudu (Fandango at Home)",
             "url": "https://www.vudu.com",
-            "description": "北美知名的数字影视购买与租借平台，提供高清/4K UHD影片在线点播服务。"
+            "description": "北美知名的数字影视购买与租借平台"
           },
           {
             "name": "MUBI",
             "url": "https://mubi.com",
-            "description": "面向艺术电影与独立电影爱好者的流媒体与策展平台，每日精心推荐并上线高品质佳作。"
+            "description": "面向艺术电影与独立电影爱好者的流媒体与策展平台"
           },
           {
             "name": "The Criterion Channel",
             "url": "https://www.criterionchannel.com",
-            "description": "标准收藏(CC)官方流媒体，汇聚全球经典大师名作、艺术电影及独家花絮解析。"
+            "description": "标准收藏(CC)官方流媒体，汇聚全球经典大师名作"
           },
           {
             "name": "Crunchyroll",
             "url": "https://www.crunchyroll.com",
-            "description": "全球最大的正版日本动漫流媒体平台，同步更新最新日本热门动画及漫画。"
+            "description": "全球最大的正版日本动漫流媒体平台"
           },
           {
             "name": "Bilibili (哔哩哔哩/B站)",
             "url": "https://www.bilibili.com",
-            "description": "中国知名的文化社区与视频平台，拥有正版动漫、纪录片、影视剧及庞大的PUGV创作内容。"
+            "description": "中国知名的文化社区与视频平台，拥有正版动漫"
           },
           {
             "name": "iQIYI (爱奇艺)",
             "url": "https://www.iqiyi.com",
-            "description": "中国领先的高清品质视频在线播放平台，拥有丰富的高清国产剧、综艺及独家自制剧。"
+            "description": "中国领先的高清品质视频在线播放平台"
           },
           {
             "name": "Tencent Video (腾讯视频)",
             "url": "https://v.qq.com",
-            "description": "中国综合性视频平台，提供海量热门电视剧、自制动漫、电影、综艺与体育赛事。"
+            "description": "中国综合性视频平台，提供海量热门电视剧、自制动漫"
           },
           {
             "name": "Youku (优酷)",
             "url": "https://www.youku.com",
-            "description": "中国老牌视频分享与播放平台，包含丰富剧集、电影、文化纪录片与自制综艺。"
+            "description": "中国老牌视频分享与播放平台，包含丰富剧集、电影"
           },
           {
             "name": "Mango TV (芒果TV)",
             "url": "https://www.mgtv.com",
-            "description": "湖南广电旗下互联网视频平台，以独家强档综艺节目、青春偶像剧与娱乐内容著称。"
+            "description": "湖南广电旗下互联网视频平台，以独家强档综艺节目"
           },
           {
             "name": "Viki (Rakuten Viki)",
             "url": "https://www.viki.com",
-            "description": "专注于亚洲影视剧(韩剧、国产剧、日剧等)的全球流媒体平台，提供多语言粉丝字幕。"
+            "description": "专注于亚洲影视剧(韩剧、国产剧"
           },
           {
             "name": "Metacritic Movies",
             "url": "https://www.metacritic.com/movie",
-            "description": "权威媒体影评聚合平台，将全球顶级影评人的评价转换为标准加权百分制得分。"
+            "description": "权威媒体影评聚合平台，将全球顶级影评人的评价转换为"
           },
           {
             "name": "TMDB (The Movie Database)",
             "url": "https://www.themoviedb.org",
-            "description": "强大的社区驱动型开放影视数据库，为全球众多影视软件与Plex等媒体库提供数据API。"
+            "description": "强大的社区驱动型开放影视数据库"
           },
           {
             "name": "Box Office Mojo",
             "url": "https://www.boxofficemojo.com",
-            "description": "全球最权威的电影票房数据统计网站，实时追踪全球及北美院线票房排行榜。"
+            "description": "全球最权威的电影票房数据统计网站"
           },
           {
             "name": "JustWatch",
             "url": "https://www.justwatch.com",
-            "description": "全球影视流媒体指南，帮助用户快速查询某部电影或剧集在哪个平台(Netflix/Max等)合法上线。"
+            "description": "全球影视流媒体指南，帮助用户快速查询某部电影或剧集"
           },
           {
             "name": "Trakt.tv",
             "url": "https://trakt.tv",
-            "description": "强大的影视追踪与历史记录平台，可自动同步各类播放器观影记录并生成统计图表。"
+            "description": "强大的影视追踪与历史记录平台"
           },
           {
             "name": "Plex",
             "url": "https://www.plex.tv",
-            "description": "著名的个人媒体服务器软件，同时提供免费点播电影、电视节目及 live 电视直播。"
+            "description": "著名的个人媒体服务器软件，同时提供免费点播电影"
           },
           {
             "name": "Jellyfin",
             "url": "https://jellyfin.org",
-            "description": "完全免费开源的个人影视媒体服务器系统，无任何追踪与付费限制，极受硬件发烧友喜爱。"
+            "description": "完全免费开源的个人影视媒体服务器系统"
           },
           {
             "name": "Emby",
             "url": "https://emby.media",
-            "description": "强大的个人家庭影院媒体服务器，支持跨平台转码、多用户管理与优雅的海报墙展示。"
+            "description": "强大的个人家庭影院媒体服务器，支持跨平台转码"
           },
           {
             "name": "Stremio",
             "url": "https://www.stremio.com",
-            "description": "现代化影视聚合播放器，可通过插件整合各类流媒体平台与磁力资源进行统一观看。"
+            "description": "现代化影视聚合播放器，可通过插件整合各类流媒体平台"
           },
           {
             "name": "Kodi",
             "url": "https://kodi.tv",
-            "description": "开源免费的跨平台家庭影院软件，支持丰富的插件扩展，打造全能型大屏影视播放终端。"
+            "description": "开源免费的跨平台家庭影院软件，支持丰富的插件扩展"
           },
           {
             "name": "Subscene",
             "url": "https://subscene.com",
-            "description": "全球历史最悠久的知名多语言电影与电视剧字幕下载社区之一。"
+            "description": "全球历史最悠久的知名多语言电影与电视剧字幕下载社区"
           },
           {
             "name": "OpenSubtitles",
             "url": "https://www.opensubtitles.org",
-            "description": "全球最大的开源影视字幕数据库，提供上百万种语言版本的字幕文件下载与API集成。"
+            "description": "全球最大的开源影视字幕数据库"
           },
           {
             "name": "Zimuku (字幕库)",
             "url": "https://zimuku.org",
-            "description": "中国知名的多语言影视字幕下载网站，提供精准匹配的射手网继承字幕与爱好者翻译。"
+            "description": "中国知名的多语言影视字幕下载网站"
           },
           {
             "name": "R3SUB (SubHD)",
             "url": "https://subhd.tv",
-            "description": "优秀的中文影视字幕分享交流平台，涵盖海量电影、美剧、英剧的高质量字幕。"
+            "description": "优秀的中文影视字幕分享交流平台，涵盖海量电影"
           },
           {
             "name": "A4k Subtitles",
@@ -6580,52 +6376,52 @@ const linksData = [
           {
             "name": "YIFY Subtitles",
             "url": "https://yifysubtitles.org",
-            "description": "专为 YIFY/YTS 压制组影片提供精准匹配字幕的多语言字幕下载网。"
+            "description": "专为 YIFY/YTS 压制组影片提供精准匹配字幕"
           },
           {
             "name": "Podnapisi",
             "url": "https://www.podnapisi.net",
-            "description": "国际知名多语言字幕下载网，提供高匹配度且经过审核的电影与剧集字幕。"
+            "description": "国际知名多语言字幕下载网"
           },
           {
             "name": "TVSubtitles",
             "url": "https://www.tvsubtitles.net",
-            "description": "专注于电视剧集(美剧、日韩剧等)字幕下载的专题类字幕数据库。"
+            "description": "专注于电视剧集(美剧、日韩剧等)字幕下载的专题类字"
           },
           {
             "name": "Addic7ed",
             "url": "https://www.addic7ed.com",
-            "description": "专注于最新美剧、英剧快翻字幕的专业字幕组发布与交流网站。"
+            "description": "专注于最新美剧、英剧快翻字幕的专业字幕组发布与交流"
           },
           {
             "name": "MovieLabs (影视实验室)",
             "url": "https://movielabs.com",
-            "description": "由好 Why 著名制片厂联合发起的影视技术标准研究与次世代视听技术平台。"
+            "description": "由好 Why 著名制片厂联合发起的影视技术标准研究"
           },
           {
             "name": "FilmAffinity",
             "url": "https://www.filmaffinity.com",
-            "description": "著名的影视推荐与电影评分网，可根据用户喜好匹配个性化电影推荐。"
+            "description": "著名的影视推荐与电影评分网"
           },
           {
             "name": "Blu-ray.com",
             "url": "https://www.blu-ray.com",
-            "description": "全球最大的蓝光光盘、4K UHD超高清盘片、影音硬件及画质测评社区。"
+            "description": "全球最大的蓝光光盘、4K UHD超高清盘片"
           },
           {
             "name": "DVD-Compare",
             "url": "https://www.dvdcompare.net",
-            "description": "权威的全球不同版本影碟(Blu-ray/4K UHD/DVD)画质、音轨与剪辑版本对比网。"
+            "description": "权威的全球不同版本影碟(Blu-ray/4K"
           },
           {
             "name": "Movie-Censorship",
             "url": "https://www.movie-censorship.com",
-            "description": "专门对比电影不同剪辑版(导演剪辑版、公映版、删减版)镜头差异的硬核站点。"
+            "description": "专门对比电影不同剪辑版(导演剪辑版、公映版"
           },
           {
             "name": "High-Def Digest",
             "url": "https://www.highdefdigest.com",
-            "description": "权威的高清影音新闻、蓝光/4K盘片评测与家庭影院设备硬件测试网。"
+            "description": "权威的高清影音新闻、蓝光/4K盘片评测与家庭影院设"
           }
         ]
       },
@@ -6636,87 +6432,87 @@ const linksData = [
           {
             "name": "Cinephilia & Beyond",
             "url": "https://cinephiliabeyond.org",
-            "description": "资深影迷与电影从业者的宝藏网站，提供电影剧本原稿、大师采访与深度制作解析。"
+            "description": "资深影迷与电影从业者的宝藏网站，提供电影剧本原稿"
           },
           {
             "name": "Screen Rant",
             "url": "https://screenrant.com",
-            "description": "著名的影视文化新闻网，提供电影爆料、剧集彩蛋解析、漫改影视前瞻与排行榜。"
+            "description": "著名的影视文化新闻网，提供电影爆料、剧集彩蛋解析"
           },
           {
             "name": "Collider",
             "url": "https://collider.com",
-            "description": "权威娱乐与影视新闻网，提供电影首映报道、独家专访、预告片解析及深度影评。"
+            "description": "权威娱乐与影视新闻网，提供电影首映报道、独家专访"
           },
           {
             "name": "Variety (好莱坞报道/综艺)",
             "url": "https://variety.com",
-            "description": "好莱坞最权威的影视娱乐商业报刊网站，报道影视投资、票房、项目推进与行业动态。"
+            "description": "好莱坞最权威的影视娱乐商业报刊网站，报道影视投资"
           },
           {
             "name": "The Hollywood Reporter",
             "url": "https://www.hollywoodreporter.com",
-            "description": "娱乐行业权威新闻媒体，报道好莱坞影视制作、明星动态、奖项预测与行业趋势。"
+            "description": "娱乐行业权威新闻媒体，报道好莱坞影视制作"
           },
           {
             "name": "Deadline Hollywood",
             "url": "https://deadline.com",
-            "description": "娱乐界Breaking News第一发源地，即时报道电影项目绿灯、选角、版权交易及票房快讯。"
+            "description": "娱乐界Breaking News第一发源地"
           },
           {
             "name": "Indiewire",
             "url": "https://www.indiewire.com",
-            "description": "专注于独立电影、艺术电影、国际影展及电影制作工艺的权威媒体。"
+            "description": "专注于独立电影、艺术电影"
           },
           {
             "name": "CinemaBlend",
             "url": "https://www.cinemablend.com",
-            "description": "提供流行电影与电视新闻、影评、预告片解读及流媒体指南的娱乐站点。"
+            "description": "提供流行电影与电视新闻、影评"
           },
           {
             "name": "Empire Online (帝国杂志)",
             "url": "https://www.empireonline.com",
-            "description": "英国著名电影杂志《Empire》官方网站，提供权威电影评测、独家剧照与探班报道。"
+            "description": "英国著名电影杂志《Empire》官方网站"
           },
           {
             "name": "Sight & Sound (BFI)",
             "url": "https://www.bfi.org.uk/sight-and-sound",
-            "description": "英国电影协会(BFI)旗下的传奇影评杂志，每十年评选一次“史上最伟大电影”。"
+            "description": "英国电影协会(BFI)旗下的传奇影评杂志"
           },
           {
             "name": "Cahiers du Cinéma (电影手册)",
             "url": "https://www.cahiersducinema.com",
-            "description": "法国传奇电影杂志，影评界与“新浪潮”运动发源地，刊登高度艺术导向的深度影评。"
+            "description": "法国传奇电影杂志，影评界与“新浪潮”运动发源地"
           },
           {
             "name": "World of Reel",
             "url": "https://www.worldofreel.com",
-            "description": "著名的好莱坞与国际电影试映、爆料、奖项风向标及试映口碑追踪博客。"
+            "description": "著名的好莱坞与国际电影试映、爆料"
           },
           {
             "name": "Film Comment",
             "url": "https://www.filmcomment.com",
-            "description": "极具深度的艺术电影与学术影评杂志，由林肯中心电影协会主办。"
+            "description": "极具深度的艺术电影与学术影评杂志"
           },
           {
             "name": "British Film Institute (BFI)",
             "url": "https://www.bfi.org.uk",
-            "description": "英国电影协会官网，保存电影历史遗产，推广电影艺术及主办伦敦电影节。"
+            "description": "英国电影协会官网，保存电影历史遗产"
           },
           {
             "name": "American Film Institute (AFI)",
             "url": "https://www.afi.com",
-            "description": "美国电影学会官网，以颁发终身成就奖及每年公布“AFI年度十大电影”闻名。"
+            "description": "美国电影学会官网，以颁发终身成就奖及每年公布“"
           },
           {
             "name": "Oscars Official Site",
             "url": "https://www.oscars.org",
-            "description": "奥斯卡金像奖(美国电影艺术与科学学院)官方网站，公布入围名单及颁奖礼资讯。"
+            "description": "奥斯卡金像奖(美国电影艺术与科学学院)官方网站"
           },
           {
             "name": "Festival de Cannes (戛纳电影节)",
             "url": "https://www.festival-cannes.com",
-            "description": "全球最高规格的戛纳国际电影节官方网站，发布金棕榈奖竞赛片与入围资讯。"
+            "description": "全球最高规格的戛纳国际电影节官方网站"
           },
           {
             "name": "La Biennale di Venezia (威尼斯电影节)",
@@ -6726,27 +6522,27 @@ const linksData = [
           {
             "name": "Berlinale (柏林国际电影节)",
             "url": "https://www.berlinale.de",
-            "description": "德国柏林国际电影节官方网站，展示主竞赛单元及金熊奖最新动态。"
+            "description": "德国柏林国际电影节官方网站"
           },
           {
             "name": "TIFF (多伦多国际电影节)",
             "url": "https://tiff.net",
-            "description": "北美最具影响力的多伦多国际电影节官网，其“人民选择奖”为奥斯卡重要风向标。"
+            "description": "北美最具影响力的多伦多国际电影节官网"
           },
           {
             "name": "Sundance Film Festival (圣丹斯电影节)",
             "url": "https://www.sundance.org",
-            "description": "全球最大的独立首映电影节官网，发掘新锐导演与独立制作佳作。"
+            "description": "全球最大的独立首映电影节官网"
           },
           {
             "name": "Asian Film Awards Academy",
             "url": "https://www.afa-academy.com",
-            "description": "亚洲电影大奖官方网站，表彰亚洲年度优秀电影制作与演员。"
+            "description": "亚洲电影大奖官方网站，表彰亚洲年度优秀电影制作与演"
           },
           {
             "name": "Hong Kong Film Awards (香港电影金像奖)",
             "url": "https://www.hkfaa.com",
-            "description": "香港电影金像奖官方网站，发布入围名册、颁奖典礼动态与历届得奖档案。"
+            "description": "香港电影金像奖官方网站，发布入围名册"
           },
           {
             "name": "Golden Horse Awards (台北金马影展)",
@@ -6756,117 +6552,117 @@ const linksData = [
           {
             "name": "FilmFreeway",
             "url": "https://filmfreeway.com",
-            "description": "全球最大的电影人投片平台，独立导演提交作品参与全球各大电影节的统一门户。"
+            "description": "全球最大的电影人投片平台"
           },
           {
             "name": "ShotOnSet / ShotOnRED",
             "url": "https://www.shotonwhat.com",
-            "description": "查询各大电影与剧集拍摄所使用的摄像机、镜头、胶片格式等摄影器材数据库。"
+            "description": "查询各大电影与剧集拍摄所使用的摄像机、镜头"
           },
           {
             "name": "Internet Movie Firearms Database (IMFDB)",
             "url": "https://www.imfdb.org",
-            "description": "维基百科风格的影视道具枪械数据库，精确分析影视作品中出现的各类武器。"
+            "description": "维基百科风格的影视道具枪械数据库"
           },
           {
             "name": "Internet Movie Cars Database (IMCDb)",
             "url": "https://www.imcdb.org",
-            "description": "专门收录与鉴定各类电影、电视剧及MV中出现过的所有汽车品牌与型号的网。"
+            "description": "专门收录与鉴定各类电影、电视剧及MV中出现过的所有"
           },
           {
             "name": "Movie-Locations",
             "url": "https://www.movie-locations.com",
-            "description": "详细记录全球各大经典电影实景拍摄地的寻踪与旅游探访指南网站。"
+            "description": "详细记录全球各大经典电影实景拍摄地的寻踪与旅游探访"
           },
           {
             "name": "FilmGrab",
             "url": "https://film-grab.com",
-            "description": "极受视觉设计师与摄影师喜爱的电影剧照网，整理了数万张高画质经典电影截帧。"
+            "description": "极受视觉设计师与摄影师喜爱的电影剧照网"
           },
           {
             "name": "MovieStillsDB",
             "url": "https://www.moviestillsdb.com",
-            "description": "全球庞大的官方高清电影剧照、现场工作照与宣传照海报数据库。"
+            "description": "全球庞大的官方高清电影剧照"
           },
           {
             "name": "IMP Awards (Internet Movie Poster Awards)",
             "url": "http://www.impawards.com",
-            "description": "全球最大的电影官方海报展示与设计交流网站，收录历年各版本海报。"
+            "description": "全球最大的电影官方海报展示与设计交流网站"
           },
           {
             "name": "FilmAffinity List",
             "url": "https://www.filmaffinity.com/en/topgen.php",
-            "description": "基于全球影迷真实投票生成的电影历史总榜与分类佳作推荐。"
+            "description": "基于全球影迷真实投票生成的电影历史总榜与分类佳作推"
           },
           {
             "name": "TasteKid / TasteDive",
             "url": "https://tastedive.com",
-            "description": "基于算法的跨媒体推荐引擎，输入喜欢的电影自动推荐风格相似的影视作品。"
+            "description": "基于算法的跨媒体推荐引擎"
           },
           {
             "name": "Cinetropa",
             "url": "https://cinetropa.com",
-            "description": "专注于欧洲电影、艺术影片与独立制作新闻与评价的专题平台。"
+            "description": "专注于欧洲电影、艺术影片与独立制作新闻与评价的专题"
           },
           {
             "name": "FilmIn (Spain)",
             "url": "https://www.filmin.es",
-            "description": "西班牙著名的艺术与独立电影流媒体服务，拥有极高的策展品味。"
+            "description": "西班牙著名的艺术与独立电影流媒体服务"
           },
           {
             "name": "AsianWiki",
             "url": "https://asianwiki.com",
-            "description": "最全面且更新及时的亚洲影视(日本、韩国、中国等)剧集、电影与演员百科。"
+            "description": "最全面且更新及时的亚洲影视(日本、韩国"
           },
           {
             "name": "HanCinema",
             "url": "https://www.hancinema.net",
-            "description": "专注于韩国电影与韩剧领域的综合数据库，包含剧情介绍、演员表及播出安排。"
+            "description": "专注于韩国电影与韩剧领域的综合数据库"
           },
           {
             "name": "DramaWiki",
             "url": "https://wiki.daddylive.me",
-            "description": "著名的日剧、韩剧及亚洲电视连续剧爱好者维护的权威资料库。"
+            "description": "著名的日剧、韩剧及亚洲电视连续剧爱好者维护的权威资"
           },
           {
             "name": "MyDramaList (MDL)",
             "url": "https://mydramalist.com",
-            "description": "全球最大的亚洲电视剧与电影(韩剧、国产剧、日剧、泰剧等)社区与观影追踪网。"
+            "description": "全球最大的亚洲电视剧与电影(韩剧、国产剧、日剧"
           },
           {
             "name": "Bangumi (番组计划)",
             "url": "https://bgm.tv",
-            "description": "专注于动漫、音乐、日剧与游戏记录与交流的ACG界“豆瓣”风格数据库。"
+            "description": "专注于动漫、音乐、日剧与游戏记录与交流的ACG界“"
           },
           {
             "name": "AniList",
             "url": "https://anilist.co",
-            "description": "现代化界面的全球动漫与漫画跟踪社区，支持可视化数据统计与社区交流。"
+            "description": "现代化界面的全球动漫与漫画跟踪社区"
           },
           {
             "name": "MyAnimeList (MAL)",
             "url": "https://myanimelist.net",
-            "description": "全球最大的英文动漫与漫画数据库与交流社区，其Anime Top 100排行榜极具影响力。"
+            "description": "全球最大的英文动漫与漫画数据库与交流社区"
           },
           {
             "name": "Anime News Network (ANN)",
             "url": "https://www.animenewsnetwork.com",
-            "description": "权威的全球动漫新闻网站，提供即时产业爆料、动画制作人员库与评测。"
+            "description": "权威的全球动漫新闻网站，提供即时产业爆料"
           },
           {
             "name": "Anime-Planet",
             "url": "https://www.anime-planet.com",
-            "description": "拥有官方授权的在线动漫与漫画追踪平台，根据个人口味推荐动漫作品。"
+            "description": "拥有官方授权的在线动漫与漫画追踪平台"
           },
           {
             "name": "MangaUpdates (Baka-Updates Manga)",
             "url": "https://www.mangaupdates.com",
-            "description": "全球最详尽的漫画与轻小说更新状态、章节出版进度与汉化/英化追踪网。"
+            "description": "全球最详尽的漫画与轻小说更新状态"
           },
           {
             "name": "Animate Times",
             "url": "https://www.animatetimes.com",
-            "description": "日本知名动漫门户，提供声优专访、动画前瞻与官方周边活动资讯。"
+            "description": "日本知名动漫门户，提供声优专访"
           },
           {
             "name": "Natalie (コミックナタリー)",
@@ -6876,12 +6672,12 @@ const linksData = [
           {
             "name": "Tokyo Otaku Mode",
             "url": "https://otakumode.com",
-            "description": "传播日本流行文化、动漫二次元影视资讯与正版周边的国际平台。"
+            "description": "传播日本流行文化、动漫二次元影视资讯与正版周边的国"
           },
           {
             "name": "Kurenai / AniDB",
             "url": "https://anidb.net",
-            "description": "硬核动漫数据库，详尽记载每部动画的编码、版本、制作人员及关系网。"
+            "description": "硬核动漫数据库，详尽记载每部动画的编码、版本"
           }
         ]
       },
@@ -6892,252 +6688,252 @@ const linksData = [
           {
             "name": "TED Talks (Video)",
             "url": "https://www.ted.com",
-            "description": "全球思想家与行业领袖的高清演讲视频库，包含许多科技与影视艺术深度思考。"
+            "description": "全球思想家与行业领袖的高清演讲视频库"
           },
           {
             "name": "Vimeo",
             "url": "https://vimeo.com",
-            "description": "全球独立电影人、摄影师与CG艺术家展示高清高码率短片与作品集的优质视频社区。"
+            "description": "全球独立电影人、摄影师与CG艺术家展示高清高码率短"
           },
           {
             "name": "Dailymotion",
             "url": "https://www.dailymotion.com",
-            "description": "法国著名视频分享网站，提供大量各类新闻、娱乐与影视视频资源。"
+            "description": "法国著名视频分享网站，提供大量各类新闻"
           },
           {
             "name": "Internet Archive - Moving Image Archive",
             "url": "https://archive.org/details/movies",
-            "description": "互联网档案馆动画与影视藏馆，包含上万部无版权公有领域电影、早期纪录片与短片。"
+            "description": "互联网档案馆动画与影视藏馆"
           },
           {
             "name": "BFI Player",
             "url": "https://player.bfi.org.uk",
-            "description": "英国电影协会官方在线流媒体，可租借与观看大量罕见英国经典影片与档案史料。"
+            "description": "英国电影协会官方在线流媒体"
           },
           {
             "name": "National Film Board of Canada (NFB)",
             "url": "https://www.nfb.ca",
-            "description": "加拿大国家电影局官方网站，免费提供数千部高品质纪录片与先锋动画短片。"
+            "description": "加拿大国家电影局官方网站"
           },
           {
             "name": "UBUWEB",
             "url": "http://www.ubu.com",
-            "description": "专注于先锋派艺术、实验电影、影像艺术与声音艺术的数字档案博物馆。"
+            "description": "专注于先锋派艺术、实验电影"
           },
           {
             "name": "Documentary Area",
             "url": "https://www.documentaryarea.com",
-            "description": "整理与收录全球各类自然、历史、科学与社会人文纪录片在线观看索引。"
+            "description": "整理与收录全球各类自然、历史"
           },
           {
             "name": "PBS Video",
             "url": "https://www.pbs.org/video/",
-            "description": "美国公共电视台官方视频网，免费播放高质量纪录片(如《Frontline》)、历史剧等。"
+            "description": "美国公共电视台官方视频网"
           },
           {
             "name": "Arte.tv",
             "url": "https://www.arte.tv",
-            "description": "德法联合艺术电视台官方流媒体，提供高品味的纪录片、文化节目与欧洲艺术电影。"
+            "description": "德法联合艺术电视台官方流媒体，提供高品味的纪录片"
           },
           {
             "name": "Film Independent",
             "url": "https://www.filmindependent.org",
-            "description": "著名的非营利影视组织，主办独立精神奖(Independent Spirit Awards)。"
+            "description": "著名的非营利影视组织，主办独立精神奖("
           },
           {
             "name": "Sundance TV",
             "url": "https://www.sundancetv.com",
-            "description": "圣丹斯频道官方网站，专注高品质独立戏剧、特色电影及文化节目。"
+            "description": "圣丹斯频道官方网站，专注高品质独立戏剧"
           },
           {
             "name": "Short of the Week",
             "url": "https://www.shortoftheweek.com",
-            "description": "专门发现与策展全球最顶尖短片电影(Short Films)的权威推介网站。"
+            "description": "专门发现与策展全球最顶尖短片电影(Short"
           },
           {
             "name": "Film Shortage",
             "url": "https://filmshortage.com",
-            "description": "展示顶尖独立短片、预告片及音乐录影带(MV)的在线电影短片平台。"
+            "description": "展示顶尖独立短片、预告片及音乐录影带(MV)的在线"
           },
           {
             "name": "Viddsee",
             "url": "https://www.viddsee.com",
-            "description": "专注于亚洲微电影与独立短片传播的流媒体平台，汇聚大量青年导演作品。"
+            "description": "专注于亚洲微电影与独立短片传播的流媒体平台"
           },
           {
             "name": "CGMeetup",
             "url": "https://www.cgmeetup.com",
-            "description": "全球顶尖3D动画短片、特效解密(VFX Breakdown)与CG艺术作品展示网。"
+            "description": "全球顶尖3D动画短片、特效解密(VFX"
           },
           {
             "name": "Motionographer",
             "url": "https://motionographer.com",
-            "description": "动态图形设计(Motion Graphics)、视觉特效与概念动画电影设计的行业灵感网。"
+            "description": "动态图形设计(Motion Graphics)"
           },
           {
             "name": "Stash Media",
             "url": "https://www.stashmedia.tv",
-            "description": "专注于设计、动画与视觉特效领域的月刊与高品质项目视频展示库。"
+            "description": "专注于设计、动画与视觉特效领域的月刊与高品质项目视"
           },
           {
             "name": "Art of the Title",
             "url": "https://www.artofthetitle.com",
-            "description": "专门探讨与剖析电影、电视剧及游戏片头字幕设计艺术(Title Sequence)的权威网。"
+            "description": "专门探讨与剖析电影、电视剧及游戏片头字幕设计艺术("
           },
           {
             "name": "FXGuide",
             "url": "https://www.fxguide.com",
-            "description": "影视特效(VFX)界的硬核行业媒体，深度解析好莱坞大片的特效制作细节。"
+            "description": "影视特效(VFX)界的硬核行业媒体"
           },
           {
             "name": "Animation World Network (AWN)",
             "url": "https://www.awn.com",
-            "description": "全球最大的动画产业资讯网，覆盖2D/3D动画、视觉特效与游戏动画。"
+            "description": "全球最大的动画产业资讯网，覆盖2D/3D动画"
           },
           {
             "name": "Cartoon Brew",
             "url": "https://www.cartoonbrew.com",
-            "description": "独立客观的动画产业新闻网，报道全球动画电影、独立动画人与技术突破。"
+            "description": "独立客观的动画产业新闻网，报道全球动画电影"
           },
           {
             "name": "Catsuka",
             "url": "https://www.catsuka.com",
-            "description": "法国著名动画艺术网站，专注于推介全球罕见的优秀动画短片与概念设计。"
+            "description": "法国著名动画艺术网站，专注于推介全球罕见的优秀动画"
           },
           {
             "name": "Anime News Network Database",
             "url": "https://www.animenewsnetwork.com/encyclopedia/",
-            "description": "庞大的日本动画制作人员(原画师、导演、编剧)与声优百科全书。"
+            "description": "庞大的日本动画制作人员(原画师、导演"
           },
           {
             "name": "Sakugabooru",
             "url": "https://www.sakugabooru.com",
-            "description": "专注于日本动画中作画(Sakuga)高光片段片段赏析与原画师归档的画廊社区。"
+            "description": "专注于日本动画中作画(Sakuga)高光片段片段赏"
           },
           {
             "name": "Anime Characters Database",
             "url": "https://www.animecharactersdatabase.com",
-            "description": "通过发型、眼睛颜色等视觉特征快速检索动漫人物与影视角色的数据库。"
+            "description": "通过发型、眼睛颜色等视觉特征快速检索动漫人物与影视"
           },
           {
             "name": "Behind The Voice Actors (BTVA)",
             "url": "https://www.behindthevoiceactors.com",
-            "description": "配音演员(声优)数据库，收录各类动漫、电影、游戏背后的配音角色。"
+            "description": "配音演员(声优)数据库，收录各类动漫、电影"
           },
           {
             "name": "TuneFind",
             "url": "https://www.tunefind.com",
-            "description": "强大的影视插曲与配乐查询网，精确查找某部电影/剧集某集某分秒播放的背景音乐。"
+            "description": "强大的影视插曲与配乐查询网"
           },
           {
             "name": "WhatSong",
             "url": "https://www.what-song.com",
-            "description": "查询热门影视剧、电影与 Netflix 剧集中所有出现过的歌曲与原声带(OST)。"
+            "description": "查询热门影视剧、电影与 Netflix"
           },
           {
             "name": "Filmtracks",
             "url": "https://www.filmtracks.com",
-            "description": "专业电影配乐评论网站，由专业乐评人对历年电影原声大碟进行打分与点评。"
+            "description": "专业电影配乐评论网站，由专业乐评人对历年电影原声大"
           },
           {
             "name": "Soundtrack.Net",
             "url": "https://www.soundtrack.net",
-            "description": "全球知名的电影与电视配乐数据库，包含详细的OST曲目单与预告片配乐信息。"
+            "description": "全球知名的电影与电视配乐数据库"
           },
           {
             "name": "Movie Music UK",
             "url": "https://moviemusicuk.us",
-            "description": "资深乐评人 Jonathan Broxton 主笔的专业影视原声带评论与分析网站。"
+            "description": "资深乐评人 Jonathan Broxton"
           },
           {
             "name": "VGMdb (Video Game Music Database)",
             "url": "https://vgmdb.net",
-            "description": "兼顾游戏与动漫影视原声大碟(OST)、同人音乐的详尽唱片数据库。"
+            "description": "兼顾游戏与动漫影视原声大碟(OST)"
           },
           {
             "name": "Sheet Music Plus (Film)",
             "url": "https://www.sheetmusicplus.com",
-            "description": "全球最大的音乐乐谱网，提供海量经典电影配乐与影视交响乐官方总谱。"
+            "description": "全球最大的音乐乐谱网，提供海量经典电影配乐与影视交"
           },
           {
             "name": "MobyGames (Cutscenes)",
             "url": "https://www.mobygames.com",
-            "description": "知名游戏数据库，记载大量互动电影与游戏过场动画(Cutscenes)演职员表。"
+            "description": "知名游戏数据库，记载大量互动电影与游戏过场动画("
           },
           {
             "name": "IMVDb (Internet Music Video Database)",
             "url": "https://imvdb.com",
-            "description": "互联网音乐录影带(MV)数据库，记录MV导演、摄影师、演员与制作团队。"
+            "description": "互联网音乐录影带(MV)数据库，记录MV导演"
           },
           {
             "name": "Film Studies For Free",
             "url": "https://filmstudiesforfree.blogspot.com",
-            "description": "聚合全球开源学术界关于电影学、电影理论与影视文化研究的论文与电子资源。"
+            "description": "聚合全球开源学术界关于电影学"
           },
           {
             "name": "Screen-Space",
             "url": "https://screen-space.squarespace.com",
-            "description": "澳大利亚资深影评人创立的电影评论与电影节现场报道网站。"
+            "description": "澳大利亚资深影评人创立的电影评论与电影节现场报道网"
           },
           {
             "name": "Film Threat",
             "url": "https://filmthreat.com",
-            "description": "创立于1985年的颠覆性电影媒体，专门推介被主流好莱坞忽视的独立电影与地下电影。"
+            "description": "创立于1985年的颠覆性电影媒体"
           },
           {
             "name": "Reverse Shot",
             "url": "https://reverseshot.org",
-            "description": "纽约移动图像博物馆旗下的线上影评杂志，提供极具批判视角的电影长文。"
+            "description": "纽约移动图像博物馆旗下的线上影评杂志"
           },
           {
             "name": "Senses of Cinema",
             "url": "https://sensesofcinema.com",
-            "description": "澳大利亚关于传统与现代电影艺术的同行评审学术研究与深度批评期刊。"
+            "description": "澳大利亚关于传统与现代电影艺术的同行评审学术研究与"
           },
           {
             "name": "Bright Lights Film Journal",
             "url": "https://brightlightsfilm.com",
-            "description": "历史悠久的电影普及与文化评论网，以通俗深入的方式探讨各类类型片。"
+            "description": "历史悠久的电影普及与文化评论网"
           },
           {
             "name": "Offscreen",
             "url": "https://offscreen.com",
-            "description": "专注于电影哲学、恐怖片研究及加拿大当地电影文化的线上学术杂志。"
+            "description": "专注于电影哲学、恐怖片研究及加拿大当地电影文化的线"
           },
           {
             "name": "Cineaste Magazine",
             "url": "https://www.cineaste.com",
-            "description": "北美著名的电影与政治、艺术和文化交汇评论季刊官方网站。"
+            "description": "北美著名的电影与政治、艺术和文化交汇评论季刊官方网"
           },
           {
             "name": "MovieWeb",
             "url": "https://movieweb.com",
-            "description": "报道最新好莱坞电影新闻、爆料、剧集指南与娱乐动态的综合综合媒体。"
+            "description": "报道最新好莱坞电影新闻、爆料"
           },
           {
             "name": "Screen Daily",
             "url": "https://www.screendaily.com",
-            "description": "英国著名《Screen International》官方网站，追踪全球电影市场与独立制作。"
+            "description": "英国著名《Screen"
           },
           {
             "name": "Cinema Australia",
             "url": "https://cinemaaustralia.com.au",
-            "description": "专注于报道澳大利亚本土独立电影、纪录片与影人的特色网站。"
+            "description": "专注于报道澳大利亚本土独立电影"
           },
           {
             "name": "Screen Anarchy",
             "url": "https://screenanarchy.com",
-            "description": "专注报道全球邪典电影(Cult Cinema)、动作片、恐怖片及类型片的新闻网。"
+            "description": "专注报道全球邪典电影(Cult Cinema)"
           },
           {
             "name": "Bloody Disgusting",
             "url": "https://bloody-disgusting.com",
-            "description": "全球最大的恐怖电影与恐怖文化主题门户，提供第一手恐怖片快讯与评测。"
+            "description": "全球最大的恐怖电影与恐怖文化主题门户"
           },
           {
             "name": "Dread Central",
             "url": "https://www.dreadcentral.com",
-            "description": "权威的恐怖、惊悚与奇幻题材影视剧、黑暗pop文化综合新闻网。"
+            "description": "权威的恐怖、惊悚与奇幻题材影视剧"
           }
         ]
       },
@@ -7148,217 +6944,217 @@ const linksData = [
           {
             "name": "SciFi Japan",
             "url": "http://www.scifijapan.com",
-            "description": "专注于日本特摄电影(哥斯拉、奥特曼、卡美拉等)与科幻影视的英文网站。"
+            "description": "专注于日本特摄电影(哥斯拉、奥特曼"
           },
           {
             "name": "Tokusatsu Network",
             "url": "https://tokusatsunetwork.com",
-            "description": "专注于报道日本假面骑士、超级战队等特摄影视与文化的前沿新闻网。"
+            "description": "专注于报道日本假面骑士、超级战队等特摄影视与文化的"
           },
           {
             "name": "SuperHeroHype",
             "url": "https://www.superherohype.com",
-            "description": "专注于漫威、DC及超级英雄主题电影、电视剧与漫改作品的专题网站。"
+            "description": "专注于漫威、DC及超级英雄主题电影"
           },
           {
             "name": "ComicBook.com Gaming/TV",
             "url": "https://comicbook.com",
-            "description": "专注于漫画改编影视、星战、漫威MCU与Pop流行文化的新闻平台。"
+            "description": "专注于漫画改编影视、星战"
           },
           {
             "name": "The Digital Bits",
             "url": "https://thedigitalbits.com",
-            "description": "历史悠久的家庭影院与光盘发布资讯网，以精准预测4K UHD光盘发布闻名。"
+            "description": "历史悠久的家庭影院与光盘发布资讯网"
           },
           {
             "name": "DVD Talk",
             "url": "https://www.dvdtalk.com",
-            "description": "经典的影碟评测与家庭影院爱好者论坛，包含海量DVD与蓝光盘片测评。"
+            "description": "经典的影碟评测与家庭影院爱好者论坛"
           },
           {
             "name": "Home Theater Forum",
             "url": "https://www.hometheaterforum.com",
-            "description": "极具深度的家庭影院发烧友交流社区，讨论音响配置、投影及经典电影修复。"
+            "description": "极具深度的家庭影院发烧友交流社区，讨论音响配置"
           },
           {
             "name": "AVS Forum",
             "url": "https://www.avsforum.com",
-            "description": "全球最大的音视频发烧友社区，涵盖电视画质调校、显示设备、影音播放器评测。"
+            "description": "全球最大的音视频发烧友社区，涵盖电视画质调校"
           },
           {
             "name": "Cinefex (Archive)",
             "url": "https://cinefex.com",
-            "description": "传奇的影视特效杂志《Cinefex》官方档案库，记录好莱坞数十年来视觉特效演变。"
+            "description": "传奇的影视特效杂志《Cinefex》官方档案库"
           },
           {
             "name": "American Cinematographer (ASC)",
             "url": "https://ascmag.com",
-            "description": "美国电影摄影师协会(ASC)官方杂志，深入剖析大片摄影构图与灯光技术。"
+            "description": "美国电影摄影师协会(ASC)官方杂志"
           },
           {
             "name": "Motion Picture Association (MPA)",
             "url": "https://www.motionpictures.org",
-            "description": "美国电影协会官方网站，负责电影分级制度(PG-13, R等)管理与版权保护。"
+            "description": "美国电影协会官方网站，负责电影分级制度("
           },
           {
             "name": "Film-TV-Video.de",
             "url": "https://www.film-tv-video.de",
-            "description": "德国专业的广播电视工程、数字电影制作技术与摄像设备行业媒体。"
+            "description": "德国专业的广播电视工程、数字电影制作技术与摄像设备"
           },
           {
             "name": "DVXuser",
             "url": "https://www.dvxuser.com",
-            "description": "面向独立摄影师、导演与剪辑师的电影摄影与摄像装备技术讨论论坛。"
+            "description": "面向独立摄影师、导演与剪辑师的电影摄影与摄像装备技"
           },
           {
             "name": "Reduser",
             "url": "https://www.reduser.net",
-            "description": "RED数字摄影机官方与用户技术社区，讨论顶级电影摄影机与流程。"
+            "description": "RED数字摄影机官方与用户技术社区"
           },
           {
             "name": "Blackmagic Design Forum",
             "url": "https://forum.blackmagicdesign.com",
-            "description": "著名的达芬奇(DaVinci Resolve)剪辑/调色软件与电影摄像机官方交流社区。"
+            "description": "著名的达芬奇(DaVinci"
           },
           {
             "name": "Creative COW",
             "url": "https://www.creativecow.net",
-            "description": "历史悠久的视频后期制作、影视特效与视频剪辑专业人员问答社区。"
+            "description": "历史悠久的视频后期制作、影视特效与视频剪辑专业人员"
           },
           {
             "name": "Frame.io Blog",
             "url": "https://blog.frame.io",
-            "description": "极高水准的影视后期协作平台博客，分享顶尖的视频剪辑、流程管理与色彩科学。"
+            "description": "极高水准的影视后期协作平台博客"
           },
           {
             "name": "Premiere Pro User Guide",
             "url": "https://helpx.adobe.com/premiere-pro/user-guide.html",
-            "description": "Adobe 官方 Premiere Pro 剪辑软件权威操作指南与影视工作流。"
+            "description": "Adobe 官方 Premiere Pro"
           },
           {
             "name": "Final Cut Pro Resources",
             "url": "https://www.apple.com/final-cut-pro/resources/",
-            "description": "苹果官方 Final Cut Pro 剪辑生态、插件与专业工作流资源。"
+            "description": "苹果官方 Final Cut Pro 剪辑生态"
           },
           {
             "name": "CineD",
             "url": "https://www.cined.com",
-            "description": "专业的影视拍摄器材评测网站，提供严格实验室测试下的摄像机宽容度与画质数据。"
+            "description": "专业的影视拍摄器材评测网站"
           },
           {
             "name": "NewsShooter",
             "url": "https://www.newsshooter.com",
-            "description": "面向新闻纪录片摄影师与独立电影人的专业摄影器材与灯光配件评测网。"
+            "description": "面向新闻纪录片摄影师与独立电影人的专业摄影器材与灯"
           },
           {
             "name": "No Film School",
             "url": "https://nofilmschool.com",
-            "description": "全球最受欢迎的独立电影制作社区，提供大量的摄影、编剧、剪辑教程与器材评测。"
+            "description": "全球最受欢迎的独立电影制作社区，提供大量的摄影"
           },
           {
             "name": "Filmmaker Magazine",
             "url": "https://filmmakermagazine.com",
-            "description": "独立电影制作人协会(IFP)出版的专注独立电影制作艺术与技术的杂志。"
+            "description": "独立电影制作人协会(IFP)出版的专注独立电影制作"
           },
           {
             "name": "Moviemaker Magazine",
             "url": "https://www.moviemaker.com",
-            "description": "专注于电影制作实战、剧本创作、资金筹集与电影节参赛指南的权威媒体。"
+            "description": "专注于电影制作实战、剧本创作"
           },
           {
             "name": "Script Reader Pro",
             "url": "https://www.scriptreaderpro.com",
-            "description": "专业的电影剧本分析与编剧指导网站，提供海量好莱坞经典剧本PDF下载。"
+            "description": "专业的电影剧本分析与编剧指导网站"
           },
           {
             "name": "Simply Scripts",
             "url": "https://www.simplyscripts.com",
-            "description": "海量免费电影剧本、电视剧剧本、广播剧与戏剧剧本数据库。"
+            "description": "海量免费电影剧本、电视剧剧本"
           },
           {
             "name": "IMSDb (Internet Movie Script Database)",
             "url": "https://imsdb.com",
-            "description": "全球最大的网络免费电影剧本库，提供各类好莱坞电影的文本版本。"
+            "description": "全球最大的网络免费电影剧本库"
           },
           {
             "name": "Script Slug",
             "url": "https://www.scriptslug.com",
-            "description": "界面优雅排版精美的电影与电视剧剧本PDF免费阅读与下载网站。"
+            "description": "界面优雅排版精美的电影与电视剧剧本PDF免费阅读与"
           },
           {
             "name": "The Black List",
             "url": "https://blcklst.com",
-            "description": "好莱坞知名的未制作优秀剧本黑名单，也是新人编剧对接好莱坞制片人的平台。"
+            "description": "好莱坞知名的未制作优秀剧本黑名单"
           },
           {
             "name": "Coverfly",
             "url": "https://www.coverfly.com",
-            "description": "全球最大的编剧比赛、剧本创投与新人剧本筛选聚合平台。"
+            "description": "全球最大的编剧比赛、剧本创投与新人剧本筛选聚合平台"
           },
           {
             "name": "Writers Guild of America (WGA)",
             "url": "https://www.wga.org",
-            "description": "美国编剧工会官方网站，提供剧本版权登记、合约标准与奖项资讯。"
+            "description": "美国编剧工会官方网站，提供剧本版权登记"
           },
           {
             "name": "Screenwriters Network",
             "url": "https://screenwritersnetwork.org",
-            "description": "全球编剧爱好者交流社区，提供剧本互评与写作马拉松活动。"
+            "description": "全球编剧爱好者交流社区，提供剧本互评与写作马拉松活"
           },
           {
             "name": "ScreenCraft",
             "url": "https://screencraft.org",
-            "description": "专注于帮助编剧提升技能、参加专业剧本竞赛并与好莱坞建立联系的站点。"
+            "description": "专注于帮助编剧提升技能、参加专业剧本竞赛并与好莱坞"
           },
           {
             "name": "Go Into The Story",
             "url": "https://gointothestory.blcklst.com",
-            "description": "好莱坞 Black List 官方编剧博客，提供上千篇编剧技巧与大师剧本拆解。"
+            "description": "好莱坞 Black List 官方编剧博客"
           },
           {
             "name": "Screenwriting Life",
             "url": "https://www.thescreenwritinglife.com",
-            "description": "由好莱坞资深编剧创办的播客与交流平台，探讨编剧心理与创作技巧。"
+            "description": "由好莱坞资深编剧创办的播客与交流平台"
           },
           {
             "name": "Daily Script",
             "url": "https://www.dailyscript.com",
-            "description": "搜集了大量好莱坞大片与经典电视剧原版剧本的纯文本归档网站。"
+            "description": "搜集了大量好莱坞大片与经典电视剧原版剧本的纯文本归"
           },
           {
             "name": "Drew's Script-O-Rama",
             "url": "http://www.script-o-rama.com",
-            "description": "创立于1995年的老牌影视剧本与台词脚本(Transcript)下载网。"
+            "description": "创立于1995年的老牌影视剧本与台词脚本("
           },
           {
             "name": "Weekly Script",
             "url": "https://www.weeklyscript.com",
-            "description": "专注于每周更新最新好莱坞电影剧本PDF的个人剧本分享站点。"
+            "description": "专注于每周更新最新好莱坞电影剧本PDF的个人剧本分"
           },
           {
             "name": "Script-Fix",
             "url": "https://www.script-fix.com",
-            "description": "提供专业剧本修改意见、结构分析与剧情诊断服务的编剧咨询平台。"
+            "description": "提供专业剧本修改意见、结构分析与剧情诊断服务的编剧"
           },
           {
             "name": "Save the Cat!",
             "url": "https://savethecat.com",
-            "description": "基于 Blake Snyder 传奇编剧书《救猫咪》的剧本三幕式结构分析与编剧教学网。"
+            "description": "基于 Blake Snyder"
           },
           {
             "name": "Cinephilia & Beyond Scripts",
             "url": "https://cinephiliabeyond.org/category/scripts/",
-            "description": "深入解析好莱坞大师(如诺兰、库布里克等)电影剧本手稿的专题专栏。"
+            "description": "深入解析好莱坞大师(如诺兰"
           },
           {
             "name": "BBC Writers",
             "url": "https://www.bbc.co.uk/writers",
-            "description": "英国 BBC 官方编剧中心，提供 BBC 热门剧本库与编剧扶持计划。"
+            "description": "英国 BBC 官方编剧中心"
           },
           {
             "name": "Australian Writers' Guild",
             "url": "https://awg.com.au",
-            "description": "澳大利亚编剧工会官方网站，保障剧作者权益与推动剧本创作。"
+            "description": "澳大利亚编剧工会官方网站"
           },
           {
             "name": "Euroscript",
@@ -7368,17 +7164,17 @@ const linksData = [
           {
             "name": "Final Draft",
             "url": "https://www.finaldraft.com",
-            "description": "全球好莱坞工业标准剧本写作软件 Final Draft 官方网站。"
+            "description": "全球好莱坞工业标准剧本写作软件 Final"
           },
           {
             "name": "Celtx",
             "url": "https://www.celtx.com",
-            "description": "一站式全流程云端影视剧本创作、故事板绘制与前期筹备管理系统。"
+            "description": "一站式全流程云端影视剧本创作"
           },
           {
             "name": "WriterDuet",
             "url": "https://www.writerduet.com",
-            "description": "支持多名编剧实时协同在线创作的高效专业剧本编写软件平台。"
+            "description": "支持多名编剧实时协同在线创作的高效专业剧本编写软件"
           },
           {
             "name": "Fade In Professional Screenwriting",
@@ -7388,12 +7184,12 @@ const linksData = [
           {
             "name": "Highland 2",
             "url": "https://quoteunquoteapps.com/highland-2/",
-            "description": "著名编剧 John August 开发的极简 Plain Text 格式剧本写作软件。"
+            "description": "著名编剧 John August 开发的极简"
           },
           {
             "name": "Scrivener (Screenwriting)",
             "url": "https://www.literatureandlatte.com/scrivener/overview",
-            "description": "强大的长篇写作软件 Scrivener 官方影视剧本与故事架构模块。"
+            "description": "强大的长篇写作软件 Scrivener"
           }
         ]
       }
@@ -7599,7 +7395,7 @@ const linksData = [
         {
           "name": "AI开发",
           "url": "https://kisstr.com/ai_development.html",
-          "description": "AI API、模型开发、向量数据库、算力与工程工具导航"
+          "description": "AI API、模型开发、向量数据库"
         },
         {
           "name": "AI绘图",
@@ -7624,7 +7420,7 @@ const linksData = [
         {
           "name": "游戏网站",
           "url": "https://kisstr.com/game_sites.html",
-          "description": "游戏平台、游戏资讯、独立游戏、主机资源与玩家社区导航"
+          "description": "游戏平台、游戏资讯、独立游戏"
         },
         {
           "name": "漫画网站",
@@ -7674,172 +7470,6 @@ function getColorFromName(name) {
   const index = hashCode(name) % colors.length;
   return colors[index];
 }
-
-// 古诗词数据库（诗人 + 诗句）
-const poemData = [
-  { poet: "李白", poem: "床前明月光，疑是地上霜" },
-  { poet: "杜甫", poem: "国破山河在，城春草木深" },
-  { poet: "白居易", poem: "离离原上草，一岁一枯荣" },
-  { poet: "王维", poem: "独在异乡为异客，每逢佳节倍思亲" },
-  { poet: "苏轼", poem: "但愿人长久，千里共婵娟" },
-  { poet: "李清照", poem: "昨夜雨疏风骤，浓睡不消残酒" },
-  { poet: "辛弃疾", poem: "众里寻他千百度，蓦然回首" },
-  { poet: "陆游", poem: "山重水复疑无路，柳暗花明又一村" },
-  { poet: "王安石", poem: "春风又绿江南岸，明月何时照我还" },
-  { poet: "孟浩然", poem: "春眠不觉晓，处处闻啼鸟" },
-  { poet: "陶渊明", poem: "采菊东篱下，悠然见南山" },
-  { poet: "李商隐", poem: "春蚕到死丝方尽，蜡炬成灰泪始干" },
-  { poet: "杜牧", poem: "停车坐爱枫林晚，霜叶红于二月花" },
-  { poet: "岑参", poem: "忽如一夜春风来，千树万树梨花开" },
-  { poet: "高适", poem: "莫愁前路无知己，天下谁人不识君" },
-  { poet: "王勃", poem: "海内存知己，天涯若比邻" },
-  { poet: "杨炯", poem: "宁为百夫长，胜作一书生" },
-  { poet: "陈子昂", poem: "前不见古人，后不见来者" },
-  { poet: "张九龄", poem: "海上生明月，天涯共此时" },
-  { poet: "柳宗元", poem: "千山鸟飞绝，万径人踪灭" },
-  { poet: "韩愈", poem: "天街小雨润如酥，草色遥看近却无" },
-  { poet: "刘禹锡", poem: "沉舟侧畔千帆过，病树前头万木春" },
-  { poet: "贾岛", poem: "鸟宿池边树，僧敲月下门" },
-  { poet: "孟郊", poem: "谁言寸草心，报得三春晖" },
-  { poet: "贾岛", poem: "松下问童子，言师采药去" },
-  { poet: "元稹", poem: "曾经沧海难为水，除却巫山不是云" },
-  { poet: "韦应物", poem: "春潮带雨晚来急，野渡无人舟自横" },
-  { poet: "刘长卿", poem: "日暮苍山远，天寒白屋贫" },
-  { poet: "温庭筠", poem: "鸡声茅店月，人迹板桥霜" },
-  { poet: "贺知章", poem: "不知细叶谁裁出，二月春风似剪刀" },
-  { poet: "贺铸", poem: "一川烟草，满城风絮，梅子黄时雨" },
-  { poet: "周邦彦", poem: "叶上初阳干宿雨，水面清圆" },
-  { poet: "晏殊", poem: "无可奈何花落去，似曾相识燕归来" },
-  { poet: "欧阳修", poem: "月上柳梢头，人约黄昏后" },
-  { poet: "秦观", poem: "两情若是久长时，又岂在朝朝暮暮" },
-  { poet: "柳永", poem: "衣带渐宽终不悔，为伊消得人憔悴" },
-  { poet: "范仲淹", poem: "先天下之忧而忧，后天下之乐而乐" },
-  { poet: "岳飞", poem: "莫等闲，白了少年头，空悲切" },
-  { poet: "文天祥", poem: "人生自古谁无死，留取丹心照汗青" },
-  { poet: "于谦", poem: "粉骨碎身浑不怕，要留清白在人间" },
-  { poet: "郑板桥", poem: "千磨万击还坚劲，任尔东西南北风" },
-  { poet: "袁枚", poem: "白日不到处，青春恰自来" },
-  { poet: "龚自珍", poem: "落红不是无情物，化作春泥更护花" },
-  { poet: "纳兰性德", poem: "人生若只如初见，何事秋风悲画扇" },
-  { poet: "仓央嘉措", poem: "世间安得双全法，不负如来不负卿" },
-  { poet: "林徽因", poem: "你是爱，是暖，是希望" },
-  { poet: "徐志摩", poem: "轻轻的我走了，正如我轻轻的来" },
-  { poet: "戴望舒", poem: "撑着油纸伞，独自彷徨在悠长" },
-  { poet: "艾青", poem: "为什么我的眼里常含泪水" },
-  { poet: "海子", poem: "面朝大海，春暖花开" }
-];
-
-// 高奢品牌数据库（品牌名 + slogan）
-const luxuryBrandData = [
-  { brand: "HERMÈS", slogan: "Luxury is a way of life", url: "https://www.hermes.com" },
-  { brand: "CHANEL", slogan: "Fashion passes, style remains", url: "https://www.chanel.com" },
-  { brand: "LOUIS VUITTON", slogan: "The art of travel", url: "https://www.louisvuitton.com" },
-  { brand: "DIOR", slogan: "The elegance is a state of mind", url: "https://www.dior.com" },
-  { brand: "CARTIER", slogan: "Jeweler of kings", url: "https://www.cartier.com" },
-  { brand: "TIFFANY & CO.", slogan: "True love, true luxury", url: "https://www.tiffany.com" },
-  { brand: "GUCCI", slogan: "Quality is remembered long after price is forgotten", url: "https://www.gucci.com" },
-  { brand: "PRADA", slogan: "Fashion is instant language", url: "https://www.prada.com" },
-  { brand: "BURBERRY", slogan: "Pioneering British luxury", url: "https://www.burberry.com" },
-  { brand: "BALENCIAGA", slogan: "Elegance in motion", url: "https://www.balenciaga.com" },
-  { brand: "FENDI", slogan: "Fun fur and luxury", url: "https://www.fendi.com" },
-  { brand: "BOTTEGA VENETA", slogan: "When your own initials are enough", url: "https://www.bottegaveneta.com" },
-  { brand: "SAINT LAURENT", slogan: "For the modern woman", url: "https://www.ysl.com" },
-  { brand: "GIVENCHY", slogan: "Elegance is refusal", url: "https://www.givenchy.com" },
-  { brand: "VALENTINO", slogan: "Luxury with a soul", url: "https://www.valentino.com" },
-  { brand: "VERSACE", slogan: "Medusa of fashion", url: "https://www.versace.com" },
-  { brand: "DOLCE & GABBANA", slogan: "Sicilian luxury tradition", url: "https://www.dolcegabbana.com" },
-  { brand: "ARMANI", slogan: "Timeless sophistication", url: "https://www.armani.com" },
-  { brand: "HUGO BOSS", slogan: "Define your success", url: "https://www.hugoboss.com" },
-  { brand: "COACH", slogan: "Modern luxury for all", url: "https://www.coach.com" },
-  { brand: "MICHAEL KORS", slogan: "Jet set luxury", url: "https://www.michaelkors.com" },
-  { brand: "TORY BURCH", slogan: "Effortless style", url: "https://www.toryburch.com" },
-  { brand: "KATE SPADE", slogan: "Live colorfully", url: "https://www.katespade.com" },
-  { brand: "RIMOWA", slogan: "Journey well", url: "https://www.rimowa.com" },
-  { brand: "MONTBLANC", slogan: "The art of writing", url: "https://www.montblanc.com" },
-  { brand: "PATEK PHILIPPE", slogan: "You never actually own one", url: "https://www.patek.com" },
-  { brand: "ROLEX", slogan: "A crown for every achievement", url: "https://www.rolex.com" },
-  { brand: "OMEGA", slogan: "Reflects your world", url: "https://www.omegawatches.com" },
-  { brand: "IWC", slogan: "Engineering for perfection", url: "https://www.iwc.com" },
-  { brand: "JAEGER-LECOULTRE", slogan: "Watchmaking mastery", url: "https://www.jaeger-lecoultre.com" },
-  { brand: "BREITLING", slogan: "Instruments for professionals", url: "https://www.breitling.com" },
-  { brand: "TAG HEUER", slogan: "Don't crack under pressure", url: "https://www.tagheuer.com" },
-  { brand: "LONGINES", slogan: "Elegance is an attitude", url: "https://www.longines.com" },
-  { brand: "RAYMOND WEIL", slogan: "Independent watchmaking", url: "https://www.raymond-weil.com" },
-  { brand: "A. LANGE & SÖHNE", slogan: "Glashütte precision", url: "https://www.alange-soehne.com" },
-  { brand: "BLANCPAIN", slogan: "The oldest watch brand", url: "https://www.blancpain.com" },
-  { brand: "CHAUMET", slogan: "The jeweler of feelings", url: "https://www.chaumet.com" },
-  { brand: "BOUCHERON", slogan: "Parisian high jewelry", url: "https://www.boucheron.com" },
-  { brand: "VAN CLEEF & ARPELS", slogan: "Poetry of time", url: "https://www.vancleefarpels.com" },
-  { brand: "PIAGET", slogan: "Always do better than necessary", url: "https://www.piaget.com" },
-  { brand: "CHOPARD", slogan: "The art of luxury", url: "https://www.chopard.com" },
-  { brand: "MISSONI", slogan: "Colored luxury knitwear", url: "https://www.missoni.com" },
-  { brand: "ALAÏA", slogan: "Sculptor of the female form", url: "https://www.alaia.com" },
-  { brand: "ISSEY MIYAKE", slogan: "A piece of cloth", url: "https://www.isseymiyake.com" },
-  { brand: "COMME des GARÇONS", slogan: "Fashion is an attitude", url: "https://www.comme-des-garcons.com" },
-  { brand: "MAISON MARGIELA", slogan: "The anonymous designer", url: "https://www.maisonmargiela.com" },
-  { brand: "RICK OWENS", slogan: "Dark glamour", url: "https://www.rickowens.eu" },
-  { brand: "UNDERCOVER", slogan: "Wear your rebellion", url: "https://www.undercoverism.com" },
-  { brand: "JIL SANDER", slogan: "Less is more", url: "https://www.jilsander.com" },
-  { brand: "THE ROW", slogan: "Quiet luxury redefined", url: "https://www.therow.com" }
-];
-
-// 存储每个网站的隐藏状态
-let linkSecretData = new Map();
-let isHiddenMode = false;
-
-function generateSecretData() {
-  linksData.forEach(cat => {
-    const linkList = cat.subcategories ? cat.subcategories.flatMap(s => s.links) : cat.links;
-    linkList.forEach(link => {
-      const key = link.url;
-      if (!linkSecretData.has(key)) {
-        const poemIndex = hashCode(link.name + 'poem') % poemData.length;
-        const brandIndex = hashCode(link.name + 'brand') % luxuryBrandData.length;
-        linkSecretData.set(key, {
-          poem: poemData[poemIndex],
-          brand: luxuryBrandData[brandIndex]
-        });
-      }
-    });
-  });
-}
-
-// 切换隐藏模式
-function toggleHideMode() {
-  isHiddenMode = !isHiddenMode;
-  const hideToggle = document.getElementById('hideToggle');
-
-  if (isHiddenMode) {
-    document.body.classList.add('hide-mode');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-    localStorage.setItem('hideMode', 'true');
-  } else {
-    document.body.classList.remove('hide-mode');
-    hideToggle.classList.remove('active');
-    hideToggle.title = '已显示';
-    localStorage.setItem('hideMode', 'false');
-  }
-
-  // 重新渲染以更新数据
-  renderLinks(document.getElementById('searchInput').value, currentCategory);
-}
-
-// 初始化隐藏模式
-function initHideMode() {
-  const savedMode = localStorage.getItem('hideMode');
-  if (savedMode === 'true') {
-    isHiddenMode = true;
-    document.body.classList.add('hide-mode');
-    const hideToggle = document.getElementById('hideToggle');
-    hideToggle.classList.add('active');
-    hideToggle.title = '已隐藏';
-  } else {
-    const hideToggle = document.getElementById('hideToggle');
-    if (hideToggle) hideToggle.title = '已显示';
-  }
-}
-
 function renderCategories() {
   const tabsContainer = document.getElementById('categoryTabs');
   tabsContainer.innerHTML = '';
@@ -7901,7 +7531,6 @@ function openUrlInNewTab(url) {
   const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
   if (newWindow) newWindow.opener = null;
 }
-
 
 function getIndexCardClickUrl(url) {
   if (!url || url === '#') return url || '';
@@ -8030,71 +7659,32 @@ function createLinkCard(link, catIndex, linkIndex) {
     }
   }
 
-  const secretData = linkSecretData.get(link.url) || {
-    poem: { poet: "佚名", poem: "诗不在多，有情则灵" },
-    brand: { brand: "LUXURY", slogan: "Timeless elegance", url: "https://www.example.com" }
-  };
-  
-  const isMinimalLayout = document.body.classList.contains('layout-minimal');
-  const hiddenName = isMinimalLayout ? secretData.brand.brand : secretData.poem.poet;
-  const hiddenDesc = isMinimalLayout ? secretData.brand.slogan : secretData.poem.poem;
-  const hiddenUrl = isMinimalLayout && secretData.brand.url ? secretData.brand.url : link.url;
-
-  if (isHiddenMode) {
-    card.classList.add('hidden-mode-card');
-  }
-
-  prepareStealthLinkCard(card, isHiddenMode ? hiddenUrl : link.url);
+  prepareStealthLinkCard(card, link.url);
 
   const linkIcon = document.createElement('div');
   linkIcon.className = 'link-icon';
-  if (isHiddenMode) {
-    linkIcon.textContent = hiddenName.charAt(0);
-    linkIcon.style.background = getColorFromName(hiddenName);
-  } else {
-    linkIcon.textContent = getInitial(link.name);
-    linkIcon.style.background = getColorFromName(link.name);
-  }
+  linkIcon.textContent = getInitial(link.name);
+  linkIcon.style.background = getColorFromName(link.name);
 
   const linkInfo = document.createElement('div');
   linkInfo.className = 'link-info';
 
   const linkName = document.createElement('div');
   linkName.className = 'link-name';
-  if (isHiddenMode) {
-    linkName.textContent = hiddenName;
-    linkName.style.position = 'relative';
-    linkName.style.minHeight = '24px';
-  } else {
-    linkName.textContent = link.name;
-  }
+  linkName.textContent = link.name;
 
   const linkUrl = document.createElement('div');
   linkUrl.className = 'link-url';
-  if (isHiddenMode) {
-    linkUrl.textContent = hiddenUrl.replace(/^https?:\/\//, '');
-    linkUrl.classList.add('hidden-link-url');
-  } else {
-    linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
-  }
+  linkUrl.textContent = link.url.replace(/^https?:\/\//, '');
 
   const linkDesc = document.createElement('div');
   linkDesc.className = 'link-desc';
-  if (isHiddenMode) {
-    linkDesc.textContent = hiddenDesc;
-  } else {
-    linkDesc.textContent = link.description;
-  }
+  linkDesc.textContent = link.description;
 
   linkInfo.appendChild(linkName);
-  if (isHiddenMode) {
+  linkInfo.appendChild(linkUrl);
+  if (link.description) {
     linkInfo.appendChild(linkDesc);
-    linkInfo.appendChild(linkUrl);
-  } else {
-    linkInfo.appendChild(linkUrl);
-    if (link.description) {
-      linkInfo.appendChild(linkDesc);
-    }
   }
 
   const arrow = document.createElement('div');
@@ -8286,45 +7876,6 @@ function doRenderLinks(filterText, category) {
 
         const isMinimalLayout = document.body.classList.contains('layout-minimal');
 
-        if (!isMinimalLayout) {
-          if (subcat.name && !subcat.hideTitle) {
-            const titleCard = document.createElement('div');
-            titleCard.className = 'subcategory-title-card';
-
-            const subTitle = document.createElement('h3');
-            subTitle.className = 'subcategory-title';
-            subTitle.textContent = subcat.name;
-            titleCard.appendChild(subTitle);
-
-            if (subcat.enName) {
-              const subEnTitle = document.createElement('p');
-              subEnTitle.className = 'subcategory-en-title';
-              subEnTitle.textContent = subcat.enName;
-              titleCard.appendChild(subEnTitle);
-            }
-
-            if (subcat.easterEggUrl) {
-              titleCard.style.cursor = 'pointer';
-              titleCard.dataset.eggClicks = '0';
-              titleCard.addEventListener('click', () => {
-                const clicks = Number(titleCard.dataset.eggClicks || '0') + 1;
-                titleCard.dataset.eggClicks = String(clicks);
-                clearTimeout(titleCard._eggTimer);
-                if (clicks >= 3) {
-                  titleCard.dataset.eggClicks = '0';
-                  window.open(subcat.easterEggUrl, '_blank', 'noopener');
-                } else {
-                  titleCard._eggTimer = setTimeout(() => {
-                    titleCard.dataset.eggClicks = '0';
-                  }, 900);
-                }
-              });
-            }
-
-            subcategory.appendChild(titleCard);
-          }
-        }
-
         const grid = document.createElement('div');
         grid.className = (cat.name === '全球 AI') ? 'ai-grid' : 'links-grid';
 
@@ -8419,16 +7970,16 @@ const sunIcon = document.getElementById('sunIcon');
 const moonIcon = document.getElementById('moonIcon');
 
 // 第一布局（经典）使用7个主题，第二布局（杂志）不使用极光青、暮光橙、星空蓝
-const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
-const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
-const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themesGrid = ['dream', 'forest', 'deepsea', 'clay', 'aurora', 'sunset', 'starry', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themesMinimal = ['dream', 'forest', 'deepsea', 'clay', 'midnight', 'ink', 'twilight', 'ocean', 'mint', 'dawn', 'white'];
+const themeNamesGrid = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '极光青', '暮光橙', '星空蓝', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
+const themeNamesMinimal = ['梦幻粉', '森林绿', '深海蓝', '暖陶土', '深夜黑', 'Linear 黑', '晨曦紫', '海洋蓝', '薄荷青', '晨曦粉', '经典白'];
 
 // 暗色主题列表（显示太阳图标）
-const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay'];
+const darkThemes = ['midnight', 'starry', 'sunset', 'aurora', 'dream', 'forest', 'deepsea', 'clay', 'ink'];
 
 function getCurrentLayout() {
-  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'grid';
+  return document.body.classList.contains('layout-minimal') ? 'minimal' : 'minimal';
 }
 
 function getThemes() {
@@ -8460,7 +8011,8 @@ function setTheme(theme) {
     "dream": "#667eea",
     "forest": "#2d5f4e",
     "deepsea": "#1a4a6e",
-    "clay": "#6b4a35"
+    "clay": "#6b4a35",
+    "ink": "#08090a"
   };
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
 
@@ -8524,14 +8076,29 @@ document.querySelector('.logo').addEventListener('click', function(e) {
   return false;
 });
 
+
+  // 隐藏按钮：切换隐私模式（链接变透明）
+  const hideToggle = document.getElementById('hideToggle');
+  if (hideToggle) {
+    hideToggle.addEventListener('click', (e) => {
+      document.body.classList.toggle('hide-mode');
+      e.currentTarget.blur();
+    });
+  }
+
 // 布局切换
 const layoutToggle = document.getElementById('layoutToggle');
 const layoutBtn = layoutToggle.querySelector('.layout-btn');
 
 function setLayout(layout) {
+  if (layout === 'grid') layout = 'clear';
   localStorage.setItem('layout', layout);
-  document.body.classList.remove('layout-grid', 'layout-minimal');
-  document.body.classList.add('layout-' + layout);
+  document.body.classList.remove('layout-minimal', 'layout-clear');
+  if (layout === 'clear') {
+    document.body.classList.add('layout-minimal', 'layout-clear');
+  } else {
+    document.body.classList.add('layout-' + layout);
+  }
 
   
   let isImageBackground = false;
@@ -8567,12 +8134,18 @@ function setLayout(layout) {
   // 布局二 logo 显示英文艺术字体
   const logoText = document.getElementById('logoText');
   if (logoText) {
-    logoText.textContent = layout === 'minimal' ? '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐' : '𝗞𝗶𝘀𝘀𝘁𝗿';
+    logoText.textContent = '𝐵𝑜𝑜𝑘 𝑀𝑜𝑣𝑖𝑒𝑠 𝑀𝑢𝑠𝑖𝑐';
   }
 
   // 动态更新布局按钮提示
   if (layoutBtn) {
-    layoutBtn.title = layout === 'minimal' ? '杂志布局' : '经典布局';
+    if (layout === 'clear') {
+      layoutBtn.title = '清晰布局';
+    } else if (layout === 'minimal') {
+      layoutBtn.title = '杂志布局';
+    } else {
+      layoutBtn.title = '清晰布局';
+    }
   }
 
   if (!isImageBackground) {
@@ -8621,7 +8194,7 @@ function setLayout(layout) {
   renderLinks(searchValue, currentCategory);
 }
 
-const layoutDefaultVersion = 'v130-magazine-default';
+const layoutDefaultVersion = 'v141-minimal-default';
 if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
   localStorage.setItem('layout', 'minimal');
   localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
@@ -8630,8 +8203,8 @@ const savedLayout = localStorage.getItem('layout') || 'minimal';
 setLayout(savedLayout);
 
 layoutBtn.addEventListener('click', (e) => {
-  const currentLayout = document.body.classList.contains('layout-grid') ? 'grid' : 'minimal';
-  const newLayout = currentLayout === 'grid' ? 'minimal' : 'grid';
+  const currentLayout = document.body.classList.contains('layout-clear') ? 'clear' : 'minimal';
+  const newLayout = currentLayout === 'clear' ? 'minimal' : 'clear';
   setLayout(newLayout);
   e.currentTarget.blur();
 });
@@ -8779,9 +8352,6 @@ lofiAudio.addEventListener('error', (e) => {
   if (isPlaying && !isChangingStation) tryNextStationSource();
 });
 
-lofiAudio.addEventListener('loadedmetadata', () => {
-  console.log('音频元数据加载成功');
-});
 
 lofiAudio.addEventListener('playing', () => {
   stationRetryCount = 0;
@@ -8838,7 +8408,7 @@ function changeStation(direction) {
   mbStart();
 
   playAudio().catch(e => {
-    console.warn('鍒囨崲鐢靛彴鎾斁澶辫触:', e.message);
+    console.warn('切换电台播放失败:', e.message);
     clearTimeout(stationUnlockTimer);
     isChangingStation = false;
     setTimeout(tryNextStationSource, 250);
@@ -8853,18 +8423,6 @@ function changeStation(direction) {
 
 musicPrev.addEventListener('click', (e) => { changeStation(-1); e.currentTarget.blur(); });
 musicNext.addEventListener('click', (e) => { changeStation(1); e.currentTarget.blur(); });
-
-// 生成隐藏数据
-generateSecretData();
-
-// 初始化隐藏模式
-initHideMode();
-
-// 绑定隐藏按钮点击事件
-document.getElementById('hideToggle').addEventListener('click', function(e) {
-  toggleHideMode();
-  e.currentTarget.blur();
-});
 
 renderLinks('', currentCategory);
 
@@ -8977,13 +8535,6 @@ document.addEventListener('keydown', (e) => {
     if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
       e.preventDefault();
       layoutBtn.click();
-    }
-  }
-
-  if (e.key === 'h' || e.key === 'H') {
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-      e.preventDefault();
-      document.getElementById('hideToggle').click();
     }
   }
 
@@ -9612,7 +9163,6 @@ const mbObserver = new MutationObserver(() => {
 });
 mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
 
-
 // ========== 背景选择器 ==========
 // === 背景选择器：纯色/渐变 + WebP 壁纸，按需创建预览 ===
 (function() {
@@ -9624,6 +9174,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-ocean', type: 'theme', theme: 'ocean', name: '海洋蓝', preview: 'linear-gradient(135deg, #f0f8ff, #d7ecff)' },
     { id: 'theme-twilight', type: 'theme', theme: 'twilight', name: '晨曦紫', preview: 'linear-gradient(135deg, #f5f0ff, #e9dcff)' },
     { id: 'theme-midnight', type: 'theme', theme: 'midnight', name: '深夜黑', preview: 'linear-gradient(135deg, #000212, #0c0c1d)' },
+    { id: 'theme-ink', type: 'theme', theme: 'ink', name: 'Linear 黑', preview: 'linear-gradient(135deg, #08090a, #1c1d22)' },
     { id: 'theme-starry', type: 'theme', theme: 'starry', name: '星空蓝', preview: 'linear-gradient(135deg, #0c0c1d, #1b2b5f)' },
     { id: 'theme-sunset', type: 'theme', theme: 'sunset', name: '暮光橙', preview: 'linear-gradient(135deg, #2d1b0e, #7a3b1e)' },
     { id: 'theme-aurora', type: 'theme', theme: 'aurora', name: '极光青', preview: 'linear-gradient(135deg, #1a2a3a, #3db8a8)' },
@@ -9633,49 +9184,49 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     { id: 'theme-clay', type: 'theme', theme: 'clay', name: '暖陶土', preview: 'linear-gradient(135deg, #4a3326, #8a6a4f)' }
   ];
   const imageBackgrounds = [
-    { id: '樱野', name: '樱野', url: 'wallpapers_webp/樱野.webp', thumb: 'wallpapers_webp/thumbs/樱野.webp' },
-    { id: '星夜', name: '星夜', url: 'wallpapers_webp/星夜.webp', thumb: 'wallpapers_webp/thumbs/星夜.webp' },
-    { id: '秋林', name: '秋林', url: 'wallpapers_webp/秋林.webp', thumb: 'wallpapers_webp/thumbs/秋林.webp' },
-    { id: '樱河', name: '樱河', url: 'wallpapers_webp/樱河.webp', thumb: 'wallpapers_webp/thumbs/樱河.webp' },
-    { id: '海站', name: '海站', url: 'wallpapers_webp/海站.webp', thumb: 'wallpapers_webp/thumbs/海站.webp' },
-    { id: '雨读', name: '雨读', url: 'wallpapers_webp/雨读.webp', thumb: 'wallpapers_webp/thumbs/雨读.webp' },
-    { id: '薰月', name: '薰月', url: 'wallpapers_webp/薰月.webp', thumb: 'wallpapers_webp/thumbs/薰月.webp' },
-    { id: '屋园', name: '屋园', url: 'wallpapers_webp/屋园.webp', thumb: 'wallpapers_webp/thumbs/屋园.webp' },
-    { id: '云海', name: '云海', url: 'wallpapers_webp/云海.webp', thumb: 'wallpapers_webp/thumbs/云海.webp' },
-    { id: '花街', name: '花街', url: 'wallpapers_webp/花街.webp', thumb: 'wallpapers_webp/thumbs/花街.webp' },
-    { id: '雪村', name: '雪村', url: 'wallpapers_webp/雪村.webp', thumb: 'wallpapers_webp/thumbs/雪村.webp' },
-    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/灯塔.webp', thumb: 'wallpapers_webp/thumbs/灯塔.webp' },
-    { id: '林茶', name: '林茶', url: 'wallpapers_webp/林茶.webp', thumb: 'wallpapers_webp/thumbs/林茶.webp' },
-    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/稻霞.webp', thumb: 'wallpapers_webp/thumbs/稻霞.webp' },
-    { id: '温室', name: '温室', url: 'wallpapers_webp/温室.webp', thumb: 'wallpapers_webp/thumbs/温室.webp' },
-    { id: '游园', name: '游园', url: 'wallpapers_webp/游园.webp', thumb: 'wallpapers_webp/thumbs/游园.webp' },
-    { id: '学园', name: '学园', url: 'wallpapers_webp/学园.webp', thumb: 'wallpapers_webp/thumbs/学园.webp' },
-    { id: '水族', name: '水族', url: 'wallpapers_webp/水族.webp', thumb: 'wallpapers_webp/thumbs/水族.webp' },
-    { id: '阁星', name: '阁星', url: 'wallpapers_webp/阁星.webp', thumb: 'wallpapers_webp/thumbs/阁星.webp' },
-    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/竹晨.webp', thumb: 'wallpapers_webp/thumbs/竹晨.webp' },
-    { id: '夜市', name: '夜市', url: 'wallpapers_webp/夜市.webp', thumb: 'wallpapers_webp/thumbs/夜市.webp' },
-    { id: '星象', name: '星象', url: 'wallpapers_webp/星象.webp', thumb: 'wallpapers_webp/thumbs/星象.webp' },
-    { id: '风车', name: '风车', url: 'wallpapers_webp/风车.webp', thumb: 'wallpapers_webp/thumbs/风车.webp' },
-    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/猫窗.webp', thumb: 'wallpapers_webp/thumbs/猫窗.webp' },
-    { id: '兔野', name: '兔野', url: 'wallpapers_webp/兔野.webp', thumb: 'wallpapers_webp/thumbs/兔野.webp' },
-    { id: '书童', name: '书童', url: 'wallpapers_webp/书童.webp', thumb: 'wallpapers_webp/thumbs/书童.webp' },
-    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/紫阳.webp', thumb: 'wallpapers_webp/thumbs/紫阳.webp' },
-    { id: '月秋', name: '月秋', url: 'wallpapers_webp/月秋.webp', thumb: 'wallpapers_webp/thumbs/月秋.webp' },
-    { id: '庭院', name: '庭院', url: 'wallpapers_webp/庭院.webp', thumb: 'wallpapers_webp/thumbs/庭院.webp' },
-    { id: '水母', name: '水母', url: 'wallpapers_webp/水母.webp', thumb: 'wallpapers_webp/thumbs/水母.webp' },
-    { id: '草莓', name: '草莓', url: 'wallpapers_webp/草莓.webp', thumb: 'wallpapers_webp/thumbs/草莓.webp' },
-    { id: '魔书', name: '魔书', url: 'wallpapers_webp/魔书.webp', thumb: 'wallpapers_webp/thumbs/魔书.webp' },
-    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/冬暖.webp', thumb: 'wallpapers_webp/thumbs/冬暖.webp' },
-    { id: '画室', name: '画室', url: 'wallpapers_webp/画室.webp', thumb: 'wallpapers_webp/thumbs/画室.webp' },
-    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/犬伴.webp', thumb: 'wallpapers_webp/thumbs/犬伴.webp' },
-    { id: '野餐', name: '野餐', url: 'wallpapers_webp/野餐.webp', thumb: 'wallpapers_webp/thumbs/野餐.webp' },
-    { id: '狐社', name: '狐社', url: 'wallpapers_webp/狐社.webp', thumb: 'wallpapers_webp/thumbs/狐社.webp', excludeFromRandom: true },
-    { id: '阅台', name: '阅台', url: 'wallpapers_webp/阅台.webp', thumb: 'wallpapers_webp/thumbs/阅台.webp' },
-    { id: '虹池', name: '虹池', url: 'wallpapers_webp/虹池.webp', thumb: 'wallpapers_webp/thumbs/虹池.webp', excludeFromRandom: true },
-    { id: '绿意', name: '绿意', url: 'wallpapers_webp/绿意.webp', thumb: 'wallpapers_webp/thumbs/绿意.webp', excludeFromRandom: true },
-    { id: '茶花', name: '茶花', url: 'wallpapers_webp/茶花.webp', thumb: 'wallpapers_webp/thumbs/茶花.webp' },
-    { id: '海骑', name: '海骑', url: 'wallpapers_webp/海骑.webp', thumb: 'wallpapers_webp/thumbs/海骑.webp' },
-    { id: '萤光', name: '萤光', url: 'wallpapers_webp/萤光.webp', thumb: 'wallpapers_webp/thumbs/萤光.webp' }
+    { id: '樱野', name: '樱野', url: 'wallpapers_webp/35_樱野.webp', thumb: 'wallpapers_webp/thumbs/35_樱野.webp' },
+    { id: '星夜', name: '星夜', url: 'wallpapers_webp/28_星夜.webp', thumb: 'wallpapers_webp/thumbs/28_星夜.webp' },
+    { id: '秋林', name: '秋林', url: 'wallpapers_webp/18_秋林.webp', thumb: 'wallpapers_webp/thumbs/18_秋林.webp' },
+    { id: '樱河', name: '樱河', url: 'wallpapers_webp/34_樱河.webp', thumb: 'wallpapers_webp/thumbs/34_樱河.webp' },
+    { id: '海站', name: '海站', url: 'wallpapers_webp/09_海站.webp', thumb: 'wallpapers_webp/thumbs/09_海站.webp' },
+    { id: '雨读', name: '雨读', url: 'wallpapers_webp/38_雨读.webp', thumb: 'wallpapers_webp/thumbs/38_雨读.webp' },
+    { id: '薰月', name: '薰月', url: 'wallpapers_webp/31_薰月.webp', thumb: 'wallpapers_webp/thumbs/31_薰月.webp' },
+    { id: '屋园', name: '屋园', url: 'wallpapers_webp/26_屋园.webp', thumb: 'wallpapers_webp/thumbs/26_屋园.webp' },
+    { id: '云海', name: '云海', url: 'wallpapers_webp/41_云海.webp', thumb: 'wallpapers_webp/thumbs/41_云海.webp' },
+    { id: '花街', name: '花街', url: 'wallpapers_webp/12_花街.webp', thumb: 'wallpapers_webp/thumbs/12_花街.webp' },
+    { id: '雪村', name: '雪村', url: 'wallpapers_webp/30_雪村.webp', thumb: 'wallpapers_webp/thumbs/30_雪村.webp' },
+    { id: '灯塔', name: '灯塔', url: 'wallpapers_webp/04_灯塔.webp', thumb: 'wallpapers_webp/thumbs/04_灯塔.webp' },
+    { id: '林茶', name: '林茶', url: 'wallpapers_webp/14_林茶.webp', thumb: 'wallpapers_webp/thumbs/14_林茶.webp' },
+    { id: '稻霞', name: '稻霞', url: 'wallpapers_webp/03_稻霞.webp', thumb: 'wallpapers_webp/thumbs/03_稻霞.webp' },
+    { id: '温室', name: '温室', url: 'wallpapers_webp/25_温室.webp', thumb: 'wallpapers_webp/thumbs/25_温室.webp' },
+    { id: '游园', name: '游园', url: 'wallpapers_webp/37_游园.webp', thumb: 'wallpapers_webp/thumbs/37_游园.webp' },
+    { id: '学园', name: '学园', url: 'wallpapers_webp/29_学园.webp', thumb: 'wallpapers_webp/thumbs/29_学园.webp' },
+    { id: '水族', name: '水族', url: 'wallpapers_webp/22_水族.webp', thumb: 'wallpapers_webp/thumbs/22_水族.webp' },
+    { id: '阁星', name: '阁星', url: 'wallpapers_webp/07_阁星.webp', thumb: 'wallpapers_webp/thumbs/07_阁星.webp' },
+    { id: '竹晨', name: '竹晨', url: 'wallpapers_webp/42_竹晨.webp', thumb: 'wallpapers_webp/thumbs/42_竹晨.webp' },
+    { id: '夜市', name: '夜市', url: 'wallpapers_webp/33_夜市.webp', thumb: 'wallpapers_webp/thumbs/33_夜市.webp' },
+    { id: '星象', name: '星象', url: 'wallpapers_webp/27_星象.webp', thumb: 'wallpapers_webp/thumbs/27_星象.webp' },
+    { id: '风车', name: '风车', url: 'wallpapers_webp/06_风车.webp', thumb: 'wallpapers_webp/thumbs/06_风车.webp' },
+    { id: '猫窗', name: '猫窗', url: 'wallpapers_webp/16_猫窗.webp', thumb: 'wallpapers_webp/thumbs/16_猫窗.webp' },
+    { id: '兔野', name: '兔野', url: 'wallpapers_webp/24_兔野.webp', thumb: 'wallpapers_webp/thumbs/24_兔野.webp' },
+    { id: '书童', name: '书童', url: 'wallpapers_webp/20_书童.webp', thumb: 'wallpapers_webp/thumbs/20_书童.webp' },
+    { id: '紫阳', name: '紫阳', url: 'wallpapers_webp/43_紫阳.webp', thumb: 'wallpapers_webp/thumbs/43_紫阳.webp' },
+    { id: '月秋', name: '月秋', url: 'wallpapers_webp/39_月秋.webp', thumb: 'wallpapers_webp/thumbs/39_月秋.webp' },
+    { id: '庭院', name: '庭院', url: 'wallpapers_webp/23_庭院.webp', thumb: 'wallpapers_webp/thumbs/23_庭院.webp' },
+    { id: '水母', name: '水母', url: 'wallpapers_webp/21_水母.webp', thumb: 'wallpapers_webp/thumbs/21_水母.webp' },
+    { id: '草莓', name: '草莓', url: 'wallpapers_webp/01_草莓.webp', thumb: 'wallpapers_webp/thumbs/01_草莓.webp' },
+    { id: '魔书', name: '魔书', url: 'wallpapers_webp/17_魔书.webp', thumb: 'wallpapers_webp/thumbs/17_魔书.webp' },
+    { id: '冬暖', name: '冬暖', url: 'wallpapers_webp/05_冬暖.webp', thumb: 'wallpapers_webp/thumbs/05_冬暖.webp' },
+    { id: '画室', name: '画室', url: 'wallpapers_webp/13_画室.webp', thumb: 'wallpapers_webp/thumbs/13_画室.webp' },
+    { id: '犬伴', name: '犬伴', url: 'wallpapers_webp/19_犬伴.webp', thumb: 'wallpapers_webp/thumbs/19_犬伴.webp' },
+    { id: '野餐', name: '野餐', url: 'wallpapers_webp/32_野餐.webp', thumb: 'wallpapers_webp/thumbs/32_野餐.webp' },
+    { id: '狐社', name: '狐社', url: 'wallpapers_webp/11_狐社.webp', thumb: 'wallpapers_webp/thumbs/11_狐社.webp', excludeFromRandom: true },
+    { id: '阅台', name: '阅台', url: 'wallpapers_webp/40_阅台.webp', thumb: 'wallpapers_webp/thumbs/40_阅台.webp' },
+    { id: '虹池', name: '虹池', url: 'wallpapers_webp/10_虹池.webp', thumb: 'wallpapers_webp/thumbs/10_虹池.webp', excludeFromRandom: true },
+    { id: '绿意', name: '绿意', url: 'wallpapers_webp/15_绿意.webp', thumb: 'wallpapers_webp/thumbs/15_绿意.webp', excludeFromRandom: true },
+    { id: '茶花', name: '茶花', url: 'wallpapers_webp/02_茶花.webp', thumb: 'wallpapers_webp/thumbs/02_茶花.webp' },
+    { id: '海骑', name: '海骑', url: 'wallpapers_webp/08_海骑.webp', thumb: 'wallpapers_webp/thumbs/08_海骑.webp' },
+    { id: '萤光', name: '萤光', url: 'wallpapers_webp/36_萤光.webp', thumb: 'wallpapers_webp/thumbs/36_萤光.webp' }
   ].map(item => ({ ...item, type: 'image' }));
 
   /* reorder: 精选背景 → 风景 → 人物 */
@@ -9790,10 +9341,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
   }
 
   function getImageOverlay() {
-    const isGrid = document.body.classList.contains('layout-grid');
-    return isGrid
-      ? ['rgba(18, 18, 36, 0.34)', 'rgba(18, 18, 36, 0.43)']
-      : ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
+    return ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
   }
 
   function syncImageBackgroundChrome(bgImageValue) {
@@ -10101,7 +9649,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
     const width = Math.max(336, Math.min(920, viewportWidth - 24));
     const panel = modal.querySelector('.background-modal-panel');
     if (panel) panel.style.width = `${width}px`;
-    const layoutOffset = document.body.classList.contains('layout-grid') ? 14 : 0;
+    const layoutOffset = 0;
     modal.style.setProperty('--bg-picker-top', `${rect.bottom + 18 + layoutOffset}px`);
   }
 
@@ -10138,7 +9686,8 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
       }
     }
     /* 没有用户选择时，默认从全部壁纸图片中随机；用户手动选择后仍按保存值恢复 */
-    var randomPool = imageBackgrounds.filter(function(o) { return !o.excludeFromRandom; });
+    var defaultRandomIds = ['星夜', '雨读', '林茶', '竹晨'];
+    var randomPool = imageBackgrounds.filter(function(o) { return defaultRandomIds.indexOf(o.id) !== -1; });
     if (randomPool.length > 0) {
       var randomIdx = Math.floor(Math.random() * randomPool.length);
       applySelection(randomPool[randomIdx], false, false);
