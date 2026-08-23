@@ -1570,6 +1570,385 @@ try {
     background: #ffffff !important;
   }
 
+/* 电台快速选择列表 */
+  .station-list-panel {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 280px;
+    max-height: 60vh;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: stationListFadeIn 0.2s ease;
+  }
+
+  .station-list-panel.show {
+    display: flex;
+  }
+
+  @keyframes stationListFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .station-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--card-border);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .station-list-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    transition: color 0.2s ease;
+  }
+
+  .station-list-close:hover {
+    color: var(--text-primary);
+  }
+
+  .station-list-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px;
+  }
+
+  .station-list-content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .station-list-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .station-list-content::-webkit-scrollbar-thumb {
+    background: var(--card-border);
+    border-radius: 2px;
+  }
+
+  .station-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .station-item:hover {
+    background: var(--card-hover);
+    color: var(--text-primary);
+  }
+
+  .station-item.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  .station-item-index {
+    width: 24px;
+    text-align: center;
+    font-size: 11px;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .station-item.active .station-item-index {
+    opacity: 0.8;
+  }
+
+  .station-item-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .station-item-playing {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-left: 8px;
+    display: none;
+  }
+
+  .station-item.active.playing .station-item-playing {
+    display: block;
+    animation: stationItemPulse 1s ease-in-out infinite;
+  }
+
+  @keyframes stationItemPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* 响应式 - 全平台适配 */
+  
+  /* 平板端 (768px - 1024px) */
+  @media (max-width: 1024px) {
+    .music-player {
+      min-width: 240px;
+      max-width: min(50vw, 320px);
+      padding: 3px 8px;
+      gap: 3px;
+    }
+    .music-name {
+      flex: 0 1 5.5em;
+      width: 5.5em;
+      max-width: 5.5em;
+      font-size: 11px;
+    }
+    .music-volume {
+      width: 50px;
+    }
+    .station-list-panel {
+      width: 260px;
+      top: 65px;
+      right: 15px;
+      max-height: 55vh;
+    }
+  }
+  
+  /* 手机端 (480px - 768px) */
+  @media (max-width: 768px) {
+    .music-player {
+      min-width: 200px;
+      max-width: min(60vw, 280px);
+      padding: 3px 6px;
+      gap: 2px;
+      --music-btn-size: clamp(22px, 5vw, 28px);
+      --music-btn-icon-size: clamp(10px, 2.5vw, 13px);
+    }
+    .music-name {
+      flex: 0 1 4.5em;
+      width: 4.5em;
+      max-width: 4.5em;
+      font-size: 10px;
+      padding-left: 1px;
+    }
+    .music-volume {
+      width: 40px;
+      height: 3px;
+    }
+    .music-volume::-webkit-slider-thumb {
+      width: 8px;
+      height: 8px;
+    }
+    .station-list-panel {
+      width: calc(100vw - 80px);
+      right: 40px;
+      left: 40px;
+      top: 60px;
+      max-height: 50vh;
+      border-radius: 14px;
+    }
+    .station-list-header {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+    .station-list-content {
+      padding: 6px;
+    }
+    .station-item {
+      padding: 12px 10px;
+      font-size: 14px;
+      border-radius: 10px;
+      margin-bottom: 3px;
+    }
+    .station-item-index {
+      width: 28px;
+      font-size: 12px;
+    }
+  }
+  
+  /* 超小屏 (<480px) */
+  @media (max-width: 480px) {
+    .music-player {
+      min-width: 170px;
+      max-width: min(70vw, 240px);
+      padding: 2px 5px;
+      gap: 1px;
+      --music-btn-size: clamp(24px, 7vw, 30px);
+      --music-btn-icon-size: clamp(11px, 3vw, 14px);
+    }
+    .music-name {
+      display: none;
+    }
+    .music-volume {
+      width: 35px;
+      height: 3px;
+    }
+    .station-list-panel {
+      width: calc(100vw - 60px);
+      right: 30px;
+      left: 30px;
+      top: 55px;
+      max-height: 55vh;
+      border-radius: 12px;
+    }
+    .station-list-header {
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    .station-list-close {
+      font-size: 22px;
+      padding: 0 6px;
+    }
+    .station-list-content {
+      padding: 5px;
+    }
+    .station-item {
+      padding: 14px 10px;
+      font-size: 15px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+    .station-item-index {
+      width: 30px;
+      font-size: 13px;
+    }
+    .station-item-playing {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  
+  /* 横屏手机适配 */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .station-list-panel {
+      max-height: 70vh;
+      top: 55px;
+    }
+    .station-item {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+  }
+
+
+  /* 壁纸主题时列表透明背景，和播放器毛玻璃效果一致 */
+  body.background-image-mode .station-list-panel,
+  html.background-image-mode .station-list-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  body.background-image-mode .station-list-header,
+  html.background-image-mode .station-list-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  body.background-image-mode .station-item:hover,
+  html.background-image-mode .station-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  body.background-image-mode .station-list-header,
+  html.background-image-mode .station-list-header {
+    color: #ffffff;
+  }
+
+  body.background-image-mode .station-list-close,
+  html.background-image-mode .station-list-close {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  /* 壁纸主题下当前播放高亮项改为白色半透明 */
+  body.background-image-mode .station-item.active,
+  html.background-image-mode .station-item.active {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+  }
+
+  body.background-image-mode .station-item.active:hover,
+  html.background-image-mode .station-item.active:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+
+
+  body.background-image-mode .station-list-close:hover,
+  html.background-image-mode .station-list-close:hover {
+    color: #ffffff;
+  }
+
+  body.background-image-mode .station-item,
+  html.background-image-mode .station-item {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  body.background-image-mode .station-item:hover,
+  html.background-image-mode .station-item:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* 壁纸主题下播放器按钮白色文字 */
+  body.background-image-mode .music-btn,
+  html.background-image-mode .music-btn {
+    color: #ffffff;
+  }
+
+  body.background-image-mode .music-btn:hover,
+  html.background-image-mode .music-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* 壁纸主题下播放按钮：保留填充，取消边框，一直静止 */
+  body.background-image-mode .music-btn.music-play,
+  html.background-image-mode .music-btn.music-play {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    border: none !important;
+    transition: none !important;
+  }
+
+  body.background-image-mode .music-btn.music-play:hover,
+  html.background-image-mode .music-btn.music-play:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: none !important;
+    transform: none !important;
+  }
+
+  body.background-image-mode .music-btn.music-play:active,
+  html.background-image-mode .music-btn.music-play:active {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: none !important;
+  }
+
+  /* 壁纸主题下播放按钮播放时不要脉冲动画 */
+  body.background-image-mode .music-btn.music-play.playing svg,
+  html.background-image-mode .music-btn.music-play.playing svg {
+    animation: none !important;
+  }
+  /* 壁纸主题下列表窗口关闭按钮保持透明 */
+  body.background-image-mode .station-list-close,
+  html.background-image-mode .station-list-close {
+    background: transparent;
+  }
+
+
   /* ink theme volume bar white (Linear 黑) */
   [data-theme="ink"] .music-volume {
     background: rgba(255, 255, 255, 0.7) !important;
@@ -6102,7 +6481,20 @@ try {
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
           </svg>
         </button>
+        <button class="music-btn music-list" id="musicList" title="电台列表">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"></path>
+          </svg>
+        </button>
         <input type="range" class="music-volume" id="musicVolume" min="0" max="100" value="50" title="音量调节">
+      </div>
+      <!-- 电台快速选择列表 -->
+      <div class="station-list-panel" id="stationListPanel">
+        <div class="station-list-header">
+          <span>电台列表</span>
+          <button class="station-list-close" id="stationListClose">×</button>
+        </div>
+        <div class="station-list-content" id="stationListContent"></div>
       </div>
       <button class="theme-toggle" id="themeToggle" title="切换主题">
         <svg id="sunIcon" viewBox="0 0 24 24" style="display:none;">
@@ -7483,6 +7875,7 @@ const musicVolume = document.getElementById('musicVolume');
 
 // 音乐源列表
 const lofiStations = [
+  // ===== 原有SomaFM电台（保留） =====
   { name: 'Chillhop慵懒', path: 'groovesalad-128-mp3' },
   { name: 'Lush氛围女声', path: 'lush-128-mp3' },
   { name: 'Chillhop经典', path: 'gsclassic-128-mp3' },
@@ -7490,7 +7883,42 @@ const lofiStations = [
   { name: 'DeepSpace深空', path: 'deepspaceone-128-mp3' },
   { name: 'SpaceStation空间站', path: 'spacestation-128-mp3' },
   { name: 'Beat深屋节拍', path: 'beatblender-128-mp3' },
-  { name: 'Secret间谍风', path: 'secretagent-128-mp3' }
+  { name: 'Secret间谍风', path: 'secretagent-128-mp3' },
+  // ===== 保留的https电台 =====
+  { name: 'LofiGirl洛菲女孩', url: 'https://play.streamafrica.net/lofiradio' },
+  { name: 'ChillhopMusic奇乐嘻哈', url: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
+  // ===== SomaFM额外电台 =====
+  { name: 'DefCon黑客防御', path: 'defcon-128-mp3' },
+  { name: 'BootLiquor酒靴乡村', path: 'bootliquor-128-mp3' },
+  { name: 'Covers翻唱精选', path: 'covers-128-mp3' },
+  { name: 'MissionControl任务控制', path: 'missioncontrol-128-mp3' },
+  { name: 'SonicUniverse音速宇宙', path: 'sonicuniverse-128-mp3' },
+  { name: 'TheTrip迷幻旅程', path: 'thetrip-128-mp3' },
+  { name: 'Underground80s地下80年代', path: 'u80s-128-mp3' },
+  // ===== SomaFM筛选可用 =====
+  { name: 'Digitalis洋地黄迷幻', url: 'https://ice5.somafm.com/digitalis-128-mp3' },
+  { name: 'SevenInchSoul七寸灵魂', url: 'https://ice5.somafm.com/7soul-128-mp3' },
+  { name: 'Vaporwaves蒸汽波', url: 'https://ice5.somafm.com/vaporwaves-128-mp3' },
+  { name: 'BossaBeyond波萨诺瓦', url: 'https://ice5.somafm.com/bossa-128-mp3' },
+  { name: 'TikiTime提基时光', url: 'https://ice5.somafm.com/tikitime-128-mp3' },
+  // ===== 爵士、氛围、电子 =====
+  { name: 'FluxFM流动奇乐', url: 'https://streams.fluxfm.de/Chillhop/mp3-128' },
+  { name: 'HotmixMotown热混音城', url: 'https://streaming.hotmixradio.fr/hotmix-motown-en-mp3' },
+  // ===== 复古、世界音乐、轻音乐 =====
+  { name: 'OuiFM法国独立', url: 'https://ouifm.ice.infomaniak.ch/ouifm-high.mp3' },
+  { name: 'HotmixMovies热混影视', url: 'https://streaming.hotmixradio.fr/hotmix-movies-en-mp3' },
+  // ===== SomaFM追加 =====
+  { name: 'Fluid流体碎拍', url: 'https://ice5.somafm.com/fluid-128-mp3' },
+  { name: 'SuburbsOfGoa果阿郊区', url: 'https://ice5.somafm.com/suburbsofgoa-128-mp3' },
+  { name: 'ThistleRadio蓟花民谣', url: 'https://ice5.somafm.com/thistle-128-mp3' },
+  // ===== Ambient/Chillout =====
+  { name: 'SmoothChill平滑放松', url: 'https://streams.fluxfm.de/SmoothChill/mp3-128' },
+  // ===== 古典音乐 =====
+  { name: 'ClassicFM经典调频', url: 'https://icecast.thisisdax.com/ClassicFMMP3' },
+  // ===== 电子音乐 =====
+  { name: 'FriskyDeep欢跃深度', url: 'https://stream.friskyradio.com/frisky_deep.mp3' },
+  // ===== 摇滚/爵士/综合 =====
+  { name: 'FIPRadio自由电台', url: 'https://icecast.radiofrance.fr/fip-high.mp3' }
 ];
 
 let currentStation = 0;
@@ -7631,7 +8059,12 @@ function togglePlay() {
       tryNextStationSource();
     });
   }
-}
+
+
+  // 更新电台列表高亮
+  if (typeof updateStationListHighlight === 'function') {
+    updateStationListHighlight();
+  }}
 
 musicPlay.addEventListener('click', function(e) {
   togglePlay();
@@ -7666,10 +8099,114 @@ function changeStation(direction) {
   stationUnlockTimer = setTimeout(() => {
     isChangingStation = false;
   }, 600);
+
+  // 更新电台列表高亮
+  if (typeof updateStationListHighlight === 'function') {
+    updateStationListHighlight();
+  }
 }
 
 musicPrev.addEventListener('click', (e) => { changeStation(-1); e.currentTarget.blur(); });
 musicNext.addEventListener('click', (e) => { changeStation(1); e.currentTarget.blur(); });
+
+// ===== 电台快速选择列表 =====
+const musicListBtn = document.getElementById('musicList');
+const stationListPanel = document.getElementById('stationListPanel');
+const stationListContent = document.getElementById('stationListContent');
+const stationListClose = document.getElementById('stationListClose');
+
+function renderStationList() {
+  if (!stationListContent) return;
+  stationListContent.innerHTML = '';
+  lofiStations.forEach((station, index) => {
+    const item = document.createElement('div');
+    item.className = 'station-item';
+    if (index === currentStation) {
+      item.classList.add('active');
+      if (isPlaying) item.classList.add('playing');
+    }
+    item.innerHTML = `
+      <span class="station-item-index">${index + 1}</span>
+      <span class="station-item-name">${station.name}</span>
+      <svg class="station-item-playing" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+      </svg>
+    `;
+    item.addEventListener('click', () => {
+      if (index !== currentStation) {
+        currentStation = index;
+        currentStationSource = 0;
+        stationRetryCount = 0;
+        loadStation(currentStation, currentStationSource);
+        isPlaying = true;
+        updatePlayButton(true);
+        mbClosed = false;
+        mbStart();
+        playAudio().catch(e => {
+          console.warn('电台列表切换播放失败:', e.message);
+        });
+      }
+      // 点击电台后不关闭列表，只更新高亮
+      renderStationList();
+    });
+    stationListContent.appendChild(item);
+  });
+}
+
+function showStationList() {
+  if (!stationListPanel) return;
+  renderStationList();
+  stationListPanel.classList.add('show');
+}
+
+function hideStationList() {
+  if (!stationListPanel) return;
+  stationListPanel.classList.remove('show');
+}
+
+function toggleStationList() {
+  if (!stationListPanel) return;
+  if (stationListPanel.classList.contains('show')) {
+    hideStationList();
+  } else {
+    showStationList();
+  }
+}
+
+if (musicListBtn) {
+  musicListBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleStationList();
+    e.currentTarget.blur();
+  });
+}
+
+if (stationListClose) {
+  stationListClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideStationList();
+  });
+}
+
+if (stationListPanel) {
+  stationListPanel.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (stationListPanel && stationListPanel.classList.contains('show')) {
+    if (!stationListPanel.contains(e.target) && !musicListBtn.contains(e.target)) {
+      hideStationList();
+    }
+  }
+});
+
+// 更新电台列表高亮（在切换电台和播放状态变化时调用）
+function updateStationListHighlight() {
+  if (!stationListContent || !stationListPanel.classList.contains('show')) return;
+  renderStationList();
+}
 
 renderLinks('', currentCategory);
 

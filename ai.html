@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="2e77a380-3ab4-4cc2-ab63-aac249ee26ef"></script>
@@ -1264,6 +1264,25 @@ try {
     color: #ff6b6b;
   }
 
+  /* 壁纸主题下卡片标签改为白色，增强可见性 */
+  body.background-image-mode .ai-tag,
+  html.background-image-mode .ai-tag {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  body.background-image-mode .ai-tag.open-source,
+  html.background-image-mode .ai-tag.open-source {
+    color: #00ffaa !important;
+    background: rgba(0, 255, 170, 0.15) !important;
+  }
+
+  body.background-image-mode .ai-tag.closed,
+  html.background-image-mode .ai-tag.closed {
+    color: #ff8888 !important;
+    background: rgba(255, 100, 100, 0.15) !important;
+  }
+
   .ai-card-bottom {
     position: relative;
     display: flex;
@@ -1696,6 +1715,385 @@ try {
   [data-theme="midnight"] .music-volume::-moz-range-thumb {
     background: #ffffff !important;
   }
+
+/* 电台快速选择列表 */
+  .station-list-panel {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 280px;
+    max-height: 60vh;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: stationListFadeIn 0.2s ease;
+  }
+
+  .station-list-panel.show {
+    display: flex;
+  }
+
+  @keyframes stationListFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .station-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--card-border);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .station-list-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    transition: color 0.2s ease;
+  }
+
+  .station-list-close:hover {
+    color: var(--text-primary);
+  }
+
+  .station-list-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px;
+  }
+
+  .station-list-content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .station-list-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .station-list-content::-webkit-scrollbar-thumb {
+    background: var(--card-border);
+    border-radius: 2px;
+  }
+
+  .station-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .station-item:hover {
+    background: var(--card-hover);
+    color: var(--text-primary);
+  }
+
+  .station-item.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  .station-item-index {
+    width: 24px;
+    text-align: center;
+    font-size: 11px;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .station-item.active .station-item-index {
+    opacity: 0.8;
+  }
+
+  .station-item-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .station-item-playing {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-left: 8px;
+    display: none;
+  }
+
+  .station-item.active.playing .station-item-playing {
+    display: block;
+    animation: stationItemPulse 1s ease-in-out infinite;
+  }
+
+  @keyframes stationItemPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* 响应式 - 全平台适配 */
+  
+  /* 平板端 (768px - 1024px) */
+  @media (max-width: 1024px) {
+    .music-player {
+      min-width: 240px;
+      max-width: min(50vw, 320px);
+      padding: 3px 8px;
+      gap: 3px;
+    }
+    .music-name {
+      flex: 0 1 5.5em;
+      width: 5.5em;
+      max-width: 5.5em;
+      font-size: 11px;
+    }
+    .music-volume {
+      width: 50px;
+    }
+    .station-list-panel {
+      width: 260px;
+      top: 65px;
+      right: 15px;
+      max-height: 55vh;
+    }
+  }
+  
+  /* 手机端 (480px - 768px) */
+  @media (max-width: 768px) {
+    .music-player {
+      min-width: 200px;
+      max-width: min(60vw, 280px);
+      padding: 3px 6px;
+      gap: 2px;
+      --music-btn-size: clamp(22px, 5vw, 28px);
+      --music-btn-icon-size: clamp(10px, 2.5vw, 13px);
+    }
+    .music-name {
+      flex: 0 1 4.5em;
+      width: 4.5em;
+      max-width: 4.5em;
+      font-size: 10px;
+      padding-left: 1px;
+    }
+    .music-volume {
+      width: 40px;
+      height: 3px;
+    }
+    .music-volume::-webkit-slider-thumb {
+      width: 8px;
+      height: 8px;
+    }
+    .station-list-panel {
+      width: calc(100vw - 80px);
+      right: 40px;
+      left: 40px;
+      top: 60px;
+      max-height: 50vh;
+      border-radius: 14px;
+    }
+    .station-list-header {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+    .station-list-content {
+      padding: 6px;
+    }
+    .station-item {
+      padding: 12px 10px;
+      font-size: 14px;
+      border-radius: 10px;
+      margin-bottom: 3px;
+    }
+    .station-item-index {
+      width: 28px;
+      font-size: 12px;
+    }
+  }
+  
+  /* 超小屏 (<480px) */
+  @media (max-width: 480px) {
+    .music-player {
+      min-width: 170px;
+      max-width: min(70vw, 240px);
+      padding: 2px 5px;
+      gap: 1px;
+      --music-btn-size: clamp(24px, 7vw, 30px);
+      --music-btn-icon-size: clamp(11px, 3vw, 14px);
+    }
+    .music-name {
+      display: none;
+    }
+    .music-volume {
+      width: 35px;
+      height: 3px;
+    }
+    .station-list-panel {
+      width: calc(100vw - 60px);
+      right: 30px;
+      left: 30px;
+      top: 55px;
+      max-height: 55vh;
+      border-radius: 12px;
+    }
+    .station-list-header {
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    .station-list-close {
+      font-size: 22px;
+      padding: 0 6px;
+    }
+    .station-list-content {
+      padding: 5px;
+    }
+    .station-item {
+      padding: 14px 10px;
+      font-size: 15px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+    .station-item-index {
+      width: 30px;
+      font-size: 13px;
+    }
+    .station-item-playing {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  
+  /* 横屏手机适配 */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .station-list-panel {
+      max-height: 70vh;
+      top: 55px;
+    }
+    .station-item {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+  }
+
+
+  /* 壁纸主题时列表透明背景，和播放器毛玻璃效果一致 */
+  body.background-image-mode .station-list-panel,
+  html.background-image-mode .station-list-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  body.background-image-mode .station-list-header,
+  html.background-image-mode .station-list-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  body.background-image-mode .station-item:hover,
+  html.background-image-mode .station-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  body.background-image-mode .station-list-header,
+  html.background-image-mode .station-list-header {
+    color: #ffffff;
+  }
+
+  body.background-image-mode .station-list-close,
+  html.background-image-mode .station-list-close {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  /* 壁纸主题下当前播放高亮项改为白色半透明 */
+  body.background-image-mode .station-item.active,
+  html.background-image-mode .station-item.active {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+  }
+
+  body.background-image-mode .station-item.active:hover,
+  html.background-image-mode .station-item.active:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+
+
+  body.background-image-mode .station-list-close:hover,
+  html.background-image-mode .station-list-close:hover {
+    color: #ffffff;
+  }
+
+  body.background-image-mode .station-item,
+  html.background-image-mode .station-item {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  body.background-image-mode .station-item:hover,
+  html.background-image-mode .station-item:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* 壁纸主题下播放器按钮白色文字 */
+  body.background-image-mode .music-btn,
+  html.background-image-mode .music-btn {
+    color: #ffffff;
+  }
+
+  body.background-image-mode .music-btn:hover,
+  html.background-image-mode .music-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* 壁纸主题下播放按钮：保留填充，取消边框，一直静止 */
+  body.background-image-mode .music-btn.music-play,
+  html.background-image-mode .music-btn.music-play {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    border: none !important;
+    transition: none !important;
+  }
+
+  body.background-image-mode .music-btn.music-play:hover,
+  html.background-image-mode .music-btn.music-play:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: none !important;
+    transform: none !important;
+  }
+
+  body.background-image-mode .music-btn.music-play:active,
+  html.background-image-mode .music-btn.music-play:active {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: none !important;
+  }
+
+  /* 壁纸主题下播放按钮播放时不要脉冲动画 */
+  body.background-image-mode .music-btn.music-play.playing svg,
+  html.background-image-mode .music-btn.music-play.playing svg {
+    animation: none !important;
+  }
+  /* 壁纸主题下列表窗口关闭按钮保持透明 */
+  body.background-image-mode .station-list-close,
+  html.background-image-mode .station-list-close {
+    background: transparent;
+  }
+
 
   /* ink theme volume bar white (Linear 黑) */
   [data-theme="ink"] .music-volume {
@@ -6229,7 +6627,20 @@ try {
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
           </svg>
         </button>
+        <button class="music-btn music-list" id="musicList" title="电台列表">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"></path>
+          </svg>
+        </button>
         <input type="range" class="music-volume" id="musicVolume" min="0" max="100" value="50" title="音量调节">
+      </div>
+      <!-- 电台快速选择列表 -->
+      <div class="station-list-panel" id="stationListPanel">
+        <div class="station-list-header">
+          <span>电台列表</span>
+          <button class="station-list-close" id="stationListClose">×</button>
+        </div>
+        <div class="station-list-content" id="stationListContent"></div>
       </div>
       <button class="theme-toggle" id="themeToggle" title="切换主题">
         <svg id="sunIcon" viewBox="0 0 24 24" style="display:none;">
@@ -6423,55 +6834,6 @@ const linksData = [
           { name: "QoderWork", url: "https://tongyi.aliyun.com", description: "桌面端办公Agent，日常工作自动化，数字员工形态", _aiCompany: "阿里巴巴 Alibaba (中国)", _aiScore: 75, _aiTags: ["办公Agent", "桌面应用", "阿里系"] }
         ]
       },
-
-      {
-        name: "已停运",
-        enName: "Closed",
-        links: [
-          { name: "Sora", url: "https://openai.com", description: "曾经的AI视频生成标杆，2026年3月宣布关停消费者端，API 9月停止", _aiCompany: "OpenAI (美国)", _aiScore: 95, _aiCloseDate: "2026.04", _aiCloseReason: "战略调整，资源整合至其他产品线" },
-          { name: "Humane Ai Pin", url: "", description: "烧钱2.41亿美元的AI穿戴设备，最终以1.16亿贱卖给惠普，服务器全关", _aiCompany: "Humane (美国)", _aiScore: 90, _aiCloseDate: "2025.02", _aiCloseReason: "硬件销量惨淡，商业模式彻底失败" },
-          { name: "Inflection AI", url: "", description: "融资15亿美元明星AI公司，被微软吸收后变空壳，核心团队并入微软", _aiCompany: "Inflection (美国)", _aiScore: 88, _aiCloseDate: "2024.05", _aiCloseReason: "被微软收购整合，产品停止独立运营" },
-          { name: "Builder.ai", url: "", description: "融资4.45亿估值15亿的AI编程明星，2025年5月运营崩溃后破产", _aiCompany: "Builder.ai (美国)", _aiScore: 85, _aiCloseDate: "2025.05", _aiCloseReason: "财务造假+债务违约，实质是人工而非AI" },
-          { name: "Character.AI (核心团队)", url: "", description: "AI角色聊天鼻祖，Google 27亿美金软收购，创始团队回归DeepMind", _aiCompany: "Character.AI (美国)", _aiScore: 84, _aiCloseDate: "2024.08", _aiCloseReason: "Google人才收编式收购，产品仍运营但名存实亡" },
-          { name: "Yupp", url: "", description: "硅谷明星AI评测平台，2026年春关停，曾获顶级资本加持", _aiCompany: "Yupp AI (美国)", _aiScore: 82, _aiCloseDate: "2026.03", _aiCloseReason: "商业模式不可持续，资金耗尽" },
-          { name: "秒鸭相机", url: "", description: "阿里旗下AI相机应用，2025年9月团队解散，2026年5月消息曝光", _aiCompany: "阿里巴巴 (中国)", _aiScore: 80, _aiCloseDate: "2025.09", _aiCloseReason: "阿里内部优化，C端产品收缩" },
-          { name: "Rewind AI", url: "", description: "Mac屏幕录音AI搜索工具，2025年12月Meta收购Limitless后核心功能禁用", _aiCompany: "Rewind (美国)", _aiScore: 78, _aiCloseDate: "2025.12", _aiCloseReason: "被Meta收购，核心功能下线" },
-          { name: "鹿班智能设计", url: "", description: "阿里老牌AI广告设计平台，2025年6月30日全部服务终止", _aiCompany: "阿里巴巴 (中国)", _aiScore: 78, _aiCloseDate: "2025.06", _aiCloseReason: "业务整合，停止独立服务" },
-          { name: "腾讯智影", url: "", description: "腾讯AI视频与数字人平台，2025年6月30日停登，用户数据清空", _aiCompany: "腾讯 Tencent (中国)", _aiScore: 78, _aiCloseDate: "2025.06", _aiCloseReason: "名义升级改造，实际无限期关停" },
-          { name: "Glow", url: "", description: "AI陪伴App先驱，2023年3月因敏感内容与隐私投诉下架，后更名星野重启", _aiCompany: "MiniMax (中国)", _aiScore: 75, _aiCloseDate: "2023.03", _aiCloseReason: "内容监管问题，品牌更名重启" },
-          { name: "讯飞写作", url: "", description: "讯飞旗下AI写作工具，2025年11月30日正式终止服务", _aiCompany: "科大讯飞 (中国)", _aiScore: 75, _aiCloseDate: "2025.11", _aiCloseReason: "产品线调整，资源聚焦核心业务" },
-          { name: "奇域AI", url: "", description: "小红书国风AI绘图工具，2025年6月30日独立服务关闭，并入镜构小程序", _aiCompany: "小红书 Xiaohongshu (中国)", _aiScore: 74, _aiCloseDate: "2025.06", _aiCloseReason: "独立APP关停，功能整合至主产品" },
-          { name: "冒泡鸭", url: "", description: "AI角色扮演陪伴App，累计下载超600万，2025年11月5日停止运营", _aiCompany: "阶跃星辰 StepFun (中国)", _aiScore: 73, _aiCloseDate: "2025.11", _aiCloseReason: "陪伴类产品监管+商业化困难" },
-          { name: "XEVA / X Eva", url: "", description: "小冰旗下AI克隆与陪伴产品，2025年11月30日终止全部运营服务", _aiCompany: "小冰 Xiaoice (中国)", _aiScore: 72, _aiCloseDate: "2025.11", _aiCloseReason: "战略调整，产品线收缩" },
-          { name: "狸谱", url: "", description: "AIGC动漫与同人社区，巅峰月活约百万，2025年10月31日正式停运", _aiCompany: "独立创业团队 (中国)", _aiScore: 71, _aiCloseDate: "2025.10", _aiCloseReason: "版权争议+商业化失败" },
-          { name: "Trik AI", url: "", description: "小红书第一代AI绘图，因艺术家版权诉讼关停，后推出奇域AI", _aiCompany: "小红书 Xiaohongshu (中国)", _aiScore: 70, _aiCloseDate: "2023年末", _aiCloseReason: "版权诉讼争议，产品换代" },
-          { name: "Coqui AI", url: "", description: "AI语音生成与克隆创业公司，2024年1月商业关停，开源代码社区维护", _aiCompany: "Coqui (美国)", _aiScore: 70, _aiCloseDate: "2024.01", _aiCloseReason: "融资困难，商业化失败" },
-          { name: "未伴", url: "", description: "QQ音乐旗下AI陪伴社交App，2024年6月因AI陪伴内容监管审查下架", _aiCompany: "腾讯音乐 (中国)", _aiScore: 68, _aiCloseDate: "2024.06", _aiCloseReason: "监管审查，大陆服务终止" },
-          { name: "Artifact", url: "", description: "AI个性化新闻阅读器，市场机会不足停运，技术被雅虎收购", _aiCompany: "Instagram创始人 (美国)", _aiScore: 68, _aiCloseDate: "2024年", _aiCloseReason: "市场规模不足，技术出售" },
-          { name: "腾讯翻译君", url: "", description: "老牌翻译工具，网页/APP/小程序全线下线，功能整合入元宝等大模型产品", _aiCompany: "腾讯 Tencent (中国)", _aiScore: 67, _aiCloseDate: "2025.03", _aiCloseReason: "功能被大模型产品替代" },
-          { name: "Neeva 搜索", url: "", description: "无广告订阅制AI搜索引擎，2023年6月关闭，团队技术并入Snowflake", _aiCompany: "Neeva (美国)", _aiScore: 66, _aiCloseDate: "2023.06", _aiCloseReason: "用户量不足，C端搜索难盈利" },
-          { name: "万物追踪", url: "", description: "AI信息监控工具，2025年1月公测，不到3个月全面下架", _aiCompany: "MiniMax (中国)", _aiScore: 65, _aiCloseDate: "2025.04", _aiCloseReason: "上线不足三月即下架，原因未公开" },
-          { name: "波形智能 Weaver", url: "", description: "中文内容创作垂域大模型，2024年10月解散，核心团队集体入职OPPO", _aiCompany: "波形智能 (中国)", _aiScore: 65, _aiCloseDate: "2024.10", _aiCloseReason: "公司解散，团队被OPPO收购" },
-          { name: "Wow AI", url: "", description: "美团AI角色聊天产品，2025年12月18日服务器关闭，用户无法登录", _aiCompany: "美团 Meituan (中国)", _aiScore: 64, _aiCloseDate: "2025.12", _aiCloseReason: "美团非核心业务收缩" },
-          { name: "Afiniti", url: "", description: "创立18年的老牌AI独角兽，2024年11月宣布破产，主打客服AI优化", _aiCompany: "Afiniti (美国)", _aiScore: 64, _aiCloseDate: "2024.11", _aiCloseReason: "经营不善，申请破产" },
-          { name: "梯子AI", url: "", description: "百度AI搜索产品，运营约半年后关停，功能并入文心App", _aiCompany: "百度 Baidu (中国)", _aiScore: 63, _aiCloseDate: "2026.03", _aiCloseReason: "业务整合，并入主产品" },
-          { name: "Dot by New Computer", url: "", description: "个性化AI朋友陪伴产品，2025年10月停运，创始人团队方向调整", _aiCompany: "New Computer (美国)", _aiScore: 62, _aiCloseDate: "2025.10", _aiCloseReason: "创始人愿景分歧，资金耗尽" },
-          { name: "Soulmate App", url: "", description: "AI情感陪伴App，无通知直接终止服务，用户数据无法导出", _aiCompany: "独立团队 (美国)", _aiScore: 61, _aiCloseDate: "2025年", _aiCloseReason: "资金耗尽，无预警关停" },
-          { name: "OpenAI AI Text Classifier", url: "", description: "OpenAI官方AI文本检测工具，因准确率太低2023年7月主动撤回", _aiCompany: "OpenAI (美国)", _aiScore: 60, _aiCloseDate: "2023.07", _aiCloseReason: "准确率不足，产品失败" },
-          { name: "Woebot 消费者版", url: "", description: "CBT认知行为疗法AI心理聊天机器人，2025年6月消费者版退役", _aiCompany: "Woebot Health (美国)", _aiScore: 59, _aiCloseDate: "2025.06", _aiCloseReason: "转向B端医疗机构市场" },
-          { name: "异世界回响", url: "", description: "Soul旗下AI角色陪伴应用，2025年9月左右撤出，独立实验终止", _aiCompany: "Soul (中国)", _aiScore: 58, _aiCloseDate: "2025.09", _aiCloseReason: "Soul缩减独立AI陪伴实验" },
-          { name: "纸飞机AI", url: "", description: "AI陪伴应用，2025年退出市场，面壁智能聚焦B端业务", _aiCompany: "面壁智能 ModelBest (中国)", _aiScore: 57, _aiCloseDate: "2025年", _aiCloseReason: "公司战略转向B端" },
-          { name: "Yara AI", url: "", description: "AI心理健康治疗聊天机器人，创始人主动关停因担心安全性", _aiCompany: "Yara AI (美国)", _aiScore: 56, _aiCloseDate: "2025.11", _aiCloseReason: "创始人担忧AI心理治疗安全性" },
-          { name: "Huxe", url: "", description: "AI音频简报播客工具，将邮件日历网页转为个性化播客，2026年5月关停", _aiCompany: "Huxe (美国)", _aiScore: 55, _aiCloseDate: "2026.05", _aiCloseReason: "团队转型，产品停止运营" },
-          { name: "Tome (初代AI演示)", url: "", description: "AI自动生成PPT演示工具先驱，后转型远离AI幻灯片核心功能", _aiCompany: "Tome (美国)", _aiScore: 58, _aiCloseDate: "2025年", _aiCloseReason: "业务转型，偏离原有AI定位" },
-          { name: "Mem.ai", url: "", description: "AI笔记与知识管理工具，2025年后活跃度大幅下降，接近停更", _aiCompany: "Mem Labs (美国)", _aiScore: 55, _aiCloseDate: "2025年", _aiCloseReason: "用户流失，接近自然废弃" },
-          { name: "Luka / Replika (监管重挫)", url: "", description: "AI陪伴鼻祖Replika母公司，意大利被罚500万欧元，业务受监管重创", _aiCompany: "Luka Inc (美国)", _aiScore: 60, _aiCloseDate: "2025.04", _aiCloseReason: "欧盟监管重罚，业务大幅收缩" },
-          { name: "AiU 爱哟", url: "", description: "智谱旗下独立AI陪伴实验产品，2025年下半年撤出，资源集中其他业务", _aiCompany: "智谱AI Zhipu (中国)", _aiScore: 54, _aiCloseDate: "2025下半年", _aiCloseReason: "战略收缩，停止独立陪伴产品" },
-          { name: "Lumi 噜米", url: "", description: "AI情感陪伴应用，2025年下半年陪伴App退潮中停运", _aiCompany: "禹幻科技 (中国)", _aiScore: 53, _aiCloseDate: "2025下半年", _aiCloseReason: "陪伴赛道集体退潮" },
-          { name: "momoAI", url: "", description: "AI陪伴产品，2025年国内陪伴应用关停潮中下架", _aiCompany: "清杉信息 (中国)", _aiScore: 52, _aiCloseDate: "2025年", _aiCloseReason: "国内AI陪伴产品集体退出" },
-          { name: "我在AI", url: "", description: "AI陪伴应用，2025年停止维护，无明确官方停运公告", _aiCompany: "有零科技 (中国)", _aiScore: 51, _aiCloseDate: "2025年", _aiCloseReason: "停止维护，自然消亡" }
-        ]
-      }
     ]
   },
   {
@@ -7519,6 +7881,7 @@ const musicVolume = document.getElementById('musicVolume');
 
 // 音乐源列表
 const lofiStations = [
+  // ===== 原有SomaFM电台（保留） =====
   { name: 'Chillhop慵懒', path: 'groovesalad-128-mp3' },
   { name: 'Lush氛围女声', path: 'lush-128-mp3' },
   { name: 'Chillhop经典', path: 'gsclassic-128-mp3' },
@@ -7526,7 +7889,42 @@ const lofiStations = [
   { name: 'DeepSpace深空', path: 'deepspaceone-128-mp3' },
   { name: 'SpaceStation空间站', path: 'spacestation-128-mp3' },
   { name: 'Beat深屋节拍', path: 'beatblender-128-mp3' },
-  { name: 'Secret间谍风', path: 'secretagent-128-mp3' }
+  { name: 'Secret间谍风', path: 'secretagent-128-mp3' },
+  // ===== 保留的https电台 =====
+  { name: 'LofiGirl洛菲女孩', url: 'https://play.streamafrica.net/lofiradio' },
+  { name: 'ChillhopMusic奇乐嘻哈', url: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
+  // ===== SomaFM额外电台 =====
+  { name: 'DefCon黑客防御', path: 'defcon-128-mp3' },
+  { name: 'BootLiquor酒靴乡村', path: 'bootliquor-128-mp3' },
+  { name: 'Covers翻唱精选', path: 'covers-128-mp3' },
+  { name: 'MissionControl任务控制', path: 'missioncontrol-128-mp3' },
+  { name: 'SonicUniverse音速宇宙', path: 'sonicuniverse-128-mp3' },
+  { name: 'TheTrip迷幻旅程', path: 'thetrip-128-mp3' },
+  { name: 'Underground80s地下80年代', path: 'u80s-128-mp3' },
+  // ===== SomaFM筛选可用 =====
+  { name: 'Digitalis洋地黄迷幻', url: 'https://ice5.somafm.com/digitalis-128-mp3' },
+  { name: 'SevenInchSoul七寸灵魂', url: 'https://ice5.somafm.com/7soul-128-mp3' },
+  { name: 'Vaporwaves蒸汽波', url: 'https://ice5.somafm.com/vaporwaves-128-mp3' },
+  { name: 'BossaBeyond波萨诺瓦', url: 'https://ice5.somafm.com/bossa-128-mp3' },
+  { name: 'TikiTime提基时光', url: 'https://ice5.somafm.com/tikitime-128-mp3' },
+  // ===== 爵士、氛围、电子 =====
+  { name: 'FluxFM流动奇乐', url: 'https://streams.fluxfm.de/Chillhop/mp3-128' },
+  { name: 'HotmixMotown热混音城', url: 'https://streaming.hotmixradio.fr/hotmix-motown-en-mp3' },
+  // ===== 复古、世界音乐、轻音乐 =====
+  { name: 'OuiFM法国独立', url: 'https://ouifm.ice.infomaniak.ch/ouifm-high.mp3' },
+  { name: 'HotmixMovies热混影视', url: 'https://streaming.hotmixradio.fr/hotmix-movies-en-mp3' },
+  // ===== SomaFM追加 =====
+  { name: 'Fluid流体碎拍', url: 'https://ice5.somafm.com/fluid-128-mp3' },
+  { name: 'SuburbsOfGoa果阿郊区', url: 'https://ice5.somafm.com/suburbsofgoa-128-mp3' },
+  { name: 'ThistleRadio蓟花民谣', url: 'https://ice5.somafm.com/thistle-128-mp3' },
+  // ===== Ambient/Chillout =====
+  { name: 'SmoothChill平滑放松', url: 'https://streams.fluxfm.de/SmoothChill/mp3-128' },
+  // ===== 古典音乐 =====
+  { name: 'ClassicFM经典调频', url: 'https://icecast.thisisdax.com/ClassicFMMP3' },
+  // ===== 电子音乐 =====
+  { name: 'FriskyDeep欢跃深度', url: 'https://stream.friskyradio.com/frisky_deep.mp3' },
+  // ===== 摇滚/爵士/综合 =====
+  { name: 'FIPRadio自由电台', url: 'https://icecast.radiofrance.fr/fip-high.mp3' }
 ];
 
 let currentStation = 0;
@@ -7667,7 +8065,12 @@ function togglePlay() {
       tryNextStationSource();
     });
   }
-}
+
+
+  // 更新电台列表高亮
+  if (typeof updateStationListHighlight === 'function') {
+    updateStationListHighlight();
+  }}
 
 musicPlay.addEventListener('click', function(e) {
   togglePlay();
@@ -7702,10 +8105,114 @@ function changeStation(direction) {
   stationUnlockTimer = setTimeout(() => {
     isChangingStation = false;
   }, 600);
+
+  // 更新电台列表高亮
+  if (typeof updateStationListHighlight === 'function') {
+    updateStationListHighlight();
+  }
 }
 
 musicPrev.addEventListener('click', (e) => { changeStation(-1); e.currentTarget.blur(); });
 musicNext.addEventListener('click', (e) => { changeStation(1); e.currentTarget.blur(); });
+
+// ===== 电台快速选择列表 =====
+const musicListBtn = document.getElementById('musicList');
+const stationListPanel = document.getElementById('stationListPanel');
+const stationListContent = document.getElementById('stationListContent');
+const stationListClose = document.getElementById('stationListClose');
+
+function renderStationList() {
+  if (!stationListContent) return;
+  stationListContent.innerHTML = '';
+  lofiStations.forEach((station, index) => {
+    const item = document.createElement('div');
+    item.className = 'station-item';
+    if (index === currentStation) {
+      item.classList.add('active');
+      if (isPlaying) item.classList.add('playing');
+    }
+    item.innerHTML = `
+      <span class="station-item-index">${index + 1}</span>
+      <span class="station-item-name">${station.name}</span>
+      <svg class="station-item-playing" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+      </svg>
+    `;
+    item.addEventListener('click', () => {
+      if (index !== currentStation) {
+        currentStation = index;
+        currentStationSource = 0;
+        stationRetryCount = 0;
+        loadStation(currentStation, currentStationSource);
+        isPlaying = true;
+        updatePlayButton(true);
+        mbClosed = false;
+        mbStart();
+        playAudio().catch(e => {
+          console.warn('电台列表切换播放失败:', e.message);
+        });
+      }
+      // 点击电台后不关闭列表，只更新高亮
+      renderStationList();
+    });
+    stationListContent.appendChild(item);
+  });
+}
+
+function showStationList() {
+  if (!stationListPanel) return;
+  renderStationList();
+  stationListPanel.classList.add('show');
+}
+
+function hideStationList() {
+  if (!stationListPanel) return;
+  stationListPanel.classList.remove('show');
+}
+
+function toggleStationList() {
+  if (!stationListPanel) return;
+  if (stationListPanel.classList.contains('show')) {
+    hideStationList();
+  } else {
+    showStationList();
+  }
+}
+
+if (musicListBtn) {
+  musicListBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleStationList();
+    e.currentTarget.blur();
+  });
+}
+
+if (stationListClose) {
+  stationListClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideStationList();
+  });
+}
+
+if (stationListPanel) {
+  stationListPanel.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (stationListPanel && stationListPanel.classList.contains('show')) {
+    if (!stationListPanel.contains(e.target) && !musicListBtn.contains(e.target)) {
+      hideStationList();
+    }
+  }
+});
+
+// 更新电台列表高亮（在切换电台和播放状态变化时调用）
+function updateStationListHighlight() {
+  if (!stationListContent || !stationListPanel.classList.contains('show')) return;
+  renderStationList();
+}
 
 renderLinks('', currentCategory);
 
