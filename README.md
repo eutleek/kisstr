@@ -1,42 +1,50 @@
 # Kisstr
 
-书影音 · 优质网站收藏导航站。纯静态页面，无需构建，开箱即用。
+书影音 · 优质网站收藏导航站 — 46 个分类页，纯静态、零构建，部署于 Cloudflare Workers。
 
-官网：[kisstr.com](https://kisstr.com)
+官网：<https://kisstr.com>
+
+## 技术栈
+
+| 项       | 说明                                  |
+| -------- | ------------------------------------- |
+| 语言     | 原生 HTML / CSS / JavaScript          |
+| 部署     | Cloudflare Workers Static Assets      |
+| 构建     | 无（零构建，开箱即用）                |
+| 统计     | Umami（轻量脚本）                     |
+| 资源     | 本地静态资源，无 CDN 依赖             |
 
 ## 特性
 
-- 无广告、无弹窗、无盈利
-- 支持主题、布局（清晰/杂志）、背景壁纸切换
-- 分类清晰：书籍、影视、音乐、AI、设计、ACG 等 45+ 主题页
+- 46 个分类导航页（AI / ACGN / 设计 / 时尚 / 书影音等）
+- 13 种主题色 · 2 种布局（清晰 / 杂志）· 43 张壁纸背景
+- 内置 lofi 电台播放
+- 无广告 · 无弹窗 · 无盈利
+
+## 快速开始
+
+```bash
+# 本地预览
+npx serve site
+
+# 部署至 Cloudflare
+npx wrangler deploy
+```
 
 ## 目录结构
 
-```
-├── index.html             # 首页（书影音）
-├── *.html                 # 各分类导航页（ai、design_architecture、manga_sites 等）
-├── disclaimer.html        # 免责声明
-├── wallpapers_webp/       # 壁纸资源
-├── wrangler.jsonc         # Cloudflare 部署配置
+```text
+site/                  # 部署根目录（wrangler assets.directory = "site"）
+├── index.html         # 首页
+├── *.html             # 46 个分类页
+├── disclaimer.html    # 免责声明
+├── wallpapers_webp/   # 壁纸资源
 └── robots.txt
-```
 
-## 本地预览
-
-直接用浏览器打开 `index.html` 即可，或起一个本地静态服务器：
-
-```bash
-npx serve .
-```
-
-## 部署
-
-基于 Cloudflare Workers/Pages，使用 Wrangler：
-
-```bash
-npx wrangler deploy
+wrangler.jsonc         # Cloudflare 部署配置
+README.md
 ```
 
 ## 免责声明
 
-站点内链接均来自网络整理，仅供学习交流，请遵守相关法律法规。详见 [disclaimer.html](disclaimer.html)。
+站内链接整理自网络，仅供学习交流，请遵守相关法律法规。详见 [disclaimer.html](https://kisstr.com/disclaimer.html)。
