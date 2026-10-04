@@ -1,0 +1,149 @@
+[
+  {
+    "id": "hot",
+    "name_zh": "热门",
+    "description": "综合评分靠前、社区关注度高的热门项目。",
+    "count": 164,
+    "rule": "rating 为 S 或 A"
+  },
+  {
+    "id": "top",
+    "name_zh": "顶级",
+    "description": "顶级成熟项目，稳定性与成熟度最高。",
+    "count": 43,
+    "rule": "rating = S"
+  },
+  {
+    "id": "recommended",
+    "name_zh": "推荐",
+    "description": "功能完善、值得推荐的优秀项目。",
+    "count": 121,
+    "rule": "rating = A"
+  },
+  {
+    "id": "light",
+    "name_zh": "轻量",
+    "description": "总占用小于 5GB 的轻量工具，适合快速上手。",
+    "count": 42,
+    "rule": "disk_total_gb 非空且 < 5"
+  },
+  {
+    "id": "low-vram",
+    "name_zh": "低显存",
+    "description": "推荐显存不超过 8GB，适合入门级显卡。",
+    "count": 71,
+    "rule": "vram_recommended_gb 非空且 ≤ 8"
+  },
+  {
+    "id": "high-performance",
+    "name_zh": "高性能",
+    "description": "推荐内存 ≥32GB 或推荐显存 ≥24GB 的重型项目。",
+    "count": 59,
+    "rule": "ram_recommended_gb 非空且 ≥32 或 vram_recommended_gb 非空且 ≥24"
+  },
+  {
+    "id": "cpu",
+    "name_zh": "CPU可运行",
+    "description": "可仅使用 CPU 运行，无需独立显卡。",
+    "count": 197,
+    "rule": "gpu_support 含 cpu-only"
+  },
+  {
+    "id": "nvidia",
+    "name_zh": "NVIDIA",
+    "description": "支持 NVIDIA CUDA 显卡。",
+    "count": 218,
+    "rule": "gpu_support 含 nvidia"
+  },
+  {
+    "id": "amd",
+    "name_zh": "AMD",
+    "description": "支持 AMD 显卡。",
+    "count": 22,
+    "rule": "gpu_support 含 amd"
+  },
+  {
+    "id": "apple-silicon",
+    "name_zh": "Apple Silicon",
+    "description": "支持 Apple Silicon（M 系列芯片）。",
+    "count": 42,
+    "rule": "gpu_support 含 apple-silicon"
+  },
+  {
+    "id": "windows",
+    "name_zh": "Windows",
+    "description": "官方声明支持 Windows 系统。",
+    "count": 315,
+    "rule": "platforms 含 windows"
+  },
+  {
+    "id": "macos",
+    "name_zh": "macOS",
+    "description": "官方声明支持 macOS 系统。",
+    "count": 232,
+    "rule": "platforms 含 macos"
+  },
+  {
+    "id": "linux",
+    "name_zh": "Linux",
+    "description": "官方声明支持 Linux 系统。",
+    "count": 333,
+    "rule": "platforms 含 linux"
+  },
+  {
+    "id": "free",
+    "name_zh": "免费",
+    "description": "免费使用或接受捐赠，无需付费。",
+    "count": 322,
+    "rule": "pricing_type ∈ {free, open-source, donation}"
+  },
+  {
+    "id": "paid",
+    "name_zh": "付费",
+    "description": "需付费购买、订阅或按 API 用量计费。",
+    "count": 20,
+    "rule": "pricing_type ∈ {paid, api-paid, freemium}"
+  },
+  {
+    "id": "open-source",
+    "name_zh": "开源",
+    "description": "开源软件或已确认存在开源协议。",
+    "count": 332,
+    "rule": "pricing_type = open-source 或 software_license 非空"
+  },
+  {
+    "id": "local",
+    "name_zh": "本地运行",
+    "description": "可在本地机器部署运行，而非纯云端。",
+    "count": 328,
+    "rule": "install_type ∈ {official, community, custom, manual}"
+  },
+  {
+    "id": "api",
+    "name_zh": "API调用",
+    "description": "通过云端 API 调用并按用量计费。",
+    "count": 0,
+    "rule": "pricing_type = api-paid"
+  },
+  {
+    "id": "official-script",
+    "name_zh": "官方脚本",
+    "description": "有官方或 pinokiofactory 发布的一键安装脚本。",
+    "count": 29,
+    "rule": "install_type = official"
+  },
+  {
+    "id": "community-script",
+    "name_zh": "社区脚本",
+    "description": "有第三方社区发布的 Pinokio 安装脚本。",
+    "count": 8,
+    "rule": "install_type = community"
+  },
+  {
+    "id": "manual-install",
+    "name_zh": "手动安装",
+    "description": "可本地部署但暂无 Pinokio 脚本，需手动安装。",
+    "count": 291,
+    "rule": "install_type = manual"
+  }
+]

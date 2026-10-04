@@ -1,0 +1,286 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>audit</title></head>
+<body style="font-family:monospace;background:#111;color:#eee;padding:10px">
+<iframe id="f" src="index.html" style="width:1280px;height:720px;border:1px solid #444"></iframe>
+<iframe id="fm" src="index.html" style="width:390px;height:760px;border:1px solid #444;display:block;margin-top:8px"></iframe>
+<pre id="out" style="white-space:pre-wrap"></pre>
+<script>
+var log=[];
+function L(s){log.push(s);document.getElementById("out").textContent=log.join("\n");}
+var pass=0,fail=0,order=0;
+function T(no,ok,note){
+  order++;
+  if(ok){pass++;L("TEST "+no+" PASS · "+note);}
+  else{fail++;L("TEST "+no+" FAIL · "+note);}
+}
+function waitFor(fr,cb){
+  var iv=setInterval(function(){
+    try{
+      var d=fr.contentDocument;
+      if(d.readyState==="complete"&&d.getElementById("list")&&d.getElementById("list").children.length>0){
+        clearInterval(iv);setTimeout(cb,250);
+      }
+    }catch(e){}
+  },250);
+}
+function wE(w,el,type){try{el.dispatchEvent(new w.Event(type,{bubbles:true}));}catch(e){}}
+function countRows(d){return d.getElementById("list").children.length;}
+function firstRowName(d){var r=d.querySelector("#list .row .name");return r?r.textContent.trim():"";}
+window.addEventListener("load",function(){
+  var f=document.getElementById("f"),fm=document.getElementById("fm");
+  var w,ww;
+  waitFor(f,function(){runDesktop();});
+  function runDesktop(){
+    var d=f.contentDocument,w=f.contentWindow;
+    // clean localstorage for determinism
+    try{w.localStorage.removeItem("pinokio_favs");w.localStorage.removeItem("pinokio_inst");w.localStorage.removeItem("pinokio_theme");}catch(e){}
+    location.hash="";try{d.getElementById("q").value="";}catch(e){}
+    // TEST 01
+    T("01",countRows(d)===343,"页面加载，列表渲染 343 行");
+    // TEST 02
+    d.querySelector('[data-view="all"]').click();
+    T("02",d.getElementById("viewTitle").textContent==="全部项目"&&countRows(d)===343,"全部项目 343 行");
+    // TEST 03
+    d.querySelector('[data-view="hot"]').click();
+    var hot=countRows(d);
+    T("03",hot===164,"热门项目 "+hot+" 行（S+A）");
+    // TEST 04
+    d.querySelector('[data-view="top"]').click();
+    var top=countRows(d);
+    T("04",top===43,"顶级项目 "+top+" 行（S）");
+    // TEST 05
+    d.querySelector('[data-view="recent"]').click();
+    var rec=countRows(d);
+    T("05",rec>0&&d.getElementById("sortSel").value==="updated","最近更新 "+rec+" 行，排序切换为 updated");
+    // TEST 06
+    d.querySelector('[data-view="free"]').click();
+    var free=countRows(d);
+    T("06",free===32,"免费 "+free+" 行");
+    // TEST 07
+    d.querySelector('[data-view="oss"]').click();
+    var oss=countRows(d);
+    T("07",oss===310,"开源 "+oss+" 行");
+    // TEST 08
+    d.querySelector('[data-view="official"]').click();
+    var off=countRows(d);
+    T("08",off===29,"官方 Pinokio "+off+" 行");
+    // TEST 09
+    d.querySelector('[data-view="light"]').click();
+    var light=countRows(d);
+    T("09",light===70,"轻量 "+light+" 行（RAM≤8GB）");
+    // TEST 10 (empty favorites view)
+    d.querySelector('[data-view="favs"]').click();
+    var fav0=countRows(d);
+    T("10",fav0===0&&!d.getElementById("empty").hidden,"无收藏时收藏视图空状态正确");
+    d.querySelector('[data-view="all"]').click();
+    // TEST 11
+    d.getElementById("q").value="OpenCode";wE(w,d.getElementById("q"),"input");
+    var s1=countRows(d);
+    var hasOC=[].some.call(d.querySelectorAll("#list .row .name"),function(n){return n.textContent.trim()==="OpenCode";});
+    T("11",s1>=1&&hasOC,"搜索 OpenCode → "+s1+" 行，结果含 OpenCode");
+    // TEST 12
+    d.getElementById("q").value="ollama";wE(w,d.getElementById("q"),"input");
+    var s2=countRows(d);
+    T("12",s2>=1&&firstRowName(d).toLowerCase()==="ollama","搜索 ollama → 首个 Ollama");
+    // TEST 13
+    d.getElementById("q").value="";wE(w,d.getElementById("q"),"input");
+    T("13",countRows(d)===343,"清空搜索恢复全部");
+    d.querySelector('[data-view="all"]').click();
+    // TEST 14 (open sort dropdown is native select; verify options)
+    var opts=[].slice.call(d.getElementById("sortSel").options).map(function(o){return o.value;});
+    T("14",opts.length>=7,"排序下拉含 "+opts.join("/"));
+    // TEST 15
+    d.getElementById("sortSel").value="stars";wE(w,d.getElementById("sortSel"),"change");
+    var nm=firstRowName(d);
+    T("15",nm==="OpenCode","Stars 排序 → 首个 "+nm);
+    // TEST 16
+    d.querySelector('[data-view="all"]').click();
+    d.getElementById("filterBtn").click();
+    var fOpen=d.getElementById("filterDrawer").className.indexOf("open")>=0;
+    T("16",fOpen,"Filter 抽屉打开");
+    // TEST 17 RAM
+    d.querySelector('#filterBody input[name="ram"][value="lte16"]').click();
+    var r1=countRows(d);
+    var allOk=true;
+    [].forEach.call(d.querySelectorAll("#list .row"),function(r){
+      var id=r.getAttribute("data-id");var p=w.EMBEDDED_DATA.projects.filter(function(x){return x.id===id;})[0];
+      var v=p.ram_recommended_gb!=null?p.ram_recommended_gb:p.ram_min_gb;
+      if(v==null||v>16)allOk=false;
+    });
+    T("17",r1>0&&allOk,"RAM≤16 → "+r1+" 行，全部符合");
+    // TEST 18 VRAM
+    d.querySelector('#filterBody input[name="vram"][value="lte8"]').click();
+    var r2=countRows(d);
+    var ok2=true;
+    [].forEach.call(d.querySelectorAll("#list .row"),function(r){
+      var id=r.getAttribute("data-id");var p=w.EMBEDDED_DATA.projects.filter(function(x){return x.id===id;})[0];
+      var v=p.vram_recommended_gb!=null?p.vram_recommended_gb:p.vram_min_gb;
+      if(v==null||v>8)ok2=false;
+    });
+    T("18",r2>0&&ok2,"RAM≤16 + VRAM≤8 → "+r2+" 行，全部符合");
+    // TEST 19 Storage
+    d.querySelector('#filterBody input[name="disk"][value="lte20"]').click();
+    var r3=countRows(d);
+    var ok3=true;
+    [].forEach.call(d.querySelectorAll("#list .row"),function(r){
+      var id=r.getAttribute("data-id");var p=w.EMBEDDED_DATA.projects.filter(function(x){return x.id===id;})[0];
+      var v=p.disk_total_gb!=null?p.disk_total_gb:p.download_gb;
+      if(v==null||v>20)ok3=false;
+    });
+    T("19",r3>0&&ok3,"+Storage≤20 → "+r3+" 行，全部符合");
+    // TEST 20 GPU
+    d.querySelector('#filterBody input[data-group="gpu"][value="nvidia"]').click();
+    var r4=countRows(d);
+    var ok4=true;
+    [].forEach.call(d.querySelectorAll("#list .row"),function(r){
+      var id=r.getAttribute("data-id");var p=w.EMBEDDED_DATA.projects.filter(function(x){return x.id===id;})[0];
+      if(!p.gpu_support||p.gpu_support.indexOf("nvidia")<0)ok4=false;
+    });
+    T("20",r4>0&&ok4,"+NVIDIA → "+r4+" 行，全部符合");
+    // TEST 21 Price
+    d.querySelector('#filterBody input[data-group="price"][value="open-source"]').click();
+    var r5=countRows(d);
+    var ok5=true;
+    [].forEach.call(d.querySelectorAll("#list .row"),function(r){
+      var id=r.getAttribute("data-id");var p=w.EMBEDDED_DATA.projects.filter(function(x){return x.id===id;})[0];
+      if(p.pricing_type!=="open-source")ok5=false;
+    });
+    T("21",r5>0&&ok5,"+开源 → "+r5+" 行，全部符合");
+    // TEST 22 combined AND (expect intersection)
+    var expect=0;
+    w.EMBEDDED_DATA.projects.forEach(function(p){
+      var ram=p.ram_recommended_gb!=null?p.ram_recommended_gb:p.ram_min_gb;
+      var vram=p.vram_recommended_gb!=null?p.vram_recommended_gb:p.vram_min_gb;
+      var disk=p.disk_total_gb!=null?p.disk_total_gb:p.download_gb;
+      if(ram!=null&&ram<=16&&vram!=null&&vram<=8&&disk!=null&&disk<=20
+        &&p.gpu_support&&p.gpu_support.indexOf("nvidia")>=0&&p.pricing_type==="open-source")expect++;
+    });
+    var af=d.getElementById("afBar").hidden===false;
+    T("22",r5===expect&&af,"组合 AND → "+r5+" 行（预期 "+expect+"），显示已应用筛选条");
+    // TEST 23 Reset
+    d.getElementById("filterReset").click();
+    var after=d.getElementById("viewTitle").textContent==="全部项目"&&countRows(d)===343&&d.getElementById("q").value===""&&d.getElementById("sortSel").value==="default";
+    T("23",after,"Reset 恢复全部/清空搜索/筛选/排序");
+    // TEST 24 detail
+    var first=d.querySelector("#list .row");var firstId=first.getAttribute("data-id");
+    first.click();
+    var dOpen=d.getElementById("detailDrawer").className.indexOf("open")>=0;
+    var dName=d.querySelector("#detailBody .d-name");
+    T("24",dOpen&&dName&&dName.textContent.length>0,"打开详情 "+dName.textContent);
+    // TEST 25 close
+    d.querySelector('[data-close="detailDrawer"]').click();
+    T("25",d.getElementById("detailDrawer").className.indexOf("open")<0,"关闭详情");
+    // TEST 26 ESC close
+    first.click();
+    if(d.getElementById("detailDrawer").className.indexOf("open")>=0){
+      wE(w,d,"keydown"); // no-op guard
+      try{d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));}catch(e){}
+      T("26",d.getElementById("detailDrawer").className.indexOf("open")<0,"ESC 关闭详情");
+    }else{T("26",false,"ESC 测试前置失败");}
+    // TEST 27/28/29 links on a project with all three
+    var probe=null;
+    w.EMBEDDED_DATA.projects.forEach(function(p){if(!probe&&p.website&&p.github&&p.pinokio_url)probe=p;});
+    if(probe){
+      d.querySelector('[data-view="all"]').click();
+      var targetRow=d.querySelector('.row[data-id="'+probe.id+'"]');
+      if(targetRow){targetRow.click();}
+      var ab=d.querySelectorAll("#detailBody .abtn");
+      var hasWeb=[].some.call(ab,function(a){return a.textContent.indexOf("官网")>=0&&a.getAttribute("href")===probe.website&&a.getAttribute("target")==="_blank"&&a.getAttribute("rel").indexOf("noreferrer")>=0;});
+      var hasGh=[].some.call(ab,function(a){return a.textContent.indexOf("GitHub")>=0&&a.getAttribute("href")===probe.github&&a.getAttribute("target")==="_blank"&&a.getAttribute("rel").indexOf("noreferrer")>=0;});
+      T("27",hasWeb,"官网链接 "+probe.website+"（target=_blank, rel=noreferrer）");
+      T("28",hasGh,"GitHub 链接 "+probe.github);
+      var pin=[].some.call(d.querySelectorAll("#detailBody .dlinks a"),function(a){return a.textContent.indexOf("Pinokio")>=0&&a.getAttribute("href")===probe.pinokio_url;});
+      T("29",pin,"Pinokio 脚本链接 "+probe.pinokio_url);
+    }else{T("27",false,"未找到含全部链接的项目");T("28",false,"-");T("29",false,"-");}
+    // null link project -> 暂无链接
+    d.querySelector('[data-close="detailDrawer"]').click();
+    var nolink=null;
+    w.EMBEDDED_DATA.projects.forEach(function(p){if(!nolink&&!p.website&&!p.github)nolink=p;});
+    if(nolink){
+      var nr=d.querySelector('.row[data-id="'+nolink.id+'"]');
+      if(nr){nr.click();}
+      var dl=d.getElementById("detailBody");
+      var hasLink=dl.querySelector(".dlinks a")!==null;
+      var pinOk=[].some.call(dl.querySelectorAll(".dlinks a"),function(a){return a.textContent.indexOf("Pinokio")>=0;});
+      T("29b",hasLink&&pinOk,"无官网/GitHub 项目详情仍显示可用链接（Pinokio 脚本）");
+      d.querySelector('[data-close="detailDrawer"]').click();
+    }else{T("29b",true,"跳过（所有项目均有链接）");}
+    // TEST 30 fav via row button
+    d.querySelector('[data-view="all"]').click();
+    var favBtn=d.querySelector("#list .row .favt");
+    var favId=favBtn.getAttribute("data-fav");
+    favBtn.click();
+    var starOn=d.querySelector('#list .row[data-id="'+favId+'"] .favt').className.indexOf("on")>=0;
+    T("30",starOn,"行内收藏 ★ 切换成功（"+favId+"）");
+    // TEST 31 unfav
+    d.querySelector('#list .row[data-id="'+favId+'"] .favt').click();
+    T("31",d.querySelector('#list .row[data-id="'+favId+'"] .favt').className.indexOf("on")<0,"再次点击取消收藏");
+    // TEST 32 persistence: fav then reload
+    d.querySelector("#list .row .favt").click();
+    var saved=[];
+    try{saved=JSON.parse(w.localStorage.getItem("pinokio_favs")||"[]");}catch(e){}
+    T("32a",saved.length===1&&saved[0]===favId,"收藏写入 localStorage pinokio_favs");
+    d.getElementById("aboutBtn").click(); // force modal presence; reload next
+    w.location.reload();
+    waitFor(f,function(){
+      var d2=f.contentDocument,w2=f.contentWindow;
+      var mark=d2.querySelector('#list .row[data-id="'+favId+'"] .favt');
+      T("32b",mark&&mark.className.indexOf("on")>=0,"刷新后收藏状态保留");
+      // TEST 10b favorites view now shows 1
+      d2.querySelector('[data-view="favs"]').click();
+      T("10b",countRows(d2)===1,"收藏视图显示 "+countRows(d2)+" 个收藏项目");
+      // TEST 33 light
+      d2.querySelector('[data-view="all"]').click();
+      d2.getElementById("themeBtn").click();
+      var th=d2.documentElement.getAttribute("data-theme");
+      T("33",th==="light","Light 模式生效（data-theme="+th+"）");
+      var btnTxt=d2.getElementById("themeBtn").textContent;
+      T("33b",btnTxt==="深色","按钮文字切换为「深色」");
+      // TEST 34 dark
+      d2.getElementById("themeBtn").click();
+      T("34",d2.documentElement.getAttribute("data-theme")==="dark","Dark 模式恢复");
+      // TEST 35 persist theme
+      var st=null;try{st=w2.localStorage.getItem("pinokio_theme");}catch(e){}
+      T("35",st!=null,"主题已写入 localStorage（当前值："+st+"）");
+      w2.localStorage.setItem("pinokio_theme","dark");
+      // mobile tests
+      waitFor(fm,function(){runMobile();});
+    });
+  }
+  function runMobile(){
+    var d=fm.contentDocument,w=fm.contentWindow;
+    var mb=window.getComputedStyle(d.getElementById("menuBtn")).display;
+    T("36",mb!=="none","移动端菜单按钮可见（display="+mb+"）");
+    d.getElementById("menuBtn").click();
+    var sbOpen=d.getElementById("sidebar").className.indexOf("open")>=0;
+    T("36b",sbOpen,"点击菜单打开侧栏");
+    d.getElementById("sidebar").classList.remove("open");d.getElementById("scrim").classList.remove("open");
+    // TEST 37 mobile search
+    d.getElementById("q").value="comfyui";wE(w,d.getElementById("q"),"input");
+    var m1=countRows(d);
+    T("37",m1>=1&&firstRowName(d).toLowerCase().indexOf("comfyui")>=0,"移动端搜索 comfyui → "+m1+" 行");
+    d.getElementById("q").value="";wE(w,d.getElementById("q"),"input");
+    // TEST 38 mobile detail
+    d.querySelector("#list .row").click();
+    var mOpen=d.getElementById("detailDrawer").className.indexOf("open")>=0;
+    var wdt=d.getElementById("detailDrawer").getBoundingClientRect().width;
+    T("38",mOpen&&wdt<=390,"移动端详情抽屉打开（宽 "+Math.round(wdt)+"px ≤ 390）");
+    try{d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));}catch(e){}
+    // TEST 39 empty search
+    d.getElementById("q").value="zzzz-no-such-project";wE(w,d.getElementById("q"),"input");
+    var e0=countRows(d);
+    var emptyTxt=d.getElementById("empty").textContent.indexOf("没有找到匹配项目")>=0;
+    var hasBtn=!d.getElementById("emptyReset").hidden;
+    T("39",e0===0&&emptyTxt&&hasBtn,"空搜索结果 → 0 行 + 空状态文案 + 清除按钮");
+    // TEST 40 clear filters from empty state
+    d.getElementById("emptyReset").click();
+    var c40=countRows(d)===343&&d.getElementById("q").value===""&&d.getElementById("viewTitle").textContent==="全部项目";
+    T("40",c40,"空状态「清除筛选」恢复全部（"+countRows(d)+" 行）");
+    L("RESULT: "+pass+"/"+order+" PASS, "+fail+" FAIL");
+    if(fail===0)L("ALL TESTS PASSED");
+  }
+});
+</script>
+</body>
+</html>
