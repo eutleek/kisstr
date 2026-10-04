@@ -111,51 +111,61 @@ kbd{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px solid v
 .picks-row .p-stars{font-family:var(--mono);font-size:11px;color:var(--faint);flex-shrink:0}
 
 /* ===== Project list ===== */
-.row{display:flex;align-items:center;gap:14px;padding:9px 10px;border-bottom:1px solid var(--border);
-  border-radius:var(--radius-sm);cursor:pointer;transition:background .1s;
-  user-select:none;-webkit-user-select:none}
+.list{background:var(--list-bg);border:1px solid var(--border);border-radius:6px}
+.row{display:grid;grid-template-columns:54px minmax(0,1fr) 44px;gap:12px;align-items:stretch;
+  height:154px;padding:12px 10px;border-bottom:1px solid var(--border);border-radius:var(--radius-sm);
+  cursor:pointer;transition:background .1s;user-select:none;-webkit-user-select:none}
 .row:hover{background:var(--sel-bg)}
 .row:active{background:var(--bg3)}
-.row .idx{font-family:var(--mono);font-size:11px;color:var(--faint);width:36px;flex-shrink:0}
-.row .row-main{flex:1;min-width:0}
-.row .r1{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.row .name{font-size:15px;font-weight:600;color:var(--text);cursor:pointer}
-.row .smark{font-size:11px;color:var(--faint)}
-.row .itag{font-size:11px;color:var(--faint)}
-.row .desc{font-size:13px;color:var(--muted);margin-top:1px;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;max-width:720px}
-.row .row-meta{display:flex;align-items:center;gap:16px;flex-shrink:0;font-size:12.5px;color:var(--faint)}
-.row .m-cat{color:var(--muted);white-space:nowrap}
-.row .m-stars{font-family:var(--mono);min-width:72px;text-align:right;white-space:nowrap}
-.row .m-lic{font-family:var(--mono);white-space:nowrap}
-.row .m-pin{display:flex;align-items:center;gap:6px;min-width:78px;white-space:nowrap}
+.row .idx{font-family:var(--mono);font-size:14px;color:var(--faint);line-height:1;padding-top:3px}
+.row .rbody{display:flex;flex-direction:column;min-width:0;gap:4px}
+.row .rname{display:flex;align-items:flex-start;gap:10px;min-height:56px;max-height:56px;
+  font-size:22px;font-weight:600;line-height:1.25;color:var(--text);overflow:hidden}
+.row .rname .nm{flex:1;min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;word-break:break-word;overflow-wrap:anywhere}
+.row .rname .marks{display:flex;align-items:baseline;gap:8px;flex-shrink:0;font-size:12px}
+.row .smark{color:var(--faint);white-space:nowrap}
+.row .itag{color:var(--warn);white-space:nowrap}
+.row .rmeta{display:grid;grid-template-columns:auto minmax(76px,auto) 1fr auto;gap:12px;align-items:center;
+  height:26px;font-size:14px;color:var(--faint);min-width:0}
+.row .m-cat{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .m-stars{font-family:var(--mono);min-width:76px;white-space:nowrap}
+.row .m-lic{font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .m-pin{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .rdesc{font-size:14px;color:var(--muted);line-height:1.45;min-height:0;flex:1;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  word-break:break-word;overflow-wrap:anywhere}
+.row .rarea{display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px}
 .dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0}
 .dot.official{background:var(--good)}
 .dot.community{background:var(--warn)}
 .dot.manual,.dot.unverified{background:var(--faint)}
 .dot.not-supported{background:var(--bad)}
-.cmp{width:14px;height:14px;flex-shrink:0;accent-color:var(--link);opacity:0;cursor:pointer}
-.row:hover .cmp,.cmp:checked,.cmp:disabled{opacity:1}
+.favt{width:40px;height:40px;background:none;border:none;color:var(--faint);font-size:18px;line-height:1;
+  cursor:pointer;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.favt:hover{color:var(--warn);background:var(--bg3)}
+.favt.on{color:var(--warn)}
+.favt:focus-visible{outline:1px solid var(--link);outline-offset:1px}
+.cmpwrap{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--faint);cursor:pointer;
+  padding:6px 4px;border-radius:4px}
+.cmpwrap:hover{color:var(--text)}
+.cmp{width:14px;height:14px;accent-color:var(--link);cursor:pointer;flex-shrink:0}
 .cmp:disabled{opacity:.3}
+.row:hover .cmpwrap{color:var(--text)}
 
-/* compact */
-.list.compact .row{padding:4px 10px}
-.list.compact .row .desc{display:none}
-.list.compact .row .r1{align-items:center}
-.list.compact .row .name{font-size:14px}
+/* compact = screenshot mode: name first, drop description & secondary meta */
+.list.compact .row{height:118px;padding:10px}
+.list.compact .row .rdesc,.list.compact .row .m-cat,.list.compact .row .m-lic{display:none}
+.list.compact .row .rmeta{grid-template-columns:auto minmax(76px,auto) 1fr}
 
 /* grid */
-.list.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
-.list.grid .row{flex-direction:column;align-items:flex-start;gap:6px;border:1px solid var(--border);
-  border-bottom:1px solid var(--border);padding:12px 14px}
-.list.grid .row .idx{width:auto}
-.list.grid .row .desc{white-space:normal;max-width:none}
-.list.grid .row .row-meta{flex-wrap:wrap;gap:10px}
-.list.grid .cmp{opacity:1;position:absolute;right:12px;top:12px}
-.list.grid .cmp:disabled{opacity:.35}
-.list.grid .row{position:relative}
-
-.list{background:var(--list-bg);border:1px solid var(--border);border-radius:6px}
+.list.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.list.grid .row{grid-template-columns:40px minmax(0,1fr) 40px;height:auto;min-height:162px;
+  border:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 12px}
+.list.grid .row .rname{font-size:20px;min-height:52px;max-height:52px}
+.list.grid .row .rmeta{grid-template-columns:auto minmax(70px,auto) 1fr;gap:10px}
+.list.grid .row .rdesc{-webkit-line-clamp:3}
+.list.grid .cmpwrap{align-self:flex-end}
 .empty{padding:46px 10px;text-align:center;color:var(--faint)}
 .empty .sub{font-size:12.5px;margin-top:6px}
 .empty .tbtn{margin-top:14px}
@@ -269,29 +279,75 @@ kbd{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px solid v
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ===== Responsive ===== */
-@media(max-width:1120px){
+/* ===== Responsive ===== */
+@media(max-width:1199px){
   .sidebar{width:196px}
   .row .m-lic{display:none}
 }
-@media(max-width:880px){
+@media(max-width:1023px){
   .menu-btn{display:inline-flex}
-  .sidebar{position:fixed;left:0;top:54px;bottom:0;z-index:55;width:248px;transform:translateX(-100%);
-    transition:transform .16s ease}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:55;width:248px;transform:translateX(-100%);
+    transition:transform .16s ease;padding-top:14px}
   .sidebar.open{transform:none}
   .main{padding:16px 14px 80px}
-  .search{width:190px;max-width:none}
+  .search{width:220px;max-width:none}
   .count{display:none}
   .topbar{gap:10px;padding:0 14px}
   .list-head{gap:10px}
 }
-@media(max-width:560px){
-  .search{width:150px}
+@media(max-width:767px){
+  /* 手机顶栏三行：品牌+菜单 / 搜索 / 数量+主题+关于 */
+  .topbar{flex-wrap:wrap;height:auto;gap:8px 12px;padding:10px 14px 8px}
+  .brand{order:0}
+  .menu-btn{order:1;margin-left:auto}
+  .search{order:2;width:100%;max-width:none;margin-left:0}
+  .search kbd{display:none}
+  .top-actions{order:3;width:100%;justify-content:flex-end;gap:8px}
+  /* 项目卡片：名称优先、固定高度 */
+  .row{grid-template-columns:40px minmax(0,1fr) 44px;gap:10px;height:156px;padding:12px 10px}
+  .row .idx{font-size:13px}
+  .row .rname{font-size:20px;min-height:52px;max-height:52px}
+  .row .rmeta{grid-template-columns:minmax(76px,auto) 1fr;gap:10px}
+  .row .m-cat,.row .m-lic{display:none}
+  .row .rdesc{font-size:14px}
+  .favt{width:44px;height:44px}
+  /* picks：名称允许收缩，隐藏描述，防横向溢出 */
+  .picks-row .p-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .picks-row .p-desc{display:none}
+  /* 底部抽屉：筛选与详情从底部滑出 */
+  .drawer{width:100%;max-width:none;top:auto;bottom:0;height:78vh;max-height:78vh;
+    transform:translateY(102%);border-left:none;border-top:1px solid var(--border);
+    border-radius:10px 10px 0 0}
+  .drawer.open{transform:none}
+  .detail.drawer{height:88vh;max-height:88vh}
+  .list-head{flex-direction:column;align-items:stretch;gap:10px}
+  .lh-tools{justify-content:space-between;gap:8px}
+  .lh-tools select{max-width:46%}
+  .list.grid{grid-template-columns:1fr}
+  .list.grid .row{min-height:150px}
+  .cmp-tray{left:12px;right:12px;transform:none;justify-content:space-between;flex-wrap:wrap;gap:6px}
+  .cmp-tray .names{max-width:42vw}
+}
+@media(max-width:479px){
   .brand-sub{display:none}
-  .row{gap:10px}
-  .row .idx{width:30px}
-  .row .row-meta{gap:10px}
-  .row .m-cat{display:none}
+  .search{width:100%}
   .lh-tools .view-toggle button{padding:5px 8px}
+  .row{gap:8px;padding:12px 8px}
+  .row .idx{font-size:12px}
+  .row .rname .marks{display:none}
+  .row .rdesc{-webkit-line-clamp:1}
+}
+/* 横屏手机（高度受限） */
+@media(max-width:900px) and (max-height:500px){
+  .topbar{flex-wrap:wrap;padding:6px 14px;gap:6px}
+  .top-actions{width:auto;order:1;margin-left:auto}
+  .search{order:2;width:100%;margin-top:6px}
+  .row{height:118px;padding:8px 10px}
+  .row .rname{font-size:20px;min-height:48px;max-height:48px}
+  .row .rdesc{display:none}
+  .row .rmeta{height:24px}
+  .list-head{margin-bottom:10px}
+  .picks{display:none}
 }
 </style>
 </head>
@@ -558,20 +614,23 @@ function rowHTML(p,i){
   if(p.software_license)meta+='<span class="m-lic">'+esc(p.software_license)+'</span>';
   var it=INST[p.install_type]||"待验证";
   meta+='<span class="m-pin"><span class="dot '+(p.install_type||"unverified")+'"></span>'+esc(it)+'</span>';
-  var marks=RAT[p.rating]?'<span class="smark">'+RAT[p.rating]+'</span>':'';
-  if(state.inst.has(p.id))marks+='<span class="itag">已安装</span>';
-  if(state.favs.has(p.id))marks+='<span class="itag">已收藏</span>';
+  var marks=(RAT[p.rating]?'<span class="smark">'+RAT[p.rating]+'</span>':'')
+    +(state.inst.has(p.id)?'<span class="itag">已安装</span>':'')
+    +(state.favs.has(p.id)?'<span class="itag">已收藏</span>':'');
   var checked=state.cmp.indexOf(p.id)>=0?"checked":"";
   var cmpDisabled=(checked===""&&state.cmp.length>=4)?"disabled":"";
   var favOn=state.favs.has(p.id)?"on":"";
   return '<div class="row" data-id="'+esc(p.id)+'">'
     +'<span class="idx">'+String(i+1).padStart(3,"0")+'</span>'
-    +'<div class="row-main"><div class="r1"><span class="name">'+esc(p.name)+'</span>'+marks+'</div>'
-    +'<p class="desc">'+esc(p.description||"—")+'</p></div>'
-    +'<div class="row-meta">'+meta+'</div>'
+    +'<div class="rbody">'
+    +'<div class="rname"><span class="nm">'+esc(p.name)+'</span>'
+    +(marks?'<span class="marks">'+marks+'</span>':'')+'</div>'
+    +'<div class="rmeta">'+meta+'</div>'
+    +'<p class="rdesc">'+esc(p.description||"—")+'</p></div>'
+    +'<div class="rarea">'
     +'<button class="favt '+favOn+'" data-fav="'+esc(p.id)+'" title="'+(state.favs.has(p.id)?"取消收藏":"收藏")+'">'+(state.favs.has(p.id)?"★":"☆")+'</button>'
-    +'<input type="checkbox" class="cmp" title="加入对比" '+checked+' '+cmpDisabled+'>'
-    +'</div>';
+    +'<label class="cmpwrap" title="加入对比"><input type="checkbox" class="cmp" '+checked+' '+cmpDisabled+'><span class="cmp-lab">对比</span></label>'
+    +'</div></div>';
 }
 function filterCount(){
   var f=state.f;
@@ -745,6 +804,7 @@ function toggleCmp(id,chk){
     if(i<0)state.cmp.push(id);
   }else if(i>=0){state.cmp.splice(i,1);}
   renderTray();
+  render();
 }
 function openCompare(){
   var ids=state.cmp;
@@ -919,7 +979,7 @@ document.getElementById("list").addEventListener("click",function(e){
     saveFavs();updateCounts();render();
     return;
   }
-  if(e.target.closest(".cmp"))return;
+  if(e.target.closest(".cmpwrap")||e.target.closest(".cmp"))return;
   openDetail(row.getAttribute("data-id"));
 });
 document.getElementById("list").addEventListener("change",function(e){
