@@ -1,6 +1,6 @@
 # Kisstr
 
-书影音 · 优质网站收藏导航站 — 63 个分类支页 + 首页 + 免责声明，纯静态、零构建，部署于 Cloudflare Workers。
+书影音 · 优质网站收藏导航站 — 63 个分类支页 + 首页 + 免责声明 + 编入的独立项目页（AI 项目百科），纯静态、零构建，部署于 Cloudflare Workers。
 
 官网：<https://kisstr.com>
 
@@ -13,13 +13,15 @@
 | 构建     | 无（零构建，开箱即用）                |
 | 统计     | Umami（轻量脚本）                     |
 | 资源     | 本地静态资源，无 CDN 依赖             |
+| 公共资源 | `assets/common.css` + `assets/render.js` 全站共享（浏览器缓存一次） |
 
 ## 特性
 
-- **65 个页面**：首页 + 63 个分类导航支页（AI / 学术资料 / 大学公开课 / 设计 / 时尚 / 书影音 / 小游戏 / 独立开发者 / 电台 / 复古网络 / vibe coding 等）+ 免责声明
+- **66 个页面**：首页 + 63 个分类导航支页（AI / 学术资料 / 大学公开课 / 设计 / 时尚 / 书影音 / 小游戏 / 独立开发者 / 电台 / 复古网络 / vibe coding 等）+ 免责声明 + 编入独立项目页 `ai_projects.html`（Pinokio AI 项目百科：343 个 AI 开源项目、16 分类，数据内嵌于页面的自包含单文件）
 - **2 种布局**：Minimal（清晰） / Magazine（杂志）
 - **54 张单字名壁纸**（`01_星.webp` ~ `54_黛.webp`，2560×1440 WebP + 300×169 缩略图；默认从「荷 / 墨 / 锦 / 庭 / 契」五张中随机）；14 个纯色主题数据保留（当前隐藏，仅显示壁纸背景）
 - **内置 lofi 电台播放**
+- **公共资源拆分**：166KB 公共 CSS + 84KB 渲染逻辑 JS 已抽为全站共享文件，每页仅保留自身数据（linksData / 壁纸数据 / 专属 logo 名），单页体积降至约 30–95KB（原 300KB+）
 - 无广告 · 无弹窗 · 无盈利
 
 ## 快速开始
@@ -37,11 +39,14 @@ npx wrangler deploy
 ```text
 site/                  # 部署根目录（wrangler assets.directory = "site"）
 ├── index.html         # 首页
-├── *.html             # 63 个分类支页 + disclaimer.html
+├── *.html             # 63 个分类支页 + disclaimer.html + ai_projects.html（编入项目）
+├── assets/            # 全站公共资源
+│   ├── common.css     # 公共样式（166KB，62 模板页共享引用）
+│   └── render.js      # 公共渲染逻辑（84KB：卡片渲染 / 背景选择器 / 搜索 / 事件）
 ├── wallpapers/        # 壁纸主图（54 张，2560×1440）
 └── thumbs/            # 壁纸缩略图（54 张，300×169）
 
-docs/                  # 开发档案（开发档案.md）
+docs/                  # 开发档案（开发档案.md）+ AI 项目百科 README 副本
 README.md              # 本文件（根目录）
 wrangler.jsonc         # Cloudflare 部署配置
 ```
