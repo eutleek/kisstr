@@ -108,8 +108,9 @@
 
   // ---- 站内链接判定 ----
   // 例外：ai_projects / pinokio-audit 为独立应用页（自有渲染与模态框体系），
-  // 页内嵌入会破坏其交互，保持整页跳转。
-  var EXCLUDE_SPA = /(^|\/)(ai_projects|pinokio-audit)\.html$/i;
+  // 图谱页（红楼梦/金瓶梅/追忆/百年孤独）为自包含应用页（数据内嵌、脚本在 head，
+  // 页内嵌入会丢失关键脚本导致 0 人物），以上保持整页跳转。
+  var EXCLUDE_SPA = /(^|\/)(ai_projects|pinokio-audit|jinpingmei|hongloumeng|bainiangu|proust)\.html$/i;
   function isInternalHref(href) {
     if (!href) return false;
     if (/^javascript:/i.test(href) || /^(data|blob|mailto|tel):/i.test(href)) return false;
