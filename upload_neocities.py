@@ -1,73 +1,69 @@
 # -*- coding: utf-8 -*-
-"""Kisstr 一键上传脚本（Neocities API）
-用法：python upload_neocities.py
-按提示输入 Neocities 用户名和密码（不会保存），自动递归上传：
-  index.html -> 根目录
-  html/*    -> /html/
-  assets/*  -> /assets/
-  wallpapers/* -> /wallpapers/
-  thumbs/*  -> /thumbs/
-保留目录结构，分批上传（每批 25 个文件）。
 """
-import os
-import sys
-import getpass
-import json
-import urllib.request
-import urllib.parse
-import uuid
+Kisstr 站点上传脚本（Neocities API）
+结构：site/ 为上传根目录（HTML 平铺 + wallpapers/ + thumbs/ + robots.txt）
+上传时 site/ 内容平铺到 Neocities 根：kisstr.com/xxx.html
+用法：python upload_neocities.py
+"""
+import sys, os, json, getpass, urllib.request, urllib.parse, base64
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
-API = "https://neocities.org/api/upload"
 BATCH = 25
+SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
+
+# 旧结构残留（html/ 目录、assets/ 目录），上传前清理
+LEGACY_CLEAN = []
+def build_legacy_clean():
+    html_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "html")
+    if os.path.isdir(html_dir):
+        for f in os.listdir(html_dir):
+            if f.endswith(".html"):
+                LEGACY_CLEAN.append("html/" + f)
+    assets_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+    if os.path.isdir(assets_dir):
+        for f in os.listdir(assets_dir):
+            LEGACY_CLEAN.append("assets/" + f)
 
 def collect():
-    """收集 (远程路径, 本地路径)"""
     items = []
-    root_idx = os.path.join(ROOT, "index.html")
-    if os.path.exists(root_idx):
-        items.append(("index.html", root_idx))
-    for sub in ["html", "assets", "wallpapers", "thumbs"]:
-        base = os.path.join(ROOT, sub)
-        if not os.path.isdir(base):
-            continue
-        for dirpath, _, files in os.walk(base):
-            rel = os.path.relpath(dirpath, ROOT).replace("\\", "/")
-            for f in sorted(files):
-                remote = (rel + "/" + f) if rel != "." else f
-                items.append((remote, os.path.join(dirpath, f)))
+    def add(rel, path):
+        if os.path.isfile(path):
+            items.append((rel, path))
+    if os.path.isdir(SITE):
+        for f in sorted(os.listdir(SITE)):
+            p = os.path.join(SITE, f)
+            if os.path.isfile(p):
+                add(f, p)  # index.html / 各支页.html / robots.txt
+        for sub in ("wallpapers", "thumbs"):
+            d = os.path.join(SITE, sub)
+            if os.path.isdir(d):
+                for f in sorted(os.listdir(d)):
+                    add(sub + "/" + f, os.path.join(d, f))
     return items
 
 def upload_batch(user, passwd, batch):
-    boundary = "----KisstrUpload" + uuid.uuid4().hex
-    body = []
-    for remote, local in batch:
-        with open(local, "rb") as fh:
-            data = fh.read()
-        body.append(("--" + boundary).encode())
-        body.append(('Content-Disposition: form-data; name="%s"; filename="%s"\r\nContent-Type: application/octet-stream\r\n\r\n' % (remote, remote)).encode("utf-8"))
-        body.append(data)
-        body.append(b"\r\n")
-    body.append(("--" + boundary + "--\r\n").encode())
-    payload = b"".join(body)
-
-    req = urllib.request.Request(API, data=payload, method="POST")
+    payload = []
+    for rel, path in batch:
+        data = open(path, "rb").read()
+        payload.append(("file[]", (rel, data)))
+    boundary = "----kisstr" + str(abs(hash(batch[0][0]))) + "----"
+    body = b""
+    for name, (filename, filedata) in payload:
+        body += ("--" + boundary + "\r\n").encode()
+        body += ('Content-Disposition: form-data; name="%s"; filename="%s"\r\n' % (name, filename)).encode("utf-8")
+        body += b"Content-Type: application/octet-stream\r\n\r\n"
+        body += filedata + b"\r\n"
+    body += ("--" + boundary + "--\r\n").encode()
+    req = urllib.request.Request("https://neocities.org/api/upload", data=body, method="POST")
     req.add_header("Content-Type", "multipart/form-data; boundary=" + boundary)
-    req.add_header("Content-Length", str(len(payload)))
-    import base64
     token = base64.b64encode((user + ":" + passwd).encode("utf-8")).decode("ascii")
     req.add_header("Authorization", "Basic " + token)
-
     try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            out = resp.read().decode("utf-8", "replace")
-            return json.loads(out)
+        with urllib.request.urlopen(req, timeout=180) as resp:
+            return json.loads(resp.read().decode("utf-8", "replace"))
     except urllib.error.HTTPError as e:
         return {"result": "error", "err": e.code, "msg": e.read().decode("utf-8", "replace")[:300]}
 
 def delete_file(user, passwd, remote_path):
-    """删除 Neocities 上的文件（如旧 html/index.html）"""
-    import base64
     body = urllib.parse.urlencode({"filenames[]": remote_path}).encode("utf-8")
     req = urllib.request.Request("https://neocities.org/api/delete", data=body, method="POST")
     req.add_header("Content-Type", "application/x-www-form-urlencoded")
@@ -84,16 +80,27 @@ def main():
         print("需要 Python 3")
         return
     items = collect()
-    print("共 %d 个文件待上传（index.html + html/assets/wallpapers/thumbs）" % len(items))
+    print("共 %d 个文件待上传（site/ 平铺：index.html + 支页 + wallpapers/thumbs/robots）" % len(items))
     if not items:
-        print("未找到文件，请确认脚本放在项目根目录（与 html/、wallpapers/ 同级）")
+        print("未找到 site/ 文件夹，请确认脚本与 site/ 同级")
         return
     user = input("Neocities 用户名: ").strip()
     passwd = getpass.getpass("Neocities 密码: ")
 
-    # 清理旧的 html/index.html（主页已移回根目录，避免重复入口）
-    r = delete_file(user, passwd, "html/index.html")
-    print("清理旧 html/index.html:", "success" if r.get("result") == "success" else r.get("msg", r))
+    # 清理旧结构残留（html/ 目录、assets/ 目录）
+    build_legacy_clean()
+    if LEGACY_CLEAN:
+        print("清理旧结构 %d 个文件（html/ + assets/）..." % len(LEGACY_CLEAN))
+        for i in range(0, len(LEGACY_CLEAN), BATCH):
+            batch = LEGACY_CLEAN[i:i + BATCH]
+            ok = fail = 0
+            for rel in batch:
+                r = delete_file(user, passwd, rel)
+                if r.get("result") == "success":
+                    ok += 1
+                else:
+                    fail += 1
+            print("  清理 [%d/%d] 成功 %d 失败 %d" % (i + len(batch), len(LEGACY_CLEAN), ok, fail))
 
     ok = fail = 0
     for i in range(0, len(items), BATCH):
