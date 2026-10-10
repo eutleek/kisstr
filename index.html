@@ -4,8 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kisstr - 正在跳转</title>
-<meta http-equiv="refresh" content="0; url=html/index.html">
-<script>location.replace('html/index.html');</script>
+<noscript><meta http-equiv="refresh" content="0; url=/html/index.html"></noscript>
+<script>
+/* 线上（http/https）用绝对路径 /html/index.html，避免 Neocities 目录规范化造成无限嵌套；
+   本地（file://）用相对路径 html/index.html */
+(function () {
+  var target = (location.protocol === 'file:') ? 'html/index.html' : '/html/index.html';
+  location.replace(target);
+})();
+</script>
 </head>
 <body style="background:#0f1115;color:#ccc;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
 正在跳转到主页…
