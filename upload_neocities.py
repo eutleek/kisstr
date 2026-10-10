@@ -65,6 +65,20 @@ def upload_batch(user, passwd, batch):
     except urllib.error.HTTPError as e:
         return {"result": "error", "err": e.code, "msg": e.read().decode("utf-8", "replace")[:300]}
 
+def delete_file(user, passwd, remote_path):
+    """删除 Neocities 上的文件（如旧 html/index.html）"""
+    import base64
+    body = urllib.parse.urlencode({"filenames[]": remote_path}).encode("utf-8")
+    req = urllib.request.Request("https://neocities.org/api/delete", data=body, method="POST")
+    req.add_header("Content-Type", "application/x-www-form-urlencoded")
+    token = base64.b64encode((user + ":" + passwd).encode("utf-8")).decode("ascii")
+    req.add_header("Authorization", "Basic " + token)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return json.loads(resp.read().decode("utf-8", "replace"))
+    except urllib.error.HTTPError as e:
+        return {"result": "error", "err": e.code, "msg": e.read().decode("utf-8", "replace")[:200]}
+
 def main():
     if sys.version_info[0] < 3:
         print("需要 Python 3")
@@ -76,6 +90,10 @@ def main():
         return
     user = input("Neocities 用户名: ").strip()
     passwd = getpass.getpass("Neocities 密码: ")
+
+    # 清理旧的 html/index.html（主页已移回根目录，避免重复入口）
+    r = delete_file(user, passwd, "html/index.html")
+    print("清理旧 html/index.html:", "success" if r.get("result") == "success" else r.get("msg", r))
 
     ok = fail = 0
     for i in range(0, len(items), BATCH):
