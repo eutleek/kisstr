@@ -4,3 +4,12 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# local backup dirs (wallpapers / titles / docs snapshots)
+.backup_*/
+
+# local snapshot archives
+*.zip
+
+# dependencies
+node_modules/
