@@ -10950,7 +10950,7 @@ function makeCy(){
       'border-color':function(ele){return ele.data('circ2')||'#F7F2E7';},
       'width':'data(size)','height':'data(size)',
       'shape':function(ele){return ele.data('group')?'round-rectangle':'ellipse';},
-      'label':function(ele){return ele.data('imp')>=3?ele.data('name'):'';},
+      'label':function(ele){return ele.data('name');},
       'font-family':'"Noto Serif SC","Songti SC",Georgia,serif',
       'font-size':function(ele){return ele.data('imp')>=3?13:11;},
       'color':'#2A251E','font-weight':600,
@@ -10981,7 +10981,8 @@ function makeCy(){
     elements:{nodes:cytoNodes,edges:cytoEdges},
     style:styleSheet,
     layout:{name:'preset'},
-    minZoom:0.15,maxZoom:2.6
+    minZoom:0.15,maxZoom:2.6,
+    wheelSensitivity:0.12
   });
   /* 测试钩子（Agent 24）：暴露图谱实例供自动化测试驱动，非生产功能 */
   window.__cy=cy;
@@ -10991,20 +10992,80 @@ function makeCy(){
 function runLayout(animate){
   var vis=cy.elements(':visible');
   if(vis.length===0) return;
-  /* 节点少的图（如百年孤独树状家族）默认重力把链拉成竖向长条；
-     小图加大斥力/减重力/加长边，摊开成方形布局 */
-  var small=vis.length<30;
-  var opts={animate:!!animate,animationDuration:500,randomize:false,
-    nodeRepulsion:function(){return small?17000:8000;},idealEdgeLength:function(){return small?180:100;},
-    edgeElasticity:0.5,gravity:small?0.05:0.28,numIter:2500,tile:true};
+  /* 布局参数按节点数分三档：<30 小图（树状链易拉条，加大斥力/减重力/关 tile）；
+     30~120 中图（如西游记 std 53 节点，标签长易重叠，需更分散）；
+     >120 大图（多节点时平铺分组）。
+     当前已是长条（竖/横比>1.7）时用随机初始位置重排，避免 randomize:false 保持长条 */
+  var n=vis.length;
+  var small=n<30, mid=n<=120;
+  var rep=small?17000:(mid?13000:8000);
+  var iel=small?180:(mid?155:100);
+  var grav=small?0.05:(mid?0.12:0.28);
+  var tile=!small&&!mid; /* 仅大图开 tile 平铺子图；小/中图关 tile 防网格化紧凑排列 */
+  var bb=vis.boundingBox();
+  var sx=Math.max(bb.w,1),sy=Math.max(bb.h,1);
+  var elongated=sy/sx>1.7||sx/sy>1.7;
+  /* 中图（30~120 节点，长标签易重叠）固定随机初始位置让 fcose 分散更均匀；
+     小/大图仅在已拉成长条时随机（保持布局稳定） */
+  var randomize=mid?true:elongated;
+  var opts={animate:!!animate,animationDuration:500,randomize:randomize,
+    nodeRepulsion:function(){return rep;},idealEdgeLength:function(){return iel;},
+    edgeElasticity:0.5,gravity:grav,numIter:2500,tile:tile};
   var ly;
   try{
     ly=vis.layout(Object.assign({name:'fcose'},opts));
   }catch(e){
-    ly=vis.layout(Object.assign({name:'cose'},{animate:!!animate,animationDuration:500,randomize:false,nodeRepulsion:function(){return small?17000:8000;},idealEdgeLength:function(){return small?180:100;}}));
+    ly=vis.layout(Object.assign({name:'cose'},{animate:!!animate,animationDuration:500,randomize:randomize,nodeRepulsion:function(){return rep;},idealEdgeLength:function(){return iel;}}));
   }
-  ly.one('layoutstop',function(){cy.fit(cy.elements(':visible'),40);});
+  ly.one('layoutstop',function(){
+    /* v2.19 防长条：布局后检测包围盒，竖/横比例>1.7 说明仍被拉成条，
+       随机初始位置 + 更强参数重排一次 */
+    var bb2=cy.elements(':visible').boundingBox();
+    var s2x=Math.max(bb2.w,1),s2y=Math.max(bb2.h,1);
+    if(!window.__layoutRetried&&(s2y/s2x>1.7||s2x/s2y>1.7)){
+      window.__layoutRetried=true;
+      var v2=cy.elements(':visible');
+      var ly2=v2.layout({name:'fcose',animate:!!animate,animationDuration:500,randomize:true,
+        nodeRepulsion:function(){return small?32000:(mid?20000:12000);},idealEdgeLength:function(){return small?260:(mid?210:130);},
+        edgeElasticity:0.4,gravity:small?0.02:(mid?0.06:0.25),numIter:3500,tile:false});
+      ly2.one('layoutstop',function(){deoverlapLabels();cy.fit(cy.elements(':visible'),40);});
+      ly2.run();
+    }else{
+      deoverlapLabels();
+      cy.fit(cy.elements(':visible'),40);
+    }
+  });
   ly.run();
+}
+/* v2.19b 标签防重叠后处理：布局完成后检测节点标签矩形冲突，迭代沿 x 推开，
+   保证长名字（四大天王/五方揭谛等群体角色）不被遮挡；不破坏整体关系结构 */
+function deoverlapLabels(){
+  var zoom=cy.zoom();
+  var nodes=cy.nodes(':visible');
+  var arr=nodes.map(function(n){
+    var p=n.renderedPosition();
+    var lb=n.style('label')||'';
+    var w=Math.min(lb.length*12+12,170);   /* 标签估算宽（text-max-width 内） */
+    return {n:n,x:p.x,y:p.y,w:w,h:22};
+  });
+  for(var it=0;it<80;it++){
+    var moved=false;
+    for(var i=0;i<arr.length;i++)for(var j=i+1;j<arr.length;j++){
+      var a=arr[i],b=arr[j];
+      var dx=Math.abs(a.x-b.x),dy=Math.abs(a.y-b.y);
+      /* 标签在节点下方约 4~30px 处；标签区域 x 向重叠且 y 向接近时推开 */
+      if(dx<(a.w/2+b.w/2)*0.85&&dy<42&&dy>4){
+        var push=((a.w/2+b.w/2)*0.85-dx)*0.6+4;
+        var dir=a.x<b.x?-1:1;
+        var pa=a.n.position(),pb=b.n.position();
+        a.n.position({x:pa.x-dir*push/zoom,y:pa.y});
+        b.n.position({x:pb.x+dir*push/zoom,y:pb.y});
+        a.x-=dir*push;b.x+=dir*push;
+        moved=true;
+      }
+    }
+    if(!moved)break;
+  }
 }
 function scheduleLayout(){
   if(layoutTimer) clearTimeout(layoutTimer);
@@ -11078,7 +11139,7 @@ function applyFocus(){
     visE.removeClass('f1');
     visN.style('opacity',1);
     visE.forEach(function(e){e.style({opacity:0.85,width:e.data('ewidth')});});
-    visN.forEach(function(n){ if(n.data('imp')<3) n.style('label',''); });
+    /* v2.18：所有可见节点常显名字，不再清空次要节点 label */
     if(state.focused){
       var F=cy.getElementById(state.focused);
       if(F.length&&F.visible()){
@@ -12230,7 +12291,6 @@ function bindCyEvents(){
   cy.on('mouseover','node',function(e){
     var n=e.target;
     n.addClass('hov');
-    if(n.data('imp')<3&&!state.focused) n.style('label',n.data('name'));
     if(e.originalEvent){
       var p=P[n.id()]||{};
       showTip('<div class="tt-n">'+esc(n.data('name'))+'</div><div class="tt-i">'+esc(p.identity||'')+'</div>',
@@ -12240,7 +12300,6 @@ function bindCyEvents(){
   cy.on('mouseout','node',function(e){
     var n=e.target;
     n.removeClass('hov');
-    if(n.data('imp')<3&&!state.focused) n.style('label','');
     hideTip();
   });
   cy.on('mouseover','edge',function(e){
@@ -12252,11 +12311,6 @@ function bindCyEvents(){
     }
   });
   cy.on('mouseout','edge',hideTip);
-  cy.on('viewport',function(){
-    cy.nodes().forEach(function(n){
-      if(n.data('imp')<3&&!state.focused&&!n.hasClass('hov')) n.style('label','');
-    });
-  });
 }
 
 /* ===== 移动端面板 / 工具（MOB-02~MOB-10 合并实现） ===== */
