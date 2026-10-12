@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <title>百年孤独 · 人物关系图谱</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232A251E'/%3E%3Ctext x='16' y='22.5' font-size='17' text-anchor='middle' fill='%23F2ECDF' font-family='Georgia,serif'%3EM%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
@@ -199,7 +199,7 @@ input{font-family:inherit;border:none;outline:none;background:transparent;color:
 }
 .fn-btn:hover{border-color:var(--ink-soft)}
 .fn-btn.on{background:var(--ink);border-color:var(--ink);color:var(--paper-card)}
-#cy{position:absolute;inset:0}
+#cy{position:absolute;inset:0;touch-action:none}
 #emptyOverlay{
   position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:15;
   background:rgba(242,236,223,.82);text-align:center;
@@ -12183,14 +12183,50 @@ function showToast(msg){
 }
 
 
+var cyTapLast=0;
 function bindCyEvents(){
-  cy.on('tap','node',function(e){selectPerson(e.target.id());});
+  cy.on('tap','node',function(e){cyTapLast=Date.now();selectPerson(e.target.id());});
   cy.on('tap','edge',function(e){renderRelDetail(e.target.id());});
   cy.on('tap',function(e){ if(e.target===cy){clearFocus();} });
   cy.on('dbltap','node',function(e){
     var n=e.target;
     cy.animate({center:{eles:n},zoom:Math.min(cy.zoom()*1.35,2.6),duration:300});
   });
+  /* v2.16 兜底点击：部分线上/移动端环境 cy.on('tap') 不触发（浏览器手势/触摸合成差异），
+     在容器上监听原生 click / touchend，用坐标命中节点后走 selectPerson；
+     350ms 去重防与 cy tap 双触发；拖动不触发（touchend 位移阈值） */
+  var cont=cy.container();
+  if(cont&&!cont.__tapFallback){
+    cont.__tapFallback=true;
+    var fx=0,fy=0,fdown=false;
+    function fallback(x,y){
+      if(Date.now()-cyTapLast<350)return;
+      var bb=cont.getBoundingClientRect();
+      var rx=x-bb.left, ry=y-bb.top;   /* renderedPosition 是容器内像素坐标 */
+      var hit=null,best=1e18;
+      cy.nodes(':visible').forEach(function(n){
+        var np=n.renderedPosition();
+        var rw=(typeof n.renderedWidth==='function'?n.renderedWidth():36)/2+7;
+        var rh=(typeof n.renderedHeight==='function'?n.renderedHeight():36)/2+7;
+        var dx=rx-np.x,dy=ry-np.y;
+        if(Math.abs(dx)<=rw&&Math.abs(dy)<=rh){
+          var d=dx*dx+dy*dy;
+          if(d<best){best=d;hit=n;}
+        }
+      });
+      if(hit){cyTapLast=Date.now();selectPerson(hit.id());}
+    }
+    cont.addEventListener('click',function(e){fallback(e.clientX,e.clientY);});
+    cont.addEventListener('touchstart',function(e){
+      var t=e.changedTouches&&e.changedTouches[0];
+      if(t){fx=t.clientX;fy=t.clientY;fdown=true;}
+    },{passive:true});
+    cont.addEventListener('touchend',function(e){
+      var t=e.changedTouches&&e.changedTouches[0];
+      if(t&&fdown&&Math.abs(t.clientX-fx)<10&&Math.abs(t.clientY-fy)<10)fallback(t.clientX,t.clientY);
+      fdown=false;
+    },{passive:true});
+  }
   cy.on('mouseover','node',function(e){
     var n=e.target;
     n.addClass('hov');

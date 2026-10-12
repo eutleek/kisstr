@@ -7,9 +7,11 @@
 
 # local backup dirs (wallpapers / titles / docs snapshots)
 .backup_*/
+备份*/
 
 # local snapshot archives
 *.zip
+链接体检报告_*.xlsx
 
 # dependencies
 node_modules/
