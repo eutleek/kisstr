@@ -6853,6 +6853,11 @@ var linksData = [
             "name": "金瓶梅 · 人物关系图谱",
             "url": "https://kisstr.com/jinpingmei.html",
             "description": "西门庆与潘金莲等百回人物关系网"
+          },
+          {
+            "name": "罪与罚 · 人物关系图谱",
+            "url": "https://kisstr.com/zyf.html",
+            "description": "陀思妥耶夫斯基罪案心理人物关系网"
           }
         ]
       },
@@ -8565,6 +8570,11 @@ var linksData = [
             "name": "金瓶梅 · 人物关系图谱",
             "url": "https://kisstr.com/jinpingmei.html",
             "description": "西门庆与潘金莲等百回人物关系网"
+          },
+          {
+            "name": "罪与罚 · 人物关系图谱",
+            "url": "https://kisstr.com/zyf.html",
+            "description": "陀思妥耶夫斯基罪案心理人物关系网"
           }
         ]
       }
@@ -11282,7 +11292,7 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
   // 例外：ai_projects / pinokio-audit 为独立应用页（自有渲染与模态框体系），
   // 图谱页（红楼梦/金瓶梅/追忆/百年孤独）为自包含应用页（数据内嵌、脚本在 head，
   // 页内嵌入会丢失关键脚本导致 0 人物），以上保持整页跳转。
-  var EXCLUDE_SPA = /(^|\/)(ai_projects|pinokio-audit|jinpingmei|hongloumeng|bainiangu|proust|xyj)\.html$/i;
+  var EXCLUDE_SPA = /(^|\/)(ai_projects|pinokio-audit|jinpingmei|hongloumeng|bainiangu|proust|xyj|zyf)\.html$/i;
   function isInternalHref(href) {
     if (!href) return false;
     if (/^javascript:/i.test(href) || /^(data|blob|mailto|tel):/i.test(href)) return false;
