@@ -7692,34 +7692,6 @@ function renderCategories() {
   tabsContainer.appendChild(homeBtn);
   }
 
-  linksData.forEach((cat, index) => {
-    if (cat.name === '索引' && !window.__KISSTR_INDEX__) return;
-    const btn = document.createElement('button');
-    btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
-    btn.textContent = cat.name;
-    btn.dataset.category = cat.name;
-
-    // 分类级彩蛋：连续点击标签页按钮 3 次触发
-    if (cat.easterEggUrl) {
-      btn.dataset.eggClicks = '0';
-      btn.addEventListener('click', () => {
-        const clicks = Number(btn.dataset.eggClicks || '0') + 1;
-        btn.dataset.eggClicks = String(clicks);
-        clearTimeout(btn._eggTimer);
-        if (clicks >= 3) {
-          btn.dataset.eggClicks = '0';
-          window.open(cat.easterEggUrl, '_blank', 'noopener');
-        } else {
-          btn._eggTimer = setTimeout(() => {
-            btn.dataset.eggClicks = '0';
-          }, 900);
-        }
-      });
-    }
-
-    btn.addEventListener('click', (e) => { filterByCategory(cat.name); e.currentTarget.blur(); });
-    tabsContainer.appendChild(btn);
-  });
 
   const searchWrapper = document.createElement('div');
   searchWrapper.className = 'search-wrapper';
@@ -8160,8 +8132,8 @@ function doRenderLinks(filterText, category) {
   }
 }
 
-let currentCategory = linksData[0].name;
-let lastSelectedCategory = linksData[0].name;
+let currentCategory = 'all';
+let lastSelectedCategory = 'all';
 
 function filterByCategory(category) {
   currentCategory = category;
