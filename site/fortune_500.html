@@ -9190,7 +9190,7 @@ const imageBackgrounds = [
   })();
 
 var __KISSTR_LOGO__ = '𝑭𝑜𝑟𝑡𝑢𝑛𝑒 500';
-var __KISSTR_RANKED__ = true;
+var __KISSTR_RANKED__ = !window.__KISSTR_DISABLE_RANK__;
 </script>
 <script>
 ﻿/* 壁纸 URL 绝对化：CSS 拆分后公共样式位于 assets/，CSS 变量值中的相对 url() 会基于
@@ -9683,7 +9683,7 @@ function doRenderLinks(filterText, category) {
         }
 
         filteredLinks.forEach((link, linkIndex) => {
-          const card = window.__KISSTR_RANKED__ ? createLinkCard(link, catIndex, linkIndex, ++globalRank) : createLinkCard(link, catIndex, subIndex * 10 + linkIndex);
+          const card = window.__KISSTR_RANKED__ ? createLinkCard(link, catIndex, linkIndex, ++globalRank) : createLinkCard(link, catIndex, subIndex * 50 + linkIndex + 1);
           grid.appendChild(card);
         });
 
