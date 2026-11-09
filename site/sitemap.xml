@@ -57,7 +57,7 @@
   </url>
   <url>
     <loc>https://kisstr.com/bainiangu.html</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -286,6 +286,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://kisstr.com/sanguo.html</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://kisstr.com/skyrim_modlists.html</loc>
     <lastmod>2026-10-11</lastmod>
     <priority>0.8</priority>
@@ -298,6 +303,11 @@
   <url>
     <loc>https://kisstr.com/soundscape.html</loc>
     <lastmod>2026-10-11</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kisstr.com/shuihu.html</loc>
+    <lastmod>2026-10-27</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -356,8 +366,23 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://kisstr.com/xyj.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://kisstr.com/youtube_creators.html</loc>
     <lastmod>2026-10-11</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kisstr.com/zyf.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kisstr.com/zyssnh.html</loc>
+    <lastmod>2026-10-27</lastmod>
     <priority>0.8</priority>
   </url>
 </urlset>
