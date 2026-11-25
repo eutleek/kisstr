@@ -7679,7 +7679,11 @@ function doRenderLinks(filterText, category) {
       section.appendChild(grid);
     }
 
-    if (hasResults || (cat.subcategories && cat.subcategories.some(s => filterLinks(s.links, filterText).length > 0)) || (!cat.subcategories && filterLinks(cat.links, filterText).length > 0)) {
+    /* 搜索时只渲染真正有命中的分类，避免把 60 多个空分类标题全铺出来 */
+    const catHit = cat.subcategories
+      ? cat.subcategories.some(s => filterLinks(s.links, filterText).length > 0)
+      : filterLinks(cat.links, filterText).length > 0;
+    if (catHit) {
       main.appendChild(section);
     }
   });
