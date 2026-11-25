@@ -14,13 +14,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <script>
 (function initColors() {
-  const layoutDefaultVersion = 'v143-magazine-default';
+  const layoutDefaultVersion = 'v144-clear-default';
   if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
-    localStorage.setItem('layout', 'minimal');
+    localStorage.setItem('layout', 'clear');
     localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
   }
 
-  const savedLayout = localStorage.getItem('layout') || 'minimal';
+  const savedLayout = localStorage.getItem('layout') || 'clear';
   const backgroundStorageKey = 'kisstr_background_picker_selection_v1';
   let savedBackgroundOption = null;
   let isSavedImageBackground = false;
@@ -46,6 +46,12 @@ try {
         ? ['rgba(18, 18, 36, 0.34)', 'rgba(18, 18, 36, 0.43)']
         : ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
       bgImageValue = `linear-gradient(to bottom, ${overlay[0]}, ${overlay[1]}), url('${new URL(bgUrl, document.baseURI).href}')`;
+    } else {
+      /* 无保存值时首屏默认壁纸：朱 */
+      const defaultOverlay = savedLayout === 'grid'
+        ? ['rgba(18, 18, 36, 0.34)', 'rgba(18, 18, 36, 0.43)']
+        : ['rgba(18, 18, 36, 0.42)', 'rgba(18, 18, 36, 0.52)'];
+      bgImageValue = `linear-gradient(to bottom, ${defaultOverlay[0]}, ${defaultOverlay[1]}), url('${new URL('wallpapers/22_朱.webp', document.baseURI).href}')`;
     }
 
     document.documentElement.classList.add('background-image-mode');
@@ -820,6 +826,54 @@ try {
     justify-content: center;
   }
 
+  .tabs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .category-tabs.tabs-collapsed .tabs-list {
+    display: none;
+  }
+
+  .tabs-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tabs-toggle-current {
+    color: var(--accent);
+    font-weight: 600;
+    max-width: 12em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tabs-toggle-arrow {
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .tabs-toggle-state {
+    flex-shrink: 0;
+    font-size: 0.78em;
+    color: inherit;
+    opacity: 1;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
   .tab-btn {
     padding: 10px 20px;
     border: 1px solid var(--card-border);
@@ -1042,6 +1096,7 @@ try {
     color: inherit;
     display: block;
     overflow: hidden;
+    min-width: 0;
   }
   /* restore card border in non-wallpaper mode */
   html:not(.background-image-mode) .link-card,
@@ -1994,6 +2049,84 @@ try {
     text-align: center;
   }
 
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .footer-logo {
+    width: 80px;
+    height: 80px;
+    flex: none;
+    color: #ffffff;
+  }
+
+  .footer-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+  }
+
+  .footer-title {
+    font-family: 'Noto Sans SC', 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+  }
+
+  .footer-tagline {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+  }
+
+  .footer-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .footer-side .footer-badges {
+    margin-bottom: 0;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links .disclaimer-btn {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer-side {
+      align-items: flex-start;
+    }
+  }
+
   .footer-badges {
     display: flex;
     justify-content: center;
@@ -2874,7 +3007,7 @@ try {
     }
 
     .layout-minimal .links-grid {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px 20px;
     }
 
@@ -2916,6 +3049,24 @@ try {
 
     .layout-minimal.hide-mode .link-card-inner {
       gap: 0;
+    }
+  }
+
+  /* 小屏手机：单列铺满，避免每列过窄把站名截断 */
+  @media (max-width: 480px) {
+    .layout-minimal .links-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .footer-logo {
+      width: 56px;
+      height: 56px;
+    }
+    .footer-title {
+      font-size: 24px;
+    }
+    .footer-tagline {
+      font-size: 12px;
     }
   }
 
@@ -3195,7 +3346,7 @@ try {
   .layout-clear .footer-badges .badge:hover {
     background: transparent;
     color: #1d1d1f;
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   .layout-clear .disclaimer-btn {
@@ -3235,7 +3386,7 @@ try {
   .layout-minimal .footer-badges .badge:hover {
     background: transparent;
     color: #1d1d1f;
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   .layout-minimal .disclaimer-btn {
@@ -5112,6 +5263,8 @@ try {
   body.background-image-mode .hide-toggle,
   body.background-image-mode .search-inline input,
   body.background-image-mode .footer-badges .badge,
+  body.background-image-mode .footer-title,
+  body.background-image-mode .footer-logo,
   body.background-image-mode .disclaimer-btn,
   body.background-image-mode .background-picker-trigger {
     color: rgba(255, 255, 255, 0.96) !important;
@@ -5151,6 +5304,7 @@ try {
   body.background-image-mode .link-url,
   body.background-image-mode .hidden-link-url,
   body.background-image-mode .link-desc,
+  body.background-image-mode .footer-tagline,
   body.background-image-mode .ai-card-desc,
   body.background-image-mode .ai-card-company,
   body.background-image-mode .ai-card-close-reason,
@@ -5336,11 +5490,37 @@ try {
   }
 
   @media (max-width: 480px) {
-    .category-tabs {
+    .category-tabs,
+    .layout-minimal .category-tabs {
       justify-content: flex-start;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       gap: 6px;
       padding: 0 12px 4px;
+      margin-bottom: 18px;
+    }
+
+    /* 手机端：分类索引按钮独占首行剩余宽度，搜索贴右，避免行内半截空档 */
+    .category-tabs .tabs-toggle,
+    .layout-minimal .category-tabs .tabs-toggle {
+      flex: 1 1 0;
+      max-width: calc(100% - 38px);
+      justify-content: space-between;
+      padding: 0 14px;
+      min-width: 0;
+    }
+
+    .category-tabs .search-wrapper,
+    .layout-minimal .category-tabs .search-wrapper {
+      flex: 0 0 32px;
+      margin-left: 2px;
+    }
+
+    /* 展开后标签整体换到下一行并铺满宽度，不再被压成窄列 */
+    .category-tabs .tabs-list,
+    .layout-minimal .category-tabs .tabs-list {
+      flex: 0 0 100%;
+      width: 100%;
+      justify-content: flex-start;
     }
 
     .tab-btn {
@@ -6432,12 +6612,167 @@ try {
     color: #ffffff !important;
   }
 
+  /* 全平台适配收口：大屏不再挤成 7 列窄卡，桌面维持 4-5 列 */
+  @media (min-width: 1600px) {
+    .layout-minimal .links-grid,
+    .links-grid {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px 36px;
+    }
+  }
+
+  @media (min-width: 1200px) and (max-width: 1599px) {
+    .layout-minimal .links-grid,
+    .links-grid {
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px 28px;
+    }
+  }
+
+  /* 手机端分类栏收口：按钮占首行剩余宽，搜索同排靠右，展开的标签换行铺满 */
+  @media (max-width: 480px) {
+    body.layout-minimal .category-tabs {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 12px 4px;
+      margin-bottom: 18px;
+    }
+
+    body.layout-minimal .category-tabs .tabs-toggle {
+      flex: 0 0 auto;
+      max-width: calc(100% - 42px);
+      justify-content: flex-start;
+      padding: 0 14px;
+      min-width: 0;
+    }
+
+    body.layout-minimal .category-tabs .search-wrapper {
+      order: 1 !important;
+      flex: 0 0 32px !important;
+      margin-left: 6px;
+    }
+
+    body.layout-minimal .category-tabs .search-wrapper.search-expanded {
+      order: 1 !important;
+      flex: 0 0 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin: 6px 0 0 !important;
+    }
+
+    /* 搜索展开后独占一行，输入框铺满 */
+    body.layout-minimal .category-tabs.search-expanded {
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      transform: none !important;
+      overflow-x: visible !important;
+    }
+
+    body.layout-minimal .category-tabs .search-inline.expanded {
+      width: 100% !important;
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+    }
+
+    body.layout-minimal .category-tabs .search-inline.expanded input {
+      width: calc(100% - 44px) !important;
+    }
+
+    body.layout-minimal .category-tabs .tabs-list {
+      order: 2;
+      flex: 0 0 100%;
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  /* 平板与窄窗口（481-768）：与手机同一套逻辑，按钮居中、搜索紧跟、展开时独占一行 */
+  @media (min-width: 481px) and (max-width: 768px) {
+    body.layout-minimal .category-tabs {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 16px 6px;
+    }
+
+    body.layout-minimal .category-tabs .tabs-toggle {
+      flex: 0 0 auto;
+      justify-content: flex-start;
+      padding: 0 16px;
+      min-width: 0;
+    }
+
+    body.layout-minimal .category-tabs .search-wrapper {
+      order: 1 !important;
+      flex: 0 0 32px !important;
+      margin-left: 8px !important;
+    }
+
+    body.layout-minimal .category-tabs .tabs-list {
+      order: 2;
+      flex: 0 0 100%;
+      width: 100%;
+      justify-content: center;
+    }
+
+    body.layout-minimal .category-tabs .search-wrapper.search-expanded {
+      order: 1 !important;
+      flex: 0 0 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin: 8px 0 0 !important;
+    }
+
+    body.layout-minimal .category-tabs.search-expanded {
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      transform: none !important;
+      overflow-x: visible !important;
+    }
+
+    body.layout-minimal .category-tabs .search-inline.expanded {
+      width: 100% !important;
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+    }
+
+    body.layout-minimal .category-tabs .search-inline.expanded input {
+      width: calc(100% - 44px) !important;
+    }
+  }
+
+  /* 宽屏桌面：搜索框固定在按钮同一行，展开时不落到标签列表底部 */
+  @media (min-width: 769px) {
+    body.layout-minimal .category-tabs .search-wrapper,
+    body.layout-minimal .category-tabs .search-wrapper.search-expanded {
+      order: 1 !important;
+      margin-left: 8px !important;
+    }
+
+    body.layout-minimal .category-tabs .tabs-list {
+      order: 2;
+    }
+
+    body.layout-minimal .category-tabs .search-wrapper.search-expanded {
+      flex: 0 0 160px !important;
+      width: 160px !important;
+      min-width: 160px !important;
+    }
+
+    body.layout-minimal .category-tabs .search-inline.expanded {
+      width: 160px !important;
+      min-width: 160px !important;
+      flex: 0 0 160px !important;
+    }
+  }
+
 </style>
 </head>
-<body class="layout-minimal">
+<body class="layout-minimal layout-clear">
 <script>
   (function() {
-    var saved = localStorage.getItem('layout') || 'minimal';
+    var saved = localStorage.getItem('layout') || 'clear';
     if (saved === 'clear') {
       document.body.classList.add('layout-minimal', 'layout-clear');
     } else {
@@ -6568,2124 +6903,124 @@ try {
 <audio id="lofiAudio" src="https://ice5.somafm.com/groovesalad-128-mp3"></audio>
 
 <footer class="site-footer">
-  <div class="footer-badges">
-    <span class="badge">✨ 无广告</span>
-    <span class="badge">✨ 无弹窗</span>
-    <span class="badge">✨ 无盈利</span>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg class="footer-logo" viewBox="0 0 32 32" fill="currentColor"><path d="M28,16l-6,6H10l-6-6l6-6l6,5.994L22,10L28,16z"/></svg>
+      <div class="footer-brand-text">
+        <div class="footer-title">Kisstr</div>
+        <p class="footer-tagline">雨的印记</p>
+      </div>
+    </div>
+    <div class="footer-side">
+      <div class="footer-badges">
+        <span class="badge">无广告</span>
+        <span class="badge">无弹窗</span>
+        <span class="badge">无盈利</span>
+      </div>
+      <div class="footer-links">
+        <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>
+        <a href="https://m.baike.com/wikiid/7316069310949130294" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">关于作者</a>
+      </div>
+    </div>
   </div>
-  <a href="disclaimer.html" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">免责声明</a>&nbsp;&nbsp;
-  <a href="https://m.baike.com/wikiid/7316069310949130294" class="disclaimer-btn" target="_blank" rel="noopener noreferrer">关于作者</a>
-  <p class="footer-copy">书影音 · 优质网站收藏</p>
 </footer>
 
+<script src="assets/data_toc.js"></script>
+<script src="assets/data_books.js"></script>
 <script>
 
 // 为主页面标签页命名，便于子页面通过 window.open 跳转回来
 window.name = 'kisstr_home';
 
-var linksData = [
-  {
-    "name": "书影音",
-    "icon": "📚",
-    "color": "linear-gradient(135deg, #6c5ce7, #a29bfe)",
-    "subcategories": [
-      {
-        "name": "书籍",
-        "enName": "Books",
-        "links": [
-          {
-            "name": "z 站镜像站",
-            "url": "https://zh.ita101.ru/",
-            "description": "✅ Z-Library 镜像，可直连下载"
-          },
-          {
-            "name": "Z-Library 主站",
-            "url": "https://z-lib.sk/",
-            "description": "⚠️ 访问受限，需通过镜像站访问"
-          },
-          {
-            "name": "Z-Library 官网①",
-            "url": "https://z-library.sk/",
-            "description": "Z-Library 官网访问入口"
-          },
-          {
-            "name": "Z-Library 官网②",
-            "url": "https://z-lib.fm/",
-            "description": "Z-Library 官网访问入口"
-          },
-          {
-            "name": "Z-Library 官网",
-            "url": "https://zlib.li/",
-            "description": "⚠️ 官网直连受限，需通过镜像站访问"
-          },
-          {
-            "name": "Z-Library 注册站",
-            "url": "https://zh.vbh101.ru/",
-            "description": "✅ 镜像站可直连，中文注册入口"
-          },
-          {
-            "name": "Z-Library 镜像",
-            "url": "https://zlib.re/",
-            "description": "Z-Library 镜像，可直连下载"
-          },
-          {
-            "name": "安娜的档案",
-            "url": "https://annas-archive.gl/",
-            "description": "✅ 可以直连，官网直连不受限"
-          },
-          {
-            "name": "安娜的档案",
-            "url": "https://annas-archive.pk/",
-            "description": "⚠️ 官网直连受限，需使用其他方式访问"
-          },
-          {
-            "name": "安娜的档案",
-            "url": "https://zh.annas-archive.gd/",
-            "description": "⚠️ 官网直连受限，需使用其他方式访问"
-          },
-          {
-            "name": "olib 安卓APP",
-            "url": "https://www.bookbook.space/",
-            "description": "📱 第三方直连安卓APP，支持Z站下载"
-          },
-          {
-            "name": "Olib GitHub 开源项目",
-            "url": "https://github.com/shiyi-0x7f/olib-mobile",
-            "description": "GitHub - Olib 安卓APP开源项目"
-          },
-          {
-            "name": "Z站导航①",
-            "url": "https://github.com/z-libraryopp/z-libraryopp.github.io",
-            "description": "GitHub - Z站镜像导航汇总"
-          },
-          {
-            "name": "Z站导航②",
-            "url": "https://z.wwwnav.com/",
-            "description": "Z站镜像导航汇总，找可用入口"
-          },
-          {
-            "name": "TTS离线听书 安卓",
-            "url": "https://pan.quark.cn/s/1b1e8e6f90ef",
-            "description": "【夸克网盘】TTS离线听书安卓APP带教程，总430MB"
-          },
-          {
-            "name": "静读天下 安卓",
-            "url": "https://www.downkuai.com/android/15474.html",
-            "description": "静读天下 - 安卓读书APP下载"
-          },
-          {
-            "name": "LibGen 图书馆",
-            "url": "https://libgen.im/",
-            "description": "LibGen 学术教材，老资格书库"
-          },
-          {
-            "name": "电子书网站大全",
-            "url": "https://appxiazai.pages.dev/",
-            "description": "电子书网站大全及阅读客户端"
-          },
-          {
-            "name": "阅读指南",
-            "url": "https://readzn.com/",
-            "description": "说明Z站共享账号使用方法"
-          },
-          {
-            "name": "古登堡计划",
-            "url": "https://www.gutenberg.org/",
-            "description": "Project Gutenberg - 免费电子书"
-          },
-          {
-            "name": "Open Library",
-            "url": "https://openlibrary.org/",
-            "description": "开放借阅，覆盖面极广"
-          },
-          {
-            "name": "互联网档案馆",
-            "url": "https://archive.org/",
-            "description": "⚠️ 访问受限，需特殊网络"
-          },
-          {
-            "name": "ManyBooks",
-            "url": "https://manybooks.net/",
-            "description": "免费电子书5万+，多格式"
-          },
-          {
-            "name": "WorldMags 杂志",
-            "url": "https://worldmags.net/",
-            "description": "杂志 PDF 大全，一色杂志资源"
-          },
-          {
-            "name": "AO3 官网",
-            "url": "https://archiveofourown.org/",
-            "description": "同人小说最大档案库，官方主站"
-          },
-          {
-            "name": "AO3 备用域名",
-            "url": "https://archive.transformativeworks.org/",
-            "description": "官方备用入口，主站无法访问时使用"
-          },
-          {
-            "name": "AO3 备用域名二",
-            "url": "https://archiveofourown.net/",
-            "description": "官方旧域名，自动跳转主站"
-          },
-          {
-            "name": "AO3 无加密入口",
-            "url": "https://insecure.archiveofourown.org/",
-            "description": "HTTP 明文入口，证书报错时可用"
-          },
-          {
-            "name": "OTW 状态监控",
-            "url": "https://www.otwstatus.org/",
-            "description": "AO3 宕机维护公告与恢复进度"
-          },
-          {
-            "name": "SquidgeWorld 档案库",
-            "url": "https://squidgeworld.org/",
-            "description": "老牌同人小说存档，可作 AO3 替代"
-          },
-          {
-            "name": "OTW 官网",
-            "url": "https://www.transformativeworks.org/",
-            "description": "AO3 母组织，官方公告与捐赠入口"
-          },
-          {
-            "name": "AO3 镜像网站",
-            "url": "https://ao3-mirror.cc/",
-            "description": "AO3镜像站，可直连访问"
-          },
-          {
-            "name": "PDF Drive",
-            "url": "https://www.pdfdrive.com/",
-            "description": "PDF Drive - PDF电子书搜索"
-          },
-          {
-            "name": "Mobilism",
-            "url": "https://mobilism.org/",
-            "description": "⚠️ 访问受限，需特殊网络"
-          },
-          {
-            "name": "书格",
-            "url": "https://shuge.org/",
-            "description": "书格 - 古籍善本"
-          },
-          {
-            "name": "书伴",
-            "url": "https://bookfere.com/",
-            "description": "书伴 - 电子书资讯"
-          },
-          {
-            "name": "Standard Ebooks",
-            "url": "https://standardebooks.org/",
-            "description": "Standard Ebooks - 精校电子书"
-          },
-          {
-            "name": "LibriVox",
-            "url": "https://librivox.org/",
-            "description": "LibriVox - 免费有声书"
-          },
-          {
-            "name": "Loyal Books",
-            "url": "https://loyalbooks.com/",
-            "description": "Loyal Books - 免费电子书"
-          },
-          {
-            "name": "苦瓜书盘",
-            "url": "https://kgbook.com/",
-            "description": ""
-          },
-          {
-            "name": "维基文库",
-            "url": "https://wikisource.org/",
-            "description": "⚠️ 访问受限，需特殊网络"
-          },
-          {
-            "name": "PDF Books World",
-            "url": "https://pdfbooksworld.com/",
-            "description": ""
-          },
-          {
-            "name": "Free-Ebooks.net",
-            "url": "https://free-ebooks.net/",
-            "description": ""
-          },
-          {
-            "name": "BookBoon",
-            "url": "https://bookboon.com/",
-            "description": "BookBoon - 教科书"
-          },
-          {
-            "name": "CORE 学术开放库",
-            "url": "https://core.ac.uk/",
-            "description": "CORE - 学术论文"
-          },
-          {
-            "name": "DigiLibraries",
-            "url": "https://digilibraries.com/",
-            "description": "DigiLibraries - 免费电子书"
-          },
-          {
-            "name": "Obooko",
-            "url": "https://obooko.com/",
-            "description": "Obooko - 免费电子书"
-          },
-          {
-            "name": "GetFreeEBooks",
-            "url": "https://getfreeebooks.com/",
-            "description": "GetFreeEBooks - 免费电子书"
-          },
-          {
-            "name": "IntechOpen",
-            "url": "https://intechopen.com/",
-            "description": "IntechOpen - 开放获取学术"
-          },
-          {
-            "name": "Book-Share",
-            "url": "https://book-share.com/",
-            "description": "Book-Share - 电子书分享"
-          },
-          {
-            "name": "开源阅读",
-            "url": "https://dy.miaogongzi.cc/",
-            "description": "⚠️ 只做本地阅读器，不建议添加书源"
-          },
-          {
-            "name": "孔夫子旧书网",
-            "url": "https://www.kongfz.com/",
-            "description": "二手书交易平台 - 买卖旧书"
-          },
-          {
-            "name": "多抓鱼",
-            "url": "https://www.duozhuayu.com/",
-            "description": "二手书买卖平台 - 循环利用"
-          },
-          {
-            "name": "S.H.I.T (构石期刊)",
-            "url": "https://shitjournal.org",
-            "description": "荒诞学术论文社区，严肃格式写无厘头研究"
-          },
-          {
-            "name": "Squadbook",
-            "url": "https://squadbook.com/",
-            "description": "数字贴纸相册，开包集换"
-          }
-        ]
-      },
-      {
-        "name": "文学人物图谱",
-        "enName": "Literary Maps",
-        "links": [
-          {
-            "name": "红楼梦 · 人物关系图谱",
-            "url": "https://kisstr.com/hongloumeng.html",
-            "description": "金陵十二钗与四大家族人物关系"
-          },
-          {
-            "name": "西游记 · 人物关系图谱",
-            "url": "https://kisstr.com/xyj.html",
-            "description": "取经团队与天庭妖魔人物关系网"
-          },
-          {
-            "name": "百年孤独 · 人物关系图谱",
-            "url": "https://kisstr.com/bainiangu.html",
-            "description": "布恩迪亚家族七代人物关系"
-          },
-          {
-            "name": "追忆似水年华 · 人物关系图谱",
-            "url": "https://kisstr.com/proust.html",
-            "description": "普鲁斯特意识流人物关系网"
-          },
-          {
-            "name": "追忆似水年华完整版 · 人物关系图谱",
-            "url": "https://kisstr.com/zyssnh.html",
-            "description": "全七卷 2772 位人物完整关系网"
-          },
-          {
-            "name": "金瓶梅 · 人物关系图谱",
-            "url": "https://kisstr.com/jinpingmei.html",
-            "description": "西门庆与潘金莲等百回人物关系网"
-          },
-          {
-            "name": "罪与罚 · 人物关系图谱",
-            "url": "https://kisstr.com/zyf.html",
-            "description": "陀思妥耶夫斯基罪案心理人物关系网"
-          },
-          {
-            "name": "三国演义 · 人物关系图谱",
-            "url": "https://kisstr.com/sanguo.html",
-            "description": "魏蜀吴群雄 120 回人物关系网"
-          },
-          {
-            "name": "水浒传 · 人物关系图谱",
-            "url": "https://kisstr.com/shuihu.html",
-            "description": "梁山一百单八将与朝廷江湖关系网"
-          }
-        ]
-      },
-      {
-        "name": "影视",
-        "enName": "Film & TV",
-        "links": [
-          {
-            "name": "白嫖者联盟",
-            "url": "https://baipiao.ai",
-            "description": ""
-          },
-          {
-            "name": "懂片帝AI",
-            "url": "https://dongpian.ai/",
-            "description": "AI 找片与片单，影视播放"
-          },
-          {
-            "name": "看剧AI",
-            "url": "https://kanju.ai/",
-            "description": "AI 看剧搜索，影视资源聚合"
-          },
-          {
-            "name": "搜剧AI",
-            "url": "https://souju.ai",
-            "description": "AI 搜剧找片工具"
-          },
-          {
-            "name": "白嫖者联盟二",
-            "url": "https://www.hctd1.com/",
-            "description": ""
-          },
-          {
-            "name": "网飞猫",
-            "url": "https://ncat.app/",
-            "description": "全平台美剧、韩剧、动漫"
-          },
-          {
-            "name": "漫猫动漫",
-            "url": "https://www.comicat.org/",
-            "description": "🎬 高清资源，迅雷链接下载"
-          },
-          {
-            "name": "麦田影视",
-            "url": "https://mtyy4.com/",
-            "description": "麦田影视 - 在线影视观看"
-          },
-          {
-            "name": "豆瓣电影",
-            "url": "https://movie.douban.com/",
-            "description": "电影评分与影评社区"
-          },
-          {
-            "name": "电影天堂",
-            "url": "https://www.dy2018.com/",
-            "description": "电影资源下载站"
-          },
-          {
-            "name": "河马影院",
-            "url": "https://hemayy.com/",
-            "description": ""
-          },
-          {
-            "name": "电影天堂全平台",
-            "url": "https://jianpian24.com/#/Mhome",
-            "description": "电影天堂全平台 - 影视资源大全"
-          },
-          {
-            "name": "IPTV直播源导航",
-            "url": "https://iptvindex.com/",
-            "description": ""
-          }
-        ]
-      },
-      {
-        "name": "音乐",
-        "enName": "Music",
-        "links": [
-          {
-            "name": "洛雪音乐",
-            "url": "https://lxmusic.toside.cn/",
-            "description": "洛雪音乐 - 聚合音乐播放器"
-          },
-          {
-            "name": "洛雪 GitHub 移动端",
-            "url": "https://github.com/lyswhut/lx-music-mobile",
-            "description": "洛雪音乐移动端开源项目"
-          },
-          {
-            "name": "洛雪 GitHub 电脑端",
-            "url": "https://github.com/lyswhut/lx-music-desktop",
-            "description": "洛雪音乐桌面端开源项目"
-          },
-          {
-            "name": "洛雪音源 GitHub 1",
-            "url": "https://github.com/pdone/lx-music-source",
-            "description": "洛雪音乐音源仓库"
-          },
-          {
-            "name": "洛雪音源 GitHub 2",
-            "url": "https://github.com/Macrohard0001/lx-ikun-music-sources",
-            "description": "洛雪音乐音源仓库"
-          },
-          {
-            "name": "loficafe",
-            "url": "https://loficafe.net/",
-            "description": "Lofi 氛围电台"
-          },
-          {
-            "name": "Lofi.co",
-            "url": "https://lofi.co/",
-            "description": "虚拟 Lofi 空间"
-          },
-          {
-            "name": "Poolsuite FM",
-            "url": "https://poolsuite.net/",
-            "description": "复古夏日电台"
-          },
-          {
-            "name": "Radio Garden",
-            "url": "https://radio.garden/",
-            "description": "地球仪全球电台"
-          },
-          {
-            "name": "Nightride FM",
-            "url": "https://nightride.fm/",
-            "description": "80年代复古霓虹电台"
-          },
-          {
-            "name": "SomaFM",
-            "url": "https://somafm.com/",
-            "description": "旧金山无广告独立电台"
-          },
-          {
-            "name": "AccuRadio",
-            "url": "https://www.accuradio.com/",
-            "description": "美式细分风格电台"
-          },
-          {
-            "name": "Incompetech",
-            "url": "https://incompetech.com/",
-            "description": "Kevin MacLeod 免版权音乐库"
-          },
-          {
-            "name": "Free Music Archive",
-            "url": "https://freemusicarchive.org/",
-            "description": "FMA 免费音乐档案"
-          },
-          {
-            "name": "Purrple Cat",
-            "url": "https://purrplecat.com/",
-            "description": "Lofi / Chillhop 免版权音乐"
-          },
-          {
-            "name": "Chillhop Music",
-            "url": "https://chillhop.com/",
-            "description": "Chillhop 厂牌与电台"
-          },
-          {
-            "name": "网易云音乐",
-            "url": "https://music.163.com/",
-            "description": "网易云音乐 - 音乐的力量"
-          },
-          {
-            "name": "QQ音乐",
-            "url": "https://y.qq.com/",
-            "description": "腾讯音乐娱乐集团"
-          },
-          {
-            "name": "Apple Music",
-            "url": "https://music.apple.com/",
-            "description": "苹果官方音乐服务"
-          },
-          {
-            "name": "Bilibili",
-            "url": "https://www.bilibili.com/",
-            "description": "B站 - 弹幕视频网站"
-          },
-          {
-            "name": "SoundCloud",
-            "url": "https://soundcloud.com/",
-            "description": "独立音乐人分享平台"
-          },
-          {
-            "name": "Musopen",
-            "url": "https://musopen.org/",
-            "description": "Musopen - 公共版权古典音乐"
-          },
-          {
-            "name": "CCMixter",
-            "url": "https://ccmixter.org/",
-            "description": "CCMixter - CC音乐混音"
-          },
-          {
-            "name": "Chosic",
-            "url": "https://chosic.com/",
-            "description": "Chosic - 音乐发现"
-          },
-          {
-            "name": "Bensound",
-            "url": "https://bensound.com/",
-            "description": "Bensound - 免版权音乐"
-          },
-          {
-            "name": "Listen 1",
-            "url": "https://listen1.github.io/listen1/",
-            "description": "Listen 1 - 聚合音乐播放器"
-          },
-          {
-            "name": "MyFreeMP3",
-            "url": "https://tools.liumingye.cn/music",
-            "description": "MyFreeMP3 - 免费音乐搜索"
-          },
-          {
-            "name": "Bandcamp",
-            "url": "https://bandcamp.com/",
-            "description": "Bandcamp - 独立音乐"
-          },
-          {
-            "name": "Free Sound",
-            "url": "https://freesound.org/",
-            "description": "Free Sound - 音效库"
-          },
-          {
-            "name": "Rainymood",
-            "url": "https://rainymood.com/",
-            "description": "Rainymood - 雨声白噪音"
-          },
-          {
-            "name": "Lofi Girl",
-            "url": "https://lofigirl.com/",
-            "description": "Lofi Girl - 学习氛围音乐"
-          },
-          {
-            "name": "Audiomack",
-            "url": "https://audiomack.com/",
-            "description": "Audiomack - 免费音乐"
-          },
-          {
-            "name": "IMSLP",
-            "url": "https://imslp.org/",
-            "description": "IMSLP - 国际乐谱库"
-          },
-          {
-            "name": "Ambient Mixer",
-            "url": "https://ambient-mixer.com/",
-            "description": "Ambient Mixer - 环境音"
-          },
-          {
-            "name": "A Soft Murmur",
-            "url": "https://asoftmurmur.com/",
-            "description": "A Soft Murmur - 白噪音"
-          },
-          {
-            "name": "Defonic",
-            "url": "https://defonic.com/",
-            "description": "Defonic - 氛围音"
-          },
-          {
-            "name": "Jazz And Rain",
-            "url": "https://jazzandrain.com/",
-            "description": ""
-          },
-          {
-            "name": "Mixkit Audio",
-            "url": "https://mixkit.co/free-audio",
-            "description": "Mixkit - 免版权音频"
-          },
-          {
-            "name": "Soundstripe",
-            "url": "https://soundstripe.com/",
-            "description": "Soundstripe - 免版权音乐"
-          },
-          {
-            "name": "Looperman",
-            "url": "https://looperman.com/",
-            "description": "Looperman - 采样分享"
-          },
-          {
-            "name": "SampleFocus",
-            "url": "https://samplefocus.com/",
-            "description": "SampleFocus - 采样库"
-          },
-          {
-            "name": "ccTrax",
-            "url": "https://cctrax.com/",
-            "description": "ccTrax - CC音乐"
-          },
-          {
-            "name": "Tabletop Audio",
-            "url": "https://tabletopaudio.com/",
-            "description": "Tabletop Audio - 跑团氛围音"
-          },
-          {
-            "name": "Rainy Cafe",
-            "url": "https://rainycafe.com/",
-            "description": ""
-          },
-          {
-            "name": "Noices",
-            "url": "https://noices.co/",
-            "description": "Noices - 白噪音"
-          },
-          {
-            "name": "Purrli",
-            "url": "https://purrli.com/",
-            "description": "Purrli - 猫咪呼噜声"
-          },
-          {
-            "name": "Soundrown",
-            "url": "https://soundrown.com/",
-            "description": "Soundrown - 白噪音"
-          },
-          {
-            "name": "Europeana Music",
-            "url": "https://europeana.eu/en/collections/topic/18-music",
-            "description": "Europeana - 欧洲音乐档案"
-          },
-          {
-            "name": "ChoralWiki",
-            "url": "https://cpdl.org/",
-            "description": "ChoralWiki - 合唱乐谱"
-          },
-          {
-            "name": "Purple Planet",
-            "url": "https://purple-planet.com/",
-            "description": "Purple Planet - 免版权音乐"
-          },
-          {
-            "name": "Free Music Public Domain",
-            "url": "https://freemusicpublicdomain.com/",
-            "description": "公共版权音乐"
-          },
-          {
-            "name": "Josh Woodward",
-            "url": "https://joshwoodward.com/",
-            "description": "Josh Woodward - 独立音乐人"
-          },
-          {
-            "name": "Scott Buckley",
-            "url": "https://scottbuckley.com.au/",
-            "description": "Scott Buckley - 免版权音乐"
-          },
-          {
-            "name": "ChilledCow",
-            "url": "https://chilledcow.com/",
-            "description": "ChilledCow - Lofi音乐"
-          },
-          {
-            "name": "Unminus",
-            "url": "https://unminus.com/",
-            "description": "Unminus - 免版权音乐"
-          },
-          {
-            "name": "Nature Sounds",
-            "url": "https://naturesoundsfor.me/",
-            "description": "Nature Sounds - 自然音"
-          },
-          {
-            "name": "HearNow",
-            "url": "https://hearnow.com/",
-            "description": "HearNow - 独立音乐人"
-          },
-          {
-            "name": "Icons8 Fugue",
-            "url": "https://icons8.com/music",
-            "description": "Icons8 - 免版权音乐"
-          },
-          {
-            "name": "ccMixter Digi",
-            "url": "https://dig.ccmixter.org/",
-            "description": "ccMixter Digi - CC音乐"
-          },
-          {
-            "name": "Freepd",
-            "url": "https://freepd.com/",
-            "description": "Freepd - 公共版权音乐"
-          },
-          {
-            "name": "Audionautix",
-            "url": "https://audionautix.com/",
-            "description": "Audionautix - CC音乐"
-          },
-          {
-            "name": "Silverman Sound",
-            "url": "https://silvermansound.com/",
-            "description": "Silverman Sound - 免版权"
-          },
-          {
-            "name": "TeknoAXE",
-            "url": "https://teknoaxe.com/",
-            "description": "TeknoAXE - 免版权音乐"
-          },
-          {
-            "name": "Fesliyan Studios",
-            "url": "https://fesliyanstudios.com/",
-            "description": "Fesliyan - 免版权音乐"
-          },
-          {
-            "name": "TimBee Music",
-            "url": "https://timbee.de/",
-            "description": "TimBee Music - 免版权"
-          },
-          {
-            "name": "小文音乐",
-            "url": "https://music.xwteam.cn/",
-            "description": ""
-          },
-          {
-            "name": "TingSub",
-            "url": "https://tingsub.com/",
-            "description": ""
-          },
-          {
-            "name": "Hipstersound",
-            "url": "https://hipstersound.com/",
-            "description": "Hipstersound - 氛围音"
-          },
-          {
-            "name": "Moodil",
-            "url": "https://moodil.com/",
-            "description": "Moodil - 白噪音"
-          },
-          {
-            "name": "Open Music Archive",
-            "url": "https://openmusicarchive.org/",
-            "description": ""
-          },
-          {
-            "name": "Cylinder Archive",
-            "url": "https://cylinder.library.ucsb.edu/",
-            "description": "Cylinder - 早期录音档案"
-          },
-          {
-            "name": "Classic Cat",
-            "url": "https://classiccat.net/",
-            "description": "Classic Cat - 古典音乐"
-          },
-          {
-            "name": "Global Music Archive",
-            "url": "https://globalmusicarchive.org/",
-            "description": ""
-          },
-          {
-            "name": "Congress Audio",
-            "url": "https://loc.gov/audio",
-            "description": "美国国会图书馆音频库"
-          },
-          {
-            "name": "National Jukebox",
-            "url": "https://loc.gov/jukebox",
-            "description": ""
-          },
-          {
-            "name": "Free Sound Effects",
-            "url": "https://freesoundeffects.com/",
-            "description": ""
-          },
-          {
-            "name": "Sound Archive",
-            "url": "https://soundarchive.org/",
-            "description": ""
-          },
-          {
-            "name": "Internet Archive Audio",
-            "url": "https://archive.org/details/audio",
-            "description": ""
-          },
-          {
-            "name": "SoundClick",
-            "url": "https://soundclick.com/",
-            "description": "SoundClick - 独立音乐"
-          },
-          {
-            "name": "Live Music Archive",
-            "url": "https://archive.org/details/etree",
-            "description": ""
-          },
-          {
-            "name": "HearThis",
-            "url": "https://hearthis.at/",
-            "description": "HearThis - 音乐分享"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "ACGN",
-    "icon": "🌟",
-    "color": "linear-gradient(135deg, #ff6b6b, #ee5a6f)",
-    "subcategories": [
-      {
-        "name": "动漫",
-        "enName": "Anime",
-        "links": [
-          {
-            "name": "动漫GHG",
-            "url": "https://oneghg.com/",
-            "description": "电脑端没广告 手机有广告"
-          },
-          {
-            "name": "AuvFun",
-            "url": "https://auvfun.com/",
-            "description": "在线追番动漫站"
-          },
-          {
-            "name": "AnimeFlow",
-            "url": "https://web.ligg.top/",
-            "description": "跨平台动漫播放器官网"
-          },
-          {
-            "name": "AnimeFlow GitHub",
-            "url": "https://github.com/openAnimeFlow/AnimeFlow/releases",
-            "description": "播放器安装包与版本更新"
-          },
-          {
-            "name": "动漫共和国",
-            "url": "https://dongman.to/",
-            "description": "动漫 App 官网，安卓苹果电脑版"
-          },
-          {
-            "name": "动漫共和国备用",
-            "url": "https://www.dongman.to/",
-            "description": "备用线路，与主站同源"
-          },
-          {
-            "name": "动漫共和国备用二",
-            "url": "https://appd.oneghg.com/",
-            "description": "备用入口，实测可直连"
-          },
-          {
-            "name": "动漫共和国备用三",
-            "url": "https://dapp.oneghg.com/",
-            "description": "备用入口，实测可直连"
-          },
-          {
-            "name": "动漫共和国备用四",
-            "url": "https://xdd.oneghg.com/",
-            "description": "备用入口，实测可直连"
-          },
-          {
-            "name": "动漫共和国备用五",
-            "url": "https://www.oneghg.com/",
-            "description": "备用入口，实测可直连"
-          },
-          {
-            "name": "Anich",
-            "url": "https://anich.emmmm.eu.org",
-            "description": "Anich - 免费动漫网站"
-          },
-          {
-            "name": "咕咕番",
-            "url": "https://gugu3.com/",
-            "description": "咕咕番 - 在线动漫网站"
-          },
-          {
-            "name": "网飞猫",
-            "url": "https://ncat.app/",
-            "description": "全平台美剧、韩剧、动漫"
-          },
-          {
-            "name": "anich 下载页",
-            "url": "https://anich.emmmm.eu.org/",
-            "description": "anich - 下载页"
-          },
-          {
-            "name": "lanerc",
-            "url": "https://lanerc.app/",
-            "description": "lanerc - 动漫在线观看"
-          },
-          {
-            "name": "animeko",
-            "url": "https://animeko.org/",
-            "description": "animeko - 在线动漫网站"
-          },
-          {
-            "name": "AniBaka",
-            "url": "https://app.anibaka.com/",
-            "description": "AniBaka - 动漫播放应用"
-          },
-          {
-            "name": "kazumi",
-            "url": "https://kazumi.app/",
-            "description": "kazumi - 动漫在线观看"
-          },
-          {
-            "name": "Cat Maven",
-            "url": "https://jason-wam.github.io/Cat-Maven-2023/web/",
-            "description": "Cat Maven - 动漫在线播放器"
-          },
-          {
-            "name": "漫猫动漫",
-            "url": "https://www.comicat.org/",
-            "description": "🎬 高清资源，迅雷链接下载"
-          },
-          {
-            "name": "番剧评分",
-            "url": "https://anilist.co/",
-            "description": "AniList - 番剧评分与追踪"
-          },
-          {
-            "name": "识别番剧",
-            "url": "https://trace.moe/",
-            "description": "以图搜番"
-          },
-          {
-            "name": "樱之空",
-            "url": "https://skr.cc/",
-            "description": "樱之空 - 萌系动漫平台"
-          },
-          {
-            "name": "9Anime",
-            "url": "https://9-anime.me/",
-            "description": "9Anime - 英文动漫网站"
-          },
-          {
-            "name": "mifun",
-            "url": "https://mifun.app/",
-            "description": "mifun - 动漫在线观看"
-          },
-          {
-            "name": "次元城",
-            "url": "https://cycity.pro/",
-            "description": "次元城 - ACG社区"
-          },
-          {
-            "name": "次元城网页端",
-            "url": "https://www.cycani.org/",
-            "description": "次元城网页端入口"
-          },
-          {
-            "name": "次元城手机端",
-            "url": "https://mdl.cycity.pro/",
-            "description": "次元城手机端入口"
-          }
-        ]
-      },
-      {
-        "name": "动漫音乐",
-        "enName": "Anime Music",
-        "links": [
-          {
-            "name": "AnimeThemes",
-            "url": "https://animethemes.moe/",
-            "description": "动画 OP/ED 高清 WebM 库，开源免费带 API"
-          },
-          {
-            "name": "Themes.moe",
-            "url": "https://themes.moe/",
-            "description": "按番剧查 OP/ED 主题曲，关联 MAL 账号"
-          },
-          {
-            "name": "Anisongs",
-            "url": "https://anisongs.jp/",
-            "description": "动画歌曲数据库，歌曲歌手番剧关联"
-          },
-          {
-            "name": "Anime Song Online",
-            "url": "https://anison.online/en/",
-            "description": "动画主题曲信息站，覆盖 OP/ED/插曲"
-          },
-          {
-            "name": "Anison Charts",
-            "url": "https://anisonpreviews.com/",
-            "description": "当季动画歌曲排行榜，跟踪新番音乐"
-          },
-          {
-            "name": "Anime Music",
-            "url": "https://animemusic.us/",
-            "description": "动画 OP/ED 全长免费在线听，免登录"
-          },
-          {
-            "name": "KHINSIDER",
-            "url": "https://downloads.khinsider.com/",
-            "description": "游戏动漫 OST 大库，300 万曲目免费下"
-          },
-          {
-            "name": "The Hylia",
-            "url": "https://anime.thehylia.com/",
-            "description": "老牌动漫音乐站，专辑多曲目免费下载"
-          },
-          {
-            "name": "Osanime",
-            "url": "https://osanime.com/",
-            "description": "动漫 OST 免费下载站，搜索简单"
-          },
-          {
-            "name": "アニソン★歌詞検索",
-            "url": "http://anison.kenichimaehashi.com/",
-            "description": "动漫歌曲歌词免费搜索，含 VOCALOID"
-          }
-        ]
-      },
-      {
-        "name": "漫画",
-        "enName": "Manga",
-        "links": [
-          {
-            "name": "栗子漫画",
-            "url": "https://lizimh.com/",
-            "description": "仅支持APP使用"
-          },
-          {
-            "name": "拷贝漫画",
-            "url": "https://www.copymanga.fun/",
-            "description": "拷贝漫画 - 海量漫画免费看"
-          },
-          {
-            "name": "拷贝漫画 镜像",
-            "url": "https://copy4000.com/",
-            "description": "拷贝漫画镜像站，备用访问"
-          },
-          {
-            "name": "拷贝漫画下载器",
-            "url": "https://github.com/lanyeeee/copymanga-downloader",
-            "description": "API 设为 api.copy4000.com 才能联网"
-          },
-          {
-            "name": "Kotatsu",
-            "url": "https://kotatsuapp.com/",
-            "description": "Kotatsu - 开源漫画阅读器"
-          },
-          {
-            "name": "包子漫画",
-            "url": "https://bzmgcn.com/",
-            "description": "包子漫画 - 在线漫画阅读平台"
-          },
-          {
-            "name": "Mihon",
-            "url": "https://mihon.app/",
-            "description": "Mihon - 开源漫画阅读APP"
-          },
-          {
-            "name": "Venera",
-            "url": "https://github.com/venera-app/venera",
-            "description": "GitHub - Venera 漫画阅读APP"
-          },
-          {
-            "name": "koz漫画",
-            "url": "https://koz.moe/",
-            "description": ""
-          }
-        ]
-      },
-      {
-        "name": "游戏",
-        "enName": "Games",
-        "links": [
-          {
-            "name": "Steam 官网",
-            "url": "https://store.steampowered.com/",
-            "description": "全球最大数字游戏平台"
-          },
-          {
-            "name": "Epic Games",
-            "url": "https://www.epicgames.com/",
-            "description": "Epic游戏商城，每周免费领游戏"
-          },
-          {
-            "name": "GOG 游戏",
-            "url": "https://www.gog.com/",
-            "description": "DRM-free 正版游戏平台"
-          },
-          {
-            "name": "itch.io",
-            "url": "https://itch.io/",
-            "description": "独立游戏创作者平台"
-          },
-          {
-            "name": "Switch520",
-            "url": "https://gamer520.com/",
-            "description": "Switch520 - Switch游戏资源"
-          },
-          {
-            "name": "游民星空",
-            "url": "https://www.gamersky.com/",
-            "description": "综合游戏资讯门户"
-          },
-          {
-            "name": "3DM Game",
-            "url": "https://www.3dmgame.com/",
-            "description": "游戏资讯与下载站"
-          },
-          {
-            "name": "A9VG 电玩部落",
-            "url": "https://www.a9vg.com/",
-            "description": "主机游戏玩家社区"
-          },
-          {
-            "name": "奶牛关",
-            "url": "https://cowlevel.net/",
-            "description": "核心玩家的游戏社区"
-          },
-          {
-            "name": "Switch618",
-            "url": "https://switch618.com/",
-            "description": "Switch618 - Switch游戏下载"
-          },
-          {
-            "name": "NxBrew",
-            "url": "https://nxbrew.me/",
-            "description": "NxBrew - Switch游戏资源站"
-          },
-          {
-            "name": "精英模拟网",
-            "url": "https://emu.jy6d.com/",
-            "description": "精英模拟网 - 模拟器游戏"
-          },
-          {
-            "name": "3K游戏",
-            "url": "https://3kmin.com/",
-            "description": "3K游戏 - 游戏资源站"
-          },
-          {
-            "name": "资源避难所",
-            "url": "https://flysheep6.com/",
-            "description": "资源避难所 - 游戏资源"
-          },
-          {
-            "name": "Byrut",
-            "url": "https://s1.byrutorg.com/",
-            "description": "Byrut - 游戏资源站"
-          },
-          {
-            "name": "免费游戏",
-            "url": "https://gdgame.org/",
-            "description": "gdgame - 免费游戏下载"
-          },
-          {
-            "name": "红警在线版",
-            "url": "https://www.ra2web.com/",
-            "description": "红警2网页版 - 在线玩"
-          },
-          {
-            "name": "80joy在线玩游戏",
-            "url": "https://www.80joy.com/",
-            "description": "80joy - 在线小游戏"
-          },
-          {
-            "name": "ps3模拟器",
-            "url": "https://www.3h3.com/patch/133379.html",
-            "description": "PS3模拟器下载"
-          },
-          {
-            "name": "Neal.fun",
-            "url": "https://neal.fun",
-            "description": "独立开发者 Neal 的奇葩创意互动合集"
-          },
-          {
-            "name": "Shadiao.app (沙雕APP)",
-            "url": "https://shadiao.app",
-            "description": "奇葩文案工具合集：彩虹屁、毒鸡汤等"
-          },
-          {
-            "name": "星光游戏网",
-            "url": "https://xgzyku.cn/",
-            "description": "PC 单机游戏整合，绿色免安装"
-          }
-        ]
-      },
-      {
-        "name": "轻小说",
-        "enName": "Light Novels",
-        "links": [
-          {
-            "name": "轻小说文库（Wenku8）",
-            "url": "https://www.wenku8.net/",
-            "description": "国内大型中文轻小说在线阅读与下载平台"
-          },
-          {
-            "name": "ESJ Zone",
-            "url": "https://www.esjzone.cc/",
-            "description": "民间 Web 轻小说翻译与原创社区"
-          },
-          {
-            "name": "真白萌（Mashiro）",
-            "url": "https://masiro.me/",
-            "description": "高质量民间轻小说翻译与交流论坛"
-          },
-          {
-            "name": "SF轻小说",
-            "url": "https://book.sfacg.com/",
-            "description": "国内老牌原创轻小说与同人平台"
-          },
-          {
-            "name": "轻之国度（LK）",
-            "url": "https://www.lightnovel.cn/",
-            "description": "老牌轻小说论坛与录入组社区"
-          },
-          {
-            "name": "カクヨム（Kakuyomu）",
-            "url": "https://kakuyomu.jp/",
-            "description": "KADOKAWA 与 Hatena 免费轻小说投稿站"
-          },
-          {
-            "name": "Alphapolis（アルファポリス）",
-            "url": "https://www.alphapolis.co.jp/",
-            "description": "日本出版社漫画与轻小说在线阅读平台"
-          },
-          {
-            "name": "在漫画（原动漫之家）",
-            "url": "http://www.zaimanhua.com/",
-            "description": "综合ACG门户"
-          }
-        ]
-      },
-      {
-        "name": "壁纸",
-        "enName": "Wallpapers",
-        "links": [
-          {
-            "name": "Alpha Coders",
-            "url": "https://alphacoders.com/",
-            "description": "Alpha Coders - 壁纸与艺术"
-          },
-          {
-            "name": "Unsplash",
-            "url": "https://unsplash.com/",
-            "description": "Unsplash - 免费高清图片"
-          },
-          {
-            "name": "Pixabay",
-            "url": "https://pixabay.com/",
-            "description": "Pixabay - 免费图片视频"
-          },
-          {
-            "name": "Pexels",
-            "url": "https://www.pexels.com/",
-            "description": "Pexels - 免费素材图库"
-          },
-          {
-            "name": "4K Wallpapers",
-            "url": "https://4kwallpapers.com/",
-            "description": "4K Wallpapers - 4K壁纸"
-          },
-          {
-            "name": "彼岸图网",
-            "url": "https://www.netbian.com/",
-            "description": "彼岸图网 - 高清壁纸"
-          },
-          {
-            "name": "国家地理壁纸",
-            "url": "https://www.nationalgeographic.com/",
-            "description": "国家地理 - 摄影壁纸"
-          },
-          {
-            "name": "Wallpaper Engine",
-            "url": "https://www.wallpaperengine.io/",
-            "description": "电脑版 在 Steam 购买"
-          }
-        ]
-      },
-      {
-        "name": "巡礼",
-        "enName": "Anime Pilgrimage",
-        "links": [
-          {
-            "name": "日本动漫旅游协会官方网",
-            "url": "https://animetourism88.com",
-            "description": "日本官方动漫圣地 88 选年度评选"
-          },
-          {
-            "name": "GO TOKYO 动漫圣地巡礼专页",
-            "url": "https://www.gotokyo.org",
-            "description": "东京观光官方网站的二次元巡礼专区"
-          },
-          {
-            "name": "Anime Pilgrimage Maps",
-            "url": "https://googlemapsmania.blogspot.com/2024/08/anime-pilgrimage-maps.html",
-            "description": "互动地图索引，整合动漫作品的真实取景坐标"
-          },
-          {
-            "name": "Holy Land Spot",
-            "url": "https://holyland.spot.com",
-            "description": "基于地图标记的日本动漫圣地坐标索引"
-          },
-          {
-            "name": "舞台探訪アーカイブ",
-            "url": "http://butaitambou.com",
-            "description": "舞台探访资料索引，收录考据者个人网站与作品目录"
-          },
-          {
-            "name": "聖地巡礼info",
-            "url": "https://seichi-junrei.info",
-            "description": "巡礼资讯与实地记录网站，提供场景对照图与交通路线"
-          },
-          {
-            "name": "Anitabi",
-            "url": "https://anitabi.net",
-            "description": "高精度定位与图文对照的舞台探访网站"
-          }
-        ]
-      },
-      {
-        "name": "本地播放器",
-        "enName": "Media Players",
-        "links": [
-          {
-            "name": "PotPlayer",
-            "url": "https://potplayer.daum.net/",
-            "description": "Windows 全能播放器，支持多种格式与字幕"
-          },
-          {
-            "name": "VLC Media Player",
-            "url": "https://www.videolan.org/",
-            "description": "开源跨平台全能播放器，支持几乎所有格式"
-          },
-          {
-            "name": "MPV",
-            "url": "https://mpv.io/",
-            "description": "极简硬核轻量播放器，很多高级播放器的底层内核"
-          },
-          {
-            "name": "IINA",
-            "url": "https://iina.io/",
-            "description": "macOS 专用，基于 MPV 内核的高颜值开源播放器"
-          },
-          {
-            "name": "MPC-HC",
-            "url": "https://github.com/clsid2/mpc-hc/",
-            "description": "经典 Windows 开源播放器，轻量干净无广告"
-          },
-          {
-            "name": "KMPlayer",
-            "url": "https://www.kmplayer.com/",
-            "description": "老牌韩国全能播放器，支持超高清播放"
-          },
-          {
-            "name": "foobar2000",
-            "url": "https://www.foobar2000.org/",
-            "description": "音频播放神器，高度自定义的本地音频专播工具"
-          }
-        ]
-      },
-      {
-        "name": "电子书阅读器",
-        "enName": "E-book Readers",
-        "links": [
-          {
-            "name": "Koodo Reader",
-            "url": "https://www.koodoreader.com/",
-            "description": "跨平台高颜值开源阅读器，支持书签、笔记、翻译与云端同步"
-          },
-          {
-            "name": "Thorium Reader",
-            "url": "https://www.edrlab.org/software/thorium-reader/",
-            "description": "EDRLab 开发的开源无广告阅读器"
-          },
-          {
-            "name": "Calibre",
-            "url": "https://calibre-ebook.com/",
-            "description": "电子书管理与格式转换神器，支持书库管理"
-          },
-          {
-            "name": "SumatraPDF",
-            "url": "https://www.sumatrapdfreader.org/",
-            "description": "Windows 极致轻量阅读器，支持 PDF/EPUB"
-          },
-          {
-            "name": "Foliate",
-            "url": "https://johnfactotum.github.io/foliate/",
-            "description": "高颜值开源 EPUB 阅读器，支持标注与 TTS 朗读"
-          }
-        ]
-      },
-      {
-        "name": "种子网站",
-        "enName": "Torrents",
-        "links": [
-          {
-            "name": "SkrBT",
-            "url": "https://skrbtdo.cc/",
-            "description": "SkrBT - 磁力搜索"
-          },
-          {
-            "name": "BT1207",
-            "url": "https://bt1207bo.cc/",
-            "description": "BT1207 - 磁力搜索"
-          },
-          {
-            "name": "老王磁力",
-            "url": "https://laowangho.cc/",
-            "description": "老王磁力 - 磁力搜索"
-          },
-          {
-            "name": "Aiosearch",
-            "url": "https://www.aiosearch.com/",
-            "description": "⚠️ 访问受限，需特殊网络"
-          },
-          {
-            "name": "BT天堂",
-            "url": "https://www.bttiantang.com/",
-            "description": "BT电影资源索引"
-          },
-          {
-            "name": "BT搜索",
-            "url": "https://skrbtdizhi.com/",
-            "description": "BT搜索 - 影视资源搜索"
-          },
-          {
-            "name": "磁力宝",
-            "url": "https://cilibao.co/",
-            "description": "磁力宝 - 磁力搜索"
-          },
-          {
-            "name": "磁力多",
-            "url": "https://ciliduo.org/",
-            "description": "磁力多 - 国内磁力搜索"
-          },
-          {
-            "name": "磁力猫",
-            "url": "https://cilimao.co/",
-            "description": "磁力猫 - 中文磁力"
-          },
-          {
-            "name": "BT4G",
-            "url": "https://bt4gprx.com/",
-            "description": "⚠️ 访问受限，需特殊网络"
-          },
-          {
-            "name": "MagnetDL",
-            "url": "https://magnetdl.com/",
-            "description": "MagnetDL - 国外磁力搜索"
-          },
-          {
-            "name": "EZTV",
-            "url": "https://eztvx.to/",
-            "description": "⚠️ 访问受限，需特殊网络"
-          },
-          {
-            "name": "老司机磁力链",
-            "url": "https://laosiji.run/",
-            "description": ""
-          },
-          {
-            "name": "Nyaa",
-            "url": "https://nyaa.si/",
-            "description": "Nyaa - 全球二次元磁力"
-          },
-          {
-            "name": "蜜柑计划",
-            "url": "https://mikanani.me/",
-            "description": "蜜柑计划 - 番剧订阅"
-          },
-          {
-            "name": "萌番组",
-            "url": "https://bangumi.moe/",
-            "description": "萌番组 - 开源动漫磁力"
-          },
-          {
-            "name": "FitGirl Repacks",
-            "url": "https://fitgirl-repacks.site/",
-            "description": "FitGirl - 游戏压制"
-          },
-          {
-            "name": "RuTracker",
-            "url": "https://rutracker.org/",
-            "description": "RuTracker - 俄罗斯资源库"
-          },
-          {
-            "name": "YTS",
-            "url": "https://yts.mx/",
-            "description": "YTS - 高清电影压制"
-          },
-          {
-            "name": "LimeTorrents",
-            "url": "https://limetorrents.to/",
-            "description": "LimeTorrents - 老牌种子站"
-          },
-          {
-            "name": "BitSearch",
-            "url": "https://bitsearch.to/",
-            "description": "BitSearch - 极简磁力搜索"
-          },
-          {
-            "name": "Torlock",
-            "url": "https://torlock.com/",
-            "description": "Torlock - 真种子"
-          },
-          {
-            "name": "Torrentz2",
-            "url": "https://torrentz2.eu/",
-            "description": "Torrentz2 - 元搜索引擎"
-          },
-          {
-            "name": "BTMET",
-            "url": "https://btmet.com/",
-            "description": "BTMET - 纯净磁力索引"
-          },
-          {
-            "name": "GloDLS",
-            "url": "https://glodls.to/",
-            "description": "GloDLS - 综合社区"
-          },
-          {
-            "name": "EBookBay",
-            "url": "https://ebookbay.is/",
-            "description": "EBookBay - 有声书磁力"
-          },
-          {
-            "name": "AudioBook Bay",
-            "url": "https://audiobookbay.is/",
-            "description": "AudioBook Bay - 有声读物"
-          },
-          {
-            "name": "BT.etree",
-            "url": "https://bt.etree.org/",
-            "description": "BT.etree - 无损Live录音"
-          },
-          {
-            "name": "ShareConnector",
-            "url": "https://shareconnector.net/",
-            "description": "ShareConnector - 磁力引导"
-          },
-          {
-            "name": "LibreSphere",
-            "url": "https://libresphere.org/",
-            "description": "LibreSphere - 公益磁力库"
-          },
-          {
-            "name": "The Pirate Bay",
-            "url": "https://thepiratebay.org/",
-            "description": "The Pirate Bay - 全球最大BT站"
-          },
-          {
-            "name": "TorrentGalaxy",
-            "url": "https://torrentgalaxy.to/",
-            "description": "TorrentGalaxy - 综合资源社区"
-          },
-          {
-            "name": "SolidTorrents",
-            "url": "https://solidtorrents.to/",
-            "description": "SolidTorrents - 干净磁力搜索"
-          }
-        ]
-      },
-      {
-        "name": "下载工具",
-        "enName": "Download Tools",
-        "links": [
-          {
-            "name": "qBittorrent",
-            "url": "https://www.qbittorrent.org/",
-            "description": "开源免费 BT 下载神器，支持磁力与做种"
-          },
-          {
-            "name": "Internet Download Manager",
-            "url": "https://www.internetdownloadmanager.com/",
-            "description": "老牌多线程下载加速器，浏览器接管下载"
-          },
-          {
-            "name": "uTorrent Web",
-            "url": "https://www.utorrent.com/",
-            "description": "轻量 BT 客户端，网页版与桌面版"
-          },
-          {
-            "name": "Free Download Manager",
-            "url": "https://www.freedownloadmanager.org/",
-            "description": "免费开源下载加速器，支持 BT 与镜像加速"
-          },
-          {
-            "name": "BiglyBT",
-            "url": "https://www.biglybt.com/",
-            "description": "Vuze 继任者，功能强大的开源 BT 客户端"
-          },
-          {
-            "name": "Transmission",
-            "url": "https://transmissionbt.com/",
-            "description": "轻量开源 BT 客户端，跨平台多版本"
-          },
-          {
-            "name": "Motrix",
-            "url": "https://motrix.app/",
-            "description": "全平台开源下载工具，支持 HTTP/BT/磁力"
-          },
-          {
-            "name": "AB Download Manager",
-            "url": "https://abdownloadmanager.com/",
-            "description": "现代开源下载管理器，支持多线程与抓取"
-          },
-          {
-            "name": "Ghost Downloader",
-            "url": "https://gd.xychr.com/",
-            "description": "开源多线程下载器，支持浏览器接管"
-          },
-          {
-            "name": "Neat Download Manager",
-            "url": "https://www.neatdownloadmanager.com/",
-            "description": "轻快免费的多线程下载加速器"
-          },
-          {
-            "name": "FluxDown",
-            "url": "https://fluxdown.zerx.dev/",
-            "description": "Rust 重写的多协议下载器，支持流媒体"
-          },
-          {
-            "name": "Rayburst",
-            "url": "https://rayburst.pages.dev/",
-            "description": "开源下载管理器，支持流媒体与录直播"
-          },
-          {
-            "name": "Snow Shot",
-            "url": "https://snowshot.top/",
-            "description": "开源截图工具，集截图、标注与录屏"
-          }
-        ]
-      },
-      {
-        "name": "MBTI",
-        "enName": "Personality Test",
-        "links": [
-          {
-            "name": "MBTI 官网",
-            "url": "https://www.16personalities.com",
-            "description": "免费探索全球最受欢迎的人格测试。"
-          },
-          {
-            "name": "SBTI",
-            "url": "https://sbti.me",
-            "description": "结合AI分析数字行为模式的人格测试。"
-          },
-          {
-            "name": "Big Five (Understand Myself)",
-            "url": "https://www.understandmyself.com",
-            "description": "学术界最认可的五维人格量化模型。"
-          },
-          {
-            "name": "Enneagram (The Enneagram Institute)",
-            "url": "https://www.enneagraminstitute.com",
-            "description": "剖析九种核心动机与深层恐惧。"
-          },
-          {
-            "name": "Truity",
-            "url": "https://www.truity.com",
-            "description": "涵盖MBTI、九型等主流测试的综合平台。"
-          },
-          {
-            "name": "Open Psychometrics",
-            "url": "https://openpsychometrics.org",
-            "description": "开源免费的学术级测试与角色匹配库。"
-          },
-          {
-            "name": "123test",
-            "url": "https://www.123test.com",
-            "description": "主打DISC与职场能力评估。"
-          },
-          {
-            "name": "High5 Test",
-            "url": "https://high5test.com",
-            "description": "找出个人最突出的5个核心天赋。"
-          },
-          {
-            "name": "Charactour",
-            "url": "https://www.charactour.com",
-            "description": "匹配与你性格最像的虚构影视角色。"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "索引",
-    "icon": "✨",
-    "color": "linear-gradient(135deg, #0071e3, #8e2de2)",
-    "easterEggUrl": "https://www.omniglot.com/language/phrases/iloveyou.htm",
-    "subcategories": [
-      {
-        "name": "索引♡",
-        "enName": "Categories",
-        "hideTitle": true,
-        "easterEggUrl": "https://www.omniglot.com/language/phrases/iloveyou.htm",
-        "links": [
-          {
-            "name": "FMHY 备份页",
-            "url": "https://fmhy.net/other/backups",
-            "description": "全球免费资源合集，官方备份镜像列表"
-          },
-          {
-            "name": "聚合索引",
-            "url": "https://kisstr.com/aggregate.html",
-            "description": "精选推荐、AI导航、影视导航等聚合站点"
-          },
-          {
-            "name": "全球网站排行",
-            "url": "https://kisstr.com/ranking.html",
-            "description": "全球网站排行 TOP 200"
-          },
-          {
-            "name": "极简酷站",
-            "url": "https://kisstr.com/minimal-cool-sites.html",
-            "description": "极简主义酷站收录与设计灵感导航"
-          },
-          {
-            "name": "Vibe Coding 大赏",
-            "url": "https://kisstr.com/vibe_coding.html",
-            "description": "个人开发者 vibe coding 自制项目精选"
-          },
-          {
-            "name": "Vibe Coding 第二辑",
-            "url": "https://kisstr.com/vibe_coding_2.html",
-            "description": "更多创意领先的 vibe coding 自制项目"
-          },
-          {
-            "name": "Vibe Coding 第三辑",
-            "url": "https://kisstr.com/vibe_coding_3.html",
-            "description": "小众新奇 vibe coding 项目挖掘"
-          },
-          {
-            "name": "Vibe Coding 第四辑",
-            "url": "https://kisstr.com/vibe_coding_4.html",
-            "description": "2025-2026 新晋 vibe coding 精选"
-          },
-          {
-            "name": "浏览器大全",
-            "url": "https://kisstr.com/browsers.html",
-            "description": "全球浏览器大全：大厂、开源、自制与猎奇特色"
-          },
-          {
-            "name": "软件资源论坛",
-            "url": "https://kisstr.com/forums.html",
-            "description": "全球软件资源论坛与社区导航"
-          },
-          {
-            "name": "复活老软件",
-            "url": "https://kisstr.com/retro_software.html",
-            "description": "怀旧软件、复刻软件与社区接手续命导航"
-          },
-          {
-            "name": "复活老游戏",
-            "url": "https://kisstr.com/retro_games.html",
-            "description": "网页模拟器、网页复刻与开源重制老游戏导航"
-          },
-          {
-            "name": "设计资源大全",
-            "url": "https://kisstr.com/design_resources.html",
-            "description": "字体、图标、配色、插画与设计素材导航"
-          },
-          {
-            "name": "全球数据可视化",
-            "url": "https://kisstr.com/data_viz.html",
-            "description": "信息图、互动地图与数据新闻导航"
-          },
-          {
-            "name": "免费在线工具",
-            "url": "https://kisstr.com/online_tools.html",
-            "description": "图片、PDF、视频音频、OCR 一站式工具"
-          },
-          {
-            "name": "在线复古终端",
-            "url": "https://kisstr.com/retro_web.html",
-            "description": "老系统、复古桌面与浏览器模拟器导航"
-          },
-          {
-            "name": "全球网络电台",
-            "url": "https://kisstr.com/radio_stations.html",
-            "description": "在线广播、声音地图与网络电台导航"
-          },
-          {
-            "name": "世界五百强企业",
-            "url": "https://kisstr.com/fortune_500.html",
-            "description": "全球五百强企业官网与行业巨头入口"
-          },
-          {
-            "name": "全球 AI",
-            "url": "https://kisstr.com/ai.html",
-            "description": "精选AI工具与平台导航"
-          },
-          {
-            "name": "AI 域名排行",
-            "url": "https://kisstr.com/ai_domain_ranking.html",
-            "description": "全球 AI 域名 TOP 300 排行导航"
-          },
-          {
-            "name": "没有用的网站",
-            "url": "https://kisstr.com/useless_websites.html",
-            "description": "无聊、有趣、怪诞与解压类无用网站合集"
-          },
-          {
-            "name": "表情包与梗图站",
-            "url": "https://kisstr.com/meme_sites.html",
-            "description": "表情包、斗图、梗图与 GIF 动图导航"
-          },
-          {
-            "name": "时尚品牌",
-            "url": "https://kisstr.com/fashion.html",
-            "description": "顶级奢侈品与时尚品牌官网导航"
-          },
-          {
-            "name": "新闻媒体",
-            "url": "https://kisstr.com/news.html",
-            "description": "全球权威新闻媒体与国际时事阅读入口"
-          },
-          {
-            "name": "植物美学",
-            "url": "https://kisstr.com/flowers.html",
-            "description": "花艺设计、植物美学、婚礼花艺与花卉农场灵感"
-          },
-          {
-            "name": "时尚期刊",
-            "url": "https://kisstr.com/journal.html",
-            "description": "时尚期刊、创意媒体、商业趋势与设计杂志"
-          },
-          {
-            "name": "家居设计",
-            "url": "https://kisstr.com/home_design.html",
-            "description": "家居设计、民宿短租、特色住宿与旅居平台"
-          },
-          {
-            "name": "设计建筑",
-            "url": "https://kisstr.com/design_architecture.html",
-            "description": "设计、建筑权威媒体与商业空间灵感导航"
-          },
-          {
-            "name": "建筑图纸",
-            "url": "https://kisstr.com/architecture_tech.html",
-            "description": "建筑图纸、材料、古建与数字技术资源导航"
-          },
-          {
-            "name": "视觉图库",
-            "url": "https://kisstr.com/visual_commons.html",
-            "description": "高清无版权图库、公有领域视觉与开放影像资源"
-          },
-          {
-            "name": "高级时装",
-            "url": "https://kisstr.com/couture_archive.html",
-            "description": "高级时装、先锋设计师品牌、奢侈品与古着档案"
-          },
-          {
-            "name": "白噪音乐",
-            "url": "https://kisstr.com/white_noise.html",
-            "description": "白噪音、声音档案馆与小众音乐站"
-          },
-          {
-            "name": "空间美学",
-            "url": "https://kisstr.com/living_space.html",
-            "description": "家居植物、空间生活与生活美学灵感"
-          },
-          {
-            "name": "先锋视觉",
-            "url": "https://kisstr.com/digital_art.html",
-            "description": "先锋视觉、数字艺术与设计灵感资源"
-          },
-          {
-            "name": "思想智库",
-            "url": "https://kisstr.com/think_tank.html",
-            "description": "哲学、数字人文与思想智库资源导航"
-          },
-          {
-            "name": "未来科技",
-            "url": "https://kisstr.com/future_tech.html",
-            "description": "先锋科技、赛博朋克与未来趋势资源"
-          },
-          {
-            "name": "独立出版",
-            "url": "https://kisstr.com/indie_publishing.html",
-            "description": "独立出版、小众杂志与书籍装帧资源"
-          },
-          {
-            "name": "摄影电影",
-            "url": "https://kisstr.com/photo_cinema.html",
-            "description": "摄影美学、电影视觉与图像纪实资源"
-          },
-          {
-            "name": "声学艺术",
-            "url": "https://kisstr.com/soundscape.html",
-            "description": "声学艺术、独立音乐与环境音景资源"
-          },
-          {
-            "name": "开源项目",
-            "url": "https://kisstr.com/open_source.html",
-            "description": "开源软件、开源项目与开源文化资源"
-          },
-          {
-            "name": "YouTube热门账号",
-            "url": "https://kisstr.com/youtube_creators.html",
-            "description": "YouTube 热门创作者与频道导航"
-          },
-          {
-            "name": "X 平台热门账号",
-            "url": "https://kisstr.com/x_creators.html",
-            "description": "X 平台热门账号与全球意见领袖导航"
-          },
-          {
-            "name": "TikTok热门账号",
-            "url": "https://kisstr.com/tiktok_creators.html",
-            "description": "TikTok 热门创作者与平台账号导航"
-          },
-          {
-            "name": "Instagram热门账号",
-            "url": "https://kisstr.com/instagram_creators.html",
-            "description": "Instagram 热门账号与视觉创作者导航"
-          },
-          {
-            "name": "动漫网站",
-            "url": "https://kisstr.com/anime_sites.html",
-            "description": "正版动画、番剧资讯、动漫社区与资源站导航"
-          },
-          {
-            "name": "地图地理",
-            "url": "https://kisstr.com/maps_geography.html",
-            "description": "地图、地理、卫星影像与空间数据资源导航"
-          },
-          {
-            "name": "美食美学",
-            "url": "https://kisstr.com/food_aesthetics.html",
-            "description": "餐饮美学、料理灵感、甜品烘焙与美食媒体导航"
-          },
-          {
-            "name": "户外自然",
-            "url": "https://kisstr.com/outdoor_nature.html",
-            "description": "户外运动、自然探索、露营徒步与生态影像资源"
-          },
-          {
-            "name": "手工造物",
-            "url": "https://kisstr.com/handmade_craft.html",
-            "description": "手作工艺、造物设计、材料教程与匠人社区导航"
-          },
-          {
-            "name": "古典艺文",
-            "url": "https://kisstr.com/classical_arts.html",
-            "description": "古典艺术、文学、博物馆、典籍与人文资源导航"
-          },
-          {
-            "name": "民俗·灵异·怪谈",
-            "url": "https://kisstr.com/folklore.html",
-            "description": "全球民俗、灵异地图、都市传说、日本妖怪与未知生物导航"
-          },
-          {
-            "name": "字体素材",
-            "url": "https://kisstr.com/font_assets.html",
-            "description": "字体下载、排版素材、图标资源与设计资产导航"
-          },
-          {
-            "name": "AI开发",
-            "url": "https://kisstr.com/ai_development.html",
-            "description": "AI API、模型开发、向量数据库"
-          },
-          {
-            "name": "AI绘图",
-            "url": "https://kisstr.com/ai_drawing.html",
-            "description": "AI绘图、生成式视觉、模型社区与创作工具导航"
-          },
-          {
-            "name": "播客网站",
-            "url": "https://kisstr.com/podcast_sites.html",
-            "description": "播客平台、音频节目、访谈内容与声音媒体导航"
-          },
-          {
-            "name": "影视影评",
-            "url": "https://kisstr.com/film_resources.html",
-            "description": "影视播放、片源资料、影评数据库与观影工具导航"
-          },
-          {
-            "name": "电子书网站",
-            "url": "https://kisstr.com/ebook_sites.html",
-            "description": "电子书、公版书、学术图书、有声书与阅读平台导航"
-          },
-          {
-            "name": "游戏网站",
-            "url": "https://kisstr.com/game_sites.html",
-            "description": "游戏平台、游戏资讯、独立游戏"
-          },
-          {
-            "name": "漫画网站",
-            "url": "https://kisstr.com/manga_sites.html",
-            "description": "漫画阅读、正版平台、漫画工具与图源社区导航"
-          },
-          {
-            "name": "软件工具",
-            "url": "https://kisstr.com/software_tools.html",
-            "description": "本地播放器、电子书阅读器与漫画阅读器导航"
-          },
-          {
-            "name": "作者个人项目",
-            "url": "https://kisstr.com/author_projects.html",
-            "description": "作者个人项目与作品集合"
-          },
-          {
-            "name": "学术资料检索",
-            "url": "https://kisstr.com/academic_resources.html",
-            "description": "学术文献检索、开放期刊、古籍与语料库导航"
-          },
-          {
-            "name": "百科数据库",
-            "url": "https://kisstr.com/databases.html",
-            "description": "权威百科、档案、数据库与排行榜导航"
-          },
-          {
-            "name": "独立开发者个人站",
-            "url": "https://kisstr.com/personal_sites.html",
-            "description": "独立开发者、设计师个人站与数字花园导航"
-          },
-          {
-            "name": "全球大学公开课",
-            "url": "https://kisstr.com/university_courses.html",
-            "description": "全球名校公开课、MOOC 平台与自学导航"
-          },
-          {
-            "name": "在线小游戏合集",
-            "url": "https://kisstr.com/online_games.html",
-            "description": "网页小游戏、IO 对战与创意小游戏导航"
-          },
-          {
-            "name": "Linux 发行版档案馆",
-            "url": "https://kisstr.com/linux_distros.html",
-            "description": "全球 Linux 发行版家族与历史档案导航"
-          },
-          {
-            "name": "上古卷轴整合包档案馆",
-            "url": "https://kisstr.com/skyrim_modlists.html",
-            "description": "上古卷轴整合包，Wabbajack 与手动列表导航"
-          },
-          {
-            "name": "开源AI项目百科",
-            "url": "https://kisstr.com/ai_projects_archive.html",
-            "description": "AI 开源项目导航：热门、图像、视频、大模型、Agent 等 13 大分类"
-          },
-          {
-            "name": "红楼梦 · 人物关系图谱",
-            "url": "https://kisstr.com/hongloumeng.html",
-            "description": "金陵十二钗与四大家族人物关系"
-          },
-          {
-            "name": "西游记 · 人物关系图谱",
-            "url": "https://kisstr.com/xyj.html",
-            "description": "取经团队与天庭妖魔人物关系网"
-          },
-          {
-            "name": "百年孤独 · 人物关系图谱",
-            "url": "https://kisstr.com/bainiangu.html",
-            "description": "布恩迪亚家族七代人物关系"
-          },
-          {
-            "name": "追忆似水年华 · 人物关系图谱",
-            "url": "https://kisstr.com/proust.html",
-            "description": "普鲁斯特意识流人物关系网"
-          },
-          {
-            "name": "追忆似水年华完整版 · 人物关系图谱",
-            "url": "https://kisstr.com/zyssnh.html",
-            "description": "全七卷 2772 位人物完整关系网"
-          },
-          {
-            "name": "金瓶梅 · 人物关系图谱",
-            "url": "https://kisstr.com/jinpingmei.html",
-            "description": "西门庆与潘金莲等百回人物关系网"
-          },
-          {
-            "name": "罪与罚 · 人物关系图谱",
-            "url": "https://kisstr.com/zyf.html",
-            "description": "陀思妥耶夫斯基罪案心理人物关系网"
-          },
-          {
-            "name": "三国演义 · 人物关系图谱",
-            "url": "https://kisstr.com/sanguo.html",
-            "description": "魏蜀吴群雄 120 回人物关系网"
-          },
-          {
-            "name": "水浒传 · 人物关系图谱",
-            "url": "https://kisstr.com/shuihu.html",
-            "description": "梁山一百单八将与朝廷江湖关系网"
-          }
-        ]
-      }
-    ]
+// 首屏只拿「目录骨架 + 书籍」两小块，其余分类放到 data_rest.js 后台异步加载
+var linksData = (function () {
+  var toc = window.KISSTR_DATA_TOC || [];
+  var books = window.KISSTR_DATA_BOOKS || [];
+  var list = toc.slice();
+  if (books.length && list.length && list[0] && books[0].name === list[0].name) {
+    list[0] = books[0];
   }
-];
+  return list;
+})();
+
+var __pendingCategory = null;
+var __restLoading = false;
+
+function loadRestData(onDone) {
+  if (window.__KISSTR_REST_LOADED__) { if (onDone) onDone(); return; }
+  if (__restLoading) { if (onDone) window.__restCallbacks.push(onDone); return; }
+  __restLoading = true;
+  window.__restCallbacks = onDone ? [onDone] : [];
+  var s = document.createElement('script');
+  s.src = 'assets/data_rest.js';
+  s.onload = function () {
+    window.__KISSTR_REST_LOADED__ = true;
+    __restLoading = false;
+    var rest = window.KISSTR_DATA_REST || [];
+    linksData = [linksData[0]].concat(rest);
+    if (typeof updateCategoryTabs === 'function') updateCategoryTabs();
+    var cbs = window.__restCallbacks || [];
+    window.__restCallbacks = [];
+    cbs.forEach(function (cb) { try { cb(); } catch (e) { console.warn(e); } });
+    if (__pendingCategory) {
+      var cat = __pendingCategory;
+      __pendingCategory = null;
+      if (typeof renderLinks === 'function') {
+        var input = document.getElementById('searchInput');
+        renderLinks(input ? input.value : '', cat);
+      }
+    }
+  };
+  s.onerror = function () {
+    __restLoading = false;
+    console.warn('data_rest.js 加载失败');
+    var cbs = window.__restCallbacks || [];
+    window.__restCallbacks = [];
+    cbs.forEach(function (cb) { try { cb(); } catch (e) {} });
+  };
+  document.body.appendChild(s);
+}
+
+function updateCategoryTabs() {
+  var tabsList = document.getElementById('tabsList');
+  if (!tabsList || !linksData) return;
+  tabsList.innerHTML = '';
+  if (!window.__KISSTR_INDEX__) {
+    var homeBtn = document.createElement('button');
+    homeBtn.className = 'tab-btn return-home-tab';
+    homeBtn.textContent = '返回首页';
+    homeBtn.title = '返回首页';
+    homeBtn.addEventListener('click', function (e) {
+      if (window.__SPA_NAV__) window.__SPA_NAV__('index.html');
+      else window.location.href = 'index.html';
+      e.currentTarget.blur();
+    });
+    tabsList.appendChild(homeBtn);
+  }
+  linksData.forEach(function (cat) {
+    if (cat.name === '索引' && !window.__KISSTR_INDEX__) return;
+    var btn = document.createElement('button');
+    btn.className = 'tab-btn' + (cat.name === currentCategory ? ' active' : '');
+    btn.textContent = cat.name;
+    btn.dataset.category = cat.name;
+    if (cat.easterEggUrl) {
+      btn.dataset.eggClicks = '0';
+      btn.addEventListener('click', function () {
+        var clicks = Number(btn.dataset.eggClicks || '0') + 1;
+        btn.dataset.eggClicks = String(clicks);
+        clearTimeout(btn._eggTimer);
+        if (clicks >= 3) {
+          btn.dataset.eggClicks = '0';
+          window.open(cat.easterEggUrl, '_blank', 'noopener');
+        } else {
+          btn._eggTimer = setTimeout(function () { btn.dataset.eggClicks = '0'; }, 900);
+        }
+      });
+    }
+    btn.addEventListener('click', function (e) { filterByCategory(cat.name); e.currentTarget.blur(); });
+    tabsList.appendChild(btn);
+  });
+}
 
 const literaryQuotes = [
   '满地都是六便士，他却抬头看见了月亮。——毛姆《月亮与六便士》',
@@ -8847,23 +7182,40 @@ function renderCategories() {
   const tabsContainer = document.getElementById('categoryTabs');
   tabsContainer.innerHTML = '';
 
+  const toggleBtn = document.createElement('button');
+  toggleBtn.className = 'tab-btn tabs-toggle';
+  toggleBtn.id = 'tabsToggle';
+  const currentName = (typeof currentCategory !== 'undefined' && currentCategory) || (linksData[0] && linksData[0].name) || '';
+  toggleBtn.innerHTML =
+    '<span class="tabs-toggle-label">分类索引</span>' +
+    '<span class="tabs-toggle-current">' + currentName + '</span>' +
+    '<span class="tabs-toggle-arrow" aria-hidden="true">▾</span>' +
+    '<span class="tabs-toggle-state">展开</span>';
+
+  const tabsList = document.createElement('div');
+  tabsList.className = 'tabs-list';
+  tabsList.id = 'tabsList';
+
+  tabsContainer.appendChild(toggleBtn);
+  tabsContainer.appendChild(tabsList);
+
   if (!window.__KISSTR_INDEX__) {
-  const homeBtn = document.createElement('button');
-  homeBtn.className = 'tab-btn return-home-tab';
-  homeBtn.textContent = '\u8FD4\u56DE\u9996\u9875';
-  homeBtn.title = '\u8FD4\u56DE\u9996\u9875';
-  homeBtn.addEventListener('click', (e) => {
-    if (window.__SPA_NAV__) window.__SPA_NAV__('index.html');
-    else window.location.href = 'index.html';
-    e.currentTarget.blur();
-  });
-  tabsContainer.appendChild(homeBtn);
+    const homeBtn = document.createElement('button');
+    homeBtn.className = 'tab-btn return-home-tab';
+    homeBtn.textContent = '\u8FD4\u56DE\u9996\u9875';
+    homeBtn.title = '\u8FD4\u56DE\u9996\u9875';
+    homeBtn.addEventListener('click', (e) => {
+      if (window.__SPA_NAV__) window.__SPA_NAV__('index.html');
+      else window.location.href = 'index.html';
+      e.currentTarget.blur();
+    });
+    tabsList.appendChild(homeBtn);
   }
 
   linksData.forEach((cat, index) => {
     if (cat.name === '索引' && !window.__KISSTR_INDEX__) return;
     const btn = document.createElement('button');
-    btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
+    btn.className = 'tab-btn' + (cat.name === currentName ? ' active' : '');
     btn.textContent = cat.name;
     btn.dataset.category = cat.name;
 
@@ -8886,7 +7238,7 @@ function renderCategories() {
     }
 
     btn.addEventListener('click', (e) => { filterByCategory(cat.name); e.currentTarget.blur(); });
-    tabsContainer.appendChild(btn);
+    tabsList.appendChild(btn);
   });
 
   const searchWrapper = document.createElement('div');
@@ -8900,6 +7252,17 @@ function renderCategories() {
     </div>
   `;
   tabsContainer.appendChild(searchWrapper);
+
+  const arrowEl = toggleBtn.querySelector('.tabs-toggle-arrow');
+  const stateEl = toggleBtn.querySelector('.tabs-toggle-state');
+  toggleBtn.addEventListener('click', () => {
+    const collapsed = tabsContainer.classList.toggle('tabs-collapsed');
+    toggleBtn.classList.toggle('open', !collapsed);
+    if (arrowEl) arrowEl.textContent = collapsed ? '▾' : '▴';
+    if (stateEl) stateEl.textContent = collapsed ? '展开' : '折叠';
+    toggleBtn.blur();
+  });
+  tabsContainer.classList.add('tabs-collapsed');
 }
 
 function openUrlInNewTab(url) {
@@ -9018,11 +7381,6 @@ function prepareStealthLinkCard(card, url) {
 
 function createLinkCard(link, catIndex, linkIndex, rank) {
   const cat = linksData[catIndex];
-
-  // ===== 全球AI分类：渲染附件风格卡片 =====
-  if (cat && cat.name === '全球 AI' && link._aiCompany) {
-    return createAiCard(link, linkIndex);
-  }
 
   const card = document.createElement('a');
   card.className = 'link-card';
@@ -9216,6 +7574,16 @@ function doRenderLinks(filterText, category) {
   if (!main) return;
   main.innerHTML = '';
 
+  if (category !== 'all') {
+    const target = linksData.find(c => c.name === category);
+    if (target && target.__pending) {
+      main.innerHTML = '<div class="empty-message">正在加载「' + category + '」…</div>';
+      __pendingCategory = category;
+      loadRestData();
+      return;
+    }
+  }
+
   let hasResults = false;
 
   linksData.forEach((cat, catIndex) => {
@@ -9254,7 +7622,7 @@ function doRenderLinks(filterText, category) {
 
         let globalRank = 0;
         const grid = document.createElement('div');
-        grid.className = (cat.name === '全球 AI') ? 'ai-grid' : 'links-grid';
+        grid.className = 'links-grid';
 
         if (isMinimalLayout && subcat.name && !subcat.hideTitle) {
           const titleCard = document.createElement('div');
@@ -9337,6 +7705,8 @@ function filterByCategory(category) {
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.category === category);
   });
+  const toggleCurrent = document.querySelector('.tabs-toggle-current');
+  if (toggleCurrent) toggleCurrent.textContent = category;
   const searchInput = document.getElementById('searchInput');
   const searchValue = searchInput ? searchInput.value : '';
   renderLinks(searchValue, category);
@@ -9571,12 +7941,12 @@ function setLayout(layout) {
   renderLinks(searchValue, currentCategory);
 }
 
-const layoutDefaultVersion = 'v143-magazine-default';
+const layoutDefaultVersion = 'v144-clear-default';
 if (localStorage.getItem('layoutDefaultVersion') !== layoutDefaultVersion) {
-  localStorage.setItem('layout', 'minimal');
+  localStorage.setItem('layout', 'clear');
   localStorage.setItem('layoutDefaultVersion', layoutDefaultVersion);
 }
-const savedLayout = localStorage.getItem('layout') || 'minimal';
+const savedLayout = localStorage.getItem('layout') || 'clear';
 setLayout(savedLayout);
 
 layoutBtn.addEventListener('click', (e) => {
@@ -9588,8 +7958,18 @@ layoutBtn.addEventListener('click', (e) => {
 
 const backToTop = document.getElementById('backToTop');
 
+// 尾页进入视口时隐藏返回顶部按钮，避免压住免责声明与关于作者
+let footerInView = false;
+const footerEl = document.querySelector('.footer-inner');
+if (footerEl && 'IntersectionObserver' in window) {
+  new IntersectionObserver((entries) => {
+    footerInView = entries[0].isIntersecting;
+    if (footerInView) backToTop.classList.remove('visible');
+  }, { threshold: 0, rootMargin: '0px 0px 80px 0px' }).observe(footerEl);
+}
+
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 300) {
+  if (!footerInView && window.scrollY > 300) {
     backToTop.classList.add('visible');
   } else {
     backToTop.classList.remove('visible');
@@ -10081,7 +8461,8 @@ function updateStationListHighlight() {
 
 renderLinks('', currentCategory);
 
-// 搜索框展开/收起交互
+// 首屏书籍先出来，稍后再在后台补全其余 64 个分类，避免首屏被 2MB 数据阻塞
+setTimeout(function () { loadRestData(); }, 1200);
 const searchInline = document.getElementById('searchInline');
 const searchInputEl = document.getElementById('searchInput');
 
@@ -10116,6 +8497,13 @@ if (searchInline && searchInputEl) {
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
       });
+      // 全量数据还没到：先按已加载内容出结果，加载完成后自动补搜
+      if (!window.__KISSTR_REST_LOADED__) {
+        loadRestData(function () {
+          const v = document.getElementById('searchInput');
+          if (v && v.value) renderLinks(v.value, 'all');
+        });
+      }
       renderLinks(searchValue, 'all');
     } else {
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -11253,11 +9641,11 @@ mbObserver.observe(musicPlay, { attributes: true, attributeFilter: ['class'] });
         localStorage.removeItem(storageKey);
       }
     }
-    /* 没有用户选择时，默认从「荷 / 墨 / 锦 / 庭 / 契」中随机一张；用户手动选择后仍按保存值恢复 */
-    var defaultImageIds = ['荷', '墨', '锦', '庭', '契'];
+    /* 没有用户选择时，默认固定「朱」；用户手动选择后仍按保存值恢复 */
+    var defaultImageIds = ['朱'];
     var defaultPool = imageBackgrounds.filter(function(o) { return defaultImageIds.indexOf(o.id) !== -1; });
     if (defaultPool.length > 0) {
-      applySelection(defaultPool[Math.floor(Math.random() * defaultPool.length)], false, false);
+      applySelection(defaultPool[0], false, false);
     } else if (imageBackgrounds.length > 0) {
       applySelection(imageBackgrounds[0], false, false);
     } else {

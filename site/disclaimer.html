@@ -107,28 +107,12 @@
                 padding: 40px;
             }
         }
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #1a1a1a;
-            }
-            .container {
-                background: #2a2a2a;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            }
-            h1 { color: #f0f0f0; border-bottom-color: #444; }
-            h2 { color: #e0e0e0; border-bottom-color: #444; }
-            p { color: #ccc; }
-            .back-btn {
-                background-color: #2997ff;
-            }
-            .back-btn:hover {
-                background-color: #0077ed;
-            }
-            .version-tag {
-                border-top-color: #444;
-                color: #777;
-            }
-        }
+        /* 本页固定浅色方案：白底 + 深色文字，避免深色模式/浏览器增强把正文与背景染成同色 */
+        body { background-color: #fff !important; color: #333 !important; }
+        .container { background: #fff !important; color: #333 !important; }
+        p, li, strong, em { color: #333 !important; -webkit-text-fill-color: #333 !important; }
+        h1 { color: #111 !important; -webkit-text-fill-color: #111 !important; }
+        h2 { color: #222 !important; -webkit-text-fill-color: #222 !important; }
     
 
   /* ========== 全平台适配补强 ========== */
